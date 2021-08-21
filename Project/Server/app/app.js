@@ -1,9 +1,10 @@
 const express = require("express");
-
 const app = express();
 const cors_handler = require("./routers/cors_handler");
 const router = require("./routers/router");
-const port = process.env.PORT || 8080;
+
+const config = require("./config.json");
+const port = config.port || 8000;
 
 // Lọc các tên miền có quyền truy cập
 cors_handler(app);

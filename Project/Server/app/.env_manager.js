@@ -1,4 +1,4 @@
-//Can use relative path or absolute path
+// Dùng thêm require file .env tạm thời chưa xài
 requireEnvFileByPath = () => {
   const systemPath = require("path");
   require("dotenv").config({ path: systemPath.resolve(__dirname, ".env") });

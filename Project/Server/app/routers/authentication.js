@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-require("../.env_manager")();
 
 //Middleware xác thực jwt token
 
@@ -17,7 +16,9 @@ const authenticate = async (req, res, next) => {
   //Tách token bearer
   const token = authToken.split(" ")[1];
 
-  const secretKey = process.env.SECRET_KEY;
+  const config = require("../config.json");
+
+  const secretKey = config.secretKey || "SECRET_KEY is not exist";
 
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) return res.status(401).json({ err });

@@ -6,7 +6,7 @@ const people_router = require("./people_router");
 // Mỗi controller sẽ có mỗi router
 module.exports = (app) => {
   app.use("/authentication", authentication_router);
-  app.use("/api/notes", notes_router);
   app.use(authentication);
+  app.use("/api/notes", notes_router);
   app.use("/api/people", people_router);
 };

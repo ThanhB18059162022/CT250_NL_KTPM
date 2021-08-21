@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-require("../.env_manager")();
 
 class AuthenticationController {
   login = async (req, res) => {
@@ -17,7 +16,9 @@ class AuthenticationController {
       return res.status(404).json({});
     }
 
-    const secretKey = process.env.SECRET_KEY || "SECRET_KEY is not exist";
+    const config = require("../config.json");
+
+    const secretKey = config.secretKey || "SECRET_KEY is not exist";
 
     const user = {
       id: 12,
