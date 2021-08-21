@@ -1,7 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  const getData = async () => {
+    const res = await fetch("http://localhost:8080/api/notes");
+    console.log(res);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -9,6 +14,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+        <button onClick={getData}>Get data</button>
         <a
           className="App-link"
           href="https://reactjs.org"

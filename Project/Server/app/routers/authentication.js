@@ -3,7 +3,7 @@ require("../.env_manager")();
 
 //Middleware xác thực jwt token
 
-const authenticate = (req, res, next) => {
+const authenticate = async (req, res, next) => {
   const authToken = req.headers["authorization"];
 
   const tokenRegex = /^Bearer\s/i;
