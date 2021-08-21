@@ -4,25 +4,24 @@ arr = [
   { id: 1, title: "Ghi chú 1", content: "Nội dung của ghi chú số 1" },
 
   { id: 2, title: "Ghi chú 2", content: "Nội dung của ghi chú số 2" },
-]
+];
 
 module.exports = class NotesController {
-
   /* #region  Get */
   //Lấy danh sách
   getList = (req, res) => {
-    return res.send(arr)
-  }
+    return res.send(arr);
+  };
 
   //Lấy theo id
   getById = (req, res) => {
     const id = req.params.id;
-    const note = arr.find(x => x.id == id)
+    const note = arr.find((x) => x.id == id);
 
     if (note) return res.send(note);
 
     return res.status(404).send(id);
-  }
+  };
   /* #endregion */
 
   /* #region  Post */
@@ -35,11 +34,15 @@ module.exports = class NotesController {
       return res.status(400).send(rs.error);
     }
 
-    const newNote = { id: arr.length + 1, title: body.title, content: body.content };
+    const newNote = {
+      id: arr.length + 1,
+      title: body.title,
+      content: body.content,
+    };
     arr.push(newNote);
 
     return res.send(newNote);
-  }
+  };
 
   /* #endregion */
 
@@ -54,7 +57,7 @@ module.exports = class NotesController {
     }
 
     const id = req.params.id;
-    const note = arr.find(x => x.id == id);
+    const note = arr.find((x) => x.id == id);
 
     if (note == null) return res.status(404).send(id);
 
@@ -62,7 +65,7 @@ module.exports = class NotesController {
     note.content = body.content;
 
     return res.send(note);
-  }
+  };
   /* #endregion */
 
   /* #region  Delete */
@@ -70,7 +73,7 @@ module.exports = class NotesController {
   delete = (req, res) => {
     const id = req.params.id;
 
-    const exist = arr.find(x => x.id == id)
+    const exist = arr.find((x) => x.id == id);
 
     if (!exist) return res.status(404).send(id);
 
@@ -78,7 +81,7 @@ module.exports = class NotesController {
     //arr = arr.filter(x => x.id != id);
 
     //Mix
-    const i = arr.findIndex(x => x.id == id);
+    const i = arr.findIndex((x) => x.id == id);
     arr.splice(i, 1);
 
     //Classic
@@ -90,16 +93,15 @@ module.exports = class NotesController {
     // }
 
     res.send();
-  }
+  };
   /* #endregion */
 
   getValidateResult(body) {
     const schema = {
       title: joi.string().min(3).required(),
-      content: joi.string().min(1).required()
+      content: joi.string().min(1).required(),
     };
 
     return joi.validate(body, schema);
   }
-
 };

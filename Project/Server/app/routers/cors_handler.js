@@ -1,7 +1,8 @@
-var cors = require("cors");
+const cors = require("cors");
+const config = require("../config.json");
 
 // Cho phép tên miền ngoài sử dụng
-const allowedOriginDomains = ["http://localhost:3000", "http://localhost:4200"];
+const allowedOriginDomains = config.corsDomains;
 
 const corsOptions = {
   origin: function (origin, callback) {
