@@ -5,13 +5,7 @@ const config = require("../config.json");
 const allowedOriginDomains = config.corsDomains;
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (selfOrTool(origin) || inAllowdedList(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: "*",
 };
 
 //Self tên miền của api - tool các công cụ test api
