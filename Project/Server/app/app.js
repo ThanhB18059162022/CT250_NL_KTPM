@@ -4,7 +4,7 @@ const cors_handler = require("./routers/cors_handler");
 const router = require("./routers/router");
 
 const config = require("./config.json");
-const port = config.port || 8000;
+const port = config.port || 8001;
 
 // Lọc các tên miền có quyền truy cập
 cors_handler(app);

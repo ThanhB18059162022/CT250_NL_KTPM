@@ -1,4 +1,5 @@
-const joi = require("joi"); // joi@13.1.10 bảng cũ
+const joi = require("joi");
+const { DAO } = require("../daos/daoContainer");
 
 arr = [
   { id: 1, title: "Ghi chú 1", content: "Nội dung của ghi chú số 1" },
@@ -9,7 +10,7 @@ arr = [
 module.exports = class NotesController {
   /* #region  Get */
   //Lấy danh sách
-  getList = (req, res) => {
+  getList = async (req, res) => {
     return res.send(arr);
   };
 
