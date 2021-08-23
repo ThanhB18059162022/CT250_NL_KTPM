@@ -1,5 +1,7 @@
 const joi = require("joi");
+
 const { DAO } = require("../daos/daosContainer");
+
 
 arr = [
   { id: 1, title: "Ghi chú 1", content: "Nội dung của ghi chú số 1" },
