@@ -1,5 +1,5 @@
 const cors = require("cors");
-const config = require("../config.json");
+const config = require("../config");
 
 // Cho phép tên miền ngoài sử dụng
 const allowedOriginDomains = config.corsDomains;

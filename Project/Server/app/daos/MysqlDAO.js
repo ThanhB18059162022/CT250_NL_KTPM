@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-const config = require("../config.json");
+const config = require("../config");
 const { promisify } = require("util");
 
 module.exports = class MysqlDAO {
