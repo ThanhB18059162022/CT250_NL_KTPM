@@ -1,10 +1,13 @@
 import logo from "./logo.svg";
 import "./App.css";
+const { ApiCaller } = require("./api_services/servicesContainer");
 
 function App() {
   const getData = async () => {
-    const res = await fetch("http://localhost:8080/api/notes");
-    console.log(res);
+    var apiCaller = new ApiCaller();
+
+    var res = await apiCaller.get("notes");
+    console.log(res.data);
   };
 
   return (

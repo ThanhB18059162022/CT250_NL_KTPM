@@ -1,4 +1,4 @@
-const { DAO, ThuongHieuDAO } = require("../daos/daoContainer");
+const { DAO, ThuongHieuDAO } = require("../daos/daosContainer");
 
 module.exports = class CacThuongHieuController {
   constructor() {

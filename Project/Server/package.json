@@ -7,6 +7,7 @@
     "start": "nodemon app/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "author": "Group5: Vuong Cam Thanh, Thach Chi Tam, Phan Phu Cuong",
   "license": "ISC",
   "dependencies": {
