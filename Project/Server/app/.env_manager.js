@@ -4,4 +4,4 @@ requireEnvFileByPath = () => {
   require("dotenv").config({ path: systemPath.resolve(__dirname, ".env") });
 };
 
-module.exports = requireEnvFileByPath;
+export default requireEnvFileByPath;

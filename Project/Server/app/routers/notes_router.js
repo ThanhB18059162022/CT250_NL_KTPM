@@ -1,7 +1,7 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
-const { NotesController } = require("../controllers/controllersContainer");
+import { NotesController } from "../controllers/controllersContainer.js";
 let controller = new NotesController();
 
 router.route("/").get(controller.getList).post(controller.post);
@@ -11,4 +11,4 @@ router
   .put(controller.put)
   .delete(controller.delete);
 
-module.exports = router;
+export default router;

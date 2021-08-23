@@ -1,10 +1,10 @@
-const mysql = require("mysql");
-const config = require("../config.json");
-const { promisify } = require("util");
+import { createConnection } from "mysql";
+import { promisify } from "util";
+import config from "../config.js";
 
-module.exports = class MysqlDAO {
+export default class MysqlDAO {
   constructor() {
-    this.connection = mysql.createConnection(config.dbConnection);
+    this.connection = createConnection(config.dbConnection);
   }
 
   //Trả về các dòng
@@ -34,4 +34,4 @@ module.exports = class MysqlDAO {
 
   //Kết thúc truy vấn
   done = () => this.connection?.end();
-};
+}

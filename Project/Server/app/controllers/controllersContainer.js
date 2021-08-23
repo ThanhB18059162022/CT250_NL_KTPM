@@ -2,12 +2,12 @@
 // Sẽ require thông qua lớp này
 
 //Controller
-const AuthenticationController = require("./AuthenticationController");
-const NotesController = require("./NotesController");
-const CacThuongHieuController = require("./CacThuongHieuController");
+import AuthenticationController from "./AuthenticationController.js";
+import NotesController from "./NotesController.js";
+import CacThuongHieuController from "./CacThuongHieuController.js";
 
-module.exports = {
-  AuthenticationController: AuthenticationController,
-  NotesController: NotesController,
+export {
+  AuthenticationController as AuthenticationController,
+  NotesController as NotesController,
   CacThuongHieuController,
 };

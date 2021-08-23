@@ -1,9 +1,9 @@
-const express = require("express");
-const app = express();
-const cors_handler = require("./routers/cors_handler");
-const router = require("./routers/router");
+import express, { json, urlencoded } from "express";
+import cors_handler from "./routers/cors_handler.js";
+import router from "./routers/router.js";
+import config from "./config.js";
 
-const config = require("./config.json");
+const app = express();
 const port = config.port || 8001;
 
 // Lọc các tên miền có quyền truy cập
@@ -11,9 +11,9 @@ cors_handler(app);
 
 //Thêm middleware cho Post với Put cái này dùng xử lý body(JSON) của request
 // Request Object as a JSON Object
-app.use(express.json());
+app.use(json());
 // Request Object as strings or arrays
-app.use(express.urlencoded({ extended: true }));
+app.use(urlencoded({ extended: true }));
 
 router(app);
 

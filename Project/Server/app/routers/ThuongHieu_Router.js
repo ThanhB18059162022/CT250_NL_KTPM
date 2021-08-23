@@ -1,9 +1,7 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
-const {
-  CacThuongHieuController,
-} = require("../controllers/controllersContainer");
+import { CacThuongHieuController } from "../controllers/controllersContainer.js";
 let controller = new CacThuongHieuController();
 
 router.route("/").get(controller.layDanhSach).post(controller.them);
@@ -14,4 +12,4 @@ router
   .put(controller.sua)
   .delete(controller.xoa);
 
-module.exports = router;
+export default router;

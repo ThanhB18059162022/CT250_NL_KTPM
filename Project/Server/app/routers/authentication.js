@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 //Middleware xác thực jwt token
 
@@ -16,7 +16,7 @@ const authenticate = async (req, res, next) => {
   //Tách token bearer
   const token = authToken.split(" ")[1];
 
-  const config = require("../config.json");
+  const config = require("../config");
 
   const secretKey = config.secretKey || "SECRET_KEY is not exist";
 
@@ -30,4 +30,4 @@ const authenticate = async (req, res, next) => {
   });
 };
 
-module.exports = authenticate;
+export default authenticate;

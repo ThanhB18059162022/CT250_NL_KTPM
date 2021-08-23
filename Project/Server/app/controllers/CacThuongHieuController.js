@@ -1,6 +1,6 @@
-const { DAO, ThuongHieuDAO } = require("../daos/daosContainer");
+import { DAO, ThuongHieuDAO } from "../daos/daosContainer.js";
 
-module.exports = class CacThuongHieuController {
+export default class CacThuongHieuController {
   constructor() {
     this.dao = new ThuongHieuDAO(new DAO());
   }
@@ -55,4 +55,4 @@ module.exports = class CacThuongHieuController {
 
     return res.status(401).send([]);
   };
-};
+}

@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
-class AuthenticationController {
+export default class AuthenticationController {
   login = async (req, res) => {
     const loginModel = req.loginModel || {};
 
@@ -16,7 +16,7 @@ class AuthenticationController {
       return res.status(404).json({});
     }
 
-    const config = require("../config.json");
+    const config = require("../config");
 
     const secretKey = config.secretKey || "SECRET_KEY is not exist";
 
@@ -40,5 +40,3 @@ class AuthenticationController {
     return true;
   };
 }
-
-module.exports = AuthenticationController;

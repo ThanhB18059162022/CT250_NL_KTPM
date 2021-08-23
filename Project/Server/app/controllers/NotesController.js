@@ -1,13 +1,12 @@
-const joi = require("joi");
-const { DAO } = require("../daos/daosContainer");
+// import { string, validate } from "joi";
 
-arr = [
+const arr = [
   { id: 1, title: "Ghi chú 1", content: "Nội dung của ghi chú số 1" },
 
   { id: 2, title: "Ghi chú 2", content: "Nội dung của ghi chú số 2" },
 ];
 
-module.exports = class NotesController {
+export default class NotesController {
   /* #region  Get */
   //Lấy danh sách
   getList = async (req, res) => {
@@ -99,10 +98,10 @@ module.exports = class NotesController {
 
   getValidateResult(body) {
     const schema = {
-      title: joi.string().min(3).required(),
-      content: joi.string().min(1).required(),
+      title: string().min(3).required(),
+      content: string().min(1).required(),
     };
 
-    return joi.validate(body, schema);
+    return validate(body, schema);
   }
-};
+}

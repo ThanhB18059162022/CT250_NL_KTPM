@@ -1,12 +1,12 @@
-const authentication = require("./authentication");
-const authentication_router = require("./authentication_router");
-const notes_router = require("./notes_router");
-const ThuongHieu_Router = require("./ThuongHieu_Router");
+import authentication from "./authentication.js";
+import authentication_router from "./authentication_router.js";
+import notes_router from "./notes_router.js";
+import ThuongHieu_Router from "./ThuongHieu_Router.js";
 
 // Mỗi controller sẽ có mỗi router
-module.exports = (app) => {
+export default (app) => {
   app.use("/authentication", authentication_router);
   app.use("/api/thuonghieu", ThuongHieu_Router);
-  app.use(authentication);
   app.use("/api/notes", notes_router);
+  app.use(authentication);
 };

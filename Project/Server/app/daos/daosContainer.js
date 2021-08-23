@@ -1,12 +1,12 @@
 // Facade Lớp lưu export
 // Sẽ require thông qua lớp này
 
-const MysqlDAOFake = require("./MysqlDAOFake");
-const MysqlDAO = require("./MysqlDAO");
-const ThuongHieuDAO = require("./ThuongHieuDAO");
+import MysqlDAOFake from "./MysqlDAOFake.js";
+import MysqlDAO from "./MysqlDAO.js";
+import ThuongHieuDAO from "./ThuongHieuDAO.js";
 
-module.exports = {
-  DAO: MysqlDAO, // Xài mysql
+export {
+  MysqlDAO as DAO, // Xài mysql
   ThuongHieuDAO,
   // DAO: MysqlConnectionFake, // Xài mysql fake
 };

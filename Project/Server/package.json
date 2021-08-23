@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "e-commerece server provide api for font end selling phone project of ct250 ",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon app/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "type": "module",
   "author": "Group5: Vuong Cam Thanh, Thach Chi Tam, Phan Phu Cuong",
   "license": "ISC",
   "dependencies": {

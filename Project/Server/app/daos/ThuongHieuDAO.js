@@ -1,4 +1,4 @@
-module.exports = class ThuongHieuDAO {
+export default class ThuongHieuDAO {
   constructor(sqldao) {
     this.sqldao = sqldao;
   }
@@ -27,4 +27,4 @@ module.exports = class ThuongHieuDAO {
     (await this.sqldao.execute("DELETE FROM THUONG_HIEU WHERE th_ma = ?", [
       th_ma,
     ])) > 0;
-};
+}
