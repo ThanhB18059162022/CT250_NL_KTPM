@@ -2,10 +2,10 @@
   "name": "phone_e-commerece_server",
   "version": "1.0.0",
   "description": "e-commerece server provide api for font end selling phone project of ct250 ",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "nodemon app/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose --coverage --watchAll"
   },
   "author": "Group5: Vuong Cam Thanh, Thach Chi Tam, Phan Phu Cuong",
   "license": "ISC",
@@ -17,5 +17,9 @@
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.12"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "jest": "^27.0.6"
   }
 }
