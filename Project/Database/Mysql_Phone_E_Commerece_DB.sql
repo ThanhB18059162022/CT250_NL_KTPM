@@ -190,8 +190,13 @@ CREATE TABLE Carts_Details(
   cd_quantity INT NOT NULL, -- Số lượng sản phẩm trong giỏ
   cd_price DECIMAL(15, 2) NOT NULL, -- Tổng giá trị giỏ hàng
 
+ -- Khóa ngoại
+  CONSTRAINT Carts_Details_Carts_FK FOREIGN KEY(cart_no) REFERENCES Carts(cart_no) ON DELETE CASCADE,
+  CONSTRAINT Carts_Details_Products_Details_FK FOREIGN KEY(pd_no) REFERENCES Products_Details(pd_no) ON DELETE CASCADE,
+
  -- Khóa chính
   CONSTRAINT Carts_Details_PK PRIMARY KEY (cart_no, pd_no)
+
 ); 
 
 
