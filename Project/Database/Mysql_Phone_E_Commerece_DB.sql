@@ -4,193 +4,194 @@ CREATE OR REPLACE DATABASE Phone_E_Commerece_DB;
 
 -- Bảng khách hàng
 
-CREATE TABLE KHACH_HANG(
-  KH_MA INT AUTO_INCREMENT, -- Mã khách hàng tự tăng
-  KH_HOTEN NVARCHAR(70) NOT NULL, -- Họ tên khách hàng
-  KH_CMND CHAR(12) NOT NULL UNIQUE, -- Chứng minh nhân dân
-  KH_EMAIL VARCHAR(128) NOT NULL UNIQUE, -- Email của khách
-  KH_GIOITINH BOOL NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
+CREATE TABLE Customers(
+  cus_no INT AUTO_INCREMENT, -- Mã khách hàng tự tăng
+  cus_name NVARCHAR(70) NOT NULL, -- Họ tên khách hàng
+  cus_id CHAR(12) NOT NULL UNIQUE, -- Chứng minh nhân dân
+  cus_email VARCHAR(128) NOT NULL UNIQUE, -- Email của khách
+  cus_sex BOOL NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
  
  -- Khóa chính
-  CONSTRAINT KHACH_HANG_PK PRIMARY KEY (KH_MA)
+  CONSTRAINT Customers_PK PRIMARY KEY (cus_no)
 );
 
 -- Bảng quản trị viên
-CREATE TABLE QUAN_TRI_VIEN(
-  QTV_MA INT AUTO_INCREMENT, -- Mã quản trị viên tự tăng
-  QTV_HOTEN NVARCHAR(70) NOT NULL, -- Họ tên quản trị viên
-  QTV_CMND CHAR(12) NOT NULL UNIQUE, -- Chứng minh nhân dân
-  QTV_SDT VARCHAR(12) NOT NULL UNIQUE, -- Số điện thoại
-  QTV_GIOITINH BOOL NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
-  QTV_DIACHI NVARCHAR(128), -- Địa chỉ
-  QTV_VAITRO BOOL NOT NULL DEFAULT '0', -- Vai trò 0 là nhân viên 1 là quản lý
+CREATE TABLE Moderators(
+  mod_no INT AUTO_INCREMENT, -- Mã quản trị viên tự tăng
+  mod_name NVARCHAR(70) NOT NULL, -- Họ tên quản trị viên
+  mod_id CHAR(12) NOT NULL UNIQUE, -- Chứng minh nhân dân
+  mod_phoneNumber VARCHAR(12) NOT NULL UNIQUE, -- Số điện thoại
+  mod_sex BOOL NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
+  mod_address NVARCHAR(128), -- Địa chỉ
+  mod_role BOOL NOT NULL DEFAULT '0', -- Vai trò 0 là nhân viên 1 là quản lý
+
  -- Khóa chính
-  CONSTRAINT QUAN_TRI_VIEN_PK PRIMARY KEY (QTV_MA)
+  CONSTRAINT Moderators_PK PRIMARY KEY (mod_no)
 );
 
 -- Bảng tài khoản
-CREATE TABLE TAI_KHOAN(
-  TK_MA INT AUTO_INCREMENT, -- Mã tài khoản tự tăng
-  TK_TAIKHOAN NVARCHAR(70) NOT NULL UNIQUE, -- Tài khoản
-  TK_MATKHAU CHAR(12) NOT NULL, -- Mật khẩu
-  QTV_MA INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên
+CREATE TABLE Accounts(
+  acc_no INT AUTO_INCREMENT, -- Mã tài khoản tự tăng
+  acc_username NVARCHAR(70) NOT NULL UNIQUE, -- Tài khoản
+  acc_password CHAR(12) NOT NULL, -- Mật khẩu
+  mod_no INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên
  
  -- Khóa chính
-  CONSTRAINT QUAN_TRI_VIEN_PK PRIMARY KEY (TK_MA),
+  CONSTRAINT Accounts_PK PRIMARY KEY (acc_no),
  
  -- Khóa ngoại
-  CONSTRAINT TAI_KHOAN_QUAN_TRI_VIEN_FK FOREIGN KEY(QTV_MA) REFERENCES QUAN_TRI_VIEN(QTV_MA) ON DELETE CASCADE
+  CONSTRAINT Accounts_Moderators_FK FOREIGN KEY(mod_no) REFERENCES Moderators(mod_no) ON DELETE CASCADE
 );
 
 -- Bảng địa chỉ
-CREATE TABLE DIA_CHI(
-  DC_MA INT AUTO_INCREMENT, -- Mã địa chỉ tự tăng
-  DC_DIADIEM NVARCHAR(100) NOT NULL UNIQUE, -- Địa chỉ phải độc nhất
-  SDT NVARCHAR(12) NOT NULL UNIQUE, -- Số điện thoại phải độc nhất
-  KH_MA INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng 
+CREATE TABLE Addresses(
+  addr_no INT AUTO_INCREMENT, -- Mã địa chỉ tự tăng
+  addr_location NVARCHAR(100) NOT NULL UNIQUE, -- Địa chỉ phải độc nhất
+  addr_phoneNumber NVARCHAR(12) NOT NULL UNIQUE, -- Số điện thoại phải độc nhất
+  cus_no INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng 
  
  -- Khóa chính
-  CONSTRAINT DIA_CHI_PK PRIMARY KEY (DC_MA),
+  CONSTRAINT Addresses_PK PRIMARY KEY (addr_no),
 
  -- Khóa ngoại
-  CONSTRAINT DIA_CHI_KHACH_HANG_FK FOREIGN KEY(KH_MA) REFERENCES KHACH_HANG(KH_MA) ON DELETE CASCADE
+  CONSTRAINT Addresses_Customers_FK FOREIGN KEY(cus_no) REFERENCES Customers(cus_no) ON DELETE CASCADE
 ); 
 
 
 -- Bảng thương hiệu
-CREATE TABLE THUONG_HIEU(
-  TH_MA INT AUTO_INCREMENT, -- Mã thương hiệu tự tăng
-  TH_TEN NVARCHAR(128) NOT NULL UNIQUE, -- Tên thương hiệu phải độc nhất
+CREATE TABLE Brands(
+  brand_no INT AUTO_INCREMENT, -- Mã thương hiệu tự tăng
+  brand_name NVARCHAR(128) NOT NULL UNIQUE, -- Tên thương hiệu phải độc nhất
 
  -- Khóa chính
-  CONSTRAINT THUONG_HIEU_PK PRIMARY KEY (TH_MA)
+  CONSTRAINT Brands_PK PRIMARY KEY (brand_no)
 ); 
 
 -- Bảng sản phẩm
-CREATE TABLE SAN_PHAM(
-  SP_MA INT AUTO_INCREMENT, -- Mã sản phẩm tự tăng
-  SP_Ten NVARCHAR(50) NOT NULL UNIQUE, -- Tên sản phẩm phải độc nhất
-  SP_NSX DATETIME NOT NULL DEFAULT NOW(), -- Ngày sản xuất
-  SP_NGAYDANG DATETIME NOT NULL DEFAULT NOW(), -- Ngày bán
-  SP_MANHINH NVARCHAR(128) NOT NULL, -- Màn hình
-  SP_CAMERA NVARCHAR(128) NOT NULL, -- Camera
-  SP_KICHTHUOC NVARCHAR(128) NOT NULL, -- Kích thước
-  SP_PINSAC NVARCHAR(128) NOT NULL, -- Pin và sạc
-  SP_HDH NVARCHAR(128) NOT NULL, -- Hệ điều hành
-  SP_PHANCUNG NVARCHAR(128) NOT NULL, -- Phần cứng
-  TH_MA INT NOT NULL, -- Thương hiệu khóa ngoại tham chiếu bảng thương hiệu
+CREATE TABLE Products(
+  prod_no INT AUTO_INCREMENT, -- Mã sản phẩm tự tăng
+  prod_name NVARCHAR(50) NOT NULL UNIQUE, -- Tên sản phẩm phải độc nhất
+  prod_mfg DATETIME NOT NULL DEFAULT NOW(), -- Ngày sản xuất
+  prod_releaseDate DATETIME NOT NULL DEFAULT NOW(), -- Ngày bán
+  prod_screen NVARCHAR(128) NOT NULL, -- Màn hình
+  prod_camera NVARCHAR(128) NOT NULL, -- Camera
+  prod_size NVARCHAR(128) NOT NULL, -- Kích thước
+  prod_battery NVARCHAR(128) NOT NULL, -- Pin và sạc
+  prod_os NVARCHAR(128) NOT NULL, -- Hệ điều hành
+  prod_hardware NVARCHAR(128) NOT NULL, -- Phần cứng
+  brand_no INT NOT NULL, -- Thương hiệu khóa ngoại tham chiếu bảng thương hiệu
 
  -- Khóa chính
-  CONSTRAINT SAN_PHAM_PK PRIMARY KEY (SP_MA),
+  CONSTRAINT Products_PK PRIMARY KEY (prod_no),
 
  -- Khóa ngoại
-  CONSTRAINT SAN_PHAM_THUONG_HIEU_FK FOREIGN KEY(TH_MA) REFERENCES THUONG_HIEU(TH_MA) ON DELETE CASCADE
+  CONSTRAINT Products_Brands_FK FOREIGN KEY(brand_no) REFERENCES Brands(brand_no) ON DELETE CASCADE
 ); 
 
 -- Bảng hình ảnh
-CREATE TABLE HINH_ANH(
-  HA_MA INT AUTO_INCREMENT, -- Mã hình ảnh tự tăng
-  HA_SRC VARCHAR(128) NOT NULL, -- Đường dẫn đến resource trên server
-  SP_MA INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
+CREATE TABLE Images(
+  img_no INT AUTO_INCREMENT, -- Mã hình ảnh tự tăng
+  img_src VARCHAR(128) NOT NULL, -- Đường dẫn đến resource trên server
+  prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
 
  -- Khóa chính
-  CONSTRAINT HINH_ANH_PK PRIMARY KEY (HA_MA),
+  CONSTRAINT Images_PK PRIMARY KEY (img_no),
 
  -- Khóa ngoại
-  CONSTRAINT HINH_ANH_SAN_PHAM_FK FOREIGN KEY(SP_MA) REFERENCES SAN_PHAM(SP_MA) ON DELETE CASCADE
+  CONSTRAINT Images_Products_FK FOREIGN KEY(prod_no) REFERENCES Products(prod_no) ON DELETE CASCADE
 ); 
 
 -- Bảng đánh giá
-CREATE TABLE DANH_GIA(
-  DG_MA INT AUTO_INCREMENT, -- Mã đánh giá tự tăng
-  DG_NOIDUNG NVARCHAR(128) NOT NULL, -- Nội dung đánh giá
-  DG_THOIGIAN DATETIME NOT NULL DEFAULT NOW() , -- Thời gian đánh giá
-  SP_MA INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
-  KH_MA INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng
+CREATE TABLE Feedbacks(
+  fb_no INT AUTO_INCREMENT, -- Mã đánh giá tự tăng
+  fb_content NVARCHAR(128) NOT NULL, -- Nội dung đánh giá
+  fb_time DATETIME NOT NULL DEFAULT NOW() , -- Thời gian đánh giá
+  prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
+  cus_no INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng
 
  -- Khóa chính
-  CONSTRAINT DANH_GIA_PK PRIMARY KEY (DG_MA),
+  CONSTRAINT Feedbacks_PK PRIMARY KEY (fb_no),
 
  -- Khóa ngoại
-  CONSTRAINT DANH_GIA_SAN_PHAM_FK FOREIGN KEY(SP_MA) REFERENCES SAN_PHAM(SP_MA) ON DELETE CASCADE,
-  CONSTRAINT DANH_GIA_KHACH_HANG_FK FOREIGN KEY(KH_MA) REFERENCES KHACH_HANG(KH_MA) ON DELETE CASCADE
+  CONSTRAINT Feedbacks_Products_FK FOREIGN KEY(prod_no) REFERENCES Products(prod_no) ON DELETE CASCADE,
+  CONSTRAINT Feedbacks_Customers_FK FOREIGN KEY(cus_no) REFERENCES Customers(cus_no) ON DELETE CASCADE
 ); 
 
--- Bảng phản hồi
-CREATE TABLE PHAN_HOI(
-  PH_MA INT AUTO_INCREMENT, -- Mã phản hồi tự tăng
-  PH_NOIDUNG NVARCHAR(128) NOT NULL, -- Nội dung phản hồi
-  PH_THOIGIAN DATETIME NOT NULL DEFAULT NOW() , -- Thời gian phản hồi
-  QTV_MA INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên
-  DG_MA INT NOT NULL, -- Mã đánh giá khóa ngoại tham chiếu bảng đánh giá
+-- Bảng trả lời
+CREATE TABLE Replies(
+  rep_no INT AUTO_INCREMENT, -- Mã trả lời tự tăng
+  rep_content NVARCHAR(128) NOT NULL, -- Nội dung trả lời
+  rep_time DATETIME NOT NULL DEFAULT NOW() , -- Thời gian trả lời
+  mod_no INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên
+  fb_no INT NOT NULL, -- Mã đánh giá khóa ngoại tham chiếu bảng đánh giá
 
  -- Khóa chính
-  CONSTRAINT PHAN_HOI_PK PRIMARY KEY (PH_MA),
+  CONSTRAINT Replies_PK PRIMARY KEY (rep_no),
 
  -- Khóa ngoại
-  CONSTRAINT PHAN_HOI_QUAN_TRI_VIEN_FK FOREIGN KEY(QTV_MA) REFERENCES QUAN_TRI_VIEN(QTV_MA) ON DELETE CASCADE,
-  CONSTRAINT PHAN_HOI_DANH_GIA_FK FOREIGN KEY(DG_MA) REFERENCES DANH_GIA(DG_MA) ON DELETE CASCADE
+  CONSTRAINT Replies_Moderators_FK FOREIGN KEY(mod_no) REFERENCES Moderators(mod_no) ON DELETE CASCADE,
+  CONSTRAINT Replies_Feedbacks_FK FOREIGN KEY(fb_no) REFERENCES Feedbacks(fb_no) ON DELETE CASCADE
 ); 
 
 -- Bảng giỏ hàng
-CREATE TABLE GIO_HANG(
-  GH_MA INT AUTO_INCREMENT, -- Mã giỏ hàng tự tăng
-  GH_THOIGIAN DATETIME NOT NULL DEFAULT NOW(), -- Ngày thanh toán
-  KH_MA INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng
+CREATE TABLE Carts(
+  cart_no INT AUTO_INCREMENT, -- Mã giỏ hàng tự tăng
+  cart_time DATETIME NOT NULL DEFAULT NOW(), -- Ngày thanh toán
+  cus_no INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng
 
  -- Khóa chính
-  CONSTRAINT GIO_HANG_PK PRIMARY KEY (GH_MA),
+  CONSTRAINT Carts_PK PRIMARY KEY (cart_no),
 
  -- Khóa ngoại
-  CONSTRAINT GIO_HANG_KHACH_HANG_FK FOREIGN KEY(KH_MA) REFERENCES KHACH_HANG(KH_MA) ON DELETE CASCADE
+  CONSTRAINT Carts_Customers_FK FOREIGN KEY(cus_no) REFERENCES Customers(cus_no) ON DELETE CASCADE
 ); 
 
 -- Bảng hóa đơn
-CREATE TABLE HOA_DON(
-  HD_MA INT AUTO_INCREMENT, -- Mã hóa đơn tự tăng
-  HD_THOIGIAN DATETIME NOT NULL DEFAULT NOW(), -- Thời gian ra hóa đơn
-  HD_SOTIEN DECIMAL(15, 2) NOT NULL DEFAULT '0', -- Số tiền cho hóa đơn
-  QTV_MA INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên 
-  GH_MA INT NOT NULL, -- Mã giỏ hàng tham chiếu bảng giỏ hàng
-  DC_MA INT NOT NULL, -- Mã địa chỉ tham chiếu bảng địa chỉ
+CREATE TABLE Bills(
+  bill_no INT AUTO_INCREMENT, -- Mã hóa đơn tự tăng
+  bill_time DATETIME NOT NULL DEFAULT NOW(), -- Thời gian ra hóa đơn
+  bill_total DECIMAL(15, 2) NOT NULL DEFAULT '0', -- Số tiền cho hóa đơn
+  mod_no INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên 
+  cart_no INT NOT NULL, -- Mã giỏ hàng tham chiếu bảng giỏ hàng
+  addr_no INT NOT NULL, -- Mã địa chỉ tham chiếu bảng địa chỉ
 
  -- Khóa chính
-  CONSTRAINT HOA_DON_PK PRIMARY KEY (HD_MA),
+  CONSTRAINT Bills_PK PRIMARY KEY (bill_no),
 
  -- Khóa ngoại
-  CONSTRAINT HOA_DON_QUAN_TRI_VIEN_FK FOREIGN KEY(QTV_MA) REFERENCES QUAN_TRI_VIEN(QTV_MA) ON DELETE CASCADE,
-  CONSTRAINT HOA_DON_GIO_HANG_FK FOREIGN KEY(GH_MA) REFERENCES GIO_HANG(GH_MA) ON DELETE CASCADE,
-  CONSTRAINT HOA_DON_DIA_CHI_FK FOREIGN KEY(DC_MA) REFERENCES DIA_CHI(DC_MA) ON DELETE CASCADE
+  CONSTRAINT Bills_Moderators_FK FOREIGN KEY(mod_no) REFERENCES Moderators(mod_no) ON DELETE CASCADE,
+  CONSTRAINT Bills_Carts_FK FOREIGN KEY(cart_no) REFERENCES Carts(cart_no) ON DELETE CASCADE,
+  CONSTRAINT Bills_Addresses_FK FOREIGN KEY(addr_no) REFERENCES Addresses(addr_no) ON DELETE CASCADE
 ); 
 
 
 -- Bảng chi tiết sản phẩm
-CREATE TABLE CHI_TIET_SAN_PHAM(
-  CTSP_MA INT AUTO_INCREMENT, -- Mã chi tiết sản phẩm tự tăng
-  CTSP_BONHO VARCHAR(10) NOT NULL, -- BỘ NHỚ
-  CTSP_GIA DECIMAL(15, 2) NOT NULL, -- Giá
-  CTSP_SOLUONG INT NOT NULL, -- Số lượng
-  CTSP_DABAN INT NOT NULL, -- Số lượng đã bán
-  SP_MA INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
+CREATE TABLE Products_Details(
+  pd_no INT AUTO_INCREMENT, -- Mã chi tiết sản phẩm tự tăng
+  pd_memory VARCHAR(10) NOT NULL, -- BỘ NHỚ
+  pd_price DECIMAL(15, 2) NOT NULL, -- Giá
+  pd_amount INT NOT NULL, -- Số lượng
+  pd_sold INT NOT NULL, -- Số lượng đã bán
+  prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
 
  -- Khóa chính
-  CONSTRAINT CHI_TIET_SAN_PHAM_PK PRIMARY KEY (CTSP_MA),
+  CONSTRAINT Products_Details_PK PRIMARY KEY (pd_no),
 
  -- Khóa ngoại
-  CONSTRAINT CHI_TIET_SAN_PHAM_SAN_PHAM_FK FOREIGN KEY(SP_MA) REFERENCES SAN_PHAM(SP_MA) ON DELETE CASCADE
+  CONSTRAINT Products_Details_Products_FK FOREIGN KEY(prod_no) REFERENCES Products(prod_no) ON DELETE CASCADE
 ); 
 
 
 -- Bảng chi tiết giỏ hàng
-CREATE TABLE CHI_TIET_GIO_HANG(
-  GH_MA INT NOT NULL, -- Mã giỏ hàng khóa ngoại tham chiếu bảng giỏ hàng
-  CTSP_MA INT NOT NULL, -- Mã chi tiết sản phẩm khóa ngoại tham chiếu bảng chi tiết sản phẩm
+CREATE TABLE Carts_Details(
+  cart_no INT NOT NULL, -- Mã giỏ hàng khóa ngoại tham chiếu bảng giỏ hàng
+  pd_no INT NOT NULL, -- Mã chi tiết sản phẩm khóa ngoại tham chiếu bảng chi tiết sản phẩm
 
-  CTGH_SOLUONG INT NOT NULL, -- Số lượng sản phẩm trong giỏ
-  CTGH_GIATIEN DECIMAL(15, 2) NOT NULL, -- Tổng giá trị giỏ hàng
+  cd_quantity INT NOT NULL, -- Số lượng sản phẩm trong giỏ
+  cd_price DECIMAL(15, 2) NOT NULL, -- Tổng giá trị giỏ hàng
 
  -- Khóa chính
-  CONSTRAINT CHI_TIET_GIO_HANG_PK PRIMARY KEY (GH_MA, CTSP_MA)
+  CONSTRAINT Carts_Details_PK PRIMARY KEY (cart_no, pd_no)
 ); 
 
 
