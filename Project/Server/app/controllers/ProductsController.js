@@ -3,9 +3,17 @@ module.exports = class ProductsController {
     this.dao = dao;
   }
 
-  getProducts = async () => {
-    const products = await this.dao.query("SELECT * FROM Products;");
+  getProducts = async (req, res) => {
+    const products = await this.dao.getProducts();
 
-    return products;
+    return res.json(products);
+  };
+
+  getProductByNo = async (req, res) => {
+    const { pro_no } = req.params;
+
+    const product = await this.dao.getProductByNo(pro_no);
+
+    return res.json(product);
   };
 };
