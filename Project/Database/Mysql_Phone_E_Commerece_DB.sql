@@ -22,7 +22,7 @@ CREATE TABLE Moderators(
   mod_id CHAR(12) NOT NULL UNIQUE, -- Chứng minh nhân dân
   mod_phoneNumber VARCHAR(12) NOT NULL UNIQUE, -- Số điện thoại
   mod_sex BOOL NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
-  mod_address NVARCHAR(128), -- Địa chỉ
+  mod_address NVARCHAR(128) NOT NULL, -- Địa chỉ
   mod_role BOOL NOT NULL DEFAULT '0', -- Vai trò 0 là nhân viên 1 là quản lý
 
  -- Khóa chính
@@ -32,8 +32,8 @@ CREATE TABLE Moderators(
 -- Bảng tài khoản
 CREATE TABLE Accounts(
   acc_no INT AUTO_INCREMENT, -- Mã tài khoản tự tăng
-  acc_username NVARCHAR(70) NOT NULL UNIQUE, -- Tài khoản
-  acc_password CHAR(12) NOT NULL, -- Mật khẩu
+  acc_username VARCHAR(70) NOT NULL UNIQUE, -- Tài khoản
+  acc_password CHAR(64) NOT NULL, -- Mật khẩu
   mod_no INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên
  
  -- Khóa chính
@@ -79,6 +79,7 @@ CREATE TABLE Products(
   prod_battery NVARCHAR(128) NOT NULL, -- Pin và sạc
   prod_os NVARCHAR(128) NOT NULL, -- Hệ điều hành
   prod_hardware NVARCHAR(128) NOT NULL, -- Phần cứng
+  prod_status INT NOT NULL DEFAULT '0', -- Trạng thái sản phẩm
   brand_no INT NOT NULL, -- Thương hiệu khóa ngoại tham chiếu bảng thương hiệu
 
  -- Khóa chính
@@ -104,7 +105,7 @@ CREATE TABLE Images(
 -- Bảng đánh giá
 CREATE TABLE Feedbacks(
   fb_no INT AUTO_INCREMENT, -- Mã đánh giá tự tăng
-  fb_content NVARCHAR(128) NOT NULL, -- Nội dung đánh giá
+  fb_content NVARCHAR(500) NOT NULL, -- Nội dung đánh giá
   fb_time DATETIME NOT NULL DEFAULT NOW() , -- Thời gian đánh giá
   prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
   cus_no INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng
@@ -120,7 +121,7 @@ CREATE TABLE Feedbacks(
 -- Bảng trả lời
 CREATE TABLE Replies(
   rep_no INT AUTO_INCREMENT, -- Mã trả lời tự tăng
-  rep_content NVARCHAR(128) NOT NULL, -- Nội dung trả lời
+  rep_content NVARCHAR(500) NOT NULL, -- Nội dung trả lời
   rep_time DATETIME NOT NULL DEFAULT NOW() , -- Thời gian trả lời
   mod_no INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên
   fb_no INT NOT NULL, -- Mã đánh giá khóa ngoại tham chiếu bảng đánh giá
@@ -133,17 +134,17 @@ CREATE TABLE Replies(
   CONSTRAINT Replies_Feedbacks_FK FOREIGN KEY(fb_no) REFERENCES Feedbacks(fb_no) ON DELETE CASCADE
 ); 
 
--- Bảng giỏ hàng
-CREATE TABLE Carts(
-  cart_no INT AUTO_INCREMENT, -- Mã giỏ hàng tự tăng
-  cart_time DATETIME NOT NULL DEFAULT NOW(), -- Ngày thanh toán
+-- Bảng đơn hàng
+CREATE TABLE Orders(
+  order_no INT AUTO_INCREMENT, -- Mã đơn hàng tự tăng
+  order_time DATETIME NOT NULL DEFAULT NOW(), -- Ngày tạo đơn hàng
   cus_no INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng
 
  -- Khóa chính
-  CONSTRAINT Carts_PK PRIMARY KEY (cart_no),
+  CONSTRAINT Orders_PK PRIMARY KEY (order_no),
 
  -- Khóa ngoại
-  CONSTRAINT Carts_Customers_FK FOREIGN KEY(cus_no) REFERENCES Customers(cus_no) ON DELETE CASCADE
+  CONSTRAINT Orders_Customers_FK FOREIGN KEY(cus_no) REFERENCES Customers(cus_no) ON DELETE CASCADE
 ); 
 
 -- Bảng hóa đơn
@@ -151,8 +152,9 @@ CREATE TABLE Bills(
   bill_no INT AUTO_INCREMENT, -- Mã hóa đơn tự tăng
   bill_time DATETIME NOT NULL DEFAULT NOW(), -- Thời gian ra hóa đơn
   bill_total DECIMAL(15, 2) NOT NULL DEFAULT '0', -- Số tiền cho hóa đơn
+  bill_status INT NOT NULL DEFAULT '0', -- Trạng thái hóa đơn
   mod_no INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên 
-  cart_no INT NOT NULL, -- Mã giỏ hàng tham chiếu bảng giỏ hàng
+  order_no INT NOT NULL, -- Mã giỏ hàng tham chiếu bảng giỏ hàng
   addr_no INT NOT NULL, -- Mã địa chỉ tham chiếu bảng địa chỉ
 
  -- Khóa chính
@@ -160,7 +162,7 @@ CREATE TABLE Bills(
 
  -- Khóa ngoại
   CONSTRAINT Bills_Moderators_FK FOREIGN KEY(mod_no) REFERENCES Moderators(mod_no) ON DELETE CASCADE,
-  CONSTRAINT Bills_Carts_FK FOREIGN KEY(cart_no) REFERENCES Carts(cart_no) ON DELETE CASCADE,
+  CONSTRAINT Bills_Orders_FK FOREIGN KEY(order_no) REFERENCES Orders(order_no) ON DELETE CASCADE,
   CONSTRAINT Bills_Addresses_FK FOREIGN KEY(addr_no) REFERENCES Addresses(addr_no) ON DELETE CASCADE
 ); 
 
@@ -182,21 +184,20 @@ CREATE TABLE Products_Details(
 ); 
 
 
--- Bảng chi tiết giỏ hàng
-CREATE TABLE Carts_Details(
-  cart_no INT NOT NULL, -- Mã giỏ hàng khóa ngoại tham chiếu bảng giỏ hàng
+-- Bảng chi tiết đơn hàng
+CREATE TABLE Orders_Details(
+  order_no INT NOT NULL, -- Mã giỏ hàng khóa ngoại tham chiếu bảng đơn hàng
   pd_no INT NOT NULL, -- Mã chi tiết sản phẩm khóa ngoại tham chiếu bảng chi tiết sản phẩm
 
-  cd_quantity INT NOT NULL, -- Số lượng sản phẩm trong giỏ
-  cd_price DECIMAL(15, 2) NOT NULL, -- Tổng giá trị giỏ hàng
+  od_quantity INT NOT NULL, -- Số lượng sản phẩm trong giỏ
+  od_price DECIMAL(15, 2) NOT NULL, -- Tổng giá trị giỏ hàng
 
- -- Khóa ngoại
-  CONSTRAINT Carts_Details_Carts_FK FOREIGN KEY(cart_no) REFERENCES Carts(cart_no) ON DELETE CASCADE,
-  CONSTRAINT Carts_Details_Products_Details_FK FOREIGN KEY(pd_no) REFERENCES Products_Details(pd_no) ON DELETE CASCADE,
-
+    -- Khóa ngoại
+  CONSTRAINT Orders_Details_Carts_FK FOREIGN KEY(order_no) REFERENCES Orders(order_no) ON DELETE CASCADE,
+  CONSTRAINT Orders_Details_Products_Details_FK FOREIGN KEY(pd_no) REFERENCES Products_Details(pd_no) ON DELETE CASCADE,
+    
  -- Khóa chính
-  CONSTRAINT Carts_Details_PK PRIMARY KEY (cart_no, pd_no)
-
+  CONSTRAINT Orders_Details_PK PRIMARY KEY (order_no, pd_no)
 ); 
 
 
