@@ -1,32 +1,22 @@
 
 import logo from "../../logo.svg";
 import {ApiCaller} from "../../api_services/servicesContainer"
+import Helper from "../../helpers";
+import { Button, Comment } from "../../components/Controls";
 const getData = async () => {
-    var apiCaller = new ApiCaller();
+    // var apiCaller = new ApiCaller();
 
-    var res = await apiCaller.get("notes");
-    console.log(res.data);
+    // var res = await apiCaller.get("notes");
+    // console.log(res.data);
+    console.log(Helper.Sum(5, 10))
 };
 
 const Home = (props) => {
-    console.log(props)
+    console.log({...props})
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <button onClick={getData}>Get data</button>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header>
+        <div className="Home">
+            <p>Home page will show here</p>
+            <Comment title="Nguyễn Văn A" content="This is the content will show here!" style={{background:'red'}}/>
         </div>
     )
 }
