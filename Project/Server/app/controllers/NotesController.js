@@ -12,6 +12,7 @@ module.exports = class NotesController {
   /* #region  Get */
   //Lấy danh sách
   getList = async (req, res) => {
+    throw new Error();
     return res.json(arr);
   };
 
