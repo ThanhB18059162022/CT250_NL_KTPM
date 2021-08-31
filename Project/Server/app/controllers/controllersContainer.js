@@ -4,10 +4,12 @@
 //Controller
 const AuthenticationController = require("./AuthenticationController");
 const NotesController = require("./NotesController");
-const CacThuongHieuController = require("./CacThuongHieuController");
+const ProductsController = require("./products_controllers/ProductsController");
+const ProductsValidator = require("./products_controllers/ProductsValidator");
 
 module.exports = {
   AuthenticationController: AuthenticationController,
   NotesController: NotesController,
-  CacThuongHieuController,
+  ProductsController: ProductsController,
+  ProductsValidator: ProductsValidator,
 };

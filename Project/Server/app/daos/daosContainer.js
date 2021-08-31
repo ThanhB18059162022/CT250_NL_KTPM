@@ -3,10 +3,9 @@
 
 const MysqlDAOFake = require("./MysqlDAOFake");
 const MysqlDAO = require("./MysqlDAO");
-const ThuongHieuDAO = require("./ThuongHieuDAO");
-
+const ProductDAO_Ram = require("./products_daos/ProductsDAO_Ram");
 module.exports = {
   DAO: MysqlDAO, // Xài mysql
-  ThuongHieuDAO,
+  ProductsDAO: ProductDAO_Ram,
   // DAO: MysqlConnectionFake, // Xài mysql fake
 };
