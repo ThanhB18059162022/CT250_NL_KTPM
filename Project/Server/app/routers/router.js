@@ -1,12 +1,12 @@
 const authentication = require("./authentication");
-const authentication_router = require("./authentication_router");
-const notes_router = require("./notes_router");
-const ThuongHieu_Router = require("./ThuongHieu_Router");
+const authenticationRouter = require("./authenticationRouter");
+const notesRouter = require("./notesRouter");
+const productRouter = require("./productsRouter");
 
 // Mỗi controller sẽ có mỗi router
 module.exports = (app) => {
-  app.use("/authentication", authentication_router);
-  app.use("/api/thuonghieu", ThuongHieu_Router);
-  app.use("/api/notes", notes_router);
+  app.use("/authentication", authenticationRouter);
+  app.use("/api/products", productRouter);
+  app.use("/api/notes", notesRouter);
   app.use(authentication);
 };

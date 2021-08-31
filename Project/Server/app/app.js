@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
-const cors_handler = require("./routers/cors_handler");
+const corsHandler = require("./routers/corsHandler");
 const router = require("./routers/router");
 
 const config = require("./config");
 const port = config.port || 8001;
 
 // Lọc các tên miền có quyền truy cập
-cors_handler(app);
+corsHandler(app);
 
 //Thêm middleware cho Post với Put cái này dùng xử lý body(JSON) của request
 // Request Object as a JSON Object

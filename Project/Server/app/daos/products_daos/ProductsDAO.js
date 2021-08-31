@@ -26,4 +26,15 @@ module.exports = class ProductsDAO {
 
     return product;
   };
+
+  addProduct = async (product) => {
+    const { pro_name } = product;
+
+    const addSuccess = await this.sqldao.execute(
+      "INSERT INTO Products() VALUES()",
+      [pro_name]
+    );
+
+    return addSuccess;
+  };
 };
