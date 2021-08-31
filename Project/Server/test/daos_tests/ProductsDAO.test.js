@@ -1,6 +1,8 @@
+
 const ProductsDAO = require("../../app/daos/products_daos/ProductsDAO");
 
 // Test query cho Mysql
+
 
 const getMockProducts = () => {
   return [
@@ -27,7 +29,9 @@ const getProductsDAO = (sqldao) => {
   return new ProductsDAO(sqldao);
 };
 
+
 describe("Kiểm tra các hàm trong Product DAO Mysql có đúng query, param, số lần gọi hay không", () => {
+
   test("Lấy danh sách sản phẩm", async () => {
     //Arrange
     const mockProducts = getMockProducts();
@@ -44,6 +48,7 @@ describe("Kiểm tra các hàm trong Product DAO Mysql có đúng query, param, 
     expect(actProducts).toBeDefined();
     expect(expProducts.length).toEqual(actProducts.length);
     expect(expProducts).toEqual(actProducts);
+
 
     expect(sqldaoMock.query).toHaveBeenCalledTimes(1);
     expect(sqldaoMock.query).toHaveBeenCalledWith("SELECT * FROM Products;");

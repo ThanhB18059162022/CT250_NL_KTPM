@@ -104,3 +104,7 @@ dist
 .tern-port
 Project/Server/app/config.json
 Project/Server/app/config.js
+
+# package-clock.json
+Project/Server/package-lock.json
+Project/Client/package-lock.json
