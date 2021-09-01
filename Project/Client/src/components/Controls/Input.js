@@ -48,3 +48,9 @@ export const SearchHeaderInput = ({searchHandle}) => {
     </div>
   )
 }
+
+export const MyInput= ()=>{
+  return (
+    <div>My Input Testing</div>
+  )
+}
