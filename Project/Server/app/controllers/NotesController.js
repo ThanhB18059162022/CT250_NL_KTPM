@@ -13,6 +13,7 @@ module.exports = class NotesController {
   //Lấy danh sách
   getList = async (req, res) => {
     throw new Error();
+
     return res.json(arr);
   };
 
