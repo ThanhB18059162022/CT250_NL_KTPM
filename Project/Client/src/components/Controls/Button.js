@@ -59,9 +59,9 @@ export const CartButton = ({handle, amount}) => {
 }
 
 
-export const ListButton = (props) =>{
+export const AdminListButton = (props) =>{
     const {name} = props
     return(
-        <button>{name}</button>
+        <button className="AdminListButton">{name}</button>
     )
 }

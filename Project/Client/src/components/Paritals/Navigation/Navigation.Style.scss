@@ -1,0 +1,13 @@
+.AdminMenu{
+    margin: auto;
+    width: 730px;
+    @media screen and (max-width: 820px) {
+        width: 562px;
+    }
+    @media screen and (max-width: 600px) {
+        width: 395px;
+    }
+    @media screen and (max-width: 400px) {
+        width: 293px;
+    }
+}

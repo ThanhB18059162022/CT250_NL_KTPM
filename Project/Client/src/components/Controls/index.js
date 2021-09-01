@@ -1,5 +1,5 @@
 
-import Button,{CartButton, ListButton} from "./Button";
+import Button,{CartButton, AdminListButton} from "./Button";
 import Comment from "./Comment";
 import Input,{SearchHeaderInput} from "./Input";
 
@@ -23,7 +23,7 @@ export { Input };
 export {CartButton}
 export {SearchHeaderInput}
 //-------Admin------------------
-export {ListButton}
+export {AdminListButton}
 
 /** You should import default component
  *  or component you need
