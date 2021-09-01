@@ -8,7 +8,7 @@ function App() {
     <Router>
       <Switch>
         {route.map(({ component: Component, path, ...rest }) =>
-          <Route component={Component} key={path} {...rest} />
+          <Route component={Component}path={path} {...rest} />
         )}
       </Switch>
     </Router>

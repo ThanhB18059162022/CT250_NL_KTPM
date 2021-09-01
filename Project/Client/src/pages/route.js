@@ -13,7 +13,7 @@ const route = [
         component: Admin
     },
     {
-        path: '/home',
+        path: '/',
       //  exact: true,
         public: true,
         component: Home
