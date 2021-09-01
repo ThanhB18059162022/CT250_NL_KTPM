@@ -1,3 +1,4 @@
+import { CartIcon } from "./FlatIcon";
 
 const Button = ({
     content,
@@ -11,7 +12,7 @@ const Button = ({
     return (
         <div className="Button">
             <button
-                className={`button ${className} ${options}`}
+                className={`button ${className!=null?className:""} ${options}`}
                 onClick={handle}
                 style={style}
                 {...rest}
@@ -40,3 +41,19 @@ export default Button
  * handle: the event will happpen when click
  *
  *  */
+
+
+//----Customizimg------------
+export const CartButton = ({handle, amount}) => {
+    return (
+        <div className="CartButton">
+            <button onClick={handle}>
+                <div className="cart_shower">
+                    <CartIcon/>
+                    {amount!==undefined && <span className="cart_amount">{amount}</span>}
+                </div>
+                <p> Giỏ hàng</p>
+            </button>
+        </div>
+    )
+}

@@ -1,14 +1,19 @@
+:root {
+    --backgroundColor: #69baff;
+    --textColor: #363636;
+}
+
 /**     Button Style    */
 .Button {
     .button {
         border: none;
         border-radius: 500px;
-        background: white;
         padding: 5px 15px;
         font-size: 16px;
         transition: all ease 0.35s;
+        background: none;
         &.shadow {
-            box-shadow: 0 0 5px black;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.582);
         }
 
         &.default {
@@ -22,7 +27,6 @@
         &.hover {
             &:hover {
                 box-shadow: 0 0 5px black;
-                background-color: red;
             }
         }
     }
@@ -70,10 +74,10 @@
 }
 
 /**   Input Style   */
-.Input{
+.Input {
     .input {
         outline: none;
-        padding: 10px;
+        padding: 5px 10px;
         font-size: 14px;
         &.radius {
             border-radius: 500px;
@@ -87,3 +91,114 @@
         }
     }
 }
+
+//=================Modify=====================
+.CartButton {
+    button {
+        font-size: 28px;
+        border: none;
+        background: transparent;
+        overflow: hidden;
+        outline: none;
+        width: 80px;
+        position: relative;
+        p {
+            font-size: 12px;
+            transform: translateY(15px);
+            transition: all ease 0.3s;
+            color: #363636;
+        }
+        .cart_shower {
+            position: relative;
+            transform: translateY(8px);
+            transition: all ease .3s;
+            display: inline-block;
+            i{
+                width: 25px;
+                height: 25px;
+                display: inline-block;
+                color: #363636;
+            }
+            span {
+                position: absolute;
+                left: 75%;
+                font-weight: 600;
+                color: white;
+                top: 10%;
+                border-radius: 100px;
+                font-size: 12px;
+                display: inline-block;
+                width: 17px;
+                height: 17px;
+                background: rgb(243, 76, 76);
+            }
+        }
+        &::before{
+            content: "";
+            background: rgba(0, 0, 0, 0.075);
+            position: absolute;
+            left: 50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            z-index: -1;
+        }
+    }
+    &:hover {
+        button {
+
+            &::before{
+                display: none;
+            }
+            .cart_shower{
+                transform: translateY(2px);
+                i{
+                    color: black;
+                }
+            }
+            p{
+                transform: translateY(-5px);
+                color: black;
+            }
+           
+        }
+    }    
+}
+
+// Header  - Search - Input
+.HeaderSearch{
+    flex-basis: 70%;
+    .header-search{
+        position: relative;
+        input{
+            padding: 10px 30px 10px 20px;
+            border: none;
+            outline: none;
+            width: 100%;
+            border-radius: 5px;
+        }
+        button{
+            position: absolute;
+            right: 1px;
+            border: none;
+            padding: 3px 15px;
+            border-radius: 0 5px 5px 0;
+            i{
+                width:25px;
+                display: inline-block;
+            }
+            font-weight: 300;
+            transform: translateY(-50%);
+            top:50%;
+            color: rgba(0, 0, 0, 0.521);
+            transition: all ease .3s;
+            &:hover{
+                color:white;
+                background: var(--backgroundColor)
+            }
+        }
+    }
+}
+

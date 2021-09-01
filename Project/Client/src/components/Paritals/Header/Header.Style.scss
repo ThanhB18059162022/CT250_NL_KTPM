@@ -1,0 +1,125 @@
+@import url(//db.onlinewebfonts.com/c/021bc4dec3aa02d937a51bdfdccc0f4d?family=Blacksword);
+:root {
+    --backgroundColor: #69baff;
+    --textColor: #363636;
+}
+.Header {
+    position: sticky;
+    top: 0;
+    z-index: 1111;
+    display: flex;
+    align-items: center;
+    height: 55px;
+    padding: 0 5%;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.219);
+    transition: all ease 0.5s;
+    background-color: var(--backgroundColor);
+    overflow: hidden;
+    .header-wrapper {
+        display: flex;
+        align-items: center;
+        user-select: none;
+        justify-content: space-between;
+        width: 100%;
+        position: relative;
+        .header-logo {
+            p {
+                font-size: 30px;
+                margin: 0 10px;
+                font-family: "Blacksword";
+                color: var(--textColor);
+            }
+        }
+        label{
+             position: relative;
+             display: none;
+             padding-top: 2px;
+            i{
+                width: 23px;
+                display: inline-block;
+                color: #363636;
+            }
+            &::before{
+                content:"";
+                position: absolute;
+                left: 0;
+                top:0;
+                width: 40px;
+                height: 40px;
+                transform: translate(-20%,-13%);
+                background: rgba(0, 0, 0, 0.075);
+                border-radius: 50%;
+            }
+        }
+    }
+}
+
+#search_header_check{
+    display: none;
+    z-index: -1111;
+}
+
+@media screen and (max-width: 768px) {
+    .Header {
+        height: 50px;
+        .header-wrapper {
+            .header-logo {
+                p {
+                    font-size: 24px;
+                }
+            }
+            .header-cart{
+                .CartButton{
+                    button{
+                        span{
+                            top:20%
+                        }
+                    }
+                    img{
+                        width:20px;
+                        height: 20px;
+                    }
+                    &:hover{
+                        p{
+                            transform: translateY(-5px);
+                        }
+                        .cart_shower{
+                            transform: translateY(0px);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .Header{
+        padding: 0;
+        display: block;
+   //     height: 100px;
+        .header-wrapper{
+            .HeaderSearch{
+                position: absolute;
+                top: 55px;
+                width: 100vw;
+                padding: 0 5px;
+                background: var(--backgroundColor);
+            }
+            label{
+                display: inline-block;
+                transition: all ease .5s;
+            }
+        }
+        
+        
+    }
+    #search_header_check:checked ~ div{
+        .header-wrapper{
+            label{
+                transform: rotate(180deg);
+            }
+        }
+        height: 100px;
+    }
+}

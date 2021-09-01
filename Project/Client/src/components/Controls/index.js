@@ -1,19 +1,27 @@
-import Button from "./Button";
+
+import Button,{CartButton} from "./Button";
 import Comment from "./Comment";
-import Input from "./Input";
+import Input,{SearchHeaderInput} from "./Input";
 
 import "./Controls.Style.scss";
 
 const Controls = {
   Button,
+  CartButton,
   Comment,
-  Input
+  Input,
+  SearchHeaderInput
 };
 
 export default Controls;
 export { Button };
 export { Comment };
 export { Input };
+
+
+//--------Personal Using-----------
+export {CartButton}
+export {SearchHeaderInput}
 
 /** You should import default component
  *  or component you need
