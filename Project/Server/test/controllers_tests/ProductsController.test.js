@@ -157,7 +157,6 @@ describe("Lấy sản phẩm", () => {
   });
 
   test("Lấy sản phẩm theo mã - mã không hợp lệ (400)", async () => {
-
     //Arrange
     const pro_no = -1;
     const product = undefined;
@@ -192,7 +191,6 @@ describe("Lấy sản phẩm", () => {
   });
 
   test("Lấy sản phẩm theo mã - không tồn tại (404)", async () => {
-
     //Arrange
     const pro_no = 666;
     const product = {};
