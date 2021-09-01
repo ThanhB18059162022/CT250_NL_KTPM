@@ -4,21 +4,23 @@
 
 const isDev = true;
 
-// Dùng để bao các hàm để xử lý lỗi
-// func làm hàm sẽ được bọc trong errorCapture(func)
-const errorCapture = (func) => (req, res, next) => {
-  // Chuyển error sang midleware tiếp theo cũng là mấy cái hanlder
-  return Promise.resolve(func(req, res, next)).catch(next);
-};
+// Dùng để bao các hàm cần xử lý lỗi wapper function
+// func là hàm sẽ được bọc trong errorCapture(func)
+function errorCapture(func) {
+  return function (req, res, next) {
+    // Chuyển error sang middleware tiếp theo cũng là mấy cái handler
+    return Promise.resolve(func(req, res, next)).catch(next);
+  };
+}
 
 // Dùng khi lập trình hiện stacktrace
 function devErrorHandler(err, req, res, next) {
-  return res.status(500).send(err.stack);
+  return res.status(500).json(err.stack);
 }
 
 // Dùng khi triển khai
 function deployErrorHandler(err, req, res, next) {
-  return res.status(500).send("Error occurred please try again");
+  return res.status(500).json("Error occurred please try again");
 }
 
 let errorHandler = deployErrorHandler;
