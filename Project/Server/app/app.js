@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const corsHandler = require("./routers/corsHandler");
 const router = require("./routers/router");
+const { errorHandler } = require("./routers/routerErrorHandler");
 
 const config = require("./config");
 const port = config.port || 8001;
@@ -16,6 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 router(app);
+
+// Nên để cái này cuối
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log("Server is listening on " + port);

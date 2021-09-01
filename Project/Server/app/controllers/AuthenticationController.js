@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const config = require("../config.json");
 
 class AuthenticationController {
   login = async (req, res) => {
@@ -15,8 +16,6 @@ class AuthenticationController {
     if (loginFailed) {
       return res.status(404).json({});
     }
-
-    const config = require("../config.json");
 
     const secretKey = config.secretKey || "SECRET_KEY is not exist";
 

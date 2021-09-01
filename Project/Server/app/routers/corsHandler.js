@@ -15,9 +15,13 @@ const corsOptions = {
 };
 
 //Self tên miền của api - tool các công cụ test api
-const selfOrTool = (origin) => !origin;
+function selfOrTool(origin) {
+  return !origin;
+}
 
-const inAllowdedList = (origin) => allowedOriginDomains.indexOf(origin) !== -1;
+function inAllowdedList(origin) {
+  return allowedOriginDomains.indexOf(origin) !== -1;
+}
 
 module.exports = (app) => {
   app.use(cors(corsOptions));

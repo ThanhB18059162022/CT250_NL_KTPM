@@ -31,7 +31,6 @@ class ProductsDAOMock {
 
     return product;
   });
-  
 
   getProductByName = jest.fn(async (pro_name) => {
     const product = ProductsDAOMock.products.filter(
@@ -59,7 +58,6 @@ class ProductsValidatorMock {
   validName = jest.fn((pro_name) => {
     return pro_name !== undefined;
   });
-
 }
 
 class ResponseMock {
@@ -114,7 +112,6 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProducts(null, resMock);
 
-
     //Assert
     assert(actRes).toBeDefined();
     assert(expRes.length).toEqual(actRes.length);
@@ -145,7 +142,6 @@ describe("Lấy sản phẩm", () => {
     //Act
     const expRes = response;
     const actRes = await controller.getProductByNo(requestMock, resMock);
-
 
     //Assert
     assert(actRes).toBeDefined();
