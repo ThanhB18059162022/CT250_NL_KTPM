@@ -1,0 +1,89 @@
+/**     Button Style    */
+.Button {
+    .button {
+        border: none;
+        border-radius: 500px;
+        background: white;
+        padding: 5px 15px;
+        font-size: 16px;
+        transition: all ease 0.35s;
+        &.shadow {
+            box-shadow: 0 0 5px black;
+        }
+
+        &.default {
+            border: 0.5px solid black;
+        }
+
+        &.noneradius {
+            border-radius: 0;
+        }
+
+        &.hover {
+            &:hover {
+                box-shadow: 0 0 5px black;
+                background-color: red;
+            }
+        }
+    }
+}
+
+/**   Comment Style*/
+
+.Comment {
+    padding: 5px 10px;
+    text-align: left;
+    .comment-wrapper {
+        display: inline-block;
+        border-radius: 10px;
+        padding: 10px;
+        padding-bottom: 0;
+        .comment-title {
+            font-size: 14px;
+            font-weight: 600;
+            .comment-time {
+                color: black;
+                font-size: 12px;
+                font-weight: normal;
+                margin-left: 10px;
+            }
+        }
+        .comment-content {
+            padding-top: 7px;
+            margin-bottom: 10px;
+            max-width: 350px;
+            font-size: 14px;
+        }
+
+        &.right {
+            float: right;
+        }
+
+        &.left {
+            float: left;
+        }
+
+        &.shadow {
+            box-shadow: 0 0 5px black;
+        }
+    }
+}
+
+/**   Input Style   */
+.Input{
+    .input {
+        outline: none;
+        padding: 10px;
+        font-size: 14px;
+        &.radius {
+            border-radius: 500px;
+            border: 0.5px solid black;
+        }
+        &.shadow {
+            box-shadow: 0 0 5px black;
+        }
+        &.noneborder {
+            border: none;
+        }
+    }
+}
