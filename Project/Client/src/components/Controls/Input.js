@@ -32,33 +32,19 @@ export default Input;
  *  */
 //-------------Customizing---------------
 
-export const SearchHeaderInput = ({searchHandle}) => {
+export const SearchHeaderInput = ({ searchHandle }) => {
   const [text, setText] = useState("")
 
-  const searchEvent =()=> searchHandle(text)
+  const searchEvent = () => searchHandle(text)
 
   return (
     <div className="HeaderSearch">
       <div className="header-search">
-        <input value={text} onChange={e=>setText(e.target.value)} type="text" placeholder="Nhập sản phẩm bạn cần tìm..." />
-        <button onClick={searchEvent}> 
-          <SearchIcon/>
+        <input value={text} onChange={e => setText(e.target.value)} type="text" placeholder="Nhập sản phẩm bạn cần tìm..." />
+        <button onClick={searchEvent}>
+          <SearchIcon />
         </button>
       </div>
     </div>
   )
 }
-
-
-export const MyInput= ()=>{
-  return (
-    <div>My Input Testing</div>
-  )
-}
-
-export const SearchProduct = ({searchHandle}) =>{
-  return(
-    <div>Hello</div>
-  )
-}
-

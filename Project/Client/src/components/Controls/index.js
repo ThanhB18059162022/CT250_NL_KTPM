@@ -2,7 +2,7 @@
 import Button,{CartButton, AdminListButton} from "./Button";
 import Comment from "./Comment";
 import Input,{SearchHeaderInput} from "./Input";
-
+import Banner from "./Banner";
 import "./Controls.Style.scss";
 
 const Controls = {
@@ -10,13 +10,15 @@ const Controls = {
   CartButton,
   Comment,
   Input,
-  SearchHeaderInput
+  SearchHeaderInput,
+  Banner
 };
 
 export default Controls;
 export { Button };
 export { Comment };
 export { Input };
+export {Banner}
 
 
 //--------Personal Using-----------

@@ -1,0 +1,19 @@
+.Home{
+    background: url("./background.gif");
+background-size: cover;
+    background-repeat: repeat-y;
+    .home-body-content{
+        width: 80%;
+        margin: 0 auto;
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width:450px) {
+    .Home{
+        .home-body-content{
+            width: 95%;
+            padding: 0;
+        }
+    }
+}
