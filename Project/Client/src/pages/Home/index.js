@@ -1,11 +1,11 @@
 
-import Header,{SearchHeader} from "../../components/Paritals/Header"
+import MainHeader,{SearchHeader,AdminHeader} from "../../components/Paritals/Header"
 
 const Home = (props) => {
     console.log({...props})
     return (
         <div className="Home">
-            <Header/>
+            <SearchHeader/>
         </div>
     )
 }

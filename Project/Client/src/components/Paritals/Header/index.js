@@ -1,4 +1,4 @@
-import Header,{SearchHeader} from "./Header.Customer";
+import {MainHeader,SearchHeader, AdminHeader} from "./Header.Customer";
 
-export default Header
-export {SearchHeader}
+export default MainHeader
+export {SearchHeader,AdminHeader}
