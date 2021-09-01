@@ -57,3 +57,11 @@ export const CartButton = ({handle, amount}) => {
         </div>
     )
 }
+
+
+export const ListButton = (props) =>{
+    const {name} = props
+    return(
+        <button>{name}</button>
+    )
+}

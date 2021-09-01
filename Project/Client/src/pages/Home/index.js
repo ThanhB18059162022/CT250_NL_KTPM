@@ -5,7 +5,7 @@ const Home = (props) => {
     console.log({...props})
     return (
         <div className="Home">
-            <SearchHeader/>
+            <MainHeader/>
         </div>
     )
 }
