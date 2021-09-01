@@ -49,8 +49,16 @@ export const SearchHeaderInput = ({searchHandle}) => {
   )
 }
 
+<<<<<<< Updated upstream
 export const MyInput= ()=>{
   return (
     <div>My Input Testing</div>
   )
 }
+=======
+export const SearchProduct = ({searchHandle}) =>{
+  return(
+    <div>Hello</div>
+  )
+}
+>>>>>>> Stashed changes
