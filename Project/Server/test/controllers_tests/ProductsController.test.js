@@ -80,7 +80,6 @@ class ResponseMock {
 
 //#endregion
 
-
 // Chuyển expect của jest sang assert cho giống junit
 const assert = expect;
 
@@ -158,7 +157,6 @@ describe("Lấy sản phẩm", () => {
   });
 
   test("Lấy sản phẩm theo mã - mã không hợp lệ (400)", async () => {
-
     //Arrange
     const pro_no = -1;
     const product = undefined;
@@ -173,7 +171,6 @@ describe("Lấy sản phẩm", () => {
     const resMock = new ResponseMock();
 
     const controller = getController();
-
 
     //Act
     const expRes = response;
@@ -194,7 +191,6 @@ describe("Lấy sản phẩm", () => {
   });
 
   test("Lấy sản phẩm theo mã - không tồn tại (404)", async () => {
-
     //Arrange
     const pro_no = 666;
     const product = {};
@@ -209,7 +205,6 @@ describe("Lấy sản phẩm", () => {
     const resMock = new ResponseMock();
 
     const controller = getController();
-
 
     //Act
     const expRes = response;
@@ -797,6 +792,5 @@ describe("Xóa sản phẩm", () => {
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledWith();
-
   });
 });

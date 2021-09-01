@@ -1,8 +1,6 @@
-
 const ProductsDAO = require("../../app/daos/products_daos/ProductsDAO");
 
 // Test query cho Mysql
-
 
 const getMockProducts = () => {
   return [
@@ -30,7 +28,6 @@ const getProductsDAO = (sqldao) => {
 };
 
 describe("Kiểm tra các hàm trong Product DAO Mysql có đúng query, param, số lần gọi hay không", () => {
-
   test("Lấy danh sách sản phẩm", async () => {
     //Arrange
     const mockProducts = getMockProducts();
