@@ -1,4 +1,4 @@
-// Kham khảo https://stackoverflow.com/questions/51391080/handling-errors-in-express-async-middleware
+// Tham khảo https://stackoverflow.com/questions/51391080/handling-errors-in-express-async-middleware
 
 // Có 2 hàm hiển thị lỗi - dev sẽ hiện stack trace
 
