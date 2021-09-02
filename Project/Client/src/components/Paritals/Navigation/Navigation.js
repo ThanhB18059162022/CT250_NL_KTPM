@@ -2,7 +2,8 @@ import { AdminListButton } from "../../Controls"
 
 import './Navigation.Style.scss'
 
-const Navigation = ()=>{
+const Navigation = (props)=>{
+    const {handle} = props //rest
     const buttonName = [
         {name: "Tổng quan"},
         {name: "Quản lý sản phẩm"},
@@ -13,7 +14,7 @@ const Navigation = ()=>{
     return(
         <div className="AdminMenu">
             <ul>
-                {buttonName.map((item,index)=><AdminListButton key={index} name={item.name}/>)}
+                {buttonName.map((item,index)=><AdminListButton pos={index} key={index} name={item.name} handle={handle}/>)}
             </ul>
         </div>
     )
