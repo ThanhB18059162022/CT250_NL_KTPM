@@ -1,17 +1,9 @@
 // Tham khảo https://stackoverflow.com/questions/51391080/handling-errors-in-express-async-middleware
 
-// Có 2 hàm hiển thị lỗi - dev sẽ hiện stack trace
+// Middleware này dùng để bắt các lỗi bên phía server, như kết nối không được database, undefine
 
+// Có 2 hàm hiển thị lỗi - dev sẽ hiện thêm stack trace
 const isDev = true;
-
-// Dùng để bao các hàm cần xử lý lỗi wapper function
-// func là hàm sẽ được bọc trong errorCapture(func)
-function errorCapture(func) {
-  return function (req, res, next) {
-    // Chuyển error sang middleware tiếp theo cũng là mấy cái handler
-    return Promise.resolve(func(req, res, next)).catch(next);
-  };
-}
 
 // Dùng khi lập trình hiện stacktrace
 function devErrorHandler(err, req, res, next) {
@@ -30,7 +22,16 @@ if (isDev) {
   errorHandler = devErrorHandler;
 }
 
+// Dùng để bao các hàm cần xử lý lỗi wapper function
+// func là hàm sẽ callback có thể gây lỗi
+function errorCatch(func) {
+  return function (req, res, next) {
+    // Chuyển error sang middleware tiếp theo cũng là mấy cái handler
+    return Promise.resolve(func(req, res, next)).catch(next);
+  };
+}
+
 module.exports = {
-  errorCapture,
+  errorCatch,
   errorHandler, // Cái này nên app.use ở cuối
 };

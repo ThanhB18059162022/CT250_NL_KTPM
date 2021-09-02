@@ -1,25 +1,38 @@
 const express = require("express");
 const router = express.Router();
 
+// Router gán các endpoints vào ProductsController
+
+// Bắt lỗi server
+const { errorCatch } = require("./routerErrorHandler");
+
+// Controller và lớp xác thực dữ liệu
 const {
   ProductsController,
   ProductsValidator,
 } = require("../controllers/controllersContainer");
 
+// Lớp truy cập CSDL
 const { ProductsDAO } = require("../daos/daosContainer");
 
 const dao = new ProductsDAO();
 const validator = new ProductsValidator();
 const controller = new ProductsController(dao, validator);
 
-router.route("/").get(controller.getProducts).post(controller.addProduct);
+// products/
+router
+  .route("/")
+  .get(errorCatch(controller.getProducts))
+  .post(errorCatch(controller.addProduct));
 
+// products/pro_no
 router
   .route("/:pro_no")
-  .get(controller.getProductByNo)
-  .put(controller.updateProduct)
-  .delete(controller.deleteProduct);
+  .get(errorCatch(controller.getProductByNo))
+  .put(errorCatch(controller.updateProduct))
+  .delete(errorCatch(controller.deleteProduct));
 
-router.route("/name/:pro_name").get(controller.getProductByName);
+// products/name/pro_name
+router.route("/name/:pro_name").get(errorCatch(controller.getProductByName));
 
 module.exports = router;
