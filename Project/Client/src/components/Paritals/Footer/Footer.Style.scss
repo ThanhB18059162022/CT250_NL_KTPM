@@ -1,0 +1,64 @@
+.Footer {
+    padding: 30px 10%;
+    display: flex;
+    margin-top: 10px;
+    background: var(--backgroundColor);
+    & > div {
+        flex-grow: 1;
+        flex-basis: 33.33%;
+        padding-left: 10%;
+        p {
+            margin-bottom: 5px;
+        }
+        ul {
+            li {
+                list-style: none;
+                cursor: pointer;
+                &.storename {
+                    p {
+                        font-family: "Blacksword";
+                        font-weight: 600;
+                        letter-spacing: 2px;
+                        font-size: 20px;
+                    }
+                }
+            }
+            li + li {
+             //   margin-top: 5px;
+            }
+        }
+
+        ul.trademade,
+        ul.policy {
+            li {
+                &:hover {
+                    p::before {
+                        width: 100%;
+                    }
+                }
+                p {
+                    display: inline-block;
+                    position: relative;
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        background: black;
+                        width: 0px;
+                        height: 2px;
+                        bottom: 0;
+                        transition: all ease 0.5s;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 766px) {
+    .Footer {
+        flex-direction: column;
+        & > div + &div {
+            margin-top: 10px;
+        }
+    }
+}

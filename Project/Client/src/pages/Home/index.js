@@ -1,15 +1,18 @@
 
+import Footer from "../../components/Paritals/Footer/Footer"
 import MainHeader,{SearchHeader,AdminHeader} from "../../components/Paritals/Header"
 import Landing from "../../components/Paritals/Landing"
+import ProductShower from "../../components/Paritals/ProductShower"
 import './Home.Style.scss'
 const Home = (props) => {
-    console.log({...props})
     return (
         <div className="Home">
             <SearchHeader/>
-            <div style={{height:'500vh'}} className="home-body-content">
-            <Landing/>
+            <div className="home-body-content">
+                <Landing/>
+                <ProductShower/>
             </div>
+            <Footer/>
         </div>
     )
 }

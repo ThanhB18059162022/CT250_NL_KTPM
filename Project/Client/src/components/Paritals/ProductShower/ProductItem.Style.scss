@@ -1,0 +1,103 @@
+.ProductItem {
+    list-style: none;
+    display: inline-block;
+    flex-basis: 23%;
+    margin:10px 1% ;
+    padding: 10px 15px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: white;
+    transition: all ease .5s;
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 5px black;
+    }
+    img {
+        width: 120%;
+        margin-left: -10%;
+        margin-bottom: 20px;
+    }
+    .product-info {
+        padding: 0 5px;
+        &>p {
+            font-size: 18px;
+            font-weight: 600;
+            height: 50px;
+            overflow: hidden;
+            &.price{
+                color:red;
+                height: auto;
+                margin-bottom: 5px;
+            }
+        }
+
+        .product-panel{
+            padding: 10px;
+            background: var(--backgroundBlur);
+            border-radius: 10px;
+            svg{
+                opacity: .7;
+            }
+            p{
+                font-size: 14px;
+                &:last-child{
+                    display: flex;
+                    margin-top: 10px;
+                    span{
+                        flex-grow: 1;
+                    }
+                }
+            }
+        }
+    }
+    .product-behavior{
+        padding: 10px 0;
+        display: flex;
+        button{
+            flex-grow: 1;
+            padding: 10px 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 100px;
+            transition: all ease .35s;
+            background: #efefef;
+            &.add-cart:hover{
+                color: white;
+                background: var(--backgroundColor);
+            }
+        }
+        button + button{
+            margin-left: 10px;
+        }
+    }
+}
+@media screen and (max-width:1020px) {
+    .ProductItem {
+        flex-basis: 31.33%;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .ProductItem {
+        flex-basis: 48%;
+    }
+}
+
+
+@media screen and (max-width:450px) {
+    .ProductItem {
+        .product-info {
+            .product-panel{
+                p{
+                    &:last-child{
+                        flex-direction: column;
+                        span + span{
+                            margin-top: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,8 +1,4 @@
-@import url(//db.onlinewebfonts.com/c/021bc4dec3aa02d937a51bdfdccc0f4d?family=Blacksword);
-:root {
-    --backgroundColor: #69baff;
-    --textColor: #363636;
-}
+
 .Header {
     position: sticky;
     top: 0;
@@ -48,7 +44,7 @@
                 width: 40px;
                 height: 40px;
                 transform: translate(-20%, -13%);
-                background: rgba(0, 0, 0, 0.075);
+                background: var(--fadeBackground);
                 border-radius: 50%;
             }
         }
@@ -179,7 +175,7 @@
             }
         }
     }
-    #search_header_check:checked ~ div {
+    #search_header_check:checked ~ .Header {
         .header-wrapper {
             label {
                 transform: rotate(180deg);
