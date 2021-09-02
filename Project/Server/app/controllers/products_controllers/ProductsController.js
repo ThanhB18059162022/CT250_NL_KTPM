@@ -67,7 +67,10 @@ module.exports = class ProductsController {
       return res.status(400).json();
     }
 
-    return res.status(201).json(newProduct);
+    // Thêm vào CSDL trả về pro_no mới thêm
+    const pro_no = await this.dao.addProduct(newProduct);
+
+    return res.status(201).json({ ...newProduct, pro_no });
   };
 
   //#endregion

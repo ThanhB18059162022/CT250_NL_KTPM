@@ -39,6 +39,13 @@ class ProductsDAOMock {
 
     return product;
   });
+
+  // Trả về pro_no
+  addProduct = jest.fn(async (newProduct) => {
+    ProductsDAOMock.products.push(newProduct);
+
+    return ProductsDAOMock.products.length;
+  });
 }
 
 class ProductsValidatorMock {
@@ -371,9 +378,9 @@ describe("Thêm sản phẩm", () => {
     validatorMock = new ProductsValidatorMock();
   });
 
-  test("Thêm sản phẩm (201) - trả về sản phẩm mới thêm", async () => {
+  test("Thêm sản phẩm (201) - trả về sản phẩm mới thêm cùng pro_no", async () => {
     //Arrange
-    let product = { ...ProductsDAOMock.products[0] };
+    let product = { ...ProductsDAOMock.products[0], pro_no: 0 };
 
     product.pro_name += "aa";
 
@@ -381,7 +388,10 @@ describe("Thêm sản phẩm", () => {
       body: product,
     };
 
-    const response = { statusCode: 201, body: product };
+    const response = {
+      statusCode: 201,
+      body: { ...product, pro_no: 3 },
+    };
     const resMock = new ResponseMock();
 
     const controller = getController();
@@ -400,9 +410,12 @@ describe("Thêm sản phẩm", () => {
     assert(daoMock.getProductByName).toBeCalledTimes(1);
     assert(daoMock.getProductByName).toBeCalledWith(product.pro_name);
 
+    assert(daoMock.addProduct).toBeCalledTimes(1);
+    assert(daoMock.addProduct).toBeCalledWith(product);
+
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);
-    assert(resMock.json).toBeCalledWith(product);
+    assert(resMock.json).toBeCalledWith({ ...product, pro_no: 3 });
   });
 
   test("Thêm sản phẩm - trùng tên (400)", async () => {
@@ -431,6 +444,8 @@ describe("Thêm sản phẩm", () => {
 
     assert(daoMock.getProductByName).toBeCalledTimes(1);
     assert(daoMock.getProductByName).toBeCalledWith(product.pro_name);
+
+    assert(daoMock.addProduct).toBeCalledTimes(0);
 
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);
@@ -462,6 +477,7 @@ describe("Thêm sản phẩm", () => {
     assert(validatorMock.validProduct).toBeCalledWith(product);
 
     assert(daoMock.getProductByName).toBeCalledTimes(0);
+    assert(daoMock.addProduct).toBeCalledTimes(0);
 
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);

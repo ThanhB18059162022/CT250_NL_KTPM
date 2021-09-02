@@ -1,6 +1,7 @@
 describe("Testing đây", () => {
   test("Một cộng một", () => {
     expect(1 + 1).toEqual(2);
+    expect(1 == "01").toBeTruthy();
     expect(undefined).toBe(undefined);
   });
 
