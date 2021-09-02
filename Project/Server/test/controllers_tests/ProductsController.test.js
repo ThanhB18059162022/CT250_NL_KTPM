@@ -156,9 +156,43 @@ describe("Lấy sản phẩm", () => {
     assert(resMock.json).toBeCalledWith(product);
   });
 
-  test("Lấy sản phẩm theo mã - mã không hợp lệ (400)", async () => {
+  test("Lấy sản phẩm theo mã - mã không hợp lệ pro_no âm (400)", async () => {
     //Arrange
     const pro_no = -1;
+    const product = undefined;
+
+    const requestMock = {
+      params: {
+        pro_no,
+      },
+    };
+
+    const response = { statusCode: 400, body: product };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.getProductByNo(requestMock, resMock);
+
+    //Assert
+    assert(actRes).toBeDefined();
+    assert(expRes).toEqual(actRes);
+
+    assert(validatorMock.validNo).toBeCalledTimes(1);
+    assert(validatorMock.validNo).toBeCalledWith(pro_no);
+
+    assert(daoMock.getProductByNo).toBeCalledTimes(0);
+
+    assert(resMock.status).toBeCalledTimes(1);
+    assert(resMock.json).toBeCalledTimes(1);
+    assert(resMock.json).toBeCalledWith();
+  });
+
+  test("Lấy sản phẩm theo mã - mã không hợp lệ pro_no không phải int (400)", async () => {
+    //Arrange
+    const pro_no = "wtf";
     const product = undefined;
 
     const requestMock = {
@@ -337,7 +371,7 @@ describe("Thêm sản phẩm", () => {
     validatorMock = new ProductsValidatorMock();
   });
 
-  test("Thêm sản phẩm (201)", async () => {
+  test("Thêm sản phẩm (201) - trả về sản phẩm mới thêm", async () => {
     //Arrange
     let product = { ...ProductsDAOMock.products[0] };
 

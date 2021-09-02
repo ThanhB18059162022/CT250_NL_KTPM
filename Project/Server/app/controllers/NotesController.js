@@ -12,14 +12,13 @@ module.exports = class NotesController {
   /* #region  Get */
   //Lấy danh sách
   getList = async (req, res) => {
-    throw new Error();
-
     return res.json(arr);
   };
 
   //Lấy theo id
   getById = (req, res) => {
     const id = req.params.id;
+
     const note = arr.find((x) => x.id == id);
 
     if (note) return res.send(note);
