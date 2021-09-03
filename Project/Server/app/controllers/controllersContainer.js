@@ -3,7 +3,7 @@
 
 //Controller
 const AuthenticationController = require("./AuthenticationController");
-const NotesController = require("./NotesController");
+const NotesController = require("./notes_controllers/NotesController");
 const ProductsController = require("./products_controllers/ProductsController");
 const ProductsValidator = require("./products_controllers/ProductsValidator");
 

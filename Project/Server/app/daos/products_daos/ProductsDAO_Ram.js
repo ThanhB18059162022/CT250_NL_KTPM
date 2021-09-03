@@ -1,29 +1,108 @@
-const products = [
+const product1 = [
   {
-    pro_no: 1,
-    pro_name: "Xiaomi mi-10",
-    pro_mfg: "2021",
-    pro_releaseDate: new Date(),
-    pro_screen: "blank",
-    pro_camera: "32mp",
+    prod_no: 1,
+    prod_name: "Galaxy Z Fold3 | Z Flip3 5G",
+    prod_mfg: new Date("2021-8-1"),
+    prod_releaseDate: new Date("2021-8-1"),
+    prod_screen: {
+      size: "6.43'",
+      type: "IPS FHD+",
+      resolution: "1080 x 2400 Pixel",
+      glass: "Gorilla Glass 3",
+    },
+    prod_camera: {
+      back: "48 MP",
+      font: "8 MP",
+    },
+    prod_size: "",
+    prod_battery: "4400 mAh",
+    prod_os: "Android 11",
+    prod_hardware: {
+      cpu: "Snapdragon 888",
+      memory: "8 GB",
+    },
+    prod_status: "",
+    prod_price: 12990000,
   },
   {
-    pro_no: 2,
-    pro_name: "Xiaomi mi-15",
-    pro_mfg: "2021",
-    pro_releaseDate: new Date(),
-    pro_screen: "blank",
-    pro_camera: "64mp",
+    prod_no: 2,
+    prod_name: "iPhone 12 64GB",
+    prod_screen: "6.1'",
+    prod_hardware: {
+      cpu: "A14 Bionic",
+      memory: "4 GB",
+    },
+    prod_battery: "2815 mAh",
+    prod_img: "link",
+    prod_price: 19699000,
+  },
+  {
+    prod_no: 3,
+    prod_name: "Xiaomi Redmi 10 4GB-128GB",
+    prod_screen: "6.5'",
+    prod_hardware: {
+      cpu: "MediaTek Helio G88A14 Bionic",
+      memory: "4 GB",
+    },
+    prod_battery: "5000 mAh",
+    prod_img: "link",
+    prod_price: 4290000,
   },
 ];
 
+const products = [];
+
 module.exports = class ProductsDAO_Ram {
-  getProducts = async () => products;
+  constructor() {
+    for (let i = 1; i <= 1000; i++) {
+      const product = {
+        prod_no: i,
+        prod_name: "Galaxy Z Fold3 | Z Flip3 5G",
+        prod_mfg: new Date("2021-8-1"),
+        prod_releaseDate: new Date("2021-8-1"),
+        prod_screen: {
+          size: "6.43'",
+          type: "IPS FHD+",
+          resolution: "1080 x 2400 Pixel",
+          glass: "Gorilla Glass 3",
+        },
+        prod_camera: {
+          back: "48 MP",
+          font: "8 MP",
+        },
+        prod_size: "",
+        prod_battery: "4400 mAh",
+        prod_os: "Android 11",
+        prod_hardware: {
+          cpu: "Snapdragon 888",
+          ram: "8 GB",
+        },
+        prod_status: "",
+        prod_img: `/img/${1}/prod_img1.png`,
+        prod_price: 12990000,
+      };
 
-  getProductByNo = async (pro_no) => {
-    const product = products.filter((p) => p.pro_no == pro_no);
+      products.push(product);
+    }
+  }
 
-    return product;
+  getProducts = async (startIndex, endIndex) => {
+    let prods = products.slice(startIndex, endIndex).map((p) => ({
+      prod_no: p.prod_no,
+      prod_name: p.prod_name,
+      prod_cpu: p.prod_hardware.cpu,
+      prod_ram: p.prod_hardware.ram,
+      prod_battery: p.prod_battery,
+      prod_img: p.prod_img,
+      prod_price: p.prod_price,
+    }));
+    return prods;
+  };
+
+  getProductByNo = async (prod_no) => {
+    const product = products.filter((p) => p.prod_no === prod_no);
+
+    return product[0];
   };
 
   getProductByName = async (pro_name) => {

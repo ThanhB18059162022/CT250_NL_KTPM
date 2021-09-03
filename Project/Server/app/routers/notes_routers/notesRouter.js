@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const { errorCatch } = require("./routerErrorHandler");
+const { errorCatch } = require("../routerErrorHandler");
 
-const { NotesController } = require("../controllers/controllersContainer");
+const { NotesController } = require("../../controllers/controllersContainer");
+
 let controller = new NotesController();
 
 router.route("/").get(errorCatch(controller.getList)).post(controller.post);

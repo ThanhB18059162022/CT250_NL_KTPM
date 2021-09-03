@@ -1,4 +1,3 @@
-
 import Footer from "../../components/Paritals/Footer/Footer"
 import MainHeader,{SearchHeader,AdminHeader} from "../../components/Paritals/Header"
 import Landing from "../../components/Paritals/Landing"
@@ -17,4 +16,5 @@ const Home = (props) => {
     )
 }
 
-export default Home
+
+export default Home;
