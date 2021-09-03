@@ -48,3 +48,11 @@ export const SearchHeaderInput = ({ searchHandle }) => {
     </div>
   )
 }
+
+export const AdminSearchInput = () => {
+  return(
+    <div className="AdminSearchInput">
+      <input placeholder="Tìm kiếm"></input>
+    </div>
+  )
+}
