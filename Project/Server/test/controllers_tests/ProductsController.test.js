@@ -5,7 +5,7 @@ const ProductsController = require("../../app/controllers/products_controllers/P
 class ProductsDAOMock {
   static products = [
     {
-      pro_no: 1,
+      prod_no: 1,
       pro_name: "Xiaomi mi-10",
       pro_mfg: "2021",
       pro_releaseDate: new Date(),
@@ -13,8 +13,32 @@ class ProductsDAOMock {
       pro_camera: "32mp",
     },
     {
-      pro_no: 2,
+      prod_no: 2,
       pro_name: "Xiaomi mi-15",
+      pro_mfg: "2021",
+      pro_releaseDate: "2021",
+      pro_screen: "blank",
+      pro_camera: "64mp",
+    },
+    {
+      prod_no: 3,
+      pro_name: "Xiaomi",
+      pro_mfg: "2021",
+      pro_releaseDate: "2021",
+      pro_screen: "blank",
+      pro_camera: "64mp",
+    },
+    {
+      prod_no: 4,
+      pro_name: "Xiaomi mi-11",
+      pro_mfg: "2021",
+      pro_releaseDate: "2021",
+      pro_screen: "blank",
+      pro_camera: "64mp",
+    },
+    {
+      prod_no: 5,
+      pro_name: "Xiaomi mi-12",
       pro_mfg: "2021",
       pro_releaseDate: "2021",
       pro_screen: "blank",
@@ -22,11 +46,13 @@ class ProductsDAOMock {
     },
   ];
 
-  getProducts = jest.fn(async () => ProductsDAOMock.products);
+  getProducts = jest.fn(async (startIndex, endIndex) =>
+    ProductsDAOMock.products.slice(startIndex, endIndex)
+  );
 
-  getProductByNo = jest.fn(async (pro_no) => {
+  getProductByNo = jest.fn(async (prod_no) => {
     const product = ProductsDAOMock.products.filter(
-      (p) => p.pro_no === pro_no
+      (p) => p.prod_no === prod_no
     )[0];
 
     return product;
@@ -40,7 +66,7 @@ class ProductsDAOMock {
     return product;
   });
 
-  // Trả về pro_no
+  // Trả về prod_no
   addProduct = jest.fn(async (newProduct) => {
     ProductsDAOMock.products.push(newProduct);
 
@@ -57,8 +83,8 @@ class ProductsValidatorMock {
     return product !== undefined;
   });
 
-  validNo = jest.fn((pro_no) => {
-    return pro_no > 0;
+  validNo = jest.fn((prod_no) => {
+    return prod_no > 0;
   });
 
   // Kiểm tra tên hợp lệ
@@ -105,18 +131,33 @@ describe("Lấy sản phẩm", () => {
     validatorMock = new ProductsValidatorMock();
   });
 
-  test("Lấy danh sách sản phẩm (200)", async () => {
+  // next và previous là 2 biến chỉ số trang trước và sau trang hiện tại
+  // có tối đa 5 phần tử
+
+  test("Lấy danh sách sản phẩm (200) chỉ có next - không query params", async () => {
     //Arrange
     const products = ProductsDAOMock.products;
+    const page = 1;
+    const limit = 5;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
-    const response = { statusCode: 200, body: products };
+    const reqMock = {
+      query: { page, limit },
+    };
+
+    const next = { page: page + 1, limit };
+    const response = {
+      statusCode: 200,
+      body: { items: products, next },
+    };
     const resMock = new ResponseMock();
 
     const controller = getController();
 
     //Act
     const expRes = response;
-    const actRes = await controller.getProducts(null, resMock);
+    const actRes = await controller.getProducts(reqMock, resMock);
 
     //Assert
     assert(actRes).toBeDefined();
@@ -124,10 +165,87 @@ describe("Lấy sản phẩm", () => {
     assert(expRes).toEqual(actRes);
 
     assert(daoMock.getProducts).toBeCalledTimes(1);
-    assert(daoMock.getProducts).toBeCalledWith();
+    assert(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
 
     assert(resMock.json).toBeCalledTimes(1);
-    assert(resMock.json).toBeCalledWith(products);
+    assert(resMock.json).toBeCalledWith({ items: products, next });
+  });
+
+  test("Lấy danh sách sản phẩm (200) có thêm previous - trang 2 lấy 2", async () => {
+    //Arrange
+    const page = 2;
+    const limit = 2;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const products = ProductsDAOMock.products.slice(startIndex, endIndex);
+
+    const reqMock = {
+      query: { page, limit, startIndex, endIndex },
+    };
+
+    const next = { page: page + 1, limit };
+    const previous = { page: page - 1, limit };
+    const response = {
+      statusCode: 200,
+      body: { items: products, next, previous },
+    };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.getProducts(reqMock, resMock);
+
+    //Assert
+    assert(actRes).toBeDefined();
+    assert(expRes.length).toEqual(actRes.length);
+    assert(expRes).toEqual(actRes);
+
+    assert(daoMock.getProducts).toBeCalledTimes(1);
+    assert(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
+
+    assert(resMock.json).toBeCalledTimes(1);
+    assert(resMock.json).toBeCalledWith({ items: products, next, previous });
+  });
+
+  test("Lấy danh sách sản phẩm (200) không có next - lấy các phần tử cuối", async () => {
+    //Arrange
+    const page = 2;
+    const limit = 3;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const products = ProductsDAOMock.products.slice(startIndex, endIndex);
+
+    const reqMock = {
+      query: { page, limit, startIndex, endIndex },
+    };
+
+    const previous = { page: page - 1, limit };
+    const response = {
+      statusCode: 200,
+      body: { items: products, previous },
+    };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.getProducts(reqMock, resMock);
+
+    //Assert
+    assert(actRes).toBeDefined();
+    assert(expRes.length).toEqual(actRes.length);
+    assert(expRes).toEqual(actRes);
+
+    assert(daoMock.getProducts).toBeCalledTimes(1);
+    assert(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
+
+    assert(resMock.json).toBeCalledTimes(1);
+    assert(resMock.json).toBeCalledWith({ items: products, previous });
   });
 
   test("Lấy sản phẩm theo mã (200)", async () => {
@@ -136,7 +254,7 @@ describe("Lấy sản phẩm", () => {
 
     const requestMock = {
       params: {
-        pro_no: product.pro_no,
+        prod_no: product.prod_no,
       },
     };
 
@@ -154,23 +272,23 @@ describe("Lấy sản phẩm", () => {
     assert(expRes).toEqual(actRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(product.pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(product.prod_no);
 
     assert(daoMock.getProductByNo).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(product.pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(product.prod_no);
 
     assert(resMock.json).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledWith(product);
   });
 
-  test("Lấy sản phẩm theo mã - mã không hợp lệ pro_no âm (400)", async () => {
+  test("Lấy sản phẩm theo mã - mã không hợp lệ prod_no âm (400)", async () => {
     //Arrange
-    const pro_no = -1;
+    const prod_no = -1;
     const product = undefined;
 
     const requestMock = {
       params: {
-        pro_no,
+        prod_no,
       },
     };
 
@@ -188,7 +306,7 @@ describe("Lấy sản phẩm", () => {
     assert(expRes).toEqual(actRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(prod_no);
 
     assert(daoMock.getProductByNo).toBeCalledTimes(0);
 
@@ -197,14 +315,14 @@ describe("Lấy sản phẩm", () => {
     assert(resMock.json).toBeCalledWith();
   });
 
-  test("Lấy sản phẩm theo mã - mã không hợp lệ pro_no không phải int (400)", async () => {
+  test("Lấy sản phẩm theo mã - mã không hợp lệ prod_no không phải int (400)", async () => {
     //Arrange
-    const pro_no = "wtf";
+    const prod_no = "wtf";
     const product = undefined;
 
     const requestMock = {
       params: {
-        pro_no,
+        prod_no,
       },
     };
 
@@ -222,7 +340,7 @@ describe("Lấy sản phẩm", () => {
     assert(expRes).toEqual(actRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(prod_no);
 
     assert(daoMock.getProductByNo).toBeCalledTimes(0);
 
@@ -233,12 +351,12 @@ describe("Lấy sản phẩm", () => {
 
   test("Lấy sản phẩm theo mã - không tồn tại (404)", async () => {
     //Arrange
-    const pro_no = 666;
+    const prod_no = 666;
     const product = {};
 
     const requestMock = {
       params: {
-        pro_no,
+        prod_no,
       },
     };
 
@@ -256,10 +374,10 @@ describe("Lấy sản phẩm", () => {
     assert(expRes).toEqual(actRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(prod_no);
 
     assert(daoMock.getProductByNo).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(prod_no);
 
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);
@@ -378,10 +496,10 @@ describe("Thêm sản phẩm", () => {
     validatorMock = new ProductsValidatorMock();
   });
 
-  test("Thêm sản phẩm (201) - trả về sản phẩm mới thêm cùng pro_no", async () => {
+  test("Thêm sản phẩm (201) - trả về sản phẩm mới thêm cùng prod_no", async () => {
     //Arrange
-    let product = { ...ProductsDAOMock.products[0], pro_no: 0 };
-
+    let product = { ...ProductsDAOMock.products[0], prod_no: 0 };
+    let newProd_no = ProductsDAOMock.products.length + 1;
     product.pro_name += "aa";
 
     const requestMock = {
@@ -390,7 +508,7 @@ describe("Thêm sản phẩm", () => {
 
     const response = {
       statusCode: 201,
-      body: { ...product, pro_no: 3 },
+      body: { ...product, prod_no: newProd_no },
     };
     const resMock = new ResponseMock();
 
@@ -415,7 +533,7 @@ describe("Thêm sản phẩm", () => {
 
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);
-    assert(resMock.json).toBeCalledWith({ ...product, pro_no: 3 });
+    assert(resMock.json).toBeCalledWith({ ...product, prod_no: newProd_no });
   });
 
   test("Thêm sản phẩm - trùng tên (400)", async () => {
@@ -499,7 +617,7 @@ describe("Sửa sản phẩm", () => {
     product.pro_name += "new";
 
     const requestMock = {
-      params: { pro_no: product.pro_no },
+      params: { prod_no: product.prod_no },
       body: product,
     };
 
@@ -517,14 +635,14 @@ describe("Sửa sản phẩm", () => {
     assert(actRes).toEqual(expRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(product.pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(product.prod_no);
 
     assert(validatorMock.validProduct).toBeCalledTimes(1);
     assert(validatorMock.validProduct).toBeCalledWith(product);
 
     // Kiểm tra tồn tại
     assert(daoMock.getProductByNo).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(product.pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(product.prod_no);
 
     // Kiểm tra trùng tên
     assert(daoMock.getProductByName).toBeCalledTimes(1);
@@ -540,7 +658,7 @@ describe("Sửa sản phẩm", () => {
     let product = { ...ProductsDAOMock.products[0] };
 
     const requestMock = {
-      params: { pro_no: product.pro_no },
+      params: { prod_no: product.prod_no },
       body: product,
     };
 
@@ -558,18 +676,18 @@ describe("Sửa sản phẩm", () => {
     assert(actRes).toEqual(expRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(product.pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(product.prod_no);
 
     assert(validatorMock.validProduct).toBeCalledTimes(1);
     assert(validatorMock.validProduct).toBeCalledWith(product);
 
     // Kiểm tra tồn tại
     assert(daoMock.getProductByNo).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(product.pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(product.prod_no);
 
     // Kiểm tra trùng tên
     assert(daoMock.getProductByName).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(product.pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(product.prod_no);
 
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);
@@ -584,7 +702,7 @@ describe("Sửa sản phẩm", () => {
     product.pro_name = productDup.pro_name;
 
     const requestMock = {
-      params: { pro_no: product.pro_no },
+      params: { prod_no: product.prod_no },
       body: product,
     };
 
@@ -602,18 +720,18 @@ describe("Sửa sản phẩm", () => {
     assert(actRes).toEqual(expRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(product.pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(product.prod_no);
 
     assert(validatorMock.validProduct).toBeCalledTimes(1);
     assert(validatorMock.validProduct).toBeCalledWith(product);
 
     // Kiểm tra tồn tại
     assert(daoMock.getProductByNo).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(product.pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(product.prod_no);
 
     // Kiểm tra trùng tên
     assert(daoMock.getProductByName).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(product.pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(product.prod_no);
 
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);
@@ -624,10 +742,10 @@ describe("Sửa sản phẩm", () => {
     //Arrange
     let product = { ...ProductsDAOMock.products[0] };
 
-    product.pro_no = 666;
+    product.prod_no = 666;
 
     const requestMock = {
-      params: { pro_no: product.pro_no },
+      params: { prod_no: product.prod_no },
       body: product,
     };
 
@@ -645,14 +763,14 @@ describe("Sửa sản phẩm", () => {
     assert(actRes).toEqual(expRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(product.pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(product.prod_no);
 
     assert(validatorMock.validProduct).toBeCalledTimes(1);
     assert(validatorMock.validProduct).toBeCalledWith(product);
 
     // Kiểm tra tồn tại
     assert(daoMock.getProductByNo).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(product.pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(product.prod_no);
 
     // Kiểm tra trùng tên
     assert(daoMock.getProductByName).toBeCalledTimes(0);
@@ -665,10 +783,10 @@ describe("Sửa sản phẩm", () => {
   test("Sửa sản phẩm - model không hợp lệ (400)", async () => {
     //Arrange
     const product = undefined;
-    const pro_no = 1;
+    const prod_no = 1;
 
     const requestMock = {
-      params: { pro_no },
+      params: { prod_no },
       body: product,
     };
 
@@ -686,7 +804,7 @@ describe("Sửa sản phẩm", () => {
     assert(actRes).toEqual(expRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(prod_no);
 
     assert(validatorMock.validProduct).toBeCalledTimes(1);
     assert(validatorMock.validProduct).toBeCalledWith(product);
@@ -702,13 +820,13 @@ describe("Sửa sản phẩm", () => {
     assert(resMock.json).toBeCalledWith();
   });
 
-  test("Sửa sản phẩm - pro_no không hợp lệ (400)", async () => {
+  test("Sửa sản phẩm - prod_no không hợp lệ (400)", async () => {
     //Arrange
     const product = undefined;
-    const pro_no = -1;
+    const prod_no = -1;
 
     const requestMock = {
-      params: { pro_no },
+      params: { prod_no },
       body: product,
     };
 
@@ -726,7 +844,7 @@ describe("Sửa sản phẩm", () => {
     assert(actRes).toEqual(expRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(prod_no);
 
     assert(validatorMock.validProduct).toBeCalledTimes(0);
 
@@ -771,10 +889,10 @@ describe("Xóa sản phẩm", () => {
     assert(actRes).toEqual(expRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(product.pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(product.prod_no);
 
     assert(daoMock.getProductByNo).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(product.pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(product.prod_no);
 
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);
@@ -783,10 +901,10 @@ describe("Xóa sản phẩm", () => {
 
   test("Xóa sản phẩm - không tồn tại", async () => {
     //Arrange
-    const pro_no = 666;
+    const prod_no = 666;
 
     const requestMock = {
-      params: { pro_no },
+      params: { prod_no },
     };
 
     const response = { statusCode: 404, body: {} };
@@ -803,10 +921,10 @@ describe("Xóa sản phẩm", () => {
     assert(actRes).toEqual(expRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(prod_no);
 
     assert(daoMock.getProductByNo).toBeCalledTimes(1);
-    assert(daoMock.getProductByNo).toBeCalledWith(pro_no);
+    assert(daoMock.getProductByNo).toBeCalledWith(prod_no);
 
     assert(resMock.status).toBeCalledTimes(1);
     assert(resMock.json).toBeCalledTimes(1);
@@ -815,10 +933,10 @@ describe("Xóa sản phẩm", () => {
 
   test("Xóa sản phẩm - không hợp lệ", async () => {
     //Arrange
-    const pro_no = -1;
+    const prod_no = -1;
 
     const requestMock = {
-      params: { pro_no },
+      params: { prod_no },
     };
 
     const response = { statusCode: 400, body: undefined };
@@ -835,7 +953,7 @@ describe("Xóa sản phẩm", () => {
     assert(actRes).toEqual(expRes);
 
     assert(validatorMock.validNo).toBeCalledTimes(1);
-    assert(validatorMock.validNo).toBeCalledWith(pro_no);
+    assert(validatorMock.validNo).toBeCalledWith(prod_no);
 
     assert(daoMock.getProductByNo).toBeCalledTimes(0);
 

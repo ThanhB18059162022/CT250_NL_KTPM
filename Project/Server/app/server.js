@@ -10,6 +10,9 @@ const port = config.port || 8001;
 // Lọc các tên miền có quyền truy cập
 corsHandler(app);
 
+// Static file chứa hình
+app.use(express.static("public"));
+
 //Thêm middleware cho Post với Put cái này dùng xử lý body(JSON) của request
 // Request Object as a JSON Object
 app.use(express.json());

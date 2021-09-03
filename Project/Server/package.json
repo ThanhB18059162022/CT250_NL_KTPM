@@ -4,7 +4,7 @@
   "description": "e-commerece server provide api for font end selling phone project of ct250 ",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app/app.js",
+    "start": "nodemon app/server.js",
     "test": "jest --verbose --coverage --watchAll"
   },
   "author": "Group5: Vuong Cam Thanh, Thach Chi Tam, Phan Phu Cuong",

@@ -1,18 +1,35 @@
 const joi = require("joi");
+const { getPaginatedResults } = require("../controllerHelper");
 
-const { DAO } = require("../daos/daosContainer");
-
-arr = [
-  { id: 1, title: "Ghi chú 1", content: "Nội dung của ghi chú số 1" },
-
-  { id: 2, title: "Ghi chú 2", content: "Nội dung của ghi chú số 2" },
-];
+const arr = [];
 
 module.exports = class NotesController {
+  constructor() {
+    for (let i = 1; i <= 100; i++) {
+      const memo = {
+        id: i,
+        title: `Ghi chú ${i}`,
+        content: `Nội dung của ghi chú số ${i}`,
+      };
+
+      arr.push(memo);
+    }
+  }
+
   /* #region  Get */
   //Lấy danh sách
+
+  // Tham khảo https://www.youtube.com/watch?v=ZX3qt0UWifc
   getList = async (req, res) => {
-    return res.json(arr);
+    const { page, limit } = req.query;
+
+    const rs = await getPaginatedResults(
+      async (s, e) => arr.slice(s, e),
+      page,
+      limit
+    );
+
+    return res.json(rs);
   };
 
   //Lấy theo id

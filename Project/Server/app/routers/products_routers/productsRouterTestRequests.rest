@@ -1,0 +1,36 @@
+# Extension REST Client
+
+# Mỗi Request cách nhau 3 dấu '#'
+
+# Mặc định page=1, limit=24
+# Trang đầu không có previous, trang cuối không có next
+GET http://localhost:8000/api/products
+
+
+# Truyền không hợp lệ trả về mặc định của số không hợp lệ
+### 1
+GET http://localhost:8000/api/products?page=wtf&limit=1
+
+### 2
+GET http://localhost:8000/api/products?page=1&limit=wtf
+
+
+# Lấy theo mã 200
+
+### 
+GET http://localhost:8000/api/products/1
+
+# Không hợp lệ 400
+### 1 
+
+GET http://localhost:8000/api/products/wtf
+
+### 2
+
+GET http://localhost:8000/api/products/-1
+
+### Không tồn tại 404
+
+GET http://localhost:8000/api/products/9999
+
+
