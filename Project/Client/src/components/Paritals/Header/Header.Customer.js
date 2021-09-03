@@ -2,13 +2,15 @@ import { CartButton } from "../../Controls"
 import { SearchHeaderInput } from "../../Controls"
 import {SearchIcon, TimesIcon } from "../../Controls/FlatIcon"
 import { useState } from "react"
+import { useHistory } from 'react-router'
 import "./Header.Style.scss"
 const Header = ({children,...rest}) => {
+    const history  = useHistory()
     return (
         <div className="Header">
             <div className="header-wrapper">
                 <div className="header-logo">
-                    <p>Octopus.com</p>
+                    <p onClick={()=>history.push('/')}>Octopus.com</p>
                 </div>
                 {children}
                 
@@ -28,11 +30,16 @@ export const MainHeader =({...rest})=>{
 }
 export const SearchHeader =({...rest})=>{
     const [state, setstate] = useState(false)
+    const history  = useHistory()
+    const searchHandle = (entry) =>{
+        if(entry.trim().length==0) return;
+        history.push(`/search/${entry}`)
+    }
     return (
         <>
         <input onClick={()=>setstate(!state)} type="checkbox" id="search_header_check"/>
         <Header {...rest}>
-            <SearchHeaderInput/>
+            <SearchHeaderInput searchHandle={searchHandle}/>
             <label className="searchsortcut" htmlFor="search_header_check">{state?<TimesIcon/>:<SearchIcon/>} </label>
             <div className="header-cart">
                     <CartButton amount ="10" handle={()=>console.log("hello")}/>

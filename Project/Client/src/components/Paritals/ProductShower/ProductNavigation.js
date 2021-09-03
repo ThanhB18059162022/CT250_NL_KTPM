@@ -19,7 +19,15 @@ const Filter = () => {
             <input type="checkbox" id="check_shortlist" />
             <div className="sortlist">
                 <span>Tất cả</span>
-                <span>Nhãn hiệu <FontAwesomeIcon icon={faSortDown} /></span>
+                <label htmlFor="check-list-trademade">Nhãn hiệu <FontAwesomeIcon icon={faSortDown} />
+                    <input type="checkbox" id="check-list-trademade"/>
+                    <div className="trademade-list">
+                        
+                            <p>iPhone</p>
+                            <p>Nokia</p>
+                            <p>Oppo</p>
+                        </div>
+                </label>
                 <span>Bán chạy</span>
             </div>
         </div>

@@ -10,24 +10,60 @@
         justify-content: space-between;
         .Filter {
             position: relative;
-            .sortlist{
-                transition: all ease .3s;
+            .sortlist {
+                transition: all ease 0.3s;
+                z-index: 111;
+                label {
+                    position: relative;
+                    input{
+                        display: none;
+                        z-index: -111;
+                        &:checked ~ .trademade-list{
+                            padding-top: 20px;
+                            padding-bottom: 10px;
+                            border-radius: 0 0 10px 10px;
+                           
+                            height: fit-content;
+                        }
+                    }
+                    .trademade-list {
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        background: var(--backgroundBlur);
+                        padding: 0 10px;
+                        height: 0;
+                        width: 100%;
+                        overflow: hidden;
+                        p {
+                            padding: 5px;
+                            border-radius: 100px;
+                            text-align: center;
+                            background: var(--backgroundColor);
+                        }
+                        p+p{
+                            margin-top: 10px;
+                        }
+                        
+                    }
+                }
             }
-            label,span {
+            label,
+            span {
                 padding: 5px 10px;
                 background: var(--fadeBackground);
                 border-radius: 15px;
                 cursor: pointer;
                 display: inline-block;
                 font-size: 14px;
-                svg{
-                    transform:translateY(-3px);
+                svg {
+                    transform: translateY(-3px);
                 }
-                &:hover{
-                    animation: beat .3s 0s 1 ease backwards;
+                &:hover {
+                    animation: beat 0.3s 0s 1 ease backwards;
                 }
             }
-            label.bars{
+            label.bars {
                 border-radius: 0;
                 font-size: 18px;
                 border-radius: 5px;
@@ -36,16 +72,16 @@
                 align-items: center;
                 display: inline-block;
                 display: none;
-                svg{
+                svg {
                     transform: translate(0);
                 }
             }
-            span + span {
-                margin-left: 10px;
+            label {
+                margin: 0 10px;
             }
         }
 
-        .Sort{
+        .Sort {
             background: var(--fadeBackground);
             padding: 5px;
             border: none;
@@ -53,14 +89,13 @@
             outline: none;
         }
     }
-    .ProductList{
+    .ProductList {
         padding: 10px 0;
-        ul{
+        ul {
             display: flex;
             flex-wrap: wrap;
-          
         }
-        .product-more{
+        .product-more {
             display: block;
             margin: 10px auto;
             padding: 5px 20px;
@@ -68,15 +103,25 @@
             outline: none;
             border-radius: 100px;
             cursor: pointer;
-            transition: all ease .3s;
-            &:active{
+            transition: all ease 0.3s;
+            &:active {
                 background: var(--backgroundColor);
             }
         }
     }
+    .list-is-empty {
+        min-height: 50vh;
+        position: relative;
+        p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
 }
 
-#check_shortlist{
+#check_shortlist {
     display: none;
     z-index: -1111;
 }
@@ -90,37 +135,51 @@
     }
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
     .ProductShower {
         .ProductNavigation {
             .Filter {
-                label.bars{
+                label.bars {
                     display: inline-block;
                 }
-                .sortlist{
+                .sortlist {
                     display: flex;
                     flex-direction: column;
                     position: absolute;
-                    top:calc(100%  + 10px);
+                    top: calc(100% + 10px);
                     width: 0;
                     background: var(--backgroundColor);
                     padding: 0 10px;
                     height: 0;
                     overflow: hidden;
+                   // overflow-x: hidden;
                     border-radius: 0 0 10px 10px;
-                    span{
+                    span,
+                    label {
                         margin: 10px 0;
                         text-align: center;
-                     }
+                        .trademade-list {
+                            left: 110%;
+                            border-radius: 10px;
+                            top:0;
+                        }
+                    }
                 }
-                #check_shortlist:checked ~ div{
-                   height: 145px;
-                   width: 140px;
+                #check_shortlist:checked ~ div {
+                    height: 145px;
+                    width: 140px;
+                    animation: noneOverflow 0.3s 1s 1 forwards;
                 }
             }
         }
-        .ProductList{
+        .ProductList {
             background: var(--backgroundBlur);
         }
+    }
+}
+
+@keyframes noneOverflow {
+    to{
+        overflow: inherit;
     }
 }
