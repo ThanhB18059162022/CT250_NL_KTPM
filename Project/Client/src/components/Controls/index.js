@@ -1,7 +1,7 @@
 
-import Button,{CartButton, AdminListButton} from "./Button";
+import Button,{CartButton, AdminListButton, AdminButton} from "./Button";
 import Comment from "./Comment";
-import Input,{SearchHeaderInput} from "./Input";
+import Input,{SearchHeaderInput, AdminSearchInput} from "./Input";
 import Banner from "./Banner";
 import "./Controls.Style.scss";
 
@@ -26,6 +26,8 @@ export {CartButton}
 export {SearchHeaderInput}
 //-------Admin------------------
 export {AdminListButton}
+export {AdminButton}
+export {AdminSearchInput}
 
 /** You should import default component
  *  or component you need

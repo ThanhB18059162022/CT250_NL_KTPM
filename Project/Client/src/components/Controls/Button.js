@@ -1,4 +1,7 @@
 import { CartIcon } from "./FlatIcon";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faEdit, faTrashAlt, faKey } from "@fortawesome/free-solid-svg-icons";
+import { icon } from "@fortawesome/fontawesome-svg-core";
 
 const Button = ({
     content,
@@ -60,8 +63,21 @@ export const CartButton = ({handle, amount}) => {
 
 
 export const AdminListButton = (props) =>{
-    const {name} = props
+    const {name,handle,pos} = props
     return(
-        <button className="AdminListButton">{name}</button>
+        <button className="AdminListButton" onClick={()=>handle(pos)}>{name}</button>
+    )
+}
+
+export const AdminButton = (props) =>{
+    const {IconName} = props 
+    const getIcon = (IconName) => {
+        if (IconName === "Add") return faPlus
+        else if (IconName === "Edit") return faEdit
+        else if (IconName === "Delete") return faTrashAlt
+        else return faKey 
+    }
+    return(
+        <button className="AdminButton"><FontAwesomeIcon icon={getIcon(IconName)}/></button>
     )
 }

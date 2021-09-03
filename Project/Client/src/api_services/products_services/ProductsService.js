@@ -6,8 +6,10 @@ export default class ProductsService {
   }
 
   getProducts = async () => {
+    
     const products = await this.apiCaller.get("/products");
 
     return products;
+
   };
 }

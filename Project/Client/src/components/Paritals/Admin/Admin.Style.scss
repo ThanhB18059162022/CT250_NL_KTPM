@@ -1,8 +1,19 @@
+*{
+    .Title{
+        text-align: center;
+        font-size: 30px;
+        margin: 10px;
+    }
+    .BorderFormat{
+        border: 2px solid black;
+        width: 80%;
+        margin: auto;
+        border-radius: 55px;
+    }
+}
+
 .OverView{
-    width: 90%;
     margin: 1% auto;
-    border: 2px solid black;
-    border-radius: 45px;
     height: 300px;
     p{
         margin: 8px;
@@ -26,18 +37,18 @@
 
 .ProductTrend_Rating{
     display: flex;
-    width: 90%;
+    width: 80%;
     margin: 1% auto;
     height: 500px;
     .ProductTrend{
         width: 49%;
-        margin: 0 auto;
+        margin: 0 1% 0 0;
         border: 2px solid black;
         border-radius: 45px;
     }
     .Rating{
         width: 49%;
-        margin: 0 auto;
+        margin: 0 0 0 1%;
         border: 2px solid black;
         border-radius: 45px;
     }
@@ -80,4 +91,59 @@
             font-size: 8px;
         }
     }
+}
+
+.ListUI{
+    margin-top: 3%;
+    .AdminListClass{
+        height: 700px;
+    }
+}
+
+.ProductInfo{
+    padding: 0 0 20px 0;
+    .Info{
+        margin: 15px 0 15px 30px;
+    }
+}
+
+.ProductDetail{
+    padding: 0 0 20px 0;
+    .Detail{
+        margin: 15px 0 15px 30px;
+    }
+}
+
+.DetailSplit{
+    width: 60%;
+    margin: 20px auto 0;
+    border: 1px dashed black;
+    &:last-child{
+        display: none;
+    }
+}
+
+.ProductFullInfoSplit{
+    position: relative;
+    .Line{
+        margin: 30px auto;
+        width: 70%; 
+        border-bottom: 1px solid #000; 
+        line-height: 0.1em;
+        span{
+            background:#fff; 
+            padding:0 10px;
+        }
+    }
+    .Button{
+        position: absolute;
+        top: -15px;
+        left: 10%;
+    }
+}
+
+.ProductManagementButton{
+    position: absolute;
+    left: 12%;
+    top: 15.3%;
 }

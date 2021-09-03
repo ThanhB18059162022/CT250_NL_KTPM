@@ -1,5 +1,6 @@
 const Joi = require("joi");
 // Tham khảo https://joi.dev/api/?v=17.4.2
+
 const { getPaginatedResults } = require("../controllerHelper");
 
 const arr = [];
@@ -49,7 +50,7 @@ module.exports = class NotesController {
   //Thêm
   post = (req, res) => {
     const body = req.body;
-
+    
     const rs = this.getValidateResult(body);
 
     if (rs.error) {
@@ -73,6 +74,7 @@ module.exports = class NotesController {
   put = (req, res) => {
     const body = req.body;
     const rs = this.getValidateResult(body);
+
     if (rs.error) {
       return res.status(400).send(rs.error);
     }
