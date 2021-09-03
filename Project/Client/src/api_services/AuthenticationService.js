@@ -1,8 +1,6 @@
-import { Injectable } from "@angular/core";
 import ApiHelper from "./api-helper";
-import ApiCallerService from "../api_caller/api-caller.service";
 
-class AuthenticationService {
+export class AuthenticationService {
   JwtKey = ApiHelper.JwkToken;
 
   constructor(apiCaller) {}
@@ -24,7 +22,7 @@ class AuthenticationService {
 
   getUser = async () => {
     try {
-      return (await this.apiCaller.get) < User > "jwtauthentication/getuser";
+      return await this.apiCaller.get("jwtauthentication/getuser");
     } catch {
       return null;
     }
