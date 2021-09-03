@@ -1,7 +1,8 @@
 import axios from "axios";
 import ApiHelper from "./ApiHelper";
 
-//Lớp adapter dành cho
+//Lớp adapter dành cho axios
+// Bổ sung thêm header cho jwt
 class ApiCaller {
   constructor() {
     const baseUri = "http://localhost:8000/api";
@@ -18,13 +19,29 @@ class ApiCaller {
   // Có khoảng trắng giữa bearer với token
   getToken = (jwkToken) => `Bearer ${localStorage.getItem(jwkToken) ?? ""}`;
 
-  get = async (uri) => await this.axiosApi.get(uri);
+  get = async (uri) => {
+    const res = await this.axiosApi.get(uri);
 
-  post = async (uri, params) => await this.axiosApi.post(uri, params);
+    return res.data;
+  };
 
-  put = async (uri, params) => await this.axiosApi.put(uri, params);
+  post = async (uri, params) => {
+    const res = await this.axiosApi.post(uri, params);
 
-  delete = async (uri) => await this.axiosApi.delete(uri);
+    return res.data;
+  };
+
+  put = async (uri, params) => {
+    const res = await this.axiosApi.put(uri, params);
+
+    return res.data;
+  };
+
+  delete = async (uri) => {
+    const res = await this.axiosApi.delete(uri);
+
+    return res.data;
+  };
 }
 
 export default ApiCaller;

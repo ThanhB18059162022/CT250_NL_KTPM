@@ -1,3 +1,7 @@
+// Tham khảo https://joi.dev/api/?v=17.4.2
+const Joi = require("joi");
+
+// Xài Joi validate dữ liệu
 module.exports = class ProductsValidator {
   existProduct = (product) => {
     return product !== undefined;
@@ -8,11 +12,14 @@ module.exports = class ProductsValidator {
   };
 
   validNo = (pro_no) => {
-    return pro_no > 0;
+    const schema = Joi.object({
+      pro_no: Joi.number().min(0).max(number.max).required(),
+    });
+    return schema.validate({ pro_no });
   };
 
   // Kiểm tra tên hợp lệ
   validName = (pro_name) => {
-    return pro_name !== undefined;
+    return pro_name;
   };
 };

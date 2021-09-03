@@ -6,8 +6,8 @@ export default class ProductsService {
   }
 
   getProducts = async () => {
-    const response = await this.apiCaller.get("products");
+    const products = await this.apiCaller.get("/products");
 
-    return response.data;
+    return products;
   };
 }
