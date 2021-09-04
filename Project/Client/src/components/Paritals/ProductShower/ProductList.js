@@ -26,7 +26,7 @@ const ProductList = ()=>{
 }
 export default ProductList;
 
-export const ProductItem = ({info})=>{
+export const ProductItem = ({info, compare=false, currentId=-1})=>{
     return(
         <li className="ProductItem">
             <img src={info.src} alt={info.src}/>
@@ -50,6 +50,7 @@ export const ProductItem = ({info})=>{
             </div>
             <div className="product-behavior">
                 <button className="add-cart">Thêm vào giỏ hàng</button>
+                {compare &&  <button>So sánh</button>}
             </div>
         </li>
     )

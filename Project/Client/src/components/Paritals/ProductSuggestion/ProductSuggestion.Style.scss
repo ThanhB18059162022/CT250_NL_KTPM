@@ -1,0 +1,60 @@
+.ProductSuggestion{
+    padding:  10px 10%;
+   &>div{
+       padding: 10px;
+       box-shadow: 0 0 10px black;
+       border-radius: 10px 20px;
+        ul{
+            display: flex;
+           
+            padding: 10px;
+            overflow-x:scroll;
+            li{
+                min-width: 260px;
+            }
+
+            li +li{
+                margin-left: 10px;
+            }
+        }
+    }
+}
+
+@media screen and(max-width:1020px) {
+    .ProductSuggestion{
+        padding:  10px 10%;
+        ul{
+            display: flex;
+            overflow-x:scroll;
+            li{
+                min-width: 35%
+            }
+        }
+    }
+}
+
+@media screen and(max-width:786px) {
+    .ProductSuggestion{
+        padding:  10px 10%;
+        ul{
+            display: flex;
+            overflow-x:scroll;
+            li{
+                min-width: 50%
+            }
+        }
+    }
+}
+
+@media screen and(max-width:450px) {
+    .ProductSuggestion{
+        padding: 10px;
+        ul{
+            display: flex;
+            overflow-x:scroll;
+            li{
+                min-width: 100%
+            }
+        }
+    }
+}
