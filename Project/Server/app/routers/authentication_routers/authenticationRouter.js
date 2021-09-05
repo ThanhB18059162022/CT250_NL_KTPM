@@ -17,4 +17,5 @@ const controller = new AuthenticationController(dao, validator, jwt);
 
 router.route("/login").get(controller.login);
 
+
 module.exports = router;
