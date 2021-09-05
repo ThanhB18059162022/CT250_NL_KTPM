@@ -1,0 +1,116 @@
+# Extension REST Client
+
+# Mỗi Request cách nhau 3 dấu '#'
+
+# Đăng nhập hợp lệ trả về token 201
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"valid",
+    "password": "valid"
+}
+
+# Đăng nhập không hợp lệ 400
+
+### 1 Không có body
+POST http://localhost:8000/api/authentication/login
+
+
+### 2 Body rỗng
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+}
+
+### 3 Không có tài khoản
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "password": "valid"
+}
+
+### 4 Tài khoản ngắn hơn 5
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"vali",
+    "password": "valid"
+}
+
+### 5 Tài khoản dài hơn 70
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"aaaaaaaaaaa8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af4293956375465",
+    "password": "valid"
+}
+
+### 6 Tài khoản có khoản trắng
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"valid tk",
+    "password": "valid"
+}
+
+
+
+### 7 Không có mật khẩu
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"valid"
+}
+
+### 8 Mật khẩu ngắn hơn 5
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"valid",
+    "password": "vali"
+}
+
+
+### 9 Mật khẩu dài hơn 64
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"valid",
+    "password": "aaaaa8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af4293956375465"
+}
+
+
+# Sai tài khoản hoặc mật khẩu - 401
+
+### 1 Tài khoản 
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"notValid",
+    "password": "valid"
+}
+
+### 2 Mật khẩu 
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"valid",
+    "password": "notValid"
+}
+
+
+
+
+
+

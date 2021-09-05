@@ -27,9 +27,10 @@ class AuthenticationController {
   };
   validateModel = (loginModel) => this.validator.validateLoginModel(loginModel);
 
-  loginSuccess = async (loginModel) => this.dao.login(loginModel);
+  loginSuccess = async (loginModel) => await this.dao.login(loginModel);
 
-  getUserByUsername = async (username) => this.dao.getByUsername(username);
+  getUserByUsername = async (username) =>
+    await this.dao.getByUsername(username);
 
   getToken = (user) => this.jwt.getToken(user);
 }
