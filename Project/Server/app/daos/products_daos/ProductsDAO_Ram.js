@@ -105,8 +105,8 @@ module.exports = class ProductsDAO_Ram {
     return product[0];
   };
 
-  getProductByName = async (pro_name) => {
-    const product = products.filter((p) => p.pro_name === pro_name)[0];
+  getProductByName = async (prod_name) => {
+    const product = products.filter((p) => p.prod_name === prod_name)[0];
 
     return product;
   };

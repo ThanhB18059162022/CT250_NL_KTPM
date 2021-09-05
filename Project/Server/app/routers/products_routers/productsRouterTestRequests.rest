@@ -20,21 +20,40 @@ GET http://localhost:8000/api/products?page=1&limit=wtf
 
 
 
-# Lấy theo mã 200
-
-### 
+### Lấy theo mã 200 
 GET http://localhost:8000/api/products/1
 
 # Không hợp lệ 400
-### 1 mã không phải số
 
+### 1 mã không phải số
 GET http://localhost:8000/api/products/wtf
 
 ### 2 mã âm
-
 GET http://localhost:8000/api/products/-1
+
+### 3 mã lớn hơn max int
+GET http://localhost:8000/api/products/9007199254740992
 
 ### Không tồn tại 404
 GET http://localhost:8000/api/products/9999
 
+
+
+# ---------------------------------------------------------------------
+
+
+
+### Lấy theo tên 200
+GET http://localhost:8000/api/products/name/Galaxy Z Fold3 | Z Flip3 5G
+
+# Không hợp lệ 400
+
+### 1 độ dài tên < 5
+GET http://localhost:8000/api/products/name/dt
+
+### 2 độ dài tên > 50
+GET http://localhost:8000/api/products/name/a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429a
+
+### Không tồn tại 404
+GET http://localhost:8000/api/products/name/Xiaomi
 
