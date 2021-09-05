@@ -108,3 +108,5 @@ Project/Server/app/config.js
 # package-clock.json
 Project/Server/package-lock.json
 Project/Client/package-lock.json
+Project/Server/app/serversettings.dev.json
+Project/Server/app/serversettings.json
