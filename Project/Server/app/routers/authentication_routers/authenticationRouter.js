@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-// const { AuthenticationDAO } = require("../../daos/daosContainer");
+const { AuthenticationDAO } = require("../../daos/daosContainer");
 const JwtService = require("./JwtService");
 
 const {
@@ -9,13 +9,12 @@ const {
   AuthenticationValidator,
 } = require("../../controllers/controllersContainer");
 
-const dao = null;
+const dao = new AuthenticationDAO();
 const validator = new AuthenticationValidator();
 const jwt = new JwtService();
 
 const controller = new AuthenticationController(dao, validator, jwt);
 
-router.route("/login").get(controller.login);
-
+router.route("/login").post(controller.login);
 
 module.exports = router;

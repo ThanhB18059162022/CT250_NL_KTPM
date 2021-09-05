@@ -5,7 +5,7 @@ const productRouter = require("./products_routers/productsRouter");
 
 // Mỗi controller sẽ có mỗi router
 module.exports = (app) => {
-  app.use("/authentication", authenticationRouter);
+  app.use("/api/authentication", authenticationRouter);
   app.use("/api/products", productRouter);
   app.use("/api/notes", notesRouter);
   app.use(authentication);
