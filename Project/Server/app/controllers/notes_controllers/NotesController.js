@@ -50,7 +50,7 @@ module.exports = class NotesController {
   //Thêm
   post = (req, res) => {
     const body = req.body;
-    
+
     const rs = this.getValidateResult(body);
 
     if (rs.error) {
@@ -121,6 +121,13 @@ module.exports = class NotesController {
 
   getValidateResult(body) {
     const schema = Joi.object({
+      wtf: Joi.array()
+        .required()
+        .items(
+          Joi.object().required().keys({
+            a: Joi.required(),
+          })
+        ),
       title: Joi.string().min(3).required(),
       content: Joi.string().min(1).required(),
     });
