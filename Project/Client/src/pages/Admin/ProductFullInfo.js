@@ -6,7 +6,7 @@ const ProductFullInfo = (props) => {
     return(
         <div className="ProductFullInfo">
             <div>
-                <button className="CloseBtn">close</button>
+                <button onClick={()=>props.setState(0)} className="CloseBtn">close</button>
                 <ProductInfo/>
                 <div className="ProductFullInfoSplit">
                     <p className="Title Line"><span>Chi tiết sản phẩm</span></p>

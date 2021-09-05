@@ -6,6 +6,7 @@ import FeedbackManagement from "./FeedbackManagement";
 import ModeratorManagement from "./ModeratorManagement";
 import Statistic from "./Statistic";
 import { useState } from "react";
+import ProductPopup from "../../components/Paritals/Admin/ProductPopup";
 const Admin = () =>{
     const [pos,setPos] = useState(0)
 
@@ -13,7 +14,7 @@ const Admin = () =>{
     const getComponents = ()=>{
         switch (pos){
             case 0: return <OverView/>
-            case 1: return <ProductManagement/>
+            case 1: return <ProductPopup/>
             case 2: return <FeedbackManagement/>
             case 3: return <ModeratorManagement/>
             case 4: return <Statistic/>
