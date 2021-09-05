@@ -27,16 +27,8 @@ module.exports = class ProductsController {
   getProductByNo = async (req, res) => {
     let { prod_no: rawProd_no } = req.params;
 
-<<<<<<< Updated upstream
     if (!this.validNo(rawProd_no)) {
       return res.status(400).json();
-=======
-    const prod_no = Number(prod_noParam);
-
-    const result = this.validateNo(prod_no);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
->>>>>>> Stashed changes
     }
 
     const prod_no = parseInt(rawProd_no);
@@ -54,14 +46,8 @@ module.exports = class ProductsController {
   getProductByName = async (req, res) => {
     const { pro_name } = req.params;
 
-<<<<<<< Updated upstream
     if (!this.validName(pro_name)) {
       return res.status(400).json();
-=======
-    const result = this.validateName(prod_name);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
->>>>>>> Stashed changes
     }
 
     const product = await this.dao.getProductByName(pro_name);
@@ -81,14 +67,8 @@ module.exports = class ProductsController {
     const { body: newProduct } = req;
 
     //Kiểm tra model hợp lệ
-<<<<<<< Updated upstream
     if (!this.validProduct(newProduct)) {
       return res.status(400).json();
-=======
-    const result = this.validateProduct(newProduct);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
->>>>>>> Stashed changes
     }
 
     // Kiểm tra trùng tên sản phẩm khác
@@ -152,14 +132,8 @@ module.exports = class ProductsController {
   deleteProduct = async (req, res) => {
     const { prod_no } = req.params;
 
-<<<<<<< Updated upstream
     if (!this.validNo(prod_no)) {
       return res.status(400).json();
-=======
-    const result = this.validateNo(prod_no);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
->>>>>>> Stashed changes
     }
 
     const product = await this.dao.getProductByNo(prod_no);

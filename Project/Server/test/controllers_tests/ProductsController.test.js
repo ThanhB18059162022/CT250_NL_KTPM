@@ -1,9 +1,4 @@
-<<<<<<< Updated upstream:Project/Server/test/controllers_tests/ProductsController.test.js
 const ProductsController = require("../../app/controllers/products_controllers/ProductsController");
-=======
-const ProductsController = require("../../../app/controllers/products_controllers/ProductsController");
-const { ResponseMock } = require("../controllerTestHelper");
->>>>>>> Stashed changes:Project/Server/test/controllers_tests/products_controllers_tests/ProductsController.test.js
 
 //#region Init
 
@@ -95,6 +90,24 @@ class ProductsValidatorMock {
   // Kiểm tra tên hợp lệ
   validName = jest.fn((pro_name) => {
     return pro_name !== undefined;
+  });
+}
+
+class ResponseMock {
+  constructor() {
+    this.statusCode = 200;
+  }
+
+  status = jest.fn((statusCode) => {
+    this.statusCode = statusCode;
+
+    return this;
+  });
+
+  json = jest.fn(async (body) => {
+    const { statusCode } = this;
+
+    return { statusCode, body };
   });
 }
 

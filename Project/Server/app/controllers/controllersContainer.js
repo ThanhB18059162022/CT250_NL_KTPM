@@ -2,20 +2,14 @@
 // Sẽ require thông qua lớp này
 
 //Controller
-const AuthenticationController = require("./authentication_controllers/AuthenticationController");
-const AuthenticationValidator = require("./authentication_controllers/AuthenticationValidator");
-
+const AuthenticationController = require("./AuthenticationController");
 const NotesController = require("./notes_controllers/NotesController");
-
 const ProductsController = require("./products_controllers/ProductsController");
 const ProductsValidator = require("./products_controllers/ProductsValidator");
 
 module.exports = {
-  AuthenticationController,
-  AuthenticationValidator,
-
-  NotesController,
-
-  ProductsController,
-  ProductsValidator,
+  AuthenticationController: AuthenticationController,
+  NotesController: NotesController,
+  ProductsController: ProductsController,
+  ProductsValidator: ProductsValidator,
 };
