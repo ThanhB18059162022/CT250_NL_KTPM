@@ -840,7 +840,7 @@ describe("Xóa sản phẩm", () => {
     validatorMock = new ProductsValidatorMock();
   });
 
-  test("Xóa sản phẩm", async () => {
+  test("Xóa sản phẩm - 204", async () => {
     //Arrange
     const product = { ...ProductsDAOMock.products[0] };
 
@@ -872,7 +872,7 @@ describe("Xóa sản phẩm", () => {
     expect(resMock.json).toBeCalledWith({});
   });
 
-  test("Xóa sản phẩm - không tồn tại", async () => {
+  test("Xóa sản phẩm - không tồn tại - 404", async () => {
     //Arrange
     const prod_no = 666;
 
@@ -904,7 +904,7 @@ describe("Xóa sản phẩm", () => {
     expect(resMock.json).toBeCalledWith({});
   });
 
-  test("Xóa sản phẩm - không hợp lệ", async () => {
+  test("Xóa sản phẩm - không hợp lệ - 400", async () => {
     //Arrange
     const prod_no = -1;
 

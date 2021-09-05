@@ -47,7 +47,7 @@ describe("Kiểm tra đăng nhập bằng jwt", () => {
     jwtMock = new JwtMock();
   });
 
-  test("Đăng nhập thành công", async () => {
+  test("Đăng nhập thành công trả về token - 201", async () => {
     //Arrange
     const loginModel = LoginDaoMock.user;
     const secretKey = "Key nè";

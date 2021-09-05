@@ -8,11 +8,16 @@ GET http://localhost:8000/api/products
 
 
 # Truyền không hợp lệ trả về mặc định của số không hợp lệ
-### 1
+### 1 page không hợp lệ
 GET http://localhost:8000/api/products?page=wtf&limit=1
 
-### 2
+### 2 limit không hợp lệ
 GET http://localhost:8000/api/products?page=1&limit=wtf
+
+
+
+# ---------------------------------------------------------------------
+
 
 
 # Lấy theo mã 200
@@ -21,16 +26,15 @@ GET http://localhost:8000/api/products?page=1&limit=wtf
 GET http://localhost:8000/api/products/1
 
 # Không hợp lệ 400
-### 1 
+### 1 mã không phải số
 
 GET http://localhost:8000/api/products/wtf
 
-### 2
+### 2 mã âm
 
 GET http://localhost:8000/api/products/-1
 
 ### Không tồn tại 404
-
 GET http://localhost:8000/api/products/9999
 
 

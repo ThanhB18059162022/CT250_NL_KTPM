@@ -8,6 +8,7 @@ module.exports = class JwtService {
     this.secretKey = config.secretKey || "SECRET_KEY is not exist";
   }
 
+  // Tạo token mặc định hết hạn trong 1h
   getToken = (user, options = { expiresIn: "1h" }) => {
     return jwt.sign({ user }, this.secretKey, options);
   };

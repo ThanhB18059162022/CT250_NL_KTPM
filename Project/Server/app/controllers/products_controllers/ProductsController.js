@@ -97,19 +97,17 @@ module.exports = class ProductsController {
     } = req;
 
     //Kiểm tra prod_no, model hợp lệ
-    const pro_noResult = this.validateNo(prod_no);
-    if (pro_noResult.hasAnyError) {
-      return res.status(400).json(pro_noResult.error);
+    const valNoResult = this.validateNo(prod_no);
+    if (valNoResult.hasAnyError) {
+      return res.status(400).json(valNoResult.error);
     }
 
-    const productResult = this.validateProduct(newProduct);
-    if (productResult.hasAnyError) {
-      return res.status(400).json(productResult.error);
+    const valProductResult = this.validateProduct(newProduct);
+    if (valProductResult.hasAnyError) {
+      return res.status(400).json(valProductResult.error);
     }
 
     const oldProduct = await this.dao.getProductByNo(prod_no);
-
-    // Kiểm tra tồn tại
     if (!this.existProduct(oldProduct)) {
       return res.status(404).json({});
     }
@@ -149,7 +147,6 @@ module.exports = class ProductsController {
     }
 
     const product = await this.dao.getProductByNo(prod_no);
-
     if (!this.existProduct(product)) {
       return res.status(404).json({});
     }
