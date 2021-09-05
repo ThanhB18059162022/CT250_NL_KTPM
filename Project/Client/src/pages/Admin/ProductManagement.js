@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { AdminButton } from "../../components/Controls/Button"
-import { ListUI } from "../../components/Paritals/Admin"
-import "../../components/Paritals/Admin/Admin.Style.scss"
+import { ProductList } from "../../components/Paritals/Admin"
 import ProductFullInfo from "./ProductFullInfo"
 
 const ProductManagement = () => {
@@ -17,7 +16,7 @@ const ProductManagement = () => {
             <div className="ProductManagementButton">
                 <AdminButton IconName="Add"/>
             </div>
-            <ListUI name="Danh sách sản phẩm"/>
+            <ProductList name="Danh sách sản phẩm"/>
             <button onClick={()=>setState(1)}>hien review thong tin sp</button>
             <br/>
             <button onClick={()=>setState(0)}>an review thong tin sp</button>

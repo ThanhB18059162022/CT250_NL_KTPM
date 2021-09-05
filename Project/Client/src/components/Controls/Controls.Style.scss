@@ -229,15 +229,13 @@
 
 //AdminButton
 .AdminButton{
-    border: 1px solid black;
     border-radius: 25px;
-    padding: 2px 22px;
+    padding: 2px auto;
     font-size: 20px;
-    &:hover{
-        background-color: aquamarine;
-    }
-    &:not(:last-child){
-        margin: 1.5% 10px 5px 12%;
+    width: 55px;
+    border: 0.5px solid black;
+    &:active{
+        background-color: rgba(59, 59, 252, 0.432);
     }
 }
 
@@ -247,10 +245,18 @@
     left: 80%;
     top: -5px;
     margin: 0 12% 0 0;
+    width: 10%;
     input{
         border-radius: 45px;
         padding: 3px 0 3px 8px;
         background-color: none;
         outline: none;
+    }
+    button{
+        width: 27px;
+        height: 27px;
+        border-radius: 55px;
+        position: absolute;
+        right: 14%;
     }
 }
