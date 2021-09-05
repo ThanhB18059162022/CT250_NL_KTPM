@@ -1,10 +1,6 @@
 // Tham khảo https://joi.dev/api/?v=17.4.2
 const Joi = require("joi");
 
-<<<<<<< Updated upstream
-// Xài Joi validate dữ liệu
-module.exports = class ProductsValidator {
-=======
 const { getValidationResult } = require("../validatorHelper");
 
 // Lớp xác thực dữ liệu truyền vào có hợp lệ hay không
@@ -12,27 +8,18 @@ const { getValidationResult } = require("../validatorHelper");
 module.exports = class ProductsValidator {
   getResult = (schema, data) => getValidationResult(schema, data);
 
->>>>>>> Stashed changes
   existProduct = (product) => {
     return product !== undefined;
   };
 
-  validProduct = (product) => {
+  validateProduct = (product) => {
     return product !== undefined;
   };
 
-  validNo = (pro_no) => {
+  validateNo = (prod_no) => {
     const schema = Joi.object({
       pro_no: Joi.number().min(0).max(number.max).required(),
     });
-<<<<<<< Updated upstream
-    return schema.validate({ pro_no });
-  };
-
-  // Kiểm tra tên hợp lệ
-  validName = (pro_name) => {
-    return pro_name;
-=======
 
     const result = this.getResult(schema, { prod_no });
 
@@ -48,6 +35,5 @@ module.exports = class ProductsValidator {
     const result = this.getResult(schema, { prod_name });
 
     return result;
->>>>>>> Stashed changes
   };
 };

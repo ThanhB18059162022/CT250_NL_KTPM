@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream:Project/Server/test/controllers_tests/ProductsController.test.js
-const ProductsController = require("../../app/controllers/products_controllers/ProductsController");
-=======
 const ProductsController = require("../../../app/controllers/products_controllers/ProductsController");
 const { ResponseMock } = require("../controllerTestHelper");
->>>>>>> Stashed changes:Project/Server/test/controllers_tests/products_controllers_tests/ProductsController.test.js
 
 //#region Init
 
