@@ -25,7 +25,7 @@ module.exports = class ProductsController {
 
   // Lấy theo mã sản phẩm
   getProductByNo = async (req, res) => {
-    let { prod_no: rawProd_no } = req.params;
+    let { prod_no: prod_noParam } = req.params;
 
     const prod_no = Number(prod_noParam);
 
@@ -33,8 +33,6 @@ module.exports = class ProductsController {
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
     }
-
-    const prod_no = parseInt(rawProd_no);
 
     const product = await this.dao.getProductByNo(prod_no);
 
@@ -47,15 +45,14 @@ module.exports = class ProductsController {
 
   // Lấy theo tên
   getProductByName = async (req, res) => {
-    const { pro_name } = req.params;
+    const { prod_name } = req.params;
 
     const result = this.validateName(prod_name);
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
     }
 
-    const product = await this.dao.getProductByName(pro_name);
-
+    const product = await this.dao.getProductByName(prod_name);
     if (!this.existProduct(product)) {
       return res.status(404).json({});
     }
@@ -77,8 +74,9 @@ module.exports = class ProductsController {
     }
 
     // Kiểm tra trùng tên sản phẩm khác
-    const productHasName = await this.dao.getProductByName(newProduct.pro_name);
-
+    const productHasName = await this.dao.getProductByName(
+      newProduct.prod_name
+    );
     if (this.existProduct(productHasName)) {
       return res.status(400).json();
     }
@@ -99,8 +97,14 @@ module.exports = class ProductsController {
     } = req;
 
     //Kiểm tra prod_no, model hợp lệ
-    if (!this.validNo(prod_no) || !this.validProduct(newProduct)) {
-      return res.status(400).json();
+    const pro_noResult = this.validateNo(prod_no);
+    if (pro_noResult.hasAnyError) {
+      return res.status(400).json(pro_noResult.error);
+    }
+
+    const productResult = this.validateProduct(newProduct);
+    if (productResult.hasAnyError) {
+      return res.status(400).json(productResult.error);
     }
 
     const oldProduct = await this.dao.getProductByNo(prod_no);
@@ -111,7 +115,9 @@ module.exports = class ProductsController {
     }
 
     // Kiểm tra trùng tên sản phẩm khác
-    const productHasName = await this.dao.getProductByName(newProduct.pro_name);
+    const productHasName = await this.dao.getProductByName(
+      newProduct.prod_name
+    );
 
     // Kiểm tra tồn tại sản phẩm trùng tên
     // Và xem sản phẩm trùng tên đó phải sản phẩm cũ (oldProduct)
@@ -157,17 +163,17 @@ module.exports = class ProductsController {
   };
 
   // Kiểm tra các trường của product xem có hợp lệ hay không
-  validProduct = (product) => {
-    return this.validator.validProduct(product);
+  validateProduct = (product) => {
+    return this.validator.validateProduct(product);
   };
 
   // Kiểm tra mã hợp lệ
-  validNo = (prod_no) => {
-    return this.validator.validNo(prod_no);
+  validateNo = (prod_no) => {
+    return this.validator.validateNo(prod_no);
   };
 
   // Kiểm tra tên hợp lệ
-  validName = (pro_name) => {
-    return this.validator.validName(pro_name);
+  validateName = (prod_name) => {
+    return this.validator.validateName(prod_name);
   };
 };

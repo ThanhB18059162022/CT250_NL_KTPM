@@ -16,9 +16,10 @@ module.exports = class ProductsValidator {
     return product !== undefined;
   };
 
+  // Kiểm tra mã hợp
   validateNo = (prod_no) => {
     const schema = Joi.object({
-      pro_no: Joi.number().min(0).max(number.max).required(),
+      prod_no: Joi.number().min(0).max(number.max).required(),
     });
 
     const result = this.getResult(schema, { prod_no });
