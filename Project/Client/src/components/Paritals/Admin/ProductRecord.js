@@ -15,7 +15,7 @@ const ProductRecord = (props) => {
     return(
         <>
             <div className="ProductRecord">
-                {Object.keys(obj).map((item,index)=><p>{getContent(obj[item])}</p>)}
+                {Object.keys(obj).map((item,index)=><p key={item}>{getContent(obj[item])}</p>)}
             </div>
             <hr/>
         </>
