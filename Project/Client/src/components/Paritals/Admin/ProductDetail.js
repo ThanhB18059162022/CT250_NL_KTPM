@@ -1,10 +1,13 @@
 import { AdminButton } from "../../Controls"
 
 const ProductDetail = () => {
+    const CusStyle = {
+        margin: "1% 5px 5px 12%"
+    };
     return(
         <>
             <div className="Button">
-                <AdminButton IconName="Edit"/>
+                <AdminButton style={CusStyle} IconName="Edit"/>
                 <AdminButton IconName="Delete"/>
             </div>
             <div className="ProductDetail BorderFormat">

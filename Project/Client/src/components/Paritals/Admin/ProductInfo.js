@@ -2,12 +2,13 @@ import "./Admin.Style.scss"
 import { AdminButton } from "../../Controls"
 
 const ProductInfo = () => {
+    const CusStyle = {
+        margin: "1% 5px 5px 12%"
+    };
     return(
         <>
-            <div>
-                <AdminButton IconName="Edit"/>
-                <AdminButton IconName="Delete"/>
-            </div>
+            <AdminButton style={CusStyle} IconName="Edit"/>
+            <AdminButton IconName="Delete"/>
             <div className="ProductInfo BorderFormat">
                 <p className="Title">Thông tin sản phẩm</p>
                 <p className="Info">Mã sản phẩm:</p>

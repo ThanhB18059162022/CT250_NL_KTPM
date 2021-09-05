@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { SearchIcon } from "./FlatIcon";
 
@@ -52,7 +51,8 @@ export const SearchHeaderInput = ({ searchHandle }) => {
 export const AdminSearchInput = () => {
   return(
     <div className="AdminSearchInput">
-      <input placeholder="Tìm kiếm"></input>
+      <input placeholder="Tìm kiếm"/>
+      <button><SearchIcon/></button>
     </div>
   )
 }

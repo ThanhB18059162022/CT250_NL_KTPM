@@ -93,7 +93,7 @@
     }
 }
 
-.ListUI{
+.ListLayout{
     margin-top: 3%;
     .AdminListClass{
         height: 700px;
@@ -127,11 +127,11 @@
     position: relative;
     .Line{
         margin: 30px auto;
-        width: 70%; 
+        width: 65%; 
         border-bottom: 1px solid #000; 
         line-height: 0.1em;
         span{
-            background:#fff; 
+            background:#F5F5F5; 
             padding:0 10px;
         }
     }
@@ -145,5 +145,142 @@
 .ProductManagementButton{
     position: absolute;
     left: 12%;
-    top: 15.3%;
+    top: 15.5%;
+}
+
+.ProductRecord{
+    display: flex;
+    align-items: center;
+    p + p{
+        border-left: 2px solid black;
+    }
+    p{
+        height: 26px;
+        text-align: center;
+        padding: 3px 0;
+        &:nth-child(1){
+            width: 7%;
+        }
+        &:nth-child(2){
+            width: 25%;
+        }
+        &:nth-child(3){
+            width: 8%;
+        }
+        &:nth-child(4){
+            width: 45%;
+        }
+        &:nth-child(5){
+            width: 6%;
+        }
+        &:nth-child(6){
+            width: 9%;
+        }
+    }
+    + hr{
+        width: 98%;
+        margin: 5px auto;
+        &:last-child{
+            display: none;
+        }
+    }
+}
+
+.FeedbackRecord{
+    display: flex;
+    align-items: center;
+    p + p{
+        border-left: 2px solid black;
+    }
+    p{
+        height: 26px;
+        text-align: center;
+        padding: 3px 0;
+        &:nth-child(1){
+            width: 15%;
+        }
+        &:nth-child(2){
+            width: 35%;
+        }
+        &:nth-child(3){
+            width: 24%;
+        }
+        &:nth-child(4){
+            width: 10%;
+        }
+        &:nth-child(5){
+            width: 7%;
+        }
+        &:nth-child(6){
+            width: 9%;
+        }
+    }
+    + hr{
+        width: 98%;
+        margin: 5px auto;
+        &:last-child{
+            display: none;
+        }
+    }
+}
+
+.ModeratorRecord{
+    display: flex;
+    align-items: center;
+    p + p{
+        border-left: 2px solid black;
+    }
+    p{
+        height: 26px;
+        text-align: center;
+        padding: 3px 0;
+        &:nth-child(1){
+            width: 5%;
+        }
+        &:nth-child(2){
+            width: 20%;
+        }
+        &:nth-child(3){
+            width: 9%;
+        }
+        &:nth-child(4){
+            width: 9%;
+        }
+        &:nth-child(5){
+            width: 5%;
+        }
+        &:nth-child(6){
+            width: 43%;
+        }
+        &:nth-child(7){
+            width: 9%;
+        }
+    }
+    + hr{
+        width: 98%;
+        margin: 5px auto;
+        &:last-child{
+            display: none;
+        }
+    }
+}
+
+.ProductFullInfo{
+    position: absolute;
+    width: 100%;
+    top: 10%;
+    background-color: rgba(128, 128, 128, 0.822);
+    div{
+        &:first-child{
+            margin: auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 80%;
+            padding: 2% 10%;
+        }
+    }
+    .CloseBtn{
+        position: absolute;
+        left: 88%;
+        top: 1%;
+    }
 }

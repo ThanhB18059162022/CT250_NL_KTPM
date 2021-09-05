@@ -1,9 +1,9 @@
-import { ListUI } from "../../components/Paritals/Admin"
+import FeedbackList from "../../components/Paritals/Admin/FeedbackList"
 
 const FeedbackManagement = () => {
     return(
         <div>
-            <ListUI name="Danh sách đánh giá"/>
+            <FeedbackList name="Danh sách đánh giá"/>
         </div>
     )
 }
