@@ -12,9 +12,9 @@ module.exports = class JwtService {
     return jwt.sign({ user }, this.secretKey, options);
   };
 
-  // Lấy ra thông tin người dùng từ token
-  // Throw error nếu token không hợp lệ
-  getUser = (token) => {
+  // Lấy ra thông tin decoded từ token
+  // Throw error nếu token không hợp lệ - hết hạn
+  getData = (token) => {
     return jwt.verify(token, this.secretKey);
   };
 };

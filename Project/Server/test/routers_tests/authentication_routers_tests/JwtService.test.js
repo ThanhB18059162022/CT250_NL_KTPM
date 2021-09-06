@@ -11,7 +11,7 @@ function getService() {
 function getJwtToken(user) {
   return jwt.sign({ user }, secretKey, options);
 }
-function getUserFromToken(token) {
+function getDataFromToken(token) {
   return jwt.verify(token, secretKey);
 }
 
@@ -57,11 +57,23 @@ describe("Kiểm tra hàm xác nhận jwt token", () => {
     const service = getService();
 
     //Act
-    const expRes = getUserFromToken(token);
-    const actRes = service.getUser(token);
+    const expRes = getDataFromToken(token);
+    const actRes = service.getData(token);
 
     //Expect
     expect(actRes).toEqual(expRes);
+  });
+
+  test("Token hết hạn", () => {
+    //Arrange
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7fSwiaWF0IjoxNjMwOTA1NDgwLCJleHAiOjE2MzA5MDU1NDB9.rFZeP3a51_0lfCbPbMxhRtnlv1mwF4XratiOBTBiw5U";
+
+    const service = getService();
+
+    //Act
+    //Expect
+    expect(() => service.getData(token)).toThrowError("jwt expired");
   });
 
   test("Token undefined", () => {
@@ -72,7 +84,7 @@ describe("Kiểm tra hàm xác nhận jwt token", () => {
 
     //Act
     //Expect
-    expect(() => service.getUser(token)).toThrowError("jwt must be provided");
+    expect(() => service.getData(token)).toThrowError("jwt must be provided");
   });
 
   test("Token rỗng", () => {
@@ -83,6 +95,6 @@ describe("Kiểm tra hàm xác nhận jwt token", () => {
 
     //Act
     //Expect
-    expect(() => service.getUser(token)).toThrowError("jwt malformed");
+    expect(() => service.getData(token)).toThrowError("jwt malformed");
   });
 });

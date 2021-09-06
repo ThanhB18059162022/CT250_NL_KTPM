@@ -25,6 +25,7 @@ class AuthenticationController {
 
     return res.status(201).json({ token });
   };
+
   validateModel = (loginModel) => this.validator.validateLoginModel(loginModel);
 
   loginSuccess = async (loginModel) => await this.dao.login(loginModel);
