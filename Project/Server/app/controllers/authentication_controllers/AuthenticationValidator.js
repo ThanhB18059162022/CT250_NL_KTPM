@@ -16,4 +16,17 @@ module.exports = class AuthenticationValidator {
 
     return result;
   };
+
+  validateToken(token) {
+    const schema = joi.object({
+      token: joi
+        .string()
+        .pattern(/^Bearer\s/i)
+        .required(),
+    });
+
+    const result = this.getResult(schema, { token });
+
+    return result;
+  }
 };

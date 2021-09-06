@@ -3,9 +3,9 @@ const router = express.Router();
 const config = require("../../config");
 
 const { AuthenticationDAO } = require("../../daos/daosContainer");
-const JwtService = require("./JwtService");
 
 const {
+  JwtService,
   AuthenticationController,
   AuthenticationValidator,
 } = require("../../controllers/controllersContainer");
