@@ -18,6 +18,7 @@ app.use(express.json());
 // Request Object as strings or arrays
 app.use(express.urlencoded({ extended: true }));
 
+// Chuyển hướng đến các api endpoint
 router(app);
 
 // Nên để cái này cuối
