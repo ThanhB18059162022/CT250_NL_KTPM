@@ -3,9 +3,8 @@ const app = express();
 const corsHandler = require("./routers/corsHandler");
 const router = require("./routers/router");
 const { errorHandler } = require("./routers/routerErrorHandler");
-
 const config = require("./config");
-const port = config.port || 8001;
+const port = config.port;
 
 // Lọc các tên miền có quyền truy cập
 corsHandler(app);
@@ -19,6 +18,7 @@ app.use(express.json());
 // Request Object as strings or arrays
 app.use(express.urlencoded({ extended: true }));
 
+// Chuyển hướng đến các api endpoint
 router(app);
 
 // Nên để cái này cuối

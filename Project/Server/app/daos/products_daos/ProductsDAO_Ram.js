@@ -96,6 +96,7 @@ module.exports = class ProductsDAO_Ram {
       prod_img: p.prod_img,
       prod_price: p.prod_price,
     }));
+
     return prods;
   };
 

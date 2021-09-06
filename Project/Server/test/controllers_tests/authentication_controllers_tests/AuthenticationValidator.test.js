@@ -250,3 +250,62 @@ describe("Xác thực model đăng nhập - mật khẩu", () => {
     expect(actRes).toEqual(expRes);
   });
 });
+
+describe("Xác thực token", () => {
+  test("Token undefined", () => {
+    //Arrange
+    const token = undefined;
+    const failed = true;
+    const validator = getValidator();
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateToken(token).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Token không có Beaerer", () => {
+    //Arrange
+    const token = "";
+    const failed = true;
+    const validator = getValidator();
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateToken(token).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Token Beaerer và jwt không có khoảng trắng", () => {
+    //Arrange
+    const token = "Beareraa";
+    const failed = true;
+    const validator = getValidator();
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateToken(token).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Token hợp lệ", () => {
+    //Arrange
+    const token = "Bearer token";
+    const failed = false;
+    const validator = getValidator();
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateToken(token).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+

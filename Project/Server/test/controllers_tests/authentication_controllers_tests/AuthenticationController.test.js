@@ -22,11 +22,23 @@ class AuthenticationValidatorMock {
         loginModel.username === undefined || loginModel.password === undefined,
     };
   });
+
+  validateToken = jest.fn((token) => {
+    const tokenRegex = /^Bearer\s/i;
+    return {
+      hasAnyError: !tokenRegex.test(token),
+    };
+  });
 }
 
 class JwtMock {
   getToken = jest.fn((user) => {
     return user.username + " token đây";
+  });
+
+  getData = jest.fn((token) => {
+    if (token === "Hết-hạn") throw new Error();
+    return "Data đây " + token;
   });
 }
 //#endregion
@@ -36,7 +48,7 @@ let validatorMock;
 let jwtMock;
 
 function getController() {
-  return new AuthenticationController(daoMock, validatorMock, jwtMock);
+  return new AuthenticationController(validatorMock, jwtMock, daoMock);
 }
 
 // 201 - 400 - 401
@@ -170,5 +182,82 @@ describe("Kiểm tra đăng nhập bằng jwt", () => {
 
     expect(daoMock.login).toBeCalledTimes(1);
     expect(daoMock.login).toBeCalledWith(loginModel);
+  });
+});
+
+// 400 - 401
+describe("Kiểm tra bearer jwt có trong req", () => {
+  beforeEach(() => {
+    validatorMock = new AuthenticationValidatorMock();
+    jwtMock = new JwtMock();
+  });
+
+  test("Token hợp lệ - sang middleware tiếp theo", async () => {
+    //Arrange
+    const token = "Hợp lệ";
+
+    const controller = getController();
+
+    const reqMock = { headers: { authorization: "Bearer " + token } };
+    const resMock = new ResponseMock();
+    const nextMock = jest.fn();
+
+    //Act
+    await controller.authenticate(reqMock, resMock, nextMock);
+
+    //Expect
+    expect(nextMock).toBeCalledTimes(1);
+  });
+
+  test("Không có token - 400", async () => {
+    //Arrange
+    const reqMock = {};
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = { statusCode: 400, body: undefined };
+    const actRes = await controller.authenticate(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Token không hợp lệ thiếu Bearer - 400", async () => {
+    //Arrange
+    const reqMock = { headers: { authorization: "abc" } };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = { statusCode: 400, body: undefined };
+    const actRes = await controller.authenticate(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Token hết hạn - 401", async () => {
+    //Arrange
+    const token = "Hết-hạn";
+
+    const controller = getController();
+    const response = {
+      statusCode: 401,
+    };
+    const reqMock = { headers: { authorization: "Bearer " + token } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.authenticate(reqMock, resMock);
+
+    //Expect
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(resMock.json).toBeCalledTimes(1);
   });
 });

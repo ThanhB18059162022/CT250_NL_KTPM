@@ -3,10 +3,12 @@
 // Middleware này dùng để bắt các lỗi bên phía server, như kết nối không được database, undefine
 
 // Có 2 hàm hiển thị lỗi - dev sẽ hiện thêm stack trace
-const isDev = true;
+// Mặc định không có NODE_ENV là dev
+const isDev = !process.env.NODE_ENV;
 
 // Dùng khi lập trình hiện stacktrace
 function devErrorHandler(err, req, res, next) {
+  console.log(err);
   return res.status(500).json(err.stack);
 }
 
