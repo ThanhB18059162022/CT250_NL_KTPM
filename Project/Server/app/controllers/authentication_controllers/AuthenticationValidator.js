@@ -1,8 +1,9 @@
-// Lớp xác thực dữ liệu truyền vào có hợp lệ hay không
-// Xài joi để xác thực
+// Tham khảo https://joi.dev/api/?v=17.4.2
 const joi = require("joi");
 const { getValidationResult } = require("../validatorHelper");
 
+// Lớp xác thực dữ liệu truyền vào có hợp lệ hay không
+// Xài joi để xác thực
 module.exports = class AuthenticationValidator {
   getResult = (schema, data) => getValidationResult(schema, data);
 
@@ -21,7 +22,7 @@ module.exports = class AuthenticationValidator {
     const schema = joi.object({
       token: joi
         .string()
-        .pattern(/^Bearer\s/i)
+        .pattern(/^Bearer\s*/i)
         .required(),
     });
 

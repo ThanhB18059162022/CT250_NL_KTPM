@@ -14,7 +14,7 @@ const dao = new AuthenticationDAO();
 const validator = new AuthenticationValidator();
 const jwt = new JwtService(config.secretKey);
 
-const controller = new AuthenticationController(dao, validator, jwt);
+const controller = new AuthenticationController(validator, jwt, dao);
 
 router.route("/login").post(controller.login);
 
