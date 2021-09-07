@@ -21,7 +21,7 @@ router
   .route("/getUser")
   .get(
     controller.authenticate,
-    controller.authorize(""),
+    controller.authorize(["admin", "emp"]),
     controller.getLoginUser
   );
 

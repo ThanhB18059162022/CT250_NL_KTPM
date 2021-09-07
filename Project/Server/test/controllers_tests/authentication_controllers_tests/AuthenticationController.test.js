@@ -290,10 +290,10 @@ describe("Lấy ra người dùng đăng nhập trong jwt", () => {
 });
 
 // 403
-describe("Chuyển hướng người dùng theo quyền", () => {
+describe("Chuyển hướng người dùng theo quyền - role", () => {
   test("Người dùng hợp lệ", async () => {
     //Arrange
-    role = "admin";
+    const role = "admin";
     const user = {
       id: 1,
       username: "valid",
@@ -309,13 +309,43 @@ describe("Chuyển hướng người dùng theo quyền", () => {
     const nextMock = jest.fn();
 
     //Act
-    await controller.authorize(role)(reqMock, resMock, nextMock);
+    await controller.authorize([role])(reqMock, resMock, nextMock);
 
     //Expect
     expect(nextMock).toBeCalledTimes(1);
   });
 
-  test("Người dùng không có thẩm quyền", async () => {
+  test("Người dùng hợp lệ - nhiều role", async () => {
+    //Arrange
+    const roles = ["admin", "emp"];
+    const controller = getController();
+    const resMock = new ResponseMock();
+
+    for (let i = 0; i < roles.length; i++) {
+      const role = roles[i];
+
+      const user = {
+        id: 1,
+        username: "valid",
+        name: "valid",
+        role,
+      };
+
+      const nextMock = jest.fn();
+
+      const reqMock = {
+        user,
+      };
+
+      //Act
+      await controller.authorize(roles)(reqMock, resMock, nextMock);
+
+      //Expect
+      expect(nextMock).toBeCalledTimes(1);
+    }
+  });
+
+  test("Người dùng không có thẩm quyền - 403", async () => {
     //Arrange
     role = "admin";
     const user = {
@@ -335,7 +365,11 @@ describe("Chuyển hướng người dùng theo quyền", () => {
     //Act
     const expRes = { statusCode: 403, body: undefined };
 
-    const actRes = await controller.authorize(role)(reqMock, resMock, nextMock);
+    const actRes = await controller.authorize([role])(
+      reqMock,
+      resMock,
+      nextMock
+    );
 
     //Expect
     expect(nextMock).toBeCalledTimes(0);

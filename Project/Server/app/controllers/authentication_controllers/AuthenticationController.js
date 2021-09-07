@@ -72,14 +72,19 @@ class AuthenticationController {
   //#region Authorize phải đăng nhập trước mới xài cái này
 
   // Closure function
-  authorize = (role) => async (req, res, next) => {
-    const userRole = req.user?.role;
+  authorize = (roles) => async (req, res, next) => {
+    const role = req.user?.role;
 
-    if (role === userRole) {
+    const exist = this.roleInRoles(role, roles);
+    if (exist) {
       return next();
     }
 
     return res.status(403).json();
+  };
+
+  roleInRoles = (role, roles) => {
+    return roles.filter((r) => r.toLowerCase() === role.toLowerCase())[0];
   };
 
   //#endregion

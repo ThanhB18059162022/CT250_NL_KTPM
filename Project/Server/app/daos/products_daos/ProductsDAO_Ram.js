@@ -51,6 +51,7 @@ const product1 = [
 ];
 
 const products = [];
+const img = "https://dummyimage.com/600x400/000/0fffff&text=Coming+soon";
 
 module.exports = class ProductsDAO_Ram {
   constructor() {
@@ -79,6 +80,7 @@ module.exports = class ProductsDAO_Ram {
         },
         prod_status: "",
         prod_img: `/img/${1}/prod_img1.png`,
+        prod_img: img,
         prod_price: 12990000,
       };
 
