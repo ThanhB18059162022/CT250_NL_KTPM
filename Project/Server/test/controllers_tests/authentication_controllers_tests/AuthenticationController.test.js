@@ -261,3 +261,28 @@ describe("Kiểm tra bearer jwt có trong req", () => {
     expect(resMock.json).toBeCalledTimes(1);
   });
 });
+
+// 200 - Phải có jwt
+describe("Lấy ra người dùng đăng nhập trong jwt", () => {
+  test("Trả về người dùng", async () => {
+    //Arrange
+    const user = {
+      id: 1,
+      username: "valid",
+      name: "valid",
+    };
+    const controller = getController();
+
+    const reqMock = {
+      user,
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 200, body: { user } };
+    const actRes = await controller.getLoginUser(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+  });
+});

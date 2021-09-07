@@ -68,6 +68,16 @@ class AuthenticationController {
   validateToken = (token) => this.validator.validateToken(token);
 
   //#endregion
+
+  //#region GetLoginUser
+
+  getLoginUser = async (req, res) => {
+    const { user } = req;
+
+    return res.json({ user });
+  };
+
+  //#endregion
 }
 
 module.exports = AuthenticationController;
