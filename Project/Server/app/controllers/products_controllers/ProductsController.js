@@ -2,9 +2,9 @@ const { getPaginatedResults } = require("../controllerHelper");
 
 module.exports = class ProductsController {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
-  constructor(dao, validator) {
-    this.dao = dao;
+  constructor(validator, dao) {
     this.validator = validator;
+    this.dao = dao;
   }
 
   //#region GET

@@ -6,7 +6,7 @@ GET http://localhost:8000/api/notes?page=2&limit=5
 ### products/1
 GET http://localhost:8000/api/notes/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzA5MTc4MDcsImV4cCI6MTYzMDkyMTQwN30.PaOHc1xoCV6Q1vmWPzig1h2QiDwtl3YTYpTLpcRIZtk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzA5ODA5NTgsImV4cCI6MTYzMDk4NDU1OH0.vCzxrGYNrDr_CFazXu-sdhL-QtxMRAhB3oZY8en6yNs
 
 
 # Mã không hợp lệ

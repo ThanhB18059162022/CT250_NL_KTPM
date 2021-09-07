@@ -102,7 +102,7 @@ let daoMock;
 let validatorMock;
 
 function getController() {
-  return new ProductsController(daoMock, validatorMock);
+  return new ProductsController(validatorMock, daoMock);
 }
 // 200 - 400 -404
 describe("Lấy sản phẩm", () => {

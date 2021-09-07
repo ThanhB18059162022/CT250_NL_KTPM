@@ -17,7 +17,7 @@ const { ProductsDAO } = require("../../daos/daosContainer");
 
 const dao = new ProductsDAO();
 const validator = new ProductsValidator();
-const controller = new ProductsController(dao, validator);
+const controller = new ProductsController(validator, dao);
 
 router
   .route("/")

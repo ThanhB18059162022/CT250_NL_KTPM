@@ -16,6 +16,15 @@ const jwt = new JwtService(config.secretKey);
 
 const controller = new AuthenticationController(validator, jwt, dao);
 
+// Bắc buộc đăng nhập
+router
+  .route("/getUser")
+  .get(
+    controller.authenticate,
+    controller.authorize(""),
+    controller.getLoginUser
+  );
+
 router.route("/login").post(controller.login);
 
 module.exports = router;
