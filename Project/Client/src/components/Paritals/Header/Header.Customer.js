@@ -3,6 +3,7 @@ import { SearchHeaderInput } from "../../Controls"
 import {SearchIcon, TimesIcon } from "../../Controls/FlatIcon"
 import { useState } from "react"
 import { useHistory } from 'react-router'
+import { AdminInformation, ChangePwd } from "../Admin"
 import "./Header.Style.scss"
 const Header = ({children,...rest}) => {
     const history  = useHistory()
@@ -50,6 +51,14 @@ export const SearchHeader =({...rest})=>{
 }
 
 export const AdminHeader =({...rest})=>{
+    const [state, setState] = useState(0)
+    const review = () => {
+        switch(state){
+            case 1: return <AdminInformation setState={setState}/>
+            case 2: return <ChangePwd setState={setState}/>
+            default: return;
+        }
+    }
     return(
         <Header>
         <div className="header-admin">
@@ -57,13 +66,14 @@ export const AdminHeader =({...rest})=>{
                 <label>Xin chào <span> Admin name </span></label>
                 <div className="admin-control-panel">
                     <div className="panel">
-                        <button>Thông tin</button>
-                        <button>Đổi mật khẩu</button>
+                        <button onClick={()=>setState(1)}>Thông tin</button>
+                        <button onClick={()=>setState(2)}>Đổi mật khẩu</button>
                         <button>Thoát</button>
                     </div>
                 </div>
             </div>
         </div>
+        {review()}
     </Header>
     )
 }
