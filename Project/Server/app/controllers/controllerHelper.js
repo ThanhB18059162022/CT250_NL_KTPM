@@ -6,12 +6,12 @@
 // Trả về đối tượng gồm 3 thuộc tính 1 là danh sách sản phẩm items
 // Trang trước previous nếu có
 // Trang sau next nếu có
-async function getPaginatedResults(getCallback, page = 1, limit = 24) {
+async function getPaginatedResults(getCallback, page = 1, limit = 1) {
   if (isNaN(page)) {
     page = 1;
   }
   if (isNaN(limit)) {
-    limit = 24;
+    limit = 1;
   }
 
   page = parseInt(page);
@@ -21,7 +21,7 @@ async function getPaginatedResults(getCallback, page = 1, limit = 24) {
   const endIndex = page * limit;
 
   const items = await getCallback(startIndex, endIndex);
-
+  // console.log(items);
   const pageResult = {
     items,
   };

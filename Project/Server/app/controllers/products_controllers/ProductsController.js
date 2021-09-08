@@ -12,7 +12,7 @@ module.exports = class ProductsController {
   // Lấy danh sách
   // Số trang và số lượng
   getProducts = async (req, res) => {
-    const { page, limit } = req.query;
+    const { page = 1, limit = 24 } = req.query;
 
     const productsPage = await getPaginatedResults(
       this.dao.getProducts,
