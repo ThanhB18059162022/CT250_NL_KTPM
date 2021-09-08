@@ -22,7 +22,7 @@ module.exports = class AuthenticationValidator {
     const schema = joi.object({
       token: joi
         .string()
-        .pattern(/^Bearer\s*/i)
+        .pattern(/^Bearer\s/i)
         .required(),
     });
 

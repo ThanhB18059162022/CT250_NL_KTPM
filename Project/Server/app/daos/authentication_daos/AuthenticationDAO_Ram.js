@@ -4,6 +4,6 @@ module.exports = class AuthenticationDAO_Ram {
   };
 
   getByUsername = async (username) => {
-    username;
+    return username;
   };
 };

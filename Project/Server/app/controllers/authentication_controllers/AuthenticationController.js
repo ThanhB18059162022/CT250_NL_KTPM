@@ -68,6 +68,39 @@ class AuthenticationController {
   validateToken = (token) => this.validator.validateToken(token);
 
   //#endregion
+
+
+  //#region Authorize phải đăng nhập trước mới xài cái này
+
+  // Closure function
+  authorize = (roles) => async (req, res, next) => {
+    const role = req.user?.role;
+
+    const exist = this.roleInRoles(role, roles);
+    if (exist) {
+      return next();
+    }
+
+    return res.status(403).json();
+  };
+
+  roleInRoles = (role, roles) => {
+    return roles.filter((r) => r.toLowerCase() === role.toLowerCase())[0];
+  };
+
+  //#endregion
+
+  //#region GetLoginUser
+
+  getLoginUser = async (req, res) => {
+    const { user } = req;
+
+    return res.json({ user });
+  };
+
+  //#endregion
+
+ 
 }
 
 module.exports = AuthenticationController;
