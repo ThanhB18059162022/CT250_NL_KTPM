@@ -30,9 +30,9 @@ const ProductBox = ()=>{
         <div className="ProductBox">
             <div className="product-box-silder">
                 <div className="box-silder-wrapper">
-                    <img src={product_info.image[pos]}/>
+                    <img src={product_info.image[pos]} alt="product.jpg"/>
                     <ul>
-                        {product_info.image.map((item,index)=><li key={index} onClick={()=>setPos(index)}> <img src={item}/></li>)}
+                        {product_info.image.map((item,index)=><li key={index} onClick={()=>setPos(index)}> <img alt="imgae.jpg" src={item}/></li>)}
                     </ul>
                 </div>
             </div>
@@ -41,16 +41,16 @@ const ProductBox = ()=>{
                 <div className="class-price">
                     {product_info.price.map((item,index)=>
                         <div onClick={()=>setChoose(index)} 
-                            className={choose==index?"choose":""} 
+                            className={choose===index?"choose":""} 
                             key={index}><p>{item.storage}</p><p>{item.price}</p>
                         </div>)}
                 </div>
                 <p className="product-box-price">{product_info.price[choose].price}</p>
                 <p className="support-sell">Hỗ trợ thanh toán</p>
                 <div className="sell-ways">
-                    <img src="/icon/zalopayicon.png" />
-                    <img src="/icon/paypalicon.png"/>
-                    <img src="/icon/codicon.png"/>
+                    <img src="/icon/zalopayicon.png" alt="zalo" />
+                    <img src="/icon/paypalicon.png" alt="paypal"/>
+                    <img src="/icon/codicon.png" alt="cod"/>
                 </div>
                 <button>Thêm vào giỏ hàng</button>
             </div>

@@ -32,7 +32,7 @@ export const SearchHeader =({...rest})=>{
     const [state, setstate] = useState(false)
     const history  = useHistory()
     const searchHandle = (entry) =>{
-        if(entry.trim().length==0) return;
+        if(entry.trim().length===0) return;
         history.push(`/search/${entry}`)
     }
     return (

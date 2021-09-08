@@ -2,7 +2,6 @@ import "./DetailAndRate.Style.scss"
 import { Comment } from '../../Controls/'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCogs } from "@fortawesome/free-solid-svg-icons"
-import { ProductItem } from "../ProductShower/ProductList"
 const DetailAndRate = ({ productID,showDetail }) => {
     const commnets = [
         {
@@ -71,7 +70,7 @@ const DetailAndRate = ({ productID,showDetail }) => {
             <div className="DetailInfo">
                 <div className="detail-wrapper">
                     <h3>Thông số kỹ thuật</h3>
-                    <img src='/image/iphone.jpeg' />
+                    <img src='/image/iphone.jpeg' alt="phone" />
                     <p><span>Tên sản phẩm:</span> iPhone 13 Pro max</p>
                     <p><span>Vi xử lý:</span> Apple A13 Bionic</p>
                     <p><span>Màn hình:</span> 6.5' 1280 x 800</p>

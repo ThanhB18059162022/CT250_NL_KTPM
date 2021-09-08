@@ -1,6 +1,5 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect, useState } from "react"
 import "./ProductModalDetail.Style.scss"
 const ProductModalDetail = ({active=false,setActive,...props}) =>{
     return (
@@ -9,7 +8,7 @@ const ProductModalDetail = ({active=false,setActive,...props}) =>{
                 <h3>Thông tin chi tiết sản phẩm  <FontAwesomeIcon icon ={faTimes} onClick={()=>setActive(false)}/></h3>
                 <div className="product-detail-info" >
                     <div className="image-area">
-                        <img src="/image/iphone.jpeg"/>
+                        <img src="/image/iphone.jpeg" alt="phone.jpg"/>
                     </div>
                     <div className="info">
                         <h3>iPhone 13 Promax plus plus pus</h3>
