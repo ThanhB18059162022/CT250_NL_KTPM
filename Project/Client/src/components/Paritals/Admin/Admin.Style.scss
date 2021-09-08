@@ -270,6 +270,8 @@
     width: 100%;
     top: 10%;
     background-color: rgba(128, 128, 128, 0.822);
+    height: calc(100vh - 60px);
+    overflow-y: scroll;
     div{
         &:first-child{
             margin: auto;
@@ -282,5 +284,6 @@
         position: absolute;
         left: 88%;
         top: 1%;
+        font-size: 25px;
     }
 }
