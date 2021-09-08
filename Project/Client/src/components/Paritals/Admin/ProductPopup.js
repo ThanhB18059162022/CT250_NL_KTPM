@@ -4,16 +4,21 @@ import ProductManagement from "../../../pages/Admin/ProductManagement"
 
 const ProductPopup = () =>{
     const [state, setState] = useState(0)
-    const DisplayPopup = (state, setState) => {
+    const [toDo, setToDo] = useState("nothing")
+    const [id, setID] = useState("null")
+
+    const DisplayPopup = () => {
         switch(state){
-            case 1:
-                return <ProductFullInfo state={state} setState={setState}/>
+            case 1:{
+                return <ProductFullInfo setState={setState} toDo={toDo} setToDo={setToDo} id={id}/>
+            }
         }
     }
+
     return(
         <>
-            <ProductManagement state={state} setState={setState}/>
-            {DisplayPopup(state, setState)}
+            <ProductManagement setState={setState} setToDo={setToDo} setID={setID}/>
+            {DisplayPopup()}
         </>
     )
 }

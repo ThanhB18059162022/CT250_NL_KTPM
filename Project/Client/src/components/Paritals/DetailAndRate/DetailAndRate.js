@@ -3,7 +3,7 @@ import { Comment } from '../../Controls/'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCogs } from "@fortawesome/free-solid-svg-icons"
 import { ProductItem } from "../ProductShower/ProductList"
-const DetailAndRate = ({ productID }) => {
+const DetailAndRate = ({ productID,showDetail }) => {
     const commnets = [
         {
             user: 'Lê Thanh Ngân',
@@ -78,7 +78,7 @@ const DetailAndRate = ({ productID }) => {
                     <p><span>Pin:</span> Lithion 4000mAh</p>
 
                 </div>
-                <div className="detail-ways">
+                <div className="detail-ways" onClick={showDetail}>
                     <p> <FontAwesomeIcon icon={faCogs} /><span> Chi tiết cấu hình</span></p>
                 </div>
             </div>

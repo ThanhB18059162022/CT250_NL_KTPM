@@ -2,6 +2,7 @@
 
 # Mỗi Request cách nhau 3 dấu '#'
 
+
 # Lấy ra người dùng đăng nhập
 GET http://localhost:8000/api/authentication/getUser
 Content-Type: application/json
@@ -15,6 +16,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidmFsaWQiL
 
 
 ### Đăng nhập hợp lệ trả về token 201
+
 POST http://localhost:8000/api/authentication/login
 Content-Type: application/json
 

@@ -8,7 +8,7 @@ const ProductDetail = () => {
         <>
             <div className="Button">
                 <AdminButton style={CusStyle} IconName="Edit"/>
-                <AdminButton IconName="Delete"/>
+                <AdminButton IconName="Save"/>
             </div>
             <div className="ProductDetail BorderFormat">
                 <p className="Detail">Mã chi tiết:</p>

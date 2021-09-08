@@ -262,6 +262,7 @@ describe("Kiểm tra bearer jwt có trong req", () => {
   });
 });
 
+
 // 200 - Phải có jwt
 describe("Lấy ra người dùng đăng nhập trong jwt", () => {
   test("Trả về người dùng", async () => {
@@ -379,3 +380,4 @@ describe("Chuyển hướng người dùng theo quyền - role", () => {
     expect(resMock.json).toBeCalledTimes(1);
   });
 });
+
