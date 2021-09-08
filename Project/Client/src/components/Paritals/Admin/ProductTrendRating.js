@@ -1,6 +1,6 @@
 import './Admin.Style.scss'
 
-const ProductTrend_Rating = () => {
+const ProductTrendRating = () => {
     return(
         <div className="ProductTrend_Rating Responsive">
             <div className="ProductTrend">
@@ -13,4 +13,4 @@ const ProductTrend_Rating = () => {
     )
 }
 
-export default ProductTrend_Rating
+export default ProductTrendRating

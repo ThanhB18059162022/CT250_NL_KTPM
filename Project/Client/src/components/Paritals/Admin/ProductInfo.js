@@ -5,7 +5,7 @@ const ProductInfo = (props) => {
     const CusStyle = {
         margin: "1% 5px 5px 12%"
     };
-    if (props.toDo == "addProduct") {
+    if (props.toDo === "addProduct") {
         return(
             <>
                 <AdminButton style={CusStyle} IconName="Save"/>

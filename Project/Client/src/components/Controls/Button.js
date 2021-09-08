@@ -1,7 +1,6 @@
 import { CartIcon } from "./FlatIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEdit, faTrashAlt, faKey, faReply, faEye, faSave } from "@fortawesome/free-solid-svg-icons";
-import { icon } from "@fortawesome/fontawesome-svg-core";
 
 const Button = ({
     content,

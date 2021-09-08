@@ -9,9 +9,9 @@ const ProductPopup = () =>{
 
     const DisplayPopup = () => {
         switch(state){
-            case 1:{
+            case 1:
                 return <ProductFullInfo setState={setState} toDo={toDo} setToDo={setToDo} id={id}/>
-            }
+            default: return;
         }
     }
 

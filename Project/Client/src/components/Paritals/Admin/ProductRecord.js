@@ -9,7 +9,7 @@ const ProductRecord = (props) => {
             padding: "1px 0"
         };
         if(props === 2) return(<><AdminButton IconName="Edit" style={CusStyle} EditClicked={()=>setState(1)} setToDo={setToDo} setID={()=>setID(obj.no)}/> <AdminButton IconName="Delete" style={CusStyle} DeleteClicked={()=>window.confirm("Xóa sản phẩm?")}/></>)
-        if(Array.isArray(props)==true) return props.length
+        if(Array.isArray(props)===true) return props.length
         return props
     }
 
