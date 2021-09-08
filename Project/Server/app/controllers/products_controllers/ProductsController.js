@@ -25,7 +25,7 @@ module.exports = class ProductsController {
 
   // Lấy theo mã sản phẩm
   getProductByNo = async (req, res) => {
-    let { prod_no: prod_noParam } = req.params;
+    const { prod_no: prod_noParam } = req.params;
 
     const prod_no = Number(prod_noParam);
 
