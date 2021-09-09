@@ -1,6 +1,7 @@
 import "./ProductItem.Style.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMicrochip,faMemory,faMobileAlt,faBatteryThreeQuarters } from "@fortawesome/free-solid-svg-icons"
+import { useHistory } from "react-router"
 const ProductList = ()=>{
     let arr = []
     for(let i = 0; i<24; i++){
@@ -12,7 +13,7 @@ const ProductList = ()=>{
         <div className="ProductList">
             {
                 arr.length>0? <> <ul>
-                {arr.map((item,index)=><ProductItem key={index} info ={item}/>)}
+                {arr.map((item,index)=><ProductItem key={index} info ={item} currentId={index}/>)}
                 </ul>
                 <button className="product-more">Xem thêm</button>
                 </>:
@@ -27,8 +28,9 @@ const ProductList = ()=>{
 export default ProductList;
 
 export const ProductItem = ({info, compare=false, currentId=-1})=>{
+    const history = useHistory()
     return(
-        <li className="ProductItem">
+        <li className="ProductItem" onClick={()=>history.push(`/product/${currentId}`)}>
             <img src={info.src} alt={info.src}/>
             <div className="product-info">
                 <p className="name">iPhone 13 Pro </p>

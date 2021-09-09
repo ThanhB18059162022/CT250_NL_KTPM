@@ -4,8 +4,10 @@ import ProductBox from "../../components/Paritals/ProductBox/"
 import ProductSuggestion from "../../components/Paritals/ProductSuggestion"
 import Footer from "../../components/Paritals/Footer"
 import ProductModalDetail from "../../components/Paritals/ProductModalDetail"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useParams } from "react-router"
 const ProductDetail = (props)=>{
+    const {id} = useParams()
     const [show,setShow] = useState(false)
     const showDetail = () =>{
         setShow(true)
@@ -15,6 +17,16 @@ const ProductDetail = (props)=>{
             behavior:'smooth'
         })
     }
+
+    useEffect(() => {
+        //call product API here
+        window.scrollTo({
+            left:0,
+            top:0,
+            behavior:'smooth'
+        })
+    }, [id])
+
     return(
         <div className="Home">
             <SearchHeader/>
