@@ -34,6 +34,6 @@ router
   .delete(errorCatch(controller.deleteProduct));
 
 // products/name/iPhone12
-router.route("/name/:prod_name").get(errorCatch(controller.getProductByName));
+router.route("/Name/:prod_name").get(errorCatch(controller.getProductByName));
 
 module.exports = router;

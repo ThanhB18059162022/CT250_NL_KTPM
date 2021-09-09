@@ -11,6 +11,9 @@ const NotesController = require("./notes_controllers/NotesController");
 const ProductsController = require("./products_controllers/ProductsController");
 const ProductsValidator = require("./products_controllers/ProductsValidator");
 
+const ModeratorsController = require("./moderators_controllers/ModeratorsControllers");
+const ModeratorsValidator = require("./moderators_controllers/ModeratorsValidator");
+
 module.exports = {
   JwtService,
   AuthenticationController,
@@ -20,4 +23,7 @@ module.exports = {
 
   ProductsController,
   ProductsValidator,
+
+  ModeratorsController,
+  ModeratorsValidator,
 };
