@@ -1,7 +1,6 @@
 import { AdminHeader } from "../../components/Paritals/Header";
 import Navigation from "../../components/Paritals/Navigation";
 import OverView from "./OverView";
-import ProductManagement from "./ProductManagement";
 import FeedbackManagement from "./FeedbackManagement";
 import ModeratorManagement from "./ModeratorManagement";
 import Statistic from "./Statistic";
@@ -18,6 +17,7 @@ const Admin = () =>{
             case 2: return <FeedbackManagement/>
             case 3: return <ModeratorManagement/>
             case 4: return <Statistic/>
+            default: return;
         }
     }
 

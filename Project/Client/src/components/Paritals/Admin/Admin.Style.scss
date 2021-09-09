@@ -270,6 +270,8 @@
     width: 100%;
     top: 10%;
     background-color: rgba(128, 128, 128, 0.822);
+    height: calc(100vh - 60px);
+    overflow-y: scroll;
     div{
         &:first-child{
             margin: auto;
@@ -282,5 +284,87 @@
         position: absolute;
         left: 88%;
         top: 1%;
+        font-size: 25px;
+    }
+}
+
+.BgAdminHeaderPopup{
+    position: absolute;
+    top: 100%;
+    left: -12.5%;
+    width: 125%;
+    height: calc(100vh - 50px);
+    background-color: rgba(128, 128, 128, 0.822);
+    .AdminInformation{
+        border: 1px solid black;
+        border-radius: 45px;
+        width: 40%;
+        position: absolute;
+        left: 30%;
+        top: 20%;
+        background-color: #fff;
+        h1{
+            text-align: center;
+            margin: 2% 0 0 0;
+        }
+        form{
+            display: flex;
+            ul{
+                list-style-type: none;
+            }
+            .InfoTitle{
+                margin: 2% 0 2% 5%;
+                li{
+                    margin: 19% 0;
+                }
+            }
+            .InfoField{
+                margin: 2% 0 0 2%;
+                li{
+                    margin: 3% 5%;
+                    .TextField{
+                        width: 65%;
+                    }
+                    textarea{
+                        resize: none;
+                    }
+                }
+            }
+        }
+    }
+    .ChangePwd{
+        border: 1px solid black;
+        border-radius: 45px;
+        width: 30%;
+        position: absolute;
+        left: 35%;
+        top: 20%;
+        background-color: #fff;
+        h1{
+            text-align: center;
+            margin: 2% 0 0 0;
+        }
+        form{
+            display: flex;
+            ul{
+                list-style-type: none;
+            }
+            .PwdTitle{
+                margin: 2% 0 2% 5%;
+                li{
+                    margin: 10% 0;
+                }
+            }
+            .PwdField{
+                margin: 2% 0 0 2%;
+                li{
+                    margin: 9% 5%;
+                    width: 200%;
+                    input{
+                        width: 100%;
+                    }
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMicrochip,faMemory,faMobileAlt,faBatteryThreeQuarters } from "@fortawesome/free-solid-svg-icons"
 const ProductList = ()=>{
     let arr = []
-    for(let i = 0; i<0; i++){
+    for(let i = 0; i<24; i++){
         arr[i] ={
             src: i%2===0?"/image/samsung.jpeg":"/image/iphone.jpeg"
         }

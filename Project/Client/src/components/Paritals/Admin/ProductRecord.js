@@ -2,16 +2,17 @@ import { AdminButton } from "../../Controls"
 import "./Admin.Style.scss"
 
 const ProductRecord = (props) => {
-    const {obj} = props
+    const {obj, setState, setToDo, setID} = props
     const getContent = (props) =>{
         const CusStyle = {
             fontSize: "15px",
             padding: "1px 0"
-        };
-        if(props === 2) return(<><AdminButton IconName="Watch" style={CusStyle}/> <AdminButton IconName="Delete" style={CusStyle}/></>)
-        if(Array.isArray(props)==true) return props.length
+        }
+        if(props === 2) return(<><AdminButton IconName="Edit" style={CusStyle} EditClicked={()=>setState(1)} setToDo={setToDo} setID={()=>setID(obj.no)}/> <AdminButton IconName="Delete" style={CusStyle} DeleteClicked={()=>window.confirm("Xóa sản phẩm?")}/></>)
+        if(Array.isArray(props)===true) return props.length
         return props
     }
+
     return(
         <>
             <div className="ProductRecord">

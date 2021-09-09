@@ -3,8 +3,8 @@ import ProductRecord from "./ProductRecord"
 import "./Admin.Style.scss"
 
 const ProductList = (props) => {
-    const {name} = props
-    let obj = {
+    const {name, state, setState} = props
+    const obj = {
         no : "Mã sản phẩm",
         name : "Tên sản phẩm",
         os : "Hệ điều hành",
@@ -23,18 +23,27 @@ const ProductList = (props) => {
         ],
         action : 2
     }
-
+    let obj3 = {
+        no : "002",
+        name : "Dien thoai deo",
+        os : "IOS",
+        hardware : "Chip A11",
+        details : [
+            {color : "do"},
+            {color : "den"}
+        ],
+        action : 2
+    }
     return(
         <div className="ListLayout">
             <AdminSearchInput/>
             <div className="AdminListClass BorderFormat">
                 <p className="Title">{name}</p>
                 <br/>
-                <ProductRecord obj={obj}/>
-                <ProductRecord obj={obj2}/>
-                <ProductRecord obj={obj2}/>
+                <ProductRecord obj={obj} state={state} setState={setState} setToDo={props.setToDo} setID={props.setID}/>
+                <ProductRecord obj={obj2} state={state} setState={setState} setToDo={props.setToDo} setID={props.setID}/>
+                <ProductRecord obj={obj3} state={state} setState={setState} setToDo={props.setToDo} setID={props.setID}/>
             </div>
-
         </div>
     )
 }

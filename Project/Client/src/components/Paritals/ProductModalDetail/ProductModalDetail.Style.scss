@@ -1,0 +1,110 @@
+.ProductModalDetail {
+    position: absolute;
+    height: calc(100vh - 55px);
+    background: rgba(0, 0, 0, 0.767);
+    top: 60px;
+    width: 100vw;
+    opacity: 0;
+    z-index: -11;
+    transition: all ease 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    .wrapper {
+        height: 80%;
+        background: white;
+        width: 900px;
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        &>h3{
+            position: relative;
+            margin-bottom: 10px;
+            border-bottom: 1px solid black;
+            padding: 5px 0;
+            & > svg {
+                font-size: 26px;
+                position: absolute;
+                right: 20px;
+            }
+        }
+        .product-detail-info{
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            flex-grow: 1;
+            .image-area{
+                flex-basis: 50%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                img{
+                    width: 140%;
+                    margin-left: -5%;
+                }
+            }
+            .info{
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                margin-left: 20px;
+                padding: 10px 0;
+              
+                div{
+                    display: flex;
+                    flex-grow: 1;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    p{
+                        padding-left: 10%;
+                        span{
+                            font-weight: 600;
+                            display: inline-block;
+                            width: 120px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.show{
+        z-index: 111;
+        opacity: 1;
+    }
+}
+
+
+@media screen and (max-width:770px) {
+    .ProductModalDetail {
+        padding: 20px 0;
+        height: 100vh;
+        top:120px;
+        position:absolute;
+        .wrapper {
+            padding-top: 80px;
+            height: auto;
+            .product-detail-info{
+                flex-direction: column;
+                .info{
+                    h3{
+                        text-align: center;
+                    }
+                    div{
+                        p{
+                            span{
+                                width: 110px;
+                            }
+                            padding: 10px;
+                            margin-left: 50%;
+                            transform: translateX(-50%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

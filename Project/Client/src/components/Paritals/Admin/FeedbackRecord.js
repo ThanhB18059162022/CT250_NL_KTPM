@@ -9,7 +9,7 @@ const FeedbackRecord = (props) => {
             padding: "1px 0"
         };
         if(props === 2) return(<><AdminButton IconName="Reply" style={CusStyle}/> <AdminButton IconName="Delete" style={CusStyle}/></>)
-        if(Array.isArray(props)==true) return props.length
+        if(Array.isArray(props)===true) return props.length
         return props
     }
     return(
