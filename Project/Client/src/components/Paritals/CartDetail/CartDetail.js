@@ -2,6 +2,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useEffect } from "react"
 import Helper from "../../../helpers"
+import Notifications from "../../../common/Notifications"
 import "./CartDetail.Style.scss"
 const CartDetail = () => {
     const [list, setList] = useState([])
@@ -82,6 +83,15 @@ function CartTransaction(props) {
         transactionway:-1
     })
 
+    const [show,setShow] =useState(false)
+
+    const [notify, setNotify] = useState({
+        content:"",
+        title:"",
+        type:"INFORMATION",
+        infoType:"INFO",
+    })
+
     const setAddress = (value)=>{
         setCustomerInfo({...customerinfo,address:value})
     }
@@ -104,8 +114,14 @@ function CartTransaction(props) {
             }
         }
         else{
-            if(customerinfo.transactionway===-1)
-                alert('Vui lòng chọn hình thức thanh toán')
+            if(customerinfo.transactionway===-1){
+                setNotify({
+                    ...notify,
+                    content:'Vui lòng chọn hình thức thanh toán!',
+                    infoType:'INFO'
+                })
+                setShow(true)
+            }
             else{
                 alert("Thanh tóan")
                 console.log(customerinfo)
@@ -115,48 +131,45 @@ function CartTransaction(props) {
 
     const validateStep1 = ()=>{
         const validateCCID = Helper.TransactionValidator.checkingCCID(customerinfo.ccid)
-        if(!validateCCID.result){
-            alert(validateCCID.resson)
-            return false
-        }
+        if(!validate(validateCCID)) return false
 
         const validateEmail = Helper.TransactionValidator.checkingEmail(customerinfo.email)
-        if(!validateEmail.result){
-            alert(validateEmail.resson)
-            return false
-        }
+        if(!validate(validateEmail)) return false
 
         return true
     }
 
     const validateStep2 = ()=>{
         const validateName = Helper.TransactionValidator.checkingName(customerinfo.name);
-        if(!validateName.result){
-            alert(validateName.resson)
-            return false
-        }
+        if(!validate(validateName)) return false
 
         const validateGender = Helper.TransactionValidator.checkingGender(customerinfo.gender)
-        if(!validateGender.result){
-            alert(validateGender.resson)
-            return false
-        }
+        if(!validate(validateGender)) return false
 
         const validateAddress = Helper.TransactionValidator.checkingAddress(customerinfo.address)
-        if(!validateAddress.result){
-            alert(validateAddress.resson)
-            return false
-        }
+        if(!validate(validateAddress)) return false
 
         const validatePhone = Helper.TransactionValidator.checkingPhone(customerinfo.phone)
-        if(!validatePhone.result){
-            alert(validatePhone.resson)
+        if(!validate(validatePhone)) return false
+        return true
+    }
+
+    const validate = (result) => {
+        if(!result.result){
+            setNotify({
+                ...notify,
+                title:"Cảnh báo",
+                infoType:"WARN",
+                content: result.resson
+            })
+            setShow(true)
             return false
         }
         return true
     }
 
     return (
+        <>
         <div className={`carttransaction ${display?"show":""}`}>
             <div className="transaction-wrapper">
                 <div className="transaction-info">
@@ -202,6 +215,8 @@ function CartTransaction(props) {
             </div>
             <SetLocation display={location} setDisplay={setLocation} setAddress={setAddress} />
         </div>
+        <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
+        </>
     )
 }
 

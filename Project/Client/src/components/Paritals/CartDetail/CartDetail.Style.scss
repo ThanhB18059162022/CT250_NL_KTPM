@@ -122,6 +122,10 @@
                     font-weight: 600;
                     border: none;
                     border-radius: 100px;
+                    transition: all ease .3s;
+                    &:active{
+                        transform: scale(0.95);
+                    }
                     &:hover {
                         background: var(--backgroundColor);
                     }
@@ -201,7 +205,6 @@
                                 padding: 10px;
                                 width: 100%;
                                 background: var(--backgroundBlur);
-                                //      border: 0.5px solid rgba(0, 0, 0, 0.486);
                                 border: none;
                                 border-radius: 10px;
                                 outline: none;
@@ -242,6 +245,9 @@
                         border-radius: 100px;
                         border: none;
                         transition: all ease 0.3s;
+                        &:active{
+                            transform: scale(.9);
+                        }
                         &:hover {
                             background: var(--backgroundColor);
                         }
@@ -275,6 +281,9 @@
                     border-radius: 100px;
                     outline: none;
                     border: none;
+                    &:active{
+                        transform: scale(0.9);
+                    }
                     &:hover{
                         background: var(--backgroundColor);
                     }

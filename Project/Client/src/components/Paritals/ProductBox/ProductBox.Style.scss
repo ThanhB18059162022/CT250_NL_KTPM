@@ -1,7 +1,7 @@
 .ProductBox {
     display: flex;
     padding: 25px 15px;
-    box-shadow: 0 0 10px black;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.479);
     border-radius: 10px;
     & > div {
         margin: 0 1%;
@@ -17,7 +17,7 @@
     }
     .product-box-silder {
         .box-silder-wrapper {
-            box-shadow: 0 0 5px black;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.253);
             overflow: hidden;
             padding: 20px 10px;
             border-radius: 10px;
@@ -109,6 +109,7 @@
             text-transform: uppercase;
             font-weight: 600;
             background: #efefef;
+            transition:  all .3s ease;
             &:hover {
                 background: var(--backgroundColor);
             }

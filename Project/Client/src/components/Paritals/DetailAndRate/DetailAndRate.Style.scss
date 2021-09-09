@@ -5,7 +5,7 @@
     }
     .Comments {
         flex-basis: 58%;
-        box-shadow: 0 0 10px black;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.466);
         padding: 10px 20px;
         .comment-area{
             position: relative;
@@ -50,7 +50,7 @@
         position: relative;
         margin-left: 2%;
         .detail-wrapper {
-            box-shadow: 0 0 10px black;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.452);
             border-radius: 10px;
             overflow: hidden;
             padding: 10px 10px 25px;
@@ -86,7 +86,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-
+            user-select: none;
             cursor: pointer;
             p {
                 font-size: 20px;
