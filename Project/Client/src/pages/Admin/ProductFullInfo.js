@@ -23,12 +23,11 @@ const ProductFullInfo = (props) => {
         )
     }
     else if(props.toDo === "editProduct"){
-        console.log(props.id)
         return(
             <div className="ProductFullInfo">
                 <div>
                     <button onClick={()=>props.setState(0)} className="CloseBtn"><FontAwesomeIcon icon={faWindowClose}/></button>
-                    <ProductInfo toDo={props.toDo}/>
+                    <ProductInfo toDo={props.toDo} id={props.id}/>
                     <div className="ProductFullInfoSplit">
                         <p className="Title Line"><span>Chi tiết sản phẩm</span></p>
                         <div className="Button">

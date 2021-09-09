@@ -8,7 +8,7 @@ const ModeratorRecord = (props) => {
             fontSize: "15px",
             padding: "1px 0"
         };
-        if(props === 2) return(<><AdminButton IconName="Edit" style={CusStyle}/> <AdminButton IconName="Delete" style={CusStyle}/></>)
+        if(props === 2) return(<><AdminButton IconName="Edit" style={CusStyle}/> <AdminButton IconName="Delete" style={CusStyle} DeleteClicked={()=>window.confirm("Xóa quản trị viên?")}/></>)
         return props
     }
     return(

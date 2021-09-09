@@ -8,7 +8,7 @@ const FeedbackRecord = (props) => {
             fontSize: "15px",
             padding: "1px 0"
         };
-        if(props === 2) return(<><AdminButton IconName="Reply" style={CusStyle}/> <AdminButton IconName="Delete" style={CusStyle}/></>)
+        if(props === 2) return(<><AdminButton IconName="Reply" style={CusStyle}/> <AdminButton IconName="Delete" style={CusStyle} DeleteClicked={()=>window.confirm("Xóa bình luận?")}/></>)
         if(Array.isArray(props)===true) return props.length
         return props
     }

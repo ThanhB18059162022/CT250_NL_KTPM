@@ -102,15 +102,47 @@
 
 .ProductInfo{
     padding: 0 0 20px 0;
-    .Info{
-        margin: 15px 0 15px 30px;
+    .AddProductForm{
+        display: flex;
+        width: 100%;
+        .InfoTitle{
+            background-color: #F5F5F5;
+            width: 15%;
+            padding: 0;
+            margin: 0 0 0 8%;
+            .Info{
+                margin: 9% 0 0 0;
+            }
+        }
+        .InfoInput{
+            input{
+                margin: 8.2% 0 0 0;
+                width: 250%;
+            }
+        }
     }
 }
 
 .ProductDetail{
     padding: 0 0 20px 0;
-    .Detail{
-        margin: 15px 0 15px 30px;
+    .AddDetailForm{
+        display: flex;
+        width: 100%;
+        .DetailTitle{
+            background-color: #F5F5F5;
+            width: 15%;
+            padding: 0;
+            margin: 0 0 0 8%;
+            .Detail{
+                margin: 15% 0 0 0;
+            }
+        }
+        .DetailInput{
+            input{
+                margin: 8.2% 0 0 0;
+                width: 150%;
+            }
+        }
     }
 }
 
