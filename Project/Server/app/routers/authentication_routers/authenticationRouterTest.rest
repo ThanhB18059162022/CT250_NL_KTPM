@@ -2,7 +2,6 @@
 
 # Mỗi Request cách nhau 3 dấu '#'
 
-
 # Lấy ra người dùng đăng nhập
 GET http://localhost:8000/api/authentication/getUser
 Content-Type: application/json
