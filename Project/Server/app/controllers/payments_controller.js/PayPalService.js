@@ -1,3 +1,7 @@
+// Tham khảo https://developer.paypal.com/docs/business/checkout/server-side-api-calls/capture-order/
+// https://developer.paypal.com/docs/business/checkout/server-side-api-calls/set-up-sdk/
+// https://www.youtube.com/watch?v=AtZGoueL4Vs
+// https://www.youtube.com/watch?v=DNM9FdFrI1k
 const PayPalCheckout = require("@paypal/checkout-server-sdk");
 
 // Bên client button createOrder vs onApprove để gọi api bên đây
@@ -12,7 +16,7 @@ module.exports = class PayPalService {
 
   // Tạo client theo config đang xài sandbox
   createClient = (config) => {
-    const { clientId, secretId, env = "live" } = config;
+    const { clientId, secretId, env = "sandbox" } = config;
 
     let Environment = PayPalCheckout.core.SandboxEnvironment;
     if (env === "live") {
@@ -26,6 +30,21 @@ module.exports = class PayPalService {
 
   //#endregion
 
+  //#region EXIST
+
+  // Kiểm tra đơn hàng tồn tại
+  orderExist = async (orderId) => {
+    try {
+      await this.getOrderById(orderId);
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  //#endregion
+
   //#region GET
 
   // Lấy đơn hàng theo id
@@ -34,7 +53,7 @@ module.exports = class PayPalService {
 
     const order = await this.payPalClient.execute(getRequest);
 
-    return order;
+    return order.result;
   };
 
   //#endregion
@@ -53,7 +72,7 @@ module.exports = class PayPalService {
     // Gọi api paypal để tạo order - có exception khi không hợp lệ body
     const newOrder = await this.payPalClient.execute(createRequest);
 
-    return newOrder;
+    return newOrder.result;
   };
 
   // Lấy danh sách sản phẩm
@@ -117,9 +136,9 @@ module.exports = class PayPalService {
     captureRequest.requestBody({});
 
     // Cái này gọi để thanh toán tiền
-    const orderCapture = await paypalClient.execute(captureRequest);
+    const orderCapture = await this.payPalClient.execute(captureRequest);
 
-    return orderCapture;
+    return orderCapture.result;
   };
 
   //#endregion

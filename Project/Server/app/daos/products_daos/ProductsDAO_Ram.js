@@ -27,10 +27,10 @@ module.exports = class ProductsDAO_Ram {
         prod_hardware: {
           cpu: "Snapdragon 888",
           ram: "8 GB",
-          gpu,
+          gpu: "ad",
         },
-        nsx, //nhà sản xuất
-        sim,
+        nsx: "Xiaomi", //nhà sản xuất
+        sim: "Nano",
         prod_status: "",
         prod_img: `/img/${1}/prod_img1.png`,
         prod_img: img,
