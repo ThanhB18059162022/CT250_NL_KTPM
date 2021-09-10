@@ -7,17 +7,23 @@ const PayPalCheckout = require("@paypal/checkout-server-sdk");
 // Bên client button createOrder vs onApprove để gọi api bên đây
 module.exports = class PayPalService {
   constructor(config, productService) {
-    this.currency_code = config.currency_code || "USD";
-    this.payPalClient = this.createClient(config);
+    const {
+      clientId,
+      secretId,
+      env = "sandbox",
+      currency_code = "USD",
+    } = config;
+
+    this.clientId = clientId;
+    this.currency_code = currency_code;
+    this.payPalClient = this.createClient(clientId, secretId, env);
     this.productService = productService;
   }
 
   //#region INIT
 
   // Tạo client theo config đang xài sandbox
-  createClient = (config) => {
-    const { clientId, secretId, env = "sandbox" } = config;
-
+  createClient = (clientId, secretId, env) => {
     let Environment = PayPalCheckout.core.SandboxEnvironment;
     if (env === "live") {
       Environment = PayPalCheckout.core.LiveEnvironment;
