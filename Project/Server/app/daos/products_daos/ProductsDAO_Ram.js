@@ -1,6 +1,7 @@
 const products = [];
 const img = "https://dummyimage.com/600x400/000/0fffff&text=Coming+soon";
-
+// https://fptshop.com.vn/dien-thoai/iphone-12-pro-max?dung-luong=128gb
+// https://www.thegioididong.com/dtdd/iphone-12#top-tskt
 module.exports = class ProductsDAO_Ram {
   constructor() {
     for (let i = 1; i <= 1000; i++) {
@@ -14,6 +15,7 @@ module.exports = class ProductsDAO_Ram {
           type: "IPS FHD+",
           resolution: "1080 x 2400 Pixel",
           glass: "Gorilla Glass 3",
+          rate: "",
         },
         prod_camera: {
           back: "48 MP",
@@ -25,7 +27,10 @@ module.exports = class ProductsDAO_Ram {
         prod_hardware: {
           cpu: "Snapdragon 888",
           ram: "8 GB",
+          gpu,
         },
+        nsx, //nhà sản xuất
+        sim,
         prod_status: "",
         prod_img: `/img/${1}/prod_img1.png`,
         prod_img: img,
