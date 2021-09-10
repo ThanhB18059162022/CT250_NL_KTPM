@@ -9,7 +9,7 @@
         border: 2px solid black;
         width: 80%;
         margin: auto;
-        border-radius: 55px;
+        border-radius: 15px;
     }
 }
 
@@ -45,13 +45,13 @@
         width: 49%;
         margin: 0 1% 0 0;
         border: 2px solid black;
-        border-radius: 45px;
+        border-radius: 15px;
     }
     .Rating{
         width: 49%;
         margin: 0 0 0 1%;
         border: 2px solid black;
-        border-radius: 45px;
+        border-radius: 15px;
     }
     p{
         margin: 8px;
@@ -98,27 +98,122 @@
     margin-top: 3%;
     .AdminListClass{
         height: 700px;
+        overflow-y: auto;
+        .ProductList{
+            display: flex;
+            width: 100%;
+            p{
+                text-align: center;
+                padding: 2px 0;
+                &:not(:last-child){
+                    border-right: 2px solid black;
+                }
+                &:nth-child(1){
+                    width: 8%;
+                }
+                &:nth-child(2){
+                    width: 30%;
+                }
+                &:nth-child(3){
+                    width: 8%;
+                }
+                &:nth-child(4){
+                    width: 40%;
+                }
+                &:nth-child(5){
+                    width: 6%;
+                }
+                &:nth-child(6){
+                    width: 8%;
+                }
+            }
+        }
+        hr{
+            width: 99%;
+            margin: 3px auto;
+            &:last-child{
+                display: none;
+            }
+        }
+        .FeedbackList{
+            display: flex;
+            width: 100%;
+            p{
+                text-align: center;
+                padding: 2px 0;
+                &:not(:last-child){
+                    border-right: 2px solid black;
+                }
+                &:nth-child(1){
+                    width: 8%;
+                }
+                &:nth-child(2){
+                    width: 15%;
+                }
+                &:nth-child(3){
+                    width: 32%;
+                }
+                &:nth-child(4){
+                    width: 20%;
+                }
+                &:nth-child(5){
+                    width: 10%;
+                }
+                &:nth-child(6){
+                    width: 7%;
+                }
+                &:nth-child(7){
+                    width: 8%;
+                }
+            }
+        }
+        .ModeratorList{
+            display: flex;
+            width: 100%;
+            p{
+                text-align: center;
+                padding: 2px 0;
+                &:not(:last-child){
+                    border-right: 2px solid black;
+                }
+                &:nth-child(1){
+                    width: 8%;
+                }
+                &:nth-child(2){
+                    width: 20%;
+                }
+                &:nth-child(3){
+                    width: 12%;
+                }
+                &:nth-child(4){
+                    width: 10%;
+                }
+                &:nth-child(5){
+                    width: 7%;
+                }
+                &:nth-child(6){
+                    width: 35%;
+                }
+                &:nth-child(7){
+                    width: 8%;
+                }
+            }
+        }
     }
 }
 
 .ProductInfo{
     padding: 0 0 20px 0;
     .AddProductForm{
-        display: flex;
-        width: 100%;
-        .InfoTitle{
-            background-color: #F5F5F5;
-            width: 15%;
-            padding: 0;
-            margin: 0 0 0 8%;
-            .Info{
-                margin: 9% 0 0 0;
-            }
-        }
-        .InfoInput{
+        div{
+            display: flex;
+            width: 100%;
+            justify-content: right;
+            margin: 2% -18%;
+            width: 100%;
             input{
-                margin: 8.2% 0 0 0;
-                width: 250%;
+                width: 60%;
+                margin-left: 2%;
             }
         }
     }
@@ -126,22 +221,15 @@
 
 .ProductDetail{
     padding: 0 0 20px 0;
-    .AddDetailForm{
-        display: flex;
-        width: 100%;
-        .DetailTitle{
-            background-color: #F5F5F5;
-            width: 15%;
-            padding: 0;
-            margin: 0 0 0 8%;
-            .Detail{
-                margin: 15% 0 0 0;
-            }
-        }
-        .DetailInput{
+    .ProductDetailForm{
+        div{
+            display: flex;
+            justify-content: right;
+            margin: 2% -18%;
+            width: 100%;
             input{
-                margin: 8.2% 0 0 0;
-                width: 150%;
+                width: 60%;
+                margin-left: 2%;
             }
         }
     }
@@ -181,84 +269,84 @@
     top: 15.5%;
 }
 
-.ProductRecord{
-    display: flex;
-    align-items: center;
-    p + p{
-        border-left: 2px solid black;
-    }
-    p{
-        height: 26px;
-        text-align: center;
-        padding: 3px 0;
-        &:nth-child(1){
-            width: 7%;
-        }
-        &:nth-child(2){
-            width: 25%;
-        }
-        &:nth-child(3){
-            width: 8%;
-        }
-        &:nth-child(4){
-            width: 45%;
-        }
-        &:nth-child(5){
-            width: 6%;
-        }
-        &:nth-child(6){
-            width: 9%;
-        }
-    }
-    + hr{
-        width: 98%;
-        margin: 5px auto;
-        &:last-child{
-            display: none;
-        }
-    }
-}
+// .ProductRecord{
+//     display: flex;
+//     align-items: center;
+//     p + p{
+//         border-left: 2px solid black;
+//     }
+//     p{
+//         height: 26px;
+//         text-align: center;
+//         padding: 3px 0;
+//         &:nth-child(1){
+//             width: 7%;
+//         }
+//         &:nth-child(2){
+//             width: 25%;
+//         }
+//         &:nth-child(3){
+//             width: 8%;
+//         }
+//         &:nth-child(4){
+//             width: 45%;
+//         }
+//         &:nth-child(5){
+//             width: 6%;
+//         }
+//         &:nth-child(6){
+//             width: 9%;
+//         }
+//     }
+//     + hr{
+//         width: 98%;
+//         margin: 5px auto;
+//         &:last-child{
+//             display: none;
+//         }
+//     }
+// }
 
-.FeedbackRecord{
-    display: flex;
-    align-items: center;
-    p + p{
-        border-left: 2px solid black;
-    }
-    p{
-        height: 26px;
-        text-align: center;
-        padding: 3px 0;
-        &:nth-child(1){
-            width: 7%;
-        }
-        &:nth-child(2){
-            width: 14%;
-        }
-        &:nth-child(3){
-            width: 35%;
-        }
-        &:nth-child(4){
-            width: 20%;
-        }
-        &:nth-child(5){
-            width: 8%;
-        }
-        &:nth-child(6){
-            width: 7%;
-        }
-        &:nth-child(7){
-            width: 9%;
-        }
-    }
-    + hr{
-        width: 98%;
-        margin: 5px auto;
-        &:last-child{
-            display: none;
-        }
-    }
-}
+// .FeedbackRecord{
+//     display: flex;
+//     align-items: center;
+//     p + p{
+//         border-left: 2px solid black;
+//     }
+//     p{
+//         height: 26px;
+//         text-align: center;
+//         padding: 3px 0;
+//         &:nth-child(1){
+//             width: 7%;
+//         }
+//         &:nth-child(2){
+//             width: 14%;
+//         }
+//         &:nth-child(3){
+//             width: 35%;
+//         }
+//         &:nth-child(4){
+//             width: 20%;
+//         }
+//         &:nth-child(5){
+//             width: 8%;
+//         }
+//         &:nth-child(6){
+//             width: 7%;
+//         }
+//         &:nth-child(7){
+//             width: 9%;
+//         }
+//     }
+//     + hr{
+//         width: 98%;
+//         margin: 5px auto;
+//         &:last-child{
+//             display: none;
+//         }
+//     }
+// }
 
 .ModeratorRecord{
     display: flex;
@@ -304,24 +392,25 @@
 .ProductFullInfo{
     position: absolute;
     width: 100%;
-    top: 10%;
+    height: calc(100vh - 55px);
+    top: 55px;
     background-color: rgba(128, 128, 128, 0.822);
-    height: calc(100vh - 10%);
     overflow-y: scroll;
-    div{
-        &:first-child{
-            margin: auto;
-            background-color: rgba(255, 255, 255, 0.9);
-            width: 80%;
-            padding: 2% 10%;
+    .ProductFullInfoWrapper{
+        position: relative;
+        height: 100%;
+        margin: auto;
+        background-color: rgba(255, 255, 255, 0.9);
+        width: 80%;
+        padding: 2% 10%;
+        .CloseBtn{
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 25px;
         }
     }
-    .CloseBtn{
-        position: absolute;
-        left: 88%;
-        top: 1%;
-        font-size: 25px;
-    }
+    
 }
 
 .BgAdminHeaderPopup{
@@ -333,7 +422,7 @@
     background-color: rgba(128, 128, 128, 0.822);
     .AdminInformation{
         border: 1px solid black;
-        border-radius: 45px;
+        border-radius: 15px;
         width: 40%;
         position: absolute;
         left: 30%;
@@ -343,35 +432,37 @@
             text-align: center;
             margin: 2% 0 0 0;
         }
-        form{
-            display: flex;
-            ul{
-                list-style-type: none;
-            }
-            .InfoTitle{
-                margin: 2% 0 2% 5%;
-                li{
-                    margin: 19% 0;
+        .AdminInformationForm{
+            div{
+                display: flex;
+                margin: 5px 0;
+                p{
+                    width: 20%;
+                    text-align: right;
+                    margin: 0 15px 0 0;
+                    font-weight: bold;
+                }
+                .TextField{
+                    width: 60%;
+                    padding: 2px;
+                }
+                .Sex{
+                    align-items: center;
+                }
+                textarea{
+                    width: 60%;
+                    padding: 2px;
+                    resize: none;
                 }
             }
-            .InfoField{
-                margin: 2% 0 0 2%;
-                li{
-                    margin: 3% 5%;
-                    .TextField{
-                        width: 65%;
-                    }
-                    textarea{
-                        resize: none;
-                        padding: 5px;
-                    }
-                }
-            }
+        }
+        .AdminInformationBtn{
+            margin: 2% 0 0 0;
         }
     }
     .ChangePwd{
         border: 1px solid black;
-        border-radius: 45px;
+        border-radius: 15px;
         width: 30%;
         position: absolute;
         left: 35%;
@@ -382,24 +473,19 @@
             margin: 2% 0 0 0;
         }
         form{
-            display: flex;
-            ul{
-                list-style-type: none;
-            }
-            .PwdTitle{
-                margin: 2% 0 2% 5%;
-                li{
-                    margin: 10% 0;
+            margin: 3% 0;
+            div{
+                display: flex;
+                margin: 1% 0;
+                p{
+                    width: 30%;
+                    text-align: right;
+                    margin: 0 2% 0 0;
+                    font-weight: bold;
                 }
-            }
-            .PwdField{
-                margin: 2% 0 0 2%;
-                li{
-                    margin: 9% 5%;
-                    width: 200%;
-                    input{
-                        width: 100%;
-                    }
+                input{
+                    width: 60%;
+                    padding: 2px;
                 }
             }
         }
@@ -409,16 +495,16 @@
 .ModeratorInformation{
     position: absolute;
     width: 100%;
-    top: 10%;
+    top: 55px;
     background-color: rgba(128, 128, 128, 0.822);
-    height: calc(100vh - 10%);
+    height: calc(100vh - 55px);
     overflow-y: scroll;
     .ModeratorInformationBoder{
         border: 1px solid black;
         width: 40%;
         margin: 5% auto;
         background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 45px;
+        border-radius: 15px;
         padding: 1% 2%;
         h1{
             text-align: center;
@@ -430,27 +516,30 @@
             font-size: 20px;
         }
         .ModInfoForm{
-            display: flex;
             margin: 2% 0;
             div{
-                &:first-child{
-                    margin-right: 5%;
-                }
+                display: flex;
+                margin: 0 0 1% 0;
                 p{
-                    margin: 0 0 17% 0;
+                    width: 20%;
+                    text-align: right;
+                    margin: 0 2% 0 0;
+                    font-weight: bold;
                 }
-                input{
-                    margin: 0 0 2% 0;
-                    &:not(:nth-of-type(5)){
-                        &:not(:nth-of-type(6)){
-                            width: 60%;
-                        }
-                    }
+                .TextField{
+                    width: 60%;
+                    padding: 2px;
                 }
                 textarea{
+                    width: 60%;
                     resize: none;
+                    padding: 2px;
+                }
+                .Sex{
+                    align-items: center;
                 }
             }
+            
         }
     }
 }
@@ -458,40 +547,37 @@
 .FeedbackInformation{
     position: absolute;
     width: 100%;
-    top: 10%;
+    top: 55px;
     background-color: rgba(128, 128, 128, 0.822);
-    height: calc(100vh - 10%);
+    height: calc(100vh - 55px);
+    overflow-y: hidden;
     .FeedbackInformationBorder{
         border: 1px solid black;
         width: 40%;
         margin: 5% auto;
-        border-radius: 45px;
+        border-radius: 15px;
         background-color: rgba(255, 255, 255, 0.9);
         padding: 1% 0;
         h1{
             text-align: center;
         }
         .FbInfoPart1{
-            display: flex;
-            margin: 2% 5%;
-            .FbInfoPart1_Col1{
-                p{
+            div{
+                display: flex;
+                margin: 2% 5%;
+                .col1{
+                    width: 20%;
+                    text-align: right;
+                    margin: 0 15px 0 0;
                     font-weight: bold;
-                    margin: 0 0 5px 0;
-                    &:nth-child(2){
-                        margin: 0 0 68px 0;
-                    }
+                }
+                .col2{
+                    // position: relative;
+                    width: 70&;
+                    text-align: left;
                 }
             }
-            .FbInfoPart1_Col2{
-                margin: 0 5%;
-                p{
-                    margin: 0 0 5px 0;
-                }
-                textarea{
-                    resize: none;
-                }
-            }
+            
         }
         hr{
             width: 60%;
@@ -519,13 +605,13 @@
     position: absolute;
     z-index: 1;
     width: 100%;
-    top: 10%;
+    top: 55px;
     background-color: rgba(128, 128, 128, 0.822);
-    height: calc(100vh - 10%);
+    height: calc(100vh - 55px);
     .ReplyFeedbackBorder{
         margin: 10% auto;
         border: 1px solid black;
-        border-radius: 45px;
+        border-radius: 15px;
         width: 40%;
         background-color: rgba(255, 255, 255, 0.9);
         padding: 1% 2%;

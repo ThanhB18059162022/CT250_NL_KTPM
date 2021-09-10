@@ -9,24 +9,32 @@ const ProductDetail = () => {
     return(
         <>
             <div className="DetailButton">
-                <AdminButton style={CusStyle} IconName={faTrashAlt}/>
+                <AdminButton style={CusStyle} IconName={faTrashAlt} ClickEvent={()=>alert("xoa")}/>
             </div>
             <div className="ProductDetail BorderFormat">
-                <form className="AddDetailForm">
-                    <div className="DetailTitle">
-                        <p className="Detail">Mã chi tiết</p>
-                        <p className="Detail">Bộ nhớ</p>
-                        <p className="Detail">Giá</p>
-                        <p className="Detail">Số lượng</p>
-                        <p className="Detail">Đã bán</p>
-                        <p className="Detail">Hình ảnh</p>
+                <form className="ProductDetailForm">
+                    <div>
+                        <p>Mã chi tiết:</p>
+                        <input name="txtPDNo" type="text" disabled></input>
                     </div>
-                    <div className="DetailInput">
-                        <input name="txtPropNo" type="text" disabled></input> <br/>
-                        <input name="txtPropName" type="text"></input> <br/>
-                        <input name="txtPropMFG" type="text"></input> <br/>
-                        <input name="txtScreen" type="text"></input> <br/>
-                        <input name="txtScreen" type="text"></input> <br/>
+                    <div>
+                        <p>Bộ nhớ:</p>
+                        <input name="txtPDMemory" type="text"></input> <br/>
+                    </div>
+                    <div>
+                        <p>Giá:</p>
+                        <input name="txtPDPrice" type="text"></input> <br/>
+                    </div>
+                    <div>
+                        <p>Số lượng:</p>
+                        <input name="txtPDAmount" type="text"></input> <br/>
+                    </div>
+                    <div>
+                        <p>Đã bán:</p>
+                        <input name="txtPDSold" type="text"></input> <br/>
+                    </div>
+                    <div>
+                        <p>Hình ảnh:</p>
                         <input type="file" id="myFile" name="filename" multiple></input>
                     </div>
                 </form>

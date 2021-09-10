@@ -5,21 +5,20 @@ import ModeratorInformation from "./ModeratorInformation"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 
 const ModeratorManagement = () => {
-    const [state, setState] = useState(0)
-    const [toDo, setToDo] = useState("nothing")
-    const [id, setID] = useState("null")
+    const [addNew, setAddNew] = useState(0)
+    const [id, setID] = useState("")
     const displayAddModeratorForm = () => {        
-        switch(state){
-            case 1: return <ModeratorInformation setState={setState} toDo={toDo} id={id}/>
+        switch(addNew){
+            case 1: return <ModeratorInformation setDisplay={setAddNew}/>
             default: return;
         }
     }
     return(
         <div>
             <div className="ProductManagementButton">
-                <AdminButton IconName={faPlus} AddNewClicked={()=>setState(1)} setToDo={setToDo}/>
+                <AdminButton IconName={faPlus} ClickEvent={()=>setAddNew(1)}/>
             </div>
-            <MorderatorList name="Danh sách quản trị viên" setState={setState} setToDo={setToDo} setID={setID}/>
+            <MorderatorList/>
             {displayAddModeratorForm()}
         </div>
     )

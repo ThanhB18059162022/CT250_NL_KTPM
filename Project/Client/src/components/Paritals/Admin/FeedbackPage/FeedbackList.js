@@ -1,52 +1,84 @@
-import { AdminSearchInput } from "../../../Controls"
+import { faEye, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
+import { useState } from "react"
+import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
-import FeedbackRecord from "./FeedbackRecord"
+import FeedbackInformation from "./FeedbackInformation"
 
-const FeedbackList = (props) => {
-    let obj = {
-        no : "Mã đánh giá",
-        user : "Người đánh giá",
-        content : "Nội dung",
-        product : "Sản phẩm",
-        time : "Thời gian",
-        reply : "Số phản hồi",
-        action : "Hành động"
+const FeedbackList = () => {
+    const cusStyle = {
+        fontSize : "15px",
+        width : "45px"
     }
+    const [fbInfo, setFbInfo] = useState(0)
+    const [fbNo, setFbNo] = useState()
+    const displayFbInfoForm = () => {
+        switch(fbInfo){
+            case 1: return <FeedbackInformation setFbInfo={setFbInfo} fbNo={fbNo}/>
+            default: return;
+        }
+    }
+    //test data
     const obj2 = [
         {
-            no : "001",
-            user : "Ban đêm có nắng",
-            content : "Sản phẩm rất tốt",
-            product : "IPhone X",
-            time : "04/09/2021",
+            fb_no : "001",
+            cus_name : "Ban đêm có nắng",
+            fb_content : "Sản phẩm rất tốt",
+            prod_name : "IPhone X",
+            fb_time : "04/09/2021",
             reply : [
                 {mod : "Admin01", content : "Cảm ơn bạn!"},
                 {mod : "Admin01", content : "Cảm ơn bạn!"}
-            ],
-            action : 2
+            ]
         },
         {
-            no : "002",
-            user : "Ban ngày có trăng",
-            content : "Dịch vụ rất hài lòng",
-            product : "IPhone X",
-            time : "04/09/2021",
+            fb_no : "002",
+            cus_name : "Ban ngày có trăng",
+            fb_content : "Dịch vụ rất hài lòng",
+            prod_name : "IPhone X",
+            fb_time : "04/09/2021",
             reply : [
                 {mod : "Admin01", content : "Cảm ơn bạn!"}
-            ],
-            action : 2
+            ]
         }
     ]
+
     return(
         <div className="ListLayout">
             <AdminSearchInput/>
             <div className="AdminListClass BorderFormat">
                 <p className="Title">Danh sách đánh giá</p>
-                <br/>
-                <FeedbackRecord obj={obj} setFbInfo={props.setFbInfo} setFbID={props.setFbID}/>
-                {obj2.map((item,index)=><FeedbackRecord key={index} obj={item} setFbInfo={props.setFbInfo} setFbID={props.setFbID}/>)}
+                <li className="FeedbackList">
+                    <p>Mã đánh giá</p>
+                    <p>Người đánh giá</p>
+                    <p>Nội dung</p>
+                    <p>Sản phẩm</p>
+                    <p>Thời gian</p>
+                    <p>Số phản hồi</p>
+                    <p>Hành động</p>
+                </li>
+                <hr/>
+                {obj2.map((item,index)=><Feedback key={index} info={item} cusStyle={cusStyle} setFbNo={setFbNo} setFbInfo={setFbInfo}/>)}
             </div>
+            {displayFbInfoForm()}
         </div>
+    )
+}
+
+const Feedback = (props) => {
+    const {info, cusStyle, setFbNo, setFbInfo} = props
+    return(
+        <>
+            <li className="FeedbackList">
+                <p>{info.fb_no}</p>
+                <p>{info.cus_name}</p>
+                <p>{info.fb_content}</p>
+                <p>{info.prod_name}</p>
+                <p>{info.fb_time}</p>
+                <p>...</p>
+                <p><AdminButton IconName={faEye} style={cusStyle} ClickEvent={()=>{setFbInfo(1); setFbNo(info.fb_no)}}/> <AdminButton IconName={faTrashAlt} style={cusStyle} ClickEvent={()=>alert("xoa?")}/></p>
+            </li>
+            <hr/>
+        </>
     )
 }
 

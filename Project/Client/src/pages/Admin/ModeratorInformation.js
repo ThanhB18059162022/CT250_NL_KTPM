@@ -1,76 +1,142 @@
-import { faKey, faSave, faWindowClose } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { AdminButton } from "../../components/Controls"
-import "../../components/Paritals/Admin/Admin.Style.scss"
+import {
+  faKey,
+  faSave,
+  faWindowClose,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import Notifications from "../../common/Notifications";
+import { AdminButton } from "../../components/Controls";
+import "../../components/Paritals/Admin/Admin.Style.scss";
 
 const ModeratorInformation = (props) => {
-    if(props.toDo === "addNew"){
-        const cusStyle = {
-            margin : "0 0 0 45%"
-        }
-        return(
-            <div className="ModeratorInformation">
-                <div className="ModeratorInformationBoder">
-                    <button onClick={()=>props.setState(0)} className="CloseBtn"><FontAwesomeIcon icon={faWindowClose}/></button>
-                    <h1>Tạo mới quản trị viên</h1>
-                    <form className="ModInfoForm">
-                        <div>
-                            <p>Mã số</p>
-                            <p>Họ tên</p>
-                            <p>CMND</p>
-                            <p>SĐT</p>
-                            <p>Giới tính</p>
-                            <p>Địa chỉ</p>
-                        </div>
-                        <div>
-                            <input name="txtModNo" type="text" disabled></input> <br/>
-                            <input name="txtModName" type="text"></input> <br/>
-                            <input name="txtModID" type="text"></input> <br/>
-                            <input name="txtModPhoneNumber" type="text"></input> <br/>
-                            <input name="txtModSex" type="radio"></input> Nam &nbsp;
-                            <input name="txtModSex" type="radio"></input> Nữ <br/>
-                            <textarea name="txtModAddress" cols="80" rows="5"></textarea>
-                        </div>
-                    </form>
-                    <AdminButton style={cusStyle} SaveClicked={()=>{alert("Da tao quan tri vien"); props.setState(0)}} IconName={faSave}/>
-                </div>
-            </div>
-        )
-    }
-    else{
-        const cusStyle = {
-            margin : "0 0 0 40%"
-        }
-        return(
-            <div className="ModeratorInformation">
-                <div className="ModeratorInformationBoder">
-                    <button onClick={()=>props.setState(0)} className="CloseBtn"><FontAwesomeIcon icon={faWindowClose}/></button>
-                    <h1>Chỉnh sửa quản trị viên</h1>
-                    <form className="ModInfoForm">
-                        <div>
-                            <p>Mã số</p>
-                            <p>Họ tên</p>
-                            <p>CMND</p>
-                            <p>SĐT</p>
-                            <p>Giới tính</p>
-                            <p>Địa chỉ</p>
-                        </div>
-                        <div>
-                            <input name="txtModNo" type="text" disabled value={props.id}></input> <br/>
-                            <input name="txtModName" type="text"></input> <br/>
-                            <input name="txtModID" type="text"></input> <br/>
-                            <input name="txtModPhoneNumber" type="text"></input> <br/>
-                            <input name="txtModSex" type="radio"></input> Nam &nbsp;
-                            <input name="txtModSex" type="radio"></input> Nữ <br/>
-                            <textarea name="txtModAddress" cols="80" rows="5"></textarea>
-                        </div>
-                    </form>
-                    <AdminButton style={cusStyle} ChangePwdClicked={()=>alert("da dat lai mat khau")} IconName={faKey}/> &nbsp;
-                    <AdminButton SaveClicked={()=>{alert("da luu"); props.setState(0)}} IconName={faSave}/>
-                </div>
-            </div>
-        )
-    }
-}
+  const {setDisplay, modNo} = props
+  const cusStyle = {
+    margin: `0 0 0 ${!modNo ? "45%" : "40%"}`,
+  };
 
-export default ModeratorInformation
+  const [show, setShow] =useState(false)
+  
+  const [notify, setNotify] = useState({
+    type :"INFORMATION", //CONFIRMARTION, INFORMATION
+    title :"", // title of the notifications
+    content :"", // content of the notify
+    infoType :""
+  })
+
+  const notifyResetPassword = () =>{
+      setNotify({
+          ...notify,
+          title:"Thông báo",
+          content:"Đã đặt lại mật khẩu",
+          infoType:'SUCCESS'
+      })
+      setShow(true)
+  }
+
+  return (
+    <>
+      {!modNo ? (
+        <div className="ModeratorInformation">
+          <div className="ModeratorInformationBoder">
+            <button onClick={() => setDisplay(0)} className="CloseBtn">
+              <FontAwesomeIcon icon={faWindowClose} />
+            </button>
+            <h1>Tạo mới quản trị viên</h1>
+            <form className="ModInfoForm">
+              <div>
+                <p>Mã số:</p>
+                <input name="txtModNo" type="text" className="TextField" disabled></input>
+              </div>
+              <div>
+                <p>Họ tên:</p>
+                <input name="txtModName" type="text" className="TextField"></input>
+              </div>
+              <div>
+                <p>CMND:</p>
+                <input name="txtModID" type="text" className="TextField"></input>
+              </div>
+              <div>
+                <p>SĐT:</p>
+                <input name="txtModPhoneNumber" type="text" className="TextField"></input>
+              </div>
+              <div>
+                <p>Giới tính:</p>
+                <div className="Sex">
+                  <input name="txtModSex" type="radio"></input>&nbsp; Nam &nbsp;&nbsp;&nbsp;&nbsp;
+                  <input name="txtModSex" type="radio"></input>&nbsp; Nữ
+                </div>
+              </div>
+              <div>
+                <p>Địa chỉ:</p>
+                <textarea name="txtModAddress" rows="5"></textarea>
+              </div>
+            </form>
+            <AdminButton
+              style={cusStyle}
+              ClickEvent={() => {
+                alert("Da tao quan tri vien");
+                setDisplay(0);
+              }}
+              IconName={faSave}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="ModeratorInformation">
+          <div className="ModeratorInformationBoder">
+            <button onClick={() => setDisplay(0)} className="CloseBtn">
+              <FontAwesomeIcon icon={faWindowClose} />
+            </button>
+            <h1>Chỉnh sửa quản trị viên</h1>
+            <form className="ModInfoForm">
+              <div>
+                <p>Mã số:</p>
+                <input name="txtModNo" type="text" className="TextField" disabled value={modNo}></input>
+              </div>
+              <div>
+                <p>Họ tên:</p>
+                <input name="txtModName" type="text" className="TextField"></input>
+              </div>
+              <div>
+                <p>CMND:</p>
+                <input name="txtModID" type="text" className="TextField"></input>
+              </div>
+              <div>
+                <p>SĐT:</p>
+                <input name="txtModPhoneNumber" type="text" className="TextField"></input>
+              </div>
+              <div>
+                <p>Giới tính:</p>
+                <div className="Sex">
+                  <input name="txtModSex" type="radio"></input>&nbsp; Nam &nbsp;&nbsp;&nbsp;&nbsp;
+                  <input name="txtModSex" type="radio"></input>&nbsp; Nữ
+                </div>
+              </div>
+              <div>
+                <p>Địa chỉ:</p>
+                <textarea name="txtModAddress" rows="5"></textarea>
+              </div>
+            </form>
+            <AdminButton
+              style={cusStyle}
+              ClickEvent={notifyResetPassword}
+              IconName={faKey}
+            />{" "}
+            &nbsp;
+            <AdminButton
+              ClickEvent={() => {
+                alert("da luu");
+                setDisplay(0);
+              }}
+              IconName={faSave}
+            />
+          </div>
+        </div>
+      )}
+      <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
+    </>
+  );
+};
+
+export default ModeratorInformation;

@@ -1,6 +1,5 @@
 import { CartIcon } from "./FlatIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEdit, faTrashAlt, faKey, faReply, faEye, faSave, faWindowClose } from "@fortawesome/free-solid-svg-icons";
 
 const Button = ({
     content,
@@ -69,39 +68,8 @@ export const AdminListButton = (props) =>{
 }
 
 export const AdminButton = (props) =>{
-    const {IconName} = props 
-    const GetClick = (props) => {
-        if(props.AddNewClicked){
-            props.setToDo("addNew")
-            props.AddNewClicked()
-        }
-        else if(props.EditClicked){
-            props.setToDo("edit")
-            props.setID()
-            props.EditClicked()
-        }
-        else if(props.CloseClicked){
-            props.CloseClicked()
-        }
-        else if(props.DeleteClicked){
-            props.setID()
-            props.DeleteClicked()
-        }
-        else if(props.WatchClicked){
-            props.setID()
-            props.WatchClicked()
-        }
-        else if(props.ReplyClicked){
-            props.ReplyClicked()
-        }
-        else if(props.ChangePwdClicked){
-            props.ChangePwdClicked()
-        }
-        else if(props.SaveClicked){
-            props.SaveClicked()
-        }
-    }     
+    const {IconName, ClickEvent, style} = props 
     return(
-        <button style={props.style} className="AdminButton" onClick={()=>GetClick(props)}><FontAwesomeIcon icon={IconName}/></button>
+        <button style={style} className="AdminButton" onClick={()=>{ClickEvent()}}><FontAwesomeIcon icon={IconName}/></button>
     )
 }

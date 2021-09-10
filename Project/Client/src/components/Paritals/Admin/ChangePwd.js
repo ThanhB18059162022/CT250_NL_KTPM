@@ -11,20 +11,22 @@ const ChangePwd = (props) => {
             <div className="ChangePwd">
                 <h1>Đổi mật khẩu</h1>
                 <form>
-                    <ul className="PwdTitle">
-                        <li>Mật khẩu cũ</li>
-                        <li>Mật khẩu mới</li>
-                        <li>Xác nhận mật khẩu</li>
-                    </ul>
-                    <ul className="PwdField">
-                        <li><input name="txtOldPwd" type="password"/></li>
-                        <li><input name="txtNewPwd" type="password"/></li>
-                        <li><input name="txtConfirmPwd" type="password"/></li>
-                    </ul>
+                    <div>
+                        <p>Mật khẩu cũ:</p>
+                        <input name="txtOldPwd" type="password"/>
+                    </div>
+                    <div>
+                        <p>Mật khẩu mới:</p>
+                        <input name="txtNewPwd" type="password"/>
+                    </div>
+                    <div>
+                        <p>Xác nhận mật khẩu:</p>
+                        <input name="txtConfirmPwd" type="password"/>
+                    </div>
                 </form>
                 <div>
-                    <AdminButton SaveClicked={()=>{alert("Đã đổi mật khẩu!"); props.setState(0)}} style={cusStyle} IconName={faSave}/>
-                    <AdminButton IconName={faWindowClose} CloseClicked={()=>props.setState(0)}/>
+                    <AdminButton ClickEvent={()=>{alert("Đã đổi mật khẩu!"); props.setState(0)}} style={cusStyle} IconName={faSave}/>
+                    <AdminButton IconName={faWindowClose} ClickEvent={()=>props.setState(0)}/>
                 </div>
             </div>
         </div>

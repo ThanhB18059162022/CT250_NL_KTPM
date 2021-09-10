@@ -4,6 +4,7 @@ import { AdminButton } from "../../../Controls"
 import "../Admin.Style.scss"
 
 const ReplyFeedback = (props) => {
+    const {fbNo, setRep} = props
     const CusStyle = {
         margin : "0 0 0 40%"
     }
@@ -20,8 +21,8 @@ const ReplyFeedback = (props) => {
                     <p>Nội dung phản hồi:</p>
                     <textarea className="textarea2" rows="8"></textarea>
                 </div>
-                <AdminButton ReplyClicked={()=>{alert("Đã gửi phản hồi!"); props.setRep(0)}} style={CusStyle} IconName={faPaperPlane}/> &nbsp;
-                <AdminButton CloseClicked={()=>props.setRep(0)} IconName={faWindowClose}/>
+                <AdminButton ClickEvent={()=>{alert("Đã gửi phản hồi!"); setRep(0)}} style={CusStyle} IconName={faPaperPlane}/> &nbsp;
+                <AdminButton ClickEvent={()=>setRep(0)} IconName={faWindowClose}/>
             </div>
         </div>
     )

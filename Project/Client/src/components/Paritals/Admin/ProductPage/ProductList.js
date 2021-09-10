@@ -1,51 +1,70 @@
-import { AdminSearchInput } from "../../../Controls"
-import ProductRecord from "./ProductRecord"
+import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
+import { useEffect, useState } from "react"
+import {ApiCaller} from "../../../../api_services/servicesContainer"
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
+import ProductFullInfo from "../../../../pages/Admin/ProductFullInfo"
 
-const ProductList = (props) => {
-    const {name, state, setState} = props
-    const obj = {
-        no : "Mã sản phẩm",
-        name : "Tên sản phẩm",
-        os : "Hệ điều hành",
-        hardware : "Phần cứng",
-        details : "Số chi tiết",
-        action : "Hành động"
+const ProductList = () => {
+    const cusStyle = {
+        fontSize : "15px",
+        width : "45px"
     }
-    let obj2 = [
-        {
-            no : "001",
-            name : "Dien thoai iPhoneX",
-            os : "IOS",
-            hardware : "Chip A11",
-            details : [
-                {color : "do"},
-                {color : "den"}
-            ],
-            action : 2
-        },
-        {
-            no : "002",
-            name : "Dien thoai deo",
-            os : "IOS",
-            hardware : "Chip A11",
-            details : [
-                {color : "do"},
-                {color : "den"}
-            ],
-            action : 2
+    const caller = new ApiCaller()
+    const [products, setProducts] =useState([])
+    const [prodNo, setProdNo] = useState(0)
+    const [editProduct, setEditProduct] = useState(0)
+    const displayEditProduct = () => {
+        switch(editProduct){
+            case 1: return <ProductFullInfo prodNo={prodNo} setDisplay={setEditProduct}/>
+            default: return;
         }
-    ]
+    }
+
+    useEffect(()=>{
+       (async()=>{
+        let data =  await caller.get('products')
+        setProducts(data.items)
+       })(); // IIFE // Note setProduct([...products, item])
+    },[])
+
     return(
         <div className="ListLayout">
             <AdminSearchInput/>
             <div className="AdminListClass BorderFormat">
-                <p className="Title">{name}</p>
-                <br/>
-                <ProductRecord obj={obj} state={state} setState={setState} setToDo={props.setToDo} setID={props.setID}/>
-                {obj2.map((item, index)=><ProductRecord key={index} obj={item} state={state} setState={setState} setToDo={props.setToDo} setID={props.setID}/>) }
+                <p className="Title">Danh sách sản phẩm</p>
+                <li className="ProductList">
+                    <p>Mã sản phẩm</p>
+                    <p>Tên sản phẩm</p>
+                    <p>Hệ điều hành</p>
+                    <p>Phần cứng</p>
+                    <p>Số chi tiết</p>
+                    <p>Hành động</p>
+                </li>
+                <hr/>
+                {products.map((item,index)=><Item key={index} info={item} setProdNo={setProdNo} setEditProduct={setEditProduct} cusStyle={cusStyle}/>)}
             </div>
+            {displayEditProduct()}
         </div>
+    )
+}
+
+const Item = (props) => {
+    const {info, setProdNo, setEditProduct, cusStyle} = props
+    
+    const hardware = info.prod_cpu + " / " + info.prod_ram + " / " + info.prod_battery
+    return(
+        <>
+            <li className="ProductList">
+                <p>{info.prod_no}</p>
+                <p>{info.prod_name}</p>
+                <p>{info.prod_os}</p>
+                <p>{hardware}</p>
+                <p>...</p>
+                <p><AdminButton style={cusStyle} ClickEvent={()=>{setEditProduct(1); setProdNo(info.prod_no)}} IconName={faEdit}/> <AdminButton style={cusStyle} IconName={faTrashAlt}/></p>
+            </li>
+            <hr/>
+        </>
     )
 }
 

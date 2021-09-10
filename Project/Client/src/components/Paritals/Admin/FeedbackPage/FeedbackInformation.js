@@ -6,6 +6,7 @@ import AdminReplied from "./AdminReplied";
 import ReplyFeedback from "./ReplyFeedback";
 
 const FeedbackInformation = (props) => {
+    const {setFbInfo, fbNo} = props
     const cusStyle = {
         margin : "0 0 0 35%"
     }
@@ -30,7 +31,7 @@ const FeedbackInformation = (props) => {
     const [rep, setRep] = useState(0)
     const displayFeedbackReply = () => {
         switch(rep){
-            case 1: return <ReplyFeedback fbID={props.fbID} setRep={setRep}/>
+            case 1: return <ReplyFeedback fbNo={fbNo} setRep={setRep}/>
             default: return;
         }
     }
@@ -40,19 +41,25 @@ const FeedbackInformation = (props) => {
                 <div className="FeedbackInformationBorder">
                     <h1>Thông tin đánh giá</h1>
                     <div className="FbInfoPart1">
-                        <div className="FbInfoPart1_Col1">
-                            <p>Người đánh giá</p>
-                            <p>Nội dung</p>
-                            <p>Sản phẩm</p>
-                            <p>Thời gian</p>
-                            <p>Số phản hồi</p>
+                        <div>
+                            <p className="col1">Người đánh giá:</p>
+                            <p className="col2">test user</p>
                         </div>
-                        <div className="FbInfoPart1_Col2">
-                            <p>test user</p>
-                            <textarea cols="70" rows="5" disabled></textarea>
-                            <p>Điện thoại...</p>
-                            <p>1/9/2021</p>
-                            <p>{obj.length}</p>
+                        <div>
+                            <p className="col1">Nội dung:</p>
+                            <textarea className="col2" cols="70" rows="5" disabled></textarea>
+                        </div>
+                        <div>
+                            <p className="col1">Sản phẩm:</p>
+                            <p className="col2">Điện thoại...</p>
+                        </div>
+                        <div>
+                            <p className="col1">Thời gian:</p>
+                            <p className="col2">1/9/2021</p>
+                        </div>
+                        <div>
+                            <p className="col1">Số phản hồi:</p>
+                            <p className="col2">{obj.length}</p>
                         </div>
                     </div>
                     <hr/>
@@ -60,9 +67,9 @@ const FeedbackInformation = (props) => {
                         {getAdminReplied(obj)}
                     </div>
                     <div className="FbInfoBtn">
-                        <AdminButton style={cusStyle} ReplyClicked={()=>setRep(1)} IconName={faReply}/> &nbsp;
-                        <AdminButton DeleteClicked={()=>window.confirm("Xóa bình luận?")} setID={()=>{}} IconName={faTrashAlt}/> &nbsp;
-                        <AdminButton IconName={faWindowClose} CloseClicked={()=>props.setFbInfo(0)}/>
+                        <AdminButton style={cusStyle} ClickEvent={()=>setRep(1)} IconName={faReply}/> &nbsp;
+                        <AdminButton ClickEvent={()=>window.confirm("Xóa bình luận?")} setID={()=>{}} IconName={faTrashAlt}/> &nbsp;
+                        <AdminButton IconName={faWindowClose} ClickEvent={()=>setFbInfo(0)}/>
                     </div>
                 </div>
             </div>
