@@ -13,7 +13,7 @@ const MorderatorList = (props) => {
         address : "Địa chỉ",
         action : "Hành động"
     }
-    let obj2 = {
+    let obj2 = [
         {
             no : "001",
             name : "Admin01",
@@ -32,7 +32,7 @@ const MorderatorList = (props) => {
             address : "Cái Răng - Cần Thơ",
             action : 2
         }
-    }
+    ]
     return(
         <div className="ListLayout">
             <AdminSearchInput/>
