@@ -5,7 +5,7 @@ import FeedbackManagement from "./FeedbackManagement";
 import ModeratorManagement from "./ModeratorManagement";
 import Statistic from "./Statistic";
 import { useState } from "react";
-import ProductPopup from "../../components/Paritals/Admin/ProductPopup";
+import ProductPopup from "../../components/Paritals/Admin/ProductPage/ProductPopup";
 const Admin = () =>{
     const [pos,setPos] = useState(0)
 

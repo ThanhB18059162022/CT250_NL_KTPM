@@ -1,6 +1,6 @@
 import { useState } from "react"
-import ProductFullInfo from "../../../pages/Admin/ProductFullInfo"
-import ProductManagement from "../../../pages/Admin/ProductManagement"
+import ProductFullInfo from "../../../../pages/Admin/ProductFullInfo"
+import ProductManagement from "../../../../pages/Admin/ProductManagement"
 
 const ProductPopup = () =>{
     const [state, setState] = useState(0)

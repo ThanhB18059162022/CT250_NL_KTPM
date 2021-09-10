@@ -1,4 +1,6 @@
-import { AdminButton } from "../../Controls"
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { AdminButton } from "../../../Controls"
+import "../Admin.Style.scss"
 
 const ProductDetail = () => {
     const CusStyle = {
@@ -7,7 +9,7 @@ const ProductDetail = () => {
     return(
         <>
             <div className="DetailButton">
-                <AdminButton style={CusStyle} IconName="Delete"/>
+                <AdminButton style={CusStyle} IconName={faTrashAlt}/>
             </div>
             <div className="ProductDetail BorderFormat">
                 <form className="AddDetailForm">

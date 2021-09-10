@@ -3,6 +3,7 @@
         text-align: center;
         font-size: 30px;
         margin: 10px;
+        font-weight: bold;
     }
     .BorderFormat{
         border: 2px solid black;
@@ -229,21 +230,24 @@
         text-align: center;
         padding: 3px 0;
         &:nth-child(1){
-            width: 15%;
-        }
-        &:nth-child(2){
-            width: 35%;
-        }
-        &:nth-child(3){
-            width: 24%;
-        }
-        &:nth-child(4){
-            width: 10%;
-        }
-        &:nth-child(5){
             width: 7%;
         }
+        &:nth-child(2){
+            width: 14%;
+        }
+        &:nth-child(3){
+            width: 35%;
+        }
+        &:nth-child(4){
+            width: 20%;
+        }
+        &:nth-child(5){
+            width: 8%;
+        }
         &:nth-child(6){
+            width: 7%;
+        }
+        &:nth-child(7){
             width: 9%;
         }
     }
@@ -302,7 +306,7 @@
     width: 100%;
     top: 10%;
     background-color: rgba(128, 128, 128, 0.822);
-    height: calc(100vh - 60px);
+    height: calc(100vh - 10%);
     overflow-y: scroll;
     div{
         &:first-child{
@@ -359,6 +363,7 @@
                     }
                     textarea{
                         resize: none;
+                        padding: 5px;
                     }
                 }
             }
@@ -398,5 +403,150 @@
                 }
             }
         }
+    }
+}
+
+.ModeratorInformation{
+    position: absolute;
+    width: 100%;
+    top: 10%;
+    background-color: rgba(128, 128, 128, 0.822);
+    height: calc(100vh - 10%);
+    overflow-y: scroll;
+    .ModeratorInformationBoder{
+        border: 1px solid black;
+        width: 40%;
+        margin: 5% auto;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 45px;
+        padding: 1% 2%;
+        h1{
+            text-align: center;
+        }
+        .CloseBtn{
+            position: absolute;
+            left: 67%;
+            top: 12%;
+            font-size: 20px;
+        }
+        .ModInfoForm{
+            display: flex;
+            margin: 2% 0;
+            div{
+                &:first-child{
+                    margin-right: 5%;
+                }
+                p{
+                    margin: 0 0 17% 0;
+                }
+                input{
+                    margin: 0 0 2% 0;
+                    &:not(:nth-of-type(5)){
+                        &:not(:nth-of-type(6)){
+                            width: 60%;
+                        }
+                    }
+                }
+                textarea{
+                    resize: none;
+                }
+            }
+        }
+    }
+}
+
+.FeedbackInformation{
+    position: absolute;
+    width: 100%;
+    top: 10%;
+    background-color: rgba(128, 128, 128, 0.822);
+    height: calc(100vh - 10%);
+    .FeedbackInformationBorder{
+        border: 1px solid black;
+        width: 40%;
+        margin: 5% auto;
+        border-radius: 45px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 1% 0;
+        h1{
+            text-align: center;
+        }
+        .FbInfoPart1{
+            display: flex;
+            margin: 2% 5%;
+            .FbInfoPart1_Col1{
+                p{
+                    font-weight: bold;
+                    margin: 0 0 5px 0;
+                    &:nth-child(2){
+                        margin: 0 0 68px 0;
+                    }
+                }
+            }
+            .FbInfoPart1_Col2{
+                margin: 0 5%;
+                p{
+                    margin: 0 0 5px 0;
+                }
+                textarea{
+                    resize: none;
+                }
+            }
+        }
+        hr{
+            width: 60%;
+            margin: 2% auto;
+        }
+    }
+}
+
+.AdminReplied{
+    width: 70%;
+    margin: 10px auto;
+    .AdminReplied_User{
+        display: flex;
+        margin: 5px 0;
+    }
+    textarea{
+        width: 100%;
+        height: 70px;
+        resize: none;
+        padding: 5px;
+    }
+}
+
+.ReplyFeedback{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    top: 10%;
+    background-color: rgba(128, 128, 128, 0.822);
+    height: calc(100vh - 10%);
+    .ReplyFeedbackBorder{
+        margin: 10% auto;
+        border: 1px solid black;
+        border-radius: 45px;
+        width: 40%;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 1% 2%;
+        h1{
+            text-align: center;
+        }
+        .ReplyFeedback_User{
+            display: flex;
+            margin: 1% 0;
+        }
+        div{
+            .textarea1{
+                width: 95%;
+                margin: 0 0 0 5%;
+                resize: none;
+            }
+            .textarea2{
+                width: 100%;
+                margin: 1% 0 2% 0;
+                resize: none;
+            }
+        }   
     }
 }

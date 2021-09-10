@@ -1,3 +1,4 @@
+import { faSave, faWindowClose } from "@fortawesome/free-solid-svg-icons"
 import { AdminButton } from "../../Controls"
 import "./Admin.Style.scss"
 
@@ -22,8 +23,8 @@ const ChangePwd = (props) => {
                     </ul>
                 </form>
                 <div>
-                    <AdminButton style={cusStyle} IconName="Save"/>
-                    <AdminButton IconName="Close" CloseClicked={()=>props.setState(0)}/>
+                    <AdminButton SaveClicked={()=>{alert("Đã đổi mật khẩu!"); props.setState(0)}} style={cusStyle} IconName={faSave}/>
+                    <AdminButton IconName={faWindowClose} CloseClicked={()=>props.setState(0)}/>
                 </div>
             </div>
         </div>

@@ -1,15 +1,16 @@
-import "./Admin.Style.scss"
-import { AdminButton } from "../../Controls"
+import "../Admin.Style.scss"
+import { AdminButton } from "../../../Controls"
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 const ProductInfo = (props) => {
     const CusStyle = {
         margin: "1% 5px 5px 12%"
     };
     console.log(props.id)
-    if (props.toDo === "addProduct") {
+    if (props.toDo === "addNew") {
         return(
             <>
-                <AdminButton style={CusStyle} IconName="Save"/>
+                <AdminButton style={CusStyle} IconName={faSave}/>
                 <div className="ProductInfo BorderFormat">
                     <p className="Title">Thông tin sản phẩm</p>
                     <form className="AddProductForm">
@@ -41,10 +42,10 @@ const ProductInfo = (props) => {
                 </div>
             </>
         )
-    } else if(props.toDo === "editProduct") {
+    } else if(props.toDo === "edit") {
         return(
             <>
-                <AdminButton style={CusStyle} IconName="Save"/>
+                <AdminButton style={CusStyle} IconName={faSave}/>
                 <div className="ProductInfo BorderFormat">
                     <p className="Title">Thông tin sản phẩm</p>
                     <form className="AddProductForm">

@@ -70,32 +70,38 @@ export const AdminListButton = (props) =>{
 
 export const AdminButton = (props) =>{
     const {IconName} = props 
-    const getIcon = (IconName) => {
-        if (IconName === "Add") return faPlus
-        else if (IconName === "Edit") return faEdit
-        else if (IconName === "Delete") return faTrashAlt
-        else if (IconName === "Reply") return faReply
-        else if (IconName === "Watch") return faEye
-        else if (IconName === "Save") return faSave
-        else if (IconName === "Close") return faWindowClose
-        else return faKey 
-    }
     const GetClick = (props) => {
-        if(props.AddProductClicked){
-            props.setToDo("addProduct")
-            props.AddProductClicked()
+        if(props.AddNewClicked){
+            props.setToDo("addNew")
+            props.AddNewClicked()
         }
         else if(props.EditClicked){
-            props.setToDo("editProduct")
+            props.setToDo("edit")
             props.setID()
             props.EditClicked()
         }
         else if(props.CloseClicked){
             props.CloseClicked()
         }
-        else if(props.DeleteClicked) props.DeleteClicked()
+        else if(props.DeleteClicked){
+            props.setID()
+            props.DeleteClicked()
+        }
+        else if(props.WatchClicked){
+            props.setID()
+            props.WatchClicked()
+        }
+        else if(props.ReplyClicked){
+            props.ReplyClicked()
+        }
+        else if(props.ChangePwdClicked){
+            props.ChangePwdClicked()
+        }
+        else if(props.SaveClicked){
+            props.SaveClicked()
+        }
     }     
     return(
-        <button style={props.style} className="AdminButton" onClick={()=>GetClick(props)}><FontAwesomeIcon icon={getIcon(IconName)}/></button>
+        <button style={props.style} className="AdminButton" onClick={()=>GetClick(props)}><FontAwesomeIcon icon={IconName}/></button>
     )
 }

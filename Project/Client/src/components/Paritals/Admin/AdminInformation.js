@@ -1,3 +1,4 @@
+import { faSave, faWindowClose } from "@fortawesome/free-solid-svg-icons"
 import { AdminButton } from "../../Controls"
 import "./Admin.Style.scss"
 
@@ -19,7 +20,7 @@ const AdminInformation = (props) => {
                         <li>Địa chỉ</li>
                     </ul>
                     <ul className="InfoField">
-                        <li><input name="txtAdminNo" className="TextField" type="text"/></li>
+                        <li><input name="txtAdminNo" className="TextField" type="text" disabled/></li>
                         <li><input name="txtAdminName" className="TextField" type="text"/></li>
                         <li><input name="txtAdminID" className="TextField" type="text"/></li>
                         <li><input name="txtAdminPhone" className="TextField" type="text"/></li>
@@ -31,8 +32,8 @@ const AdminInformation = (props) => {
                     </ul>
                 </form>
                 <div>
-                    <AdminButton style={cusStyle} IconName="Save"/>
-                    <AdminButton IconName="Close" CloseClicked={()=>props.setState(0)}/>
+                    <AdminButton SaveClicked={()=>{alert("Đã lưu thông tin!"); props.setState(0)}} style={cusStyle} IconName={faSave}/>
+                    <AdminButton IconName={faWindowClose} CloseClicked={()=>props.setState(0)}/>
                 </div>
             </div>
         </div>
