@@ -11,11 +11,13 @@ GET http://localhost:8000/api/paypal/clientid
 POST http://localhost:8000/api/paypal/createorder
 Content-Type: application/json
 
-[
+{
     // Mảng nhận id và số lượng
-    {"id": 1, "quantity": 1},
-    {"id": 2, "quantity": 2}
-]
+    "products":[
+        {"prod_no": 1, "prod_quantity": 1},
+        {"prod_no": 2, "prod_quantity": 2}
+    ]
+}
 
 # Thanh toán
 

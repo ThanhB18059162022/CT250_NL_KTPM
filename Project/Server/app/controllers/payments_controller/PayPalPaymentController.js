@@ -35,7 +35,7 @@ module.exports = class PayPalPaymentController {
 
   // Tạo order theo danh sách sản phẩm
   createOrder = async (req, res) => {
-    const { body: products } = req;
+    const { products } = req.body;
 
     let orderBody = {};
     try {
@@ -55,15 +55,15 @@ module.exports = class PayPalPaymentController {
 
   // Thanh toán order
   captureOrder = async (req, res) => {
-    const { orderId } = req.params;
+    const { orderID } = req.params;
 
-    const exist = await this.payPalSerivce.existOrder(orderId);
+    const exist = await this.payPalSerivce.existOrder(orderID);
     if (!exist) {
       return res.status(404).json({});
     }
 
     // Thanh toán order
-    const order = await this.payPalSerivce.captureOrder(orderId);
+    const order = await this.payPalSerivce.captureOrder(orderID);
 
     // Lưu vào CSDL
     await this.orderSerivce.saveOrder(order);

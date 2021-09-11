@@ -39,9 +39,9 @@ module.exports = class PayPalService {
   //#region EXIST
 
   // Kiểm tra đơn hàng tồn tại
-  existOrder = async (orderId) => {
+  existOrder = async (orderID) => {
     try {
-      await this.getOrderById(orderId);
+      await this.getOrderById(orderID);
 
       return true;
     } catch (error) {

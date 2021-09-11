@@ -23,9 +23,9 @@ class PayPalServiceMock {
     };
   });
 
-  captureOrder = jest.fn(async (orderId) => {
+  captureOrder = jest.fn(async (orderID) => {
     return {
-      orderId,
+      orderID,
       order: PayPalServiceMock.order,
     };
   });
@@ -178,9 +178,9 @@ describe("Thanh toán order", () => {
 
   test("Order không tồn tại - 404", async () => {
     //Arrange
-    const orderId = undefined;
+    const orderID = undefined;
     const controller = getController();
-    const reqMock = { params: { orderId } };
+    const reqMock = { params: { orderID } };
     const resMock = new ResponseMock();
 
     //Act
@@ -196,13 +196,13 @@ describe("Thanh toán order", () => {
   test("Thanh toán thành công - 200", async () => {
     //Arrange
     const order = PayPalServiceMock.order;
-    const orderId = order.id;
+    const orderID = order.id;
     const controller = getController();
-    const reqMock = { params: { orderId } };
+    const reqMock = { params: { orderID } };
     const resMock = new ResponseMock();
 
     //Act
-    const expRes = { statusCode: 200, body: { orderId, order } };
+    const expRes = { statusCode: 200, body: { orderID, order } };
     const actRes = await controller.captureOrder(reqMock, resMock);
 
     //Expect

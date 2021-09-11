@@ -21,6 +21,7 @@ module.exports = class PaymentSerivce {
     for (const op of orderProducts) {
       // const product = await this.dao.getProductById(op.prod_no);
       const product = PRODUCTS.filter((p) => p.prod_no == op.prod_no)[0];
+
       if (product === undefined) throw Error("Chả có cái nào z hết");
       products.push({ ...product, prod_quantity: op.prod_quantity });
     }
@@ -80,6 +81,6 @@ module.exports = class PaymentSerivce {
   };
 
   saveOrder = async (order) => {
-    console.log(order);
+    console.log("Lưu thông tin order:", order);
   };
 };
