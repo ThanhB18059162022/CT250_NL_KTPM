@@ -14,7 +14,7 @@ const ProductSuggestion = () => {
                     <div>
                         <h3>Sản phẩm gợi ý</h3>
                         <ul>
-                            {arr.map((item, index) => <ProductItem compare={true} key={index} info={item} />)}
+                            {arr.map((item, index) => <ProductItem compare={true} key={index} info={item} currentId={index} />)}
                         </ul>
                     </div>
                 </> :

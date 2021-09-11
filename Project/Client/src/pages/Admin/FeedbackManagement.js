@@ -1,9 +1,9 @@
-import FeedbackList from "../../components/Paritals/Admin/FeedbackList"
+import FeedbackList from "../../components/Paritals/Admin/FeedbackPage/FeedbackList"
 
 const FeedbackManagement = () => {
     return(
         <div>
-            <FeedbackList name="Danh sách đánh giá"/>
+            <FeedbackList/>
         </div>
     )
 }

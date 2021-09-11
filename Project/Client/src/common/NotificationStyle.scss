@@ -1,0 +1,56 @@
+.Notifications{
+    position: fixed;
+    z-index: 1111;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    background: #69baff;
+    padding: 10px;
+    align-items: center;
+    border-radius:10px;
+    backdrop-filter: blur(10px);
+    transition: all ease .5s;
+    transform: translateX(calc(100% + 10px));
+    user-select: none;
+    &.notify_information:active{
+      transform: scale(0.9);
+    }
+    &.show{
+      transform: translateX(0);
+    }
+    .notify_image{
+      flex-basis: content;
+      border-radius: 10px;
+      img{
+        height: 50px;
+      }
+    }
+    .notify_content{
+      margin: 0 10px;
+      font-size: 14px;
+      p:first-child{
+        font-weight: 600;
+      }
+      p:last-child{
+        max-width: 250px;
+      }
+    }
+    .notify_behavior{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      button{
+        padding: 5px;
+        border-radius: 10px;
+        border: none;
+      }
+      button + button{
+        margin-top: 10px
+      }
+    }
+    .time_closer{
+      position: absolute;
+      top:5px;
+      right: 10px;
+    }
+  }

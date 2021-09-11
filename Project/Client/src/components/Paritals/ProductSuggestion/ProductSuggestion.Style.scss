@@ -1,8 +1,7 @@
 .ProductSuggestion{
-    padding:  10px 10%;
    &>div{
        padding: 10px;
-       box-shadow: 0 0 10px black;
+       box-shadow: 0 0 5px rgba(0, 0, 0, 0.411);
        border-radius: 10px 20px;
         ul{
             display: flex;
@@ -22,7 +21,6 @@
 
 @media screen and(max-width:1020px) {
     .ProductSuggestion{
-        padding:  10px 10%;
         ul{
             display: flex;
             overflow-x:scroll;
@@ -35,7 +33,6 @@
 
 @media screen and(max-width:786px) {
     .ProductSuggestion{
-        padding:  10px 10%;
         ul{
             display: flex;
             overflow-x:scroll;

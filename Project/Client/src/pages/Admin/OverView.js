@@ -1,11 +1,13 @@
-import { AccessCount, Sales, ProductTrend_Rating } from "../../components/Paritals/Admin";
+import { AccessCount, Sales, ProductTrendRating} from "../../components/Paritals/Admin";
 
 const OverView = () => {
-    return<>
+    return(
+        <>
             <AccessCount/>
             <Sales/>
-            <ProductTrend_Rating/>
+            <ProductTrendRating/>
         </>
+    )
 }
 
 export default OverView

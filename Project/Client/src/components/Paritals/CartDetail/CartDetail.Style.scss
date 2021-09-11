@@ -1,0 +1,387 @@
+.CartDetail {
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.555);
+    & > h3 {
+        padding: 5px;
+        margin-bottom: 10px;
+        border-bottom: 2px solid black;
+    }
+    .detail-wrapper {
+        display: flex;
+        .cart-list {
+            flex-basis: 65%;
+            ul {
+                overflow-y: scroll;
+                height: calc(100vh - 150px);
+                padding: 5px;
+
+                li {
+                    position: relative;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    list-style: none;
+                    display: flex;
+                    align-items: center;
+                    padding: 10px;
+                    width: 100%;
+                    transition: all ease 0.3s;
+                    user-select: none;
+                    span:first-child {
+                        flex-basis: content;
+                        img {
+                            height: 100px;
+                        }
+                    }
+                    span.storage {
+                        width: 70px;
+                        min-width: 70px;
+                        max-width: 70px;
+                        span {
+                            font-weight: 600;
+                            background: var(--backgroundColor);
+                            color: white;
+                            padding: 5px;
+                            border-radius: 10px;
+                        }
+                    }
+                    span.price {
+                        width: 110px;
+                        color: red;
+                        max-width: 110px;
+                        min-width: 110px;
+                    }
+                    .element {
+                        text-align: center;
+                    }
+                    span.amount {
+                        width: 50px;
+                        min-width: 50px;
+                        input {
+                            width: 100%;
+                            padding: 10px;
+                            outline: none;
+                            border: none;
+                            font-size: 16px;
+                            font-weight: bold;
+                            &::-webkit-inner-spin-button,
+                            &::-webkit-outer-spin-button {
+                                opacity: 1;
+                            }
+                        }
+                    }
+                    span:nth-child(2) {
+                        flex-grow: 1;
+                        font-weight: 600;
+                    }
+                    & > span:last-child {
+                        position: absolute;
+                        right: 10px;
+                        top: 5px;
+                        display: none;
+                    }
+                    span + span {
+                        margin-left: 5px;
+                    }
+                    &:hover {
+                        box-shadow: 0 0 5px rgba(0, 0, 0, 0.288);
+                        & > span:last-child {
+                            display: block;
+                        }
+                    }
+                }
+                li + li {
+                    margin-top: 20px;
+                }
+            }
+        }
+        .cart-transaction {
+            flex: 1;
+            padding: 0 20px;
+            .wrapper {
+                width: 100%;
+                padding: 10px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.507);
+                border-radius: 10px;
+                p:first-child {
+                    font-size: 14px;
+                    font-weight: 600;
+                }
+                p.total-price {
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: red;
+                    padding: 10px 0;
+                }
+                button {
+                    width: 100%;
+                    font-size: 24px;
+                    text-transform: uppercase;
+                    padding: 7px 0;
+                    font-weight: 600;
+                    border: none;
+                    border-radius: 100px;
+                    transition: all ease .3s;
+                    &:active{
+                        transform: scale(0.95);
+                    }
+                    &:hover {
+                        background: var(--backgroundColor);
+                    }
+                }
+            }
+        }
+    }
+    .carttransaction {
+        position: fixed;
+        top: 55px;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.493);
+        backdrop-filter:blur(2px);
+        background-blend-mode: color-burn;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: -11;
+        opacity: 0;
+        transition: all ease 0.3s;
+        &.show {
+            z-index: 111;
+            opacity: 1;
+        }
+        .transaction-wrapper {
+            width: 60%;
+            background: white;
+            padding: 20px 15px;
+            display: flex;
+            border-radius: 10px;
+            .transaction-info {
+                flex-basis: 40%;
+                min-width: 40%;
+                border-radius: 10px;
+                padding: 15px 10px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.418);
+                .wrapper {
+                    display: flex;
+                    justify-content: space-around;
+                    flex-direction: column;
+                    height: 100%;
+                    p {
+                        padding: 10px;
+                        span {
+                            width: 158px;
+                            display: inline-block;
+                        }
+                    }
+                }
+               
+            }
+            .transaction-input {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                margin-left: 20px;
+                .transaction-slider {
+                    flex-grow: 1;
+                    overflow: hidden;
+                    display: flex;
+                    width: 100%;
+                    position: relative;
+                    .slider-element {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-around;
+                        flex-basis: 100%;
+                        min-width: 100%;
+                        flex-grow: 0;
+                        position: relative;
+                        transition: all ease 0.3s;
+                        padding: 0 15px;
+                        p{
+                            input,select {
+                                padding: 10px;
+                                width: 100%;
+                                background: var(--backgroundBlur);
+                                border: none;
+                                border-radius: 10px;
+                                outline: none;
+                                margin: 7px 0;
+                            }
+                        }
+                        &:last-child{
+                            p{
+                                display: flex;
+                                align-items: center;
+                                input{
+                                    width: auto;
+                                }
+                                span:nth-child(2){
+                                    min-width:140px;
+                                    display: inline-block;
+                                    img{
+                                        height: 50px;
+                                        margin: 0 20px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .transaction-control {
+                    display: flex;
+                    width: 100%;
+                    justify-content: flex-end;
+                    padding: 0 10px;
+                    button + button {
+                        margin-left: 10px;
+                    }
+
+                    button {
+                        padding: 5px 10px;
+                        min-width: 70px;
+                        border-radius: 100px;
+                        border: none;
+                        transition: all ease 0.3s;
+                        &:active{
+                            transform: scale(.9);
+                        }
+                        &:hover {
+                            background: var(--backgroundColor);
+                        }
+                    }
+                }
+            }
+        }
+        .address-wrapper{
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            width: 50%;
+            transform: translateY(-20%);
+            select,input{
+                margin: 10px 0;
+                padding: 7px;
+                width: 100%;
+                background: white;
+                border-radius: 10px;
+                background: var(--backgroundBlur);
+                border: none;
+                outline: none;
+            }
+            .location-group:last-child{
+                display: flex;
+                justify-content:flex-end;
+                button{
+                    padding: 5px 10px;
+                    min-width: 70px;
+                    transition: all ease .3s;
+                    border-radius: 100px;
+                    outline: none;
+                    border: none;
+                    &:active{
+                        transform: scale(0.9);
+                    }
+                    &:hover{
+                        background: var(--backgroundColor);
+                    }
+                }
+
+                button + button{
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and(max-width:1250px) {
+    .CartDetail{
+        .carttransaction{
+            .transaction-wrapper{
+                flex-direction: column;
+                .transaction-input{
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}
+
+
+@media screen and(max-width:1020px) {
+    .CartDetail {
+        .detail-wrapper {
+            flex-direction: column;
+            .cart-list {
+                flex-basis: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+@media screen and(max-width:768px) {
+    .CartDetail {
+        .detail-wrapper {
+            .cart-list {
+                ul {
+                    li {
+                        span.name {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+        .carttransaction{
+            .transaction-wrapper{
+                flex-direction: column;
+                width: 80%;
+                .transaction-input{
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and(max-width:550px) {
+    .Cart.Home {
+        .home-body-content {
+            width: 100%;
+        }
+    }
+    .CartDetail {
+        .detail-wrapper {
+            .cart-list {
+                li {
+                    span.img {
+                        max-width: 90px;
+                        img {
+                            margin-left: -30px;
+                            height: 100px;
+                        }
+                    }
+                    span.storage {
+                        max-width: 60px;
+                    }
+                    span.price {
+                        max-width: 100px;
+                    }
+                }
+            }
+        }
+        .carttransaction{
+            .transaction-wrapper{
+                flex-direction: column;
+                width: 100%;
+                .transaction-input{
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}

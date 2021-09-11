@@ -106,5 +106,6 @@ module.exports = class ModeratorsControllers {
 
     return res.status(204).json({});
   };
-  //#region
+
+  //#endregion
 };

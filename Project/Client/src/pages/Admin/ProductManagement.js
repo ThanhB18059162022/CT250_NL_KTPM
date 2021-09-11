@@ -1,27 +1,24 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 import { AdminButton } from "../../components/Controls/Button"
-import { ProductList } from "../../components/Paritals/Admin"
+import ProductList from "../../components/Paritals/Admin/ProductPage/ProductList"
 import ProductFullInfo from "./ProductFullInfo"
 
-const ProductManagement = (props) => {
-    // const [state,setState] = useState(0)
-    // const displayReview = (props.state) => {
-    //     switch (props.state){
-    //         case 1:
-    //             return <ProductFullInfo state={props.state} setState={props.setState}/>
-    //     }
-    // }
-    
+const ProductManagement = () => {
+    const [addNew, setAddNew] = useState(0)
+    const displayAddNewForm = () =>{
+        switch(addNew){
+            case 1: return <ProductFullInfo setDisplay={setAddNew}/>
+            default: return;
+        }
+    }
     return(
         <div>
             <div className="ProductManagementButton">
-                <AdminButton IconName="Add"/>
+                <AdminButton IconName={faPlus} ClickEvent={()=>setAddNew(1)}/>
             </div>
-            <ProductList name="Danh sách sản phẩm"/>
-            <button onClick={()=>props.setState(1)}>hien review thong tin sp</button>
-            <br/>
-            {/* <button onClick={displayReview(state, setState)}>an review thong tin sp</button> */}
-            {/* {displayReview(state, setState)} */}
+            <ProductList/>
+            {displayAddNewForm()}
         </div>
     )
 }
