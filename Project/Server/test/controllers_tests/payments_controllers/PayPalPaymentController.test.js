@@ -23,28 +23,42 @@ class PayPalServiceMock {
 
   getOrderById = jest.fn(async () => PayPalServiceMock.order);
 
-  createOrder = jest.fn(async (products) => {
+  createOrder = jest.fn(async (body) => {
     return {
-      id: products.length,
-      products,
+      id: body.products.length,
+      body,
+    };
+  });
+
+  captureOrder = jest.fn(async (orderId) => {
+    return {
+      orderId,
+      order: PayPalServiceMock.order,
     };
   });
 }
 
-class OrderDAOMock {
-  allProductsExist = jest.fn(async (products) => {
-    return products.length !== 0;
+class OrderSerivceMock {
+  createOrderBody = jest.fn((products) => {
+    if (products.length === 0) throw Error();
+    return { products };
   });
+
+  saveOrder = jest.fn();
 }
 
 //#endregion
 
 let validatorMock;
 let payPalServiceMock;
-let daoMock;
+let orderSerivceMock;
 
 function getController() {
-  return new PayPalPaymentController(validatorMock, payPalServiceMock, daoMock);
+  return new PayPalPaymentController(
+    validatorMock,
+    payPalServiceMock,
+    orderSerivceMock
+  );
 }
 
 // 200
@@ -120,7 +134,7 @@ describe("Tạo order", () => {
   beforeEach(() => {
     validatorMock = new ValidatorMock();
     payPalServiceMock = new PayPalServiceMock();
-    daoMock = new OrderDAOMock();
+    orderSerivceMock = new OrderSerivceMock();
   });
 
   test("Danh sách sản phẩm không hợp lệ - 400", async () => {
@@ -142,7 +156,7 @@ describe("Tạo order", () => {
     expect(actRes).toEqual(expRes);
   });
 
-  test("Không tin thấy sản phẩm trong danh sách - 404", async () => {
+  test("Sản phẩm trong danh sách không tồn tại trong CSDL - 404", async () => {
     //Arrange
     const products = [];
 
@@ -158,7 +172,6 @@ describe("Tạo order", () => {
 
     //Expect
     expect(validatorMock.validateProducts).toBeCalledTimes(1);
-    expect(daoMock.allProductsExist).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);
   });
@@ -173,7 +186,10 @@ describe("Tạo order", () => {
     };
     const resMock = new ResponseMock();
 
-    const order = await payPalServiceMock.createOrder(products);
+    const body = orderSerivceMock.createOrderBody(products);
+    const order = await payPalServiceMock.createOrder(body);
+
+    orderSerivceMock.createOrderBody.mockClear();
     payPalServiceMock.createOrder.mockClear();
 
     //Act
@@ -182,8 +198,51 @@ describe("Tạo order", () => {
 
     //Expect
     expect(validatorMock.validateProducts).toBeCalledTimes(1);
-    expect(daoMock.allProductsExist).toBeCalledTimes(1);
     expect(payPalServiceMock.createOrder).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes).toEqual(expRes);
+  });
+});
+
+// 200 - 404
+describe("Thanh toán order", () => {
+  beforeEach(() => {
+    payPalServiceMock = new PayPalServiceMock();
+  });
+
+  test("Order không tồn tại - 404", async () => {
+    //Arrange
+    const orderId = undefined;
+    const controller = getController();
+    const reqMock = { params: { orderId } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 404, body: {} };
+    const actRes = await controller.captureOrder(reqMock, resMock);
+
+    //Expect
+    expect(payPalServiceMock.existOrder).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes).toEqual(expRes);
+  });
+
+  test("Thanh toán thành công - 200", async () => {
+    //Arrange
+    const order = PayPalServiceMock.order;
+    const orderId = order.id;
+    const controller = getController();
+    const reqMock = { params: { orderId } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 200, body: { orderId, order } };
+    const actRes = await controller.captureOrder(reqMock, resMock);
+
+    //Expect
+    expect(payPalServiceMock.existOrder).toBeCalledTimes(1);
+    expect(payPalServiceMock.captureOrder).toBeCalledTimes(1);
+    expect(orderSerivceMock.saveOrder).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);
   });
