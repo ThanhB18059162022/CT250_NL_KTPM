@@ -1,8 +1,7 @@
 module.exports = class PayPalPaymentController {
-  //Validator xác thực dữ liệu, payPalserivce tạo đơn hàng - thanh toán
-  // paymentSerivice tính tiền để tạo đơn hàng - lưu vào csdl
-  constructor(validator, payPalSerivce, orderSerivce) {
-    this.validator = validator;
+  // PayPalserivce tạo đơn hàng - thanh toán
+  // OrderSerivice tính tiền để tạo đơn hàng - lưu vào csdl
+  constructor(payPalSerivce, orderSerivce) {
     this.payPalSerivce = payPalSerivce;
     this.orderSerivce = orderSerivce;
   }
@@ -38,16 +37,11 @@ module.exports = class PayPalPaymentController {
   createOrder = async (req, res) => {
     const { body: products } = req;
 
-    const result = this.validator.validateProducts(products);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
-    }
-
     let orderBody = {};
     try {
-      orderBody = this.orderSerivce.createOrderBody(products);
+      orderBody = await this.orderSerivce.createOrderBody(products);
     } catch (error) {
-      return res.status(404).json({});
+      return res.status(400).json({ error: error.stack });
     }
 
     const order = await this.payPalSerivce.createOrder(orderBody);
@@ -61,13 +55,14 @@ module.exports = class PayPalPaymentController {
 
   // Thanh toán order
   captureOrder = async (req, res) => {
-    const { orderId } = req.params;
+    const { id: orderId } = req.params;
 
     const exist = await this.payPalSerivce.existOrder(orderId);
     if (!exist) {
       return res.status(404).json({});
     }
 
+    // Thanh toán order
     const order = await this.payPalSerivce.captureOrder(orderId);
 
     // Lưu vào CSDL

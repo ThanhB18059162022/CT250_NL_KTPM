@@ -2,27 +2,27 @@ const express = require("express");
 const router = express.Router();
 const config = require("../../config");
 
+// Router gắn endpoints vào controller
+
+// Bắt lỗi server
+const { errorCatch } = require("../routerErrorHandler");
+
 const {
   PayPalPaymentController,
-  PayPalSerivce,
+  PayPalService,
   PayPalOrderService,
 } = require("../../controllers/controllersContainer");
 
-const dao = new AuthenticationDAO();
-const validator = new AuthenticationValidator();
+const payPalService = new PayPalService(config.paypal);
+const orderService = new PayPalOrderService(null, config.paypal.currency_code);
 
-const controller = new AuthenticationController(validator, jwt, dao);
+const controller = new PayPalPaymentController(payPalService, orderService);
 
 // Bắc buộc đăng nhập
-router
-  .route("/getUser")
-  .get(
-    controller.authenticate,
-    controller.authorize(["admin", "emp"]),
-    controller.getLoginUser
-  );
+router.route("/getClientId").get(errorCatch(controller.getClientId));
 
-router.route("/login").post(controller.login);
+router.route("/createOrder").post(errorCatch(controller.createOrder));
+
+router.route("/captureOrder/:id").get(errorCatch(controller.captureOrder));
 
 module.exports = router;
-const exist = await this.dao.allProductsExist(products);

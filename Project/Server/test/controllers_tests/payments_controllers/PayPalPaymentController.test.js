@@ -4,13 +4,6 @@ const { ResponseMock } = require("../controllerTestHelper");
 // Kiểm tra các end-points của paypal controller
 
 //#region  Init
-
-class ValidatorMock {
-  validateProducts = jest.fn((products) => {
-    return { hasAnyError: products === undefined };
-  });
-}
-
 class PayPalServiceMock {
   static clientId = "id đây";
 
@@ -49,16 +42,11 @@ class OrderSerivceMock {
 
 //#endregion
 
-let validatorMock;
 let payPalServiceMock;
 let orderSerivceMock;
 
 function getController() {
-  return new PayPalPaymentController(
-    validatorMock,
-    payPalServiceMock,
-    orderSerivceMock
-  );
+  return new PayPalPaymentController(payPalServiceMock, orderSerivceMock);
 }
 
 // 200
@@ -132,7 +120,6 @@ describe("Lấy ra order theo id", () => {
 // 201 - 400 - 404
 describe("Tạo order", () => {
   beforeEach(() => {
-    validatorMock = new ValidatorMock();
     payPalServiceMock = new PayPalServiceMock();
     orderSerivceMock = new OrderSerivceMock();
   });
@@ -148,32 +135,12 @@ describe("Tạo order", () => {
     const resMock = new ResponseMock();
 
     //Act
-    const expRes = { statusCode: 400, body: undefined };
+    const expRes = { statusCode: 400 };
     const actRes = await controller.createOrder(reqMock, resMock);
 
     //Expect
     expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes).toEqual(expRes);
-  });
-
-  test("Sản phẩm trong danh sách không tồn tại trong CSDL - 404", async () => {
-    //Arrange
-    const products = [];
-
-    const controller = getController();
-    const reqMock = {
-      body: products,
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404, body: {} };
-    const actRes = await controller.createOrder(reqMock, resMock);
-
-    //Expect
-    expect(validatorMock.validateProducts).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes).toEqual(expRes);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
   test("Tạo đơn hàng thành công - 201", async () => {
@@ -197,7 +164,6 @@ describe("Tạo order", () => {
     const actRes = await controller.createOrder(reqMock, resMock);
 
     //Expect
-    expect(validatorMock.validateProducts).toBeCalledTimes(1);
     expect(payPalServiceMock.createOrder).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);
