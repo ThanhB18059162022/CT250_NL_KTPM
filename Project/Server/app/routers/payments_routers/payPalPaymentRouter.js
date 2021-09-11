@@ -23,6 +23,6 @@ router.route("/clientId").get(errorCatch(controller.getClientId));
 
 router.route("/createOrder").post(errorCatch(controller.createOrder));
 
-router.route("/captureOrder/:orderId").get(errorCatch(controller.captureOrder));
+router.route("/captureOrder/:orderID").get(errorCatch(controller.captureOrder));
 
 module.exports = router;

@@ -3,13 +3,14 @@ import PayPalPaymentService from "./PayPalPaymentService";
 import ApiCaller from "../ApiCaller";
 
 // Dùng tạm thời nữa cải tiến sau
+// Chú ý orderID chứ ko phải orderId vì api nó trả về là orderID
 
 const img =
   "https://susanlacerra.com/wp-content/uploads/2016/06/giving-up-perfection-450-square.jpg";
 
 const payService = new PayPalPaymentService(new ApiCaller());
 
-const PaypalPayment = () => {
+const PayPalPayment = () => {
   const [paidFor, setPaidFor] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [clientId, setClientId] = useState("");
@@ -72,9 +73,9 @@ const PaypalPayment = () => {
   ];
   // createOrder nhận vào id của order
   async function creatOrderForPayment() {
-    const orderId = await payService.createOrder(products);
+    const orderID = await payService.createOrder(products);
 
-    return orderId;
+    return orderID;
   }
 
   // data là giá trị mặc định của paypal
@@ -111,4 +112,4 @@ const PaypalPayment = () => {
   return <div>{paidFor ? renderPurchased() : renderProductInfo()}</div>;
 };
 
-export default PaypalPayment;
+export default PayPalPayment;
