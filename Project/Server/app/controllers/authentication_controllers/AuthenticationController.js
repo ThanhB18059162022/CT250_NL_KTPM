@@ -69,7 +69,6 @@ class AuthenticationController {
 
   //#endregion
 
-  
   //#region Authorize phải đăng nhập trước mới xài cái này
 
   // Closure function
@@ -99,7 +98,6 @@ class AuthenticationController {
   };
 
   //#endregion
-  
 }
 
 module.exports = AuthenticationController;

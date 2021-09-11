@@ -1,0 +1,29 @@
+# Extension REST Client
+
+# Mỗi Request cách nhau 3 dấu '#'
+
+# Lấy ra paypay client id - 200
+GET http://localhost:8000/api/paypal/clientid
+
+# Tạo order
+
+### 1 Hợp lệ - 201
+POST http://localhost:8000/api/paypal/createorder
+Content-Type: application/json
+
+[
+    // Mảng nhận id và số lượng
+    {"id": 1, "quantity": 1},
+    {"id": 2, "quantity": 2}
+]
+
+# Thanh toán
+
+### 1 Đã thanh toán rồi - 500
+
+GET http://localhost:8000/api/paypal/captureorder/6072225628845804W
+
+### 2 Không tồn tại - 404
+
+GET http://localhost:8000/api/paypal/captureorder/6072225628845804H
+    

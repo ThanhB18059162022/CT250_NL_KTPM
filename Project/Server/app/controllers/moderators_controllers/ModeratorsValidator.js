@@ -30,4 +30,6 @@ module.exports = class ModeratorsValidator {
 
     return result;
   };
+
+  existModerator = (moderator) => moderator;
 };

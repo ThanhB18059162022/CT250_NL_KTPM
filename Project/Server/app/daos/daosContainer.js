@@ -8,10 +8,14 @@ const AuthenticationDAO_Ram = require("./authentication_daos/AuthenticationDAO_R
 
 const ProductDAO_Ram = require("./products_daos/ProductsDAO_Ram");
 
+const ModeratorsDAO_Ram = require("./moderators_daos/ModeratorsDAO_Ram");
+
 module.exports = {
   DAO: MysqlDAO, // Xài mysql
 
   AuthenticationDAO: AuthenticationDAO_Ram,
 
   ProductsDAO: ProductDAO_Ram,
+
+  ModeratorsDAO: ModeratorsDAO_Ram,
 };

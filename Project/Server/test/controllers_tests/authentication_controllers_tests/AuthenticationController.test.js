@@ -379,4 +379,3 @@ describe("Chuyển hướng người dùng theo quyền - role", () => {
     expect(resMock.json).toBeCalledTimes(1);
   });
 });
-

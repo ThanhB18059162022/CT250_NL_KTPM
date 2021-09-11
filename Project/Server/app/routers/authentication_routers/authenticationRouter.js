@@ -2,13 +2,20 @@ const express = require("express");
 const router = express.Router();
 const config = require("../../config");
 
-const { AuthenticationDAO } = require("../../daos/daosContainer");
+// Router gắn endpoints vào controller
 
+// Bắt lỗi server
+const { errorCatch } = require("../routerErrorHandler");
+
+// Jwt tạo key, controller và lớp xác thực dữ liệu
 const {
   JwtService,
   AuthenticationController,
   AuthenticationValidator,
 } = require("../../controllers/controllersContainer");
+
+// Lớp truy cập CSDL
+const { AuthenticationDAO } = require("../../daos/daosContainer");
 
 const dao = new AuthenticationDAO();
 const validator = new AuthenticationValidator();
@@ -22,9 +29,9 @@ router
   .get(
     controller.authenticate,
     controller.authorize(["admin", "emp"]),
-    controller.getLoginUser
+    errorCatch(controller.getLoginUser)
   );
 
-router.route("/login").post(controller.login);
+router.route("/login").post(errorCatch(controller.login));
 
 module.exports = router;
