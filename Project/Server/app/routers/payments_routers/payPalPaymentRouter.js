@@ -19,7 +19,7 @@ const orderService = new PayPalOrderService(null, config.paypal.currency_code);
 const controller = new PayPalPaymentController(payPalService, orderService);
 
 // Bắc buộc đăng nhập
-router.route("/getClientId").get(errorCatch(controller.getClientId));
+router.route("/clientId").get(errorCatch(controller.getClientId));
 
 router.route("/createOrder").post(errorCatch(controller.createOrder));
 

@@ -1,6 +1,6 @@
 const PRODUCTS = [
-  { id: 1, name: "product1", price: 0.01 },
-  { id: 2, name: "sản phẩm 2", price: 0.01 },
+  { prod_no: 1, prod_name: "product1", prod_price: 0.01 },
+  { prod_no: 2, prod_name: "sản phẩm 2", prod_price: 0.01 },
 ];
 
 module.exports = class PaymentSerivce {
@@ -9,6 +9,7 @@ module.exports = class PaymentSerivce {
     this.currency_code = currency_code;
   }
 
+  // Chưa đụng
   // Lấy danh sách sản phẩm
   // Mỗi phần tử trong danh sách phải có 3 phần
   // Tên - Giá tiền - Số lượng
@@ -19,8 +20,9 @@ module.exports = class PaymentSerivce {
     // Lấy ra sản phẩm từ CSDL
     for (const op of orderProducts) {
       // const product = await this.dao.getProductById(op.prod_no);
-      const product = PRODUCTS.filter((p) => p.id == op.id)[0];
-      products.push({ ...product, quantity: op.quantity });
+      const product = PRODUCTS.filter((p) => p.prod_no == op.prod_no)[0];
+      if (product === undefined) throw Error("Chả có cái nào z hết");
+      products.push({ ...product, prod_quantity: op.prod_quantity });
     }
 
     // Tính tổng tiền trong mảng mà client gửi
@@ -31,7 +33,7 @@ module.exports = class PaymentSerivce {
       Math.round(
         100 *
           products.reduce((sum, p) => {
-            return sum + p.price * p.quantity;
+            return sum + p.prod_price * p.prod_quantity;
           }, 0)
       ) / 100; // Số 0 là giá trị khởi tạo của sum
 
@@ -60,14 +62,14 @@ module.exports = class PaymentSerivce {
           items: products.map((prod) => {
             // Chi tiết của từng sản phẩm
             return {
-              name: prod.name,
+              name: prod.prod_name,
               // Giá
               unit_amount: {
                 currency_code: this.currency_code,
-                value: prod.price,
+                value: prod.prod_price,
               },
               // Số lượng
-              quantity: prod.quantity,
+              quantity: prod.prod_quantity,
             };
           }),
         },

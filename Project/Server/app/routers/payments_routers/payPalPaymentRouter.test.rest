@@ -3,7 +3,7 @@
 # Mỗi Request cách nhau 3 dấu '#'
 
 # Lấy ra paypay client id - 200
-GET http://localhost:8000/api/paypal/getclientid
+GET http://localhost:8000/api/paypal/clientid
 
 # Tạo order
 
