@@ -8,7 +8,6 @@ const isDev = !process.env.NODE_ENV;
 
 // Dùng khi lập trình hiện stacktrace
 function devErrorHandler(err, req, res, next) {
-  console.log(err);
   return res.status(500).json(err.stack);
 }
 

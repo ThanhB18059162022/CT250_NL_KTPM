@@ -208,6 +208,7 @@ describe("Thanh toán order", () => {
     //Expect
     expect(payPalServiceMock.existOrder).toBeCalledTimes(1);
     expect(payPalServiceMock.captureOrder).toBeCalledTimes(1);
+
     expect(orderSerivceMock.saveOrder).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);

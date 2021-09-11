@@ -55,7 +55,7 @@ module.exports = class PayPalPaymentController {
 
   // Thanh toán order
   captureOrder = async (req, res) => {
-    const { id: orderId } = req.params;
+    const { orderId } = req.params;
 
     const exist = await this.payPalSerivce.existOrder(orderId);
     if (!exist) {
