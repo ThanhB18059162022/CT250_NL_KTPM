@@ -130,7 +130,7 @@ describe("Tạo order", () => {
 
     const controller = getController();
     const reqMock = {
-      body: products,
+      body: { products },
     };
     const resMock = new ResponseMock();
 
@@ -149,7 +149,7 @@ describe("Tạo order", () => {
 
     const controller = getController();
     const reqMock = {
-      body: products,
+      body: { products },
     };
     const resMock = new ResponseMock();
 
