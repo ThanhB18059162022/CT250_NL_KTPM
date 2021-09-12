@@ -31,5 +31,21 @@ module.exports = class ModeratorsValidator {
     return result;
   };
 
-  existModerator = (moderator) => moderator;
+  validateAddModerator = (moderator = {}) => {
+    const schema = joi.object({
+      mod_name: joi.string().min(5).max(70).required(),
+      mod_id: joi.string().length(9).required(),
+      // mod_phoneNumber: joi
+      //   .string()
+      //   .length(10)
+      //   .pattern(/^[0-9]+$/)
+      //   .required(),
+    });
+
+    const result = this.getResult(schema, moderator);
+
+    return result;
+  };
+
+  existModerator = (moderator) => moderator !== undefined;
 };
