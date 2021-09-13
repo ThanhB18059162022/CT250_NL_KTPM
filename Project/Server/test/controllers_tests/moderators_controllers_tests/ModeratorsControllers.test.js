@@ -29,6 +29,10 @@ class ModeratorValidatorMock {
     return { hasAnyError: p === "" };
   });
 
+  validateMod_Id = jest.fn((id) => {
+    return { hasAnyError: id === "" };
+  });
+
   existModerator = jest.fn((m) => {
     return m !== undefined;
   });
@@ -80,6 +84,7 @@ describe("Lấy ra quản trị viên", () => {
     validateMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
   });
+
   test("Lấy ra danh sách quản trị viên - 200", async () => {
     //Arrange
     const controller = getController();
@@ -213,6 +218,65 @@ describe("Lấy ra quản trị viên", () => {
     //Assert
     expect(validateMock.validatePhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes).toEqual(expRes);
+  });
+
+  //#endregion
+
+  //#region Theo CMND
+
+  test("Lấy ra quản trị viên theo CMND không hợp lệ - 400", async () => {
+    //Arrange
+    const controller = getController();
+    const mod_id = "";
+    const reqMock = { params: { mod_id } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400, body: undefined };
+    const actRes = await controller.getModeratorByMod_Id(reqMock, resMock);
+
+    //Assert
+    expect(validateMock.validateMod_Id).toBeCalledTimes(1);
+
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes).toEqual(expRes);
+  });
+
+  test("Lấy ra quản trị viên theo CMND không tồn tại - 404", async () => {
+    //Arrange
+    const controller = getController();
+    const mod_id = "000000000";
+    const reqMock = { params: { mod_id } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 404, body: {} };
+    const actRes = await controller.getModeratorByMod_Id(reqMock, resMock);
+
+    //Assert
+    expect(validateMock.validateMod_Id).toBeCalledTimes(1);
+    expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes).toEqual(expRes);
+  });
+
+  test("Lấy ra quản trị viên theo CMND hợp lệ - 200", async () => {
+    //Arrange
+    const controller = getController();
+    const mod = moderators[0];
+    const { mod_id } = mod;
+    const reqMock = { params: { mod_id } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 200, body: mod };
+    const actRes = await controller.getModeratorByMod_Id(reqMock, resMock);
+
+    //Assert
+    expect(validateMock.validateMod_Id).toBeCalledTimes(1);
+    expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);
   });

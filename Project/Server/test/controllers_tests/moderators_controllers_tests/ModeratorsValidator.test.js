@@ -150,6 +150,78 @@ describe("Kiểm tra số điện thoại quản trị mod_phoneNumber", () => {
   });
 });
 
+describe("Kiểm tra CMND quản trị mod_phoneNumber", () => {
+  test("CMND undefined", () => {
+    //Arrange
+    const mod_id = undefined;
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateMod_Id(mod_id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND < 9 số", () => {
+    //Arrange
+    const mod_id = "0000";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateMod_Id(mod_id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND > 9 số", () => {
+    //Arrange
+    const mod_id = "0000111100001111";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateMod_Id(mod_id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND không phải số", () => {
+    //Arrange
+    const mod_id = "aaaaaaaaaa";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateMod_Id(mod_id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND hợp lệ", () => {
+    //Arrange
+    const mod_id = "090000000";
+    const validator = getModeratorsValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateMod_Id(mod_id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+
 // Thông tin hợp lệ add
 const validAddModeratorModel = {
   mod_name: "alexander",
