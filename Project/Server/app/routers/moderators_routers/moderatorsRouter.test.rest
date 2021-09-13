@@ -63,3 +63,217 @@ GET http://localhost:8000/api/moderators/phonenumber/000000000a
 
 ### Số điện thoại không tồn tại - 404
 GET http://localhost:8000/api/moderators/phonenumber/0000000999
+
+
+
+# ---------------------------------------------------------------------
+
+
+
+
+# Thêm quản trị viên mới
+
+### Hợp lệ
+# Trả về mod có mod_no
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+
+# Không hợp lệ 400
+
+### 1 Không có mod_name 
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 2 mod_name ngắn hơn 5
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alex",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 3 mod_name dài hơn 70
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexaa8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4f",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 4 mod_id undefined
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 5 mod_id ít hơn 9 số
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "55555555",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 6 mod_id dài hơn 9 số
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "5555555500",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 7 mod_id không phải số
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "55555555a",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 8 mod_phoneNumber undefined
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555556",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 9 mod_phoneNumber ngắn hơn 10 số
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555556",
+    "mod_phoneNumber": "000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 10 mod_phoneNumber dài hơn 10 số
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "00000000001",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### 11 mod_phoneNumber không phải số
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555555",
+    "mod_phoneNumber": "000000000a",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+
+
+
+# -------------------------------------------------------------------------------
+
+
+
+# Sửa thông tin quản trị viên
+
+### Hợp lệ
+PUT http://localhost:8000/api/moderators/1
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_password": "123456"
+}
+

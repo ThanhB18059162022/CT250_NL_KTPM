@@ -264,7 +264,7 @@ describe("Thêm quản trị viên", () => {
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(validateMock.existModerator).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes).toEqual(expRes);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
   test("Trùng số CMND - 400", async () => {
@@ -286,7 +286,7 @@ describe("Thêm quản trị viên", () => {
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
     expect(validateMock.existModerator).toBeCalledTimes(2);
     expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes).toEqual(expRes);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
   test("Thêm thành công - 201", async () => {
@@ -337,7 +337,7 @@ describe("Sửa thông tin quản trị viên", () => {
     //Expect
     expect(validateMock.validateNo).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes).toEqual(expRes);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
   test("Thông tin không hợp lệ các trường undefined - 400", async () => {
@@ -403,7 +403,7 @@ describe("Sửa thông tin quản trị viên", () => {
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes).toEqual(expRes);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
   test("Số CMND đã tồn tại - 400", async () => {
@@ -431,7 +431,7 @@ describe("Sửa thông tin quản trị viên", () => {
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes).toEqual(expRes);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
   test("Cập nhật thành công - 204", async () => {
