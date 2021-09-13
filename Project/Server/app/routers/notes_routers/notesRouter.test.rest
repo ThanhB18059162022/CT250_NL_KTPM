@@ -15,3 +15,14 @@ GET http://localhost:8000/api/notes/wtf
 
 ### 2
 GET http://localhost:8000/api/notes/-1
+
+
+### Thêm
+POST http://localhost:8000/api/notes
+Content-Type: application/json
+
+{
+    "id": 1,
+    "title": "alex",
+    "content": "nội dung"
+}

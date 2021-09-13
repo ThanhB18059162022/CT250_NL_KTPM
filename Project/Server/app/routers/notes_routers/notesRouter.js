@@ -23,7 +23,7 @@ router.route("/").get(errorCatch(controller.getList)).post(controller.post);
 
 router
   .route("/:id")
-  .get(authController.authenticate, controller.getById)
+  .get(controller.getById)
   .put(controller.put)
   .delete(controller.delete);
 

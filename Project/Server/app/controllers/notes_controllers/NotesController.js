@@ -1,3 +1,4 @@
+const { number } = require("joi");
 const Joi = require("joi");
 // Tham khảo https://joi.dev/api/?v=17.4.2
 
@@ -5,6 +6,13 @@ const { getPaginatedResults } = require("../controllerHelper");
 
 const arr = [];
 
+class Err extends Error {
+  constructor() {
+    super();
+  }
+}
+
+class E extends Error {}
 module.exports = class NotesController {
   constructor() {
     for (let i = 1; i <= 100; i++) {
@@ -50,7 +58,7 @@ module.exports = class NotesController {
   //Thêm
   post = (req, res) => {
     const body = req.body;
-
+    console.log("Loại", typeof body.id, body.id);
     const rs = this.getValidateResult(body);
 
     if (rs.error) {
@@ -121,13 +129,14 @@ module.exports = class NotesController {
 
   getValidateResult(body) {
     const schema = Joi.object({
-      wtf: Joi.array()
-        .required()
-        .items(
-          Joi.object().required().keys({
-            a: Joi.required(),
-          })
-        ),
+      // wtf: Joi.array()
+      //   .required()
+      //   .items(
+      //     Joi.object().required().keys({
+      //       a: Joi.required(),
+      //     })
+      //   ),
+      id: Joi.number().integer().required(),
       title: Joi.string().min(3).required(),
       content: Joi.string().min(1).required(),
     });
