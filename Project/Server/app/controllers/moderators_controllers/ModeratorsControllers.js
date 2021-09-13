@@ -91,6 +91,18 @@ module.exports = class ModeratorsControllers {
         key: "mod_id",
         content: "mod_id has already been taken.",
       });
+
+    const existPhoneNumber = await this.existPhoneNumber(
+      newModerator.mod_phoneNumber
+    );
+    if (existPhoneNumber) {
+      return res.status(400).json();
+    }
+
+    // Số CMND tồn tại
+    const existMod_Id = await this.existMod_Id(newModerator.mod_id);
+    if (existMod_Id) {
+      return res.status(400).json();
     }
 
     const moderator = await this.dao.addModerator(newModerator);

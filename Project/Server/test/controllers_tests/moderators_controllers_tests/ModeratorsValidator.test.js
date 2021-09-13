@@ -150,6 +150,7 @@ describe("Kiểm tra số điện thoại quản trị mod_phoneNumber", () => {
   });
 });
 
+
 // Thông tin hợp lệ add
 const validAddModeratorModel = {
   mod_name: "alexander",
@@ -182,6 +183,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Tên quản trị viên undefined", () => {
     // Arrange
     const mod_name = undefined;
+
     const moderator = { ...validAddModeratorModel, mod_name };
     const validator = getModeratorsValidator();
     const failed = true;
@@ -197,7 +199,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Tên quản trị viên ngắn hơn 5", () => {
     // Arrange
     const mod_name = "wtf";
+
     const moderator = { ...validAddModeratorModel, mod_name };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -213,7 +217,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
     // Arrange
     const mod_name =
       "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4f";
+
     const moderator = { ...validAddModeratorModel, mod_name };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -228,6 +234,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Tên quản trị viên hợp lệ", () => {
     // Arrange
     const moderator = { ...validAddModeratorModel };
+
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -276,7 +283,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("CMND quản trị viên không phải là số", () => {
     // Arrange
     const mod_id = "a78877777";
+
     const moderator = { ...validAddModeratorModel, mod_id };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -291,7 +300,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("CMND quản trị viên hợp lệ", () => {
     // Arrange
     const mod_id = "778877777";
+
     const moderator = { ...validAddModeratorModel, mod_id };
+
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -310,6 +321,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Số điện thoại hợp lệ", () => {
     //Arrange
     const moderator = validAddModeratorModel;
+
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -324,6 +336,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Số điện thoại undefined", () => {
     //Arrange
     const moderator = { ...validAddModeratorModel, mod_phoneNumber: undefined };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -341,6 +354,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
       ...validAddModeratorModel,
       mod_phoneNumber: "11111111",
     };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -375,6 +389,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
       ...validAddModeratorModel,
       mod_phoneNumber: "111111111a",
     };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -393,6 +408,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Giới tính hợp lệ", () => {
     //Arrange
     const moderator = validAddModeratorModel;
+
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -407,6 +423,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Giới tính undefined", () => {
     //Arrange
     const moderator = { ...validAddModeratorModel, mod_sex: undefined };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -421,6 +438,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Giới tính không phải bool", () => {
     //Arrange
     const moderator = { ...validAddModeratorModel, mod_sex: "wtf" };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -438,7 +456,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Địa chỉ hợp lệ", () => {
     //Arrange
+
     const moderator = validAddModeratorModel;
+
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -452,7 +472,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Địa chỉ undefined", () => {
     //Arrange
+
     const moderator = { ...validAddModeratorModel, mod_address: undefined };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -466,7 +488,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Địa chỉ ngắn hơn 5", () => {
     //Arrange
+
     const moderator = { ...validAddModeratorModel, mod_address: "abc" };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -482,6 +506,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
     //Arrange
     const moderator = {
       ...validAddModeratorModel,
+
       mod_address:
         "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4faa",
     };
@@ -504,7 +529,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Vai trò hợp lệ", () => {
     //Arrange
+
     const moderator = validAddModeratorModel;
+
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -518,7 +545,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Vai trò không phải là số", () => {
     //Arrange
+
     const moderator = { ...validAddModeratorModel, mod_role: "wtf" };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -532,7 +561,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Vai trò < 0", () => {
     //Arrange
+
     const moderator = { ...validAddModeratorModel, mod_role: -1 };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -547,7 +578,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Vai trò > int max", () => {
     //Arrange
     const moderator = {
+
       ...validAddModeratorModel,
+
       mod_role: Number.MAX_SAFE_INTEGER + 1,
     };
     const validator = getModeratorsValidator();
@@ -567,7 +600,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Tài khoản hợp lệ", () => {
     //Arrange
+
     const moderator = { ...validAddModeratorModel };
+
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -582,6 +617,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Tài khoản undefined", () => {
     //Arrange
     const moderator = { ...validAddModeratorModel, mod_username: undefined };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -595,7 +631,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Tài khoản ngắn hơn 5", () => {
     //Arrange
+
     const moderator = { ...validAddModeratorModel, mod_username: "abc" };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -611,6 +649,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
     //Arrange
     const moderator = {
       ...validAddModeratorModel,
+
       mod_username:
         "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa",
     };
@@ -628,6 +667,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Tài khoản không có khoảng trắng", () => {
     //Arrange
     const moderator = { ...validAddModeratorModel, mod_username: "alex  aw" };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -646,6 +686,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Mật khẩu hợp lệ", () => {
     //Arrange
     const moderator = { ...validAddModeratorModel };
+
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -659,7 +700,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Mật khẩu undefined", () => {
     //Arrange
+
     const moderator = { ...validAddModeratorModel, mod_password: undefined };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -673,7 +716,9 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   test("Mật khẩu ngắn hơn 5", () => {
     //Arrange
+
     const moderator = { ...validAddModeratorModel, mod_password: "123" };
+
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -689,6 +734,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
     //Arrange
     const moderator = {
       ...validAddModeratorModel,
+
       mod_password:
         "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa",
     };
@@ -705,6 +751,7 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   //#endregion
 });
+
 
 // Thông tin hợp lệ cập nhật
 const validUpdateModeratorModel = {
@@ -1186,6 +1233,7 @@ describe("Cập nhật quản trị viên kiểm tra thông tin quản trị vi�
   //#endregion
 });
 
+
 describe("Kiểm tra quản trị viên tồn tại", () => {
   test("Quản trị viên undefined", () => {
     // Arrange
@@ -1218,6 +1266,7 @@ describe("Kiểm tra quản trị viên tồn tại", () => {
   test("Quản trị viên tồn tại", () => {
     // Arrange
     const moderator = { mod_no: 1 };
+
     const validator = getModeratorsValidator();
     const valid = true;
 
