@@ -150,8 +150,8 @@ describe("Kiểm tra số điện thoại quản trị mod_phoneNumber", () => {
   });
 });
 
-// Thông tin hợp lệ
-const validModeratorModel = {
+// Thông tin hợp lệ add
+const validAddModeratorModel = {
   mod_name: "alexander",
   mod_id: "000000001",
   mod_phoneNumber: "0000000011",
@@ -162,7 +162,7 @@ const validModeratorModel = {
   mod_password: "123456",
 };
 
-describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên hợp lệ", () => {
+describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợp lệ", () => {
   test("Quản trị viên undefined", () => {
     // Arrange
     const moderator = undefined;
@@ -182,7 +182,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("Tên quản trị viên undefined", () => {
     // Arrange
     const mod_name = undefined;
-    const moderator = { ...validModeratorModel, mod_name };
+    const moderator = { ...validAddModeratorModel, mod_name };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -197,7 +197,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("Tên quản trị viên ngắn hơn 5", () => {
     // Arrange
     const mod_name = "wtf";
-    const moderator = { ...validModeratorModel, mod_name };
+    const moderator = { ...validAddModeratorModel, mod_name };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -213,7 +213,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
     // Arrange
     const mod_name =
       "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4f";
-    const moderator = { ...validModeratorModel, mod_name };
+    const moderator = { ...validAddModeratorModel, mod_name };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -227,7 +227,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Tên quản trị viên hợp lệ", () => {
     // Arrange
-    const moderator = { ...validModeratorModel };
+    const moderator = { ...validAddModeratorModel };
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -246,7 +246,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("CMND quản trị viên undefined", () => {
     // Arrange
     const mod_id = undefined;
-    const moderator = { ...validModeratorModel, mod_id };
+    const moderator = { ...validAddModeratorModel, mod_id };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -261,7 +261,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("CMND quản trị viên không đủ 9 số", () => {
     // Arrange
     const mod_id = "11111111";
-    const moderator = { ...validModeratorModel, mod_id };
+    const moderator = { ...validAddModeratorModel, mod_id };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -276,7 +276,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("CMND quản trị viên không phải là số", () => {
     // Arrange
     const mod_id = "a78877777";
-    const moderator = { ...validModeratorModel, mod_id };
+    const moderator = { ...validAddModeratorModel, mod_id };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -291,7 +291,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("CMND quản trị viên hợp lệ", () => {
     // Arrange
     const mod_id = "778877777";
-    const moderator = { ...validModeratorModel, mod_id };
+    const moderator = { ...validAddModeratorModel, mod_id };
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -309,7 +309,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Số điện thoại hợp lệ", () => {
     //Arrange
-    const moderator = validModeratorModel;
+    const moderator = validAddModeratorModel;
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -323,7 +323,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Số điện thoại undefined", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_phoneNumber: undefined };
+    const moderator = { ...validAddModeratorModel, mod_phoneNumber: undefined };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -337,7 +337,10 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Số điện thoại ngắn hơn 10", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_phoneNumber: "11111111" };
+    const moderator = {
+      ...validAddModeratorModel,
+      mod_phoneNumber: "11111111",
+    };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -352,7 +355,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("Số điện thoại dài hơn 10", () => {
     //Arrange
     const moderator = {
-      ...validModeratorModel,
+      ...validAddModeratorModel,
       mod_phoneNumber: "11111111111111111",
     };
     const validator = getModeratorsValidator();
@@ -368,7 +371,10 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Số điện thoại không phải là số", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_phoneNumber: "111111111a" };
+    const moderator = {
+      ...validAddModeratorModel,
+      mod_phoneNumber: "111111111a",
+    };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -386,7 +392,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Giới tính hợp lệ", () => {
     //Arrange
-    const moderator = validModeratorModel;
+    const moderator = validAddModeratorModel;
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -400,7 +406,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Giới tính undefined", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_sex: undefined };
+    const moderator = { ...validAddModeratorModel, mod_sex: undefined };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -414,7 +420,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Giới tính không phải bool", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_sex: "wtf" };
+    const moderator = { ...validAddModeratorModel, mod_sex: "wtf" };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -432,7 +438,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Địa chỉ hợp lệ", () => {
     //Arrange
-    const moderator = validModeratorModel;
+    const moderator = validAddModeratorModel;
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -446,7 +452,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Địa chỉ undefined", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_address: undefined };
+    const moderator = { ...validAddModeratorModel, mod_address: undefined };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -460,7 +466,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Địa chỉ ngắn hơn 5", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_address: "abc" };
+    const moderator = { ...validAddModeratorModel, mod_address: "abc" };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -475,7 +481,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("Địa chỉ dài hơn 128", () => {
     //Arrange
     const moderator = {
-      ...validModeratorModel,
+      ...validAddModeratorModel,
       mod_address:
         "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4faa",
     };
@@ -498,7 +504,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Vai trò hợp lệ", () => {
     //Arrange
-    const moderator = validModeratorModel;
+    const moderator = validAddModeratorModel;
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -512,7 +518,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Vai trò không phải là số", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_role: "wtf" };
+    const moderator = { ...validAddModeratorModel, mod_role: "wtf" };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -526,7 +532,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Vai trò < 0", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_role: -1 };
+    const moderator = { ...validAddModeratorModel, mod_role: -1 };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -541,7 +547,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("Vai trò > int max", () => {
     //Arrange
     const moderator = {
-      ...validModeratorModel,
+      ...validAddModeratorModel,
       mod_role: Number.MAX_SAFE_INTEGER + 1,
     };
     const validator = getModeratorsValidator();
@@ -561,7 +567,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Tài khoản hợp lệ", () => {
     //Arrange
-    const moderator = { ...validModeratorModel };
+    const moderator = { ...validAddModeratorModel };
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -575,7 +581,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Tài khoản undefined", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_username: undefined };
+    const moderator = { ...validAddModeratorModel, mod_username: undefined };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -589,7 +595,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Tài khoản ngắn hơn 5", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_username: "abc" };
+    const moderator = { ...validAddModeratorModel, mod_username: "abc" };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -604,7 +610,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("Tài khoản dài hơn 70", () => {
     //Arrange
     const moderator = {
-      ...validModeratorModel,
+      ...validAddModeratorModel,
       mod_username:
         "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa",
     };
@@ -621,7 +627,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Tài khoản không có khoảng trắng", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_username: "alex  aw" };
+    const moderator = { ...validAddModeratorModel, mod_username: "alex  aw" };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -639,7 +645,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Mật khẩu hợp lệ", () => {
     //Arrange
-    const moderator = { ...validModeratorModel };
+    const moderator = { ...validAddModeratorModel };
     const validator = getModeratorsValidator();
     const failed = false;
 
@@ -653,7 +659,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Mật khẩu undefined", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_password: undefined };
+    const moderator = { ...validAddModeratorModel, mod_password: undefined };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -667,7 +673,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
 
   test("Mật khẩu ngắn hơn 5", () => {
     //Arrange
-    const moderator = { ...validModeratorModel, mod_password: "123" };
+    const moderator = { ...validAddModeratorModel, mod_password: "123" };
     const validator = getModeratorsValidator();
     const failed = true;
 
@@ -682,7 +688,7 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
   test("Mật khẩu dài hơn 64", () => {
     //Arrange
     const moderator = {
-      ...validModeratorModel,
+      ...validAddModeratorModel,
       mod_password:
         "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa",
     };
@@ -692,6 +698,486 @@ describe("Thêm quản trị viên MOR Kiểm tra thông tin quản trị viên 
     //Act
     const expRs = failed;
     const actRs = validator.validateAddModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+});
+
+// Thông tin hợp lệ cập nhật
+const validUpdateModeratorModel = {
+  mod_name: "alexander",
+  mod_id: "000000001",
+  mod_phoneNumber: "0000000011",
+  mod_sex: true,
+  mod_address: "3/2 NK CT",
+  mod_role: 0,
+  mod_password: "123456",
+};
+
+describe("Cập nhật quản trị viên kiểm tra thông tin quản trị viên hợp lệ", () => {
+  test("Quản trị viên undefined", () => {
+    // Arrange
+    const moderator = undefined;
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#region  Tên
+
+  test("Tên quản trị viên undefined", () => {
+    // Arrange
+    const mod_name = undefined;
+    const moderator = { ...validUpdateModeratorModel, mod_name };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tên quản trị viên ngắn hơn 5", () => {
+    // Arrange
+    const mod_name = "wtf";
+    const moderator = { ...validUpdateModeratorModel, mod_name };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tên quản trị viên dài hơn 70", () => {
+    // Arrange
+    const mod_name =
+      "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4f";
+    const moderator = { ...validUpdateModeratorModel, mod_name };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tên quản trị viên hợp lệ", () => {
+    // Arrange
+    const moderator = { ...validUpdateModeratorModel };
+    const validator = getModeratorsValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region CMND
+
+  test("CMND quản trị viên undefined", () => {
+    // Arrange
+    const mod_id = undefined;
+    const moderator = { ...validUpdateModeratorModel, mod_id };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND quản trị viên không đủ 9 số", () => {
+    // Arrange
+    const mod_id = "11111111";
+    const moderator = { ...validUpdateModeratorModel, mod_id };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND quản trị viên không phải là số", () => {
+    // Arrange
+    const mod_id = "a78877777";
+    const moderator = { ...validUpdateModeratorModel, mod_id };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND quản trị viên hợp lệ", () => {
+    // Arrange
+    const mod_id = "778877777";
+    const moderator = { ...validUpdateModeratorModel, mod_id };
+    const validator = getModeratorsValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region PhoneNumber
+
+  test("Số điện thoại hợp lệ", () => {
+    //Arrange
+    const moderator = validUpdateModeratorModel;
+    const validator = getModeratorsValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Số điện thoại undefined", () => {
+    //Arrange
+    const moderator = {
+      ...validUpdateModeratorModel,
+      mod_phoneNumber: undefined,
+    };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Số điện thoại ngắn hơn 10", () => {
+    //Arrange
+    const moderator = {
+      ...validUpdateModeratorModel,
+      mod_phoneNumber: "11111111",
+    };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Số điện thoại dài hơn 10", () => {
+    //Arrange
+    const moderator = {
+      ...validUpdateModeratorModel,
+      mod_phoneNumber: "11111111111111111",
+    };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Số điện thoại không phải là số", () => {
+    //Arrange
+    const moderator = {
+      ...validUpdateModeratorModel,
+      mod_phoneNumber: "111111111a",
+    };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region Sex
+
+  test("Giới tính hợp lệ", () => {
+    //Arrange
+    const moderator = validUpdateModeratorModel;
+    const validator = getModeratorsValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Giới tính undefined", () => {
+    //Arrange
+    const moderator = { ...validUpdateModeratorModel, mod_sex: undefined };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Giới tính không phải bool", () => {
+    //Arrange
+    const moderator = { ...validUpdateModeratorModel, mod_sex: "wtf" };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region Adrress
+
+  test("Địa chỉ hợp lệ", () => {
+    //Arrange
+    const moderator = validUpdateModeratorModel;
+    const validator = getModeratorsValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Địa chỉ undefined", () => {
+    //Arrange
+    const moderator = { ...validUpdateModeratorModel, mod_address: undefined };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Địa chỉ ngắn hơn 5", () => {
+    //Arrange
+    const moderator = { ...validUpdateModeratorModel, mod_address: "abc" };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Địa chỉ dài hơn 128", () => {
+    //Arrange
+    const moderator = {
+      ...validUpdateModeratorModel,
+      mod_address:
+        "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4faa",
+    };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region Role
+
+  // Kiểu int
+
+  test("Vai trò hợp lệ", () => {
+    //Arrange
+    const moderator = validUpdateModeratorModel;
+    const validator = getModeratorsValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Vai trò không phải là số", () => {
+    //Arrange
+    const moderator = { ...validUpdateModeratorModel, mod_role: "wtf" };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Vai trò < 0", () => {
+    //Arrange
+    const moderator = { ...validUpdateModeratorModel, mod_role: -1 };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Vai trò > int max", () => {
+    //Arrange
+    const moderator = {
+      ...validUpdateModeratorModel,
+      mod_role: Number.MAX_SAFE_INTEGER + 1,
+    };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region Password
+
+  test("Mật khẩu hợp lệ", () => {
+    //Arrange
+    const moderator = { ...validUpdateModeratorModel };
+    const validator = getModeratorsValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Mật khẩu undefined", () => {
+    //Arrange
+    const moderator = { ...validUpdateModeratorModel, mod_password: undefined };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Mật khẩu ngắn hơn 5", () => {
+    //Arrange
+    const moderator = { ...validUpdateModeratorModel, mod_password: "123" };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Mật khẩu dài hơn 64", () => {
+    //Arrange
+    const moderator = {
+      ...validUpdateModeratorModel,
+      mod_password:
+        "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa",
+    };
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUpdateModerator(moderator).hasAnyError;
 
     //Expect
     expect(actRs).toEqual(expRs);
@@ -731,7 +1217,7 @@ describe("Kiểm tra quản trị viên tồn tại", () => {
 
   test("Quản trị viên tồn tại", () => {
     // Arrange
-    const moderator = { id: 1 };
+    const moderator = { mod_no: 1 };
     const validator = getModeratorsValidator();
     const valid = true;
 

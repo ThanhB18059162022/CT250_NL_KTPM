@@ -21,13 +21,19 @@ const controller = new ModeratorsController(validator, dao);
 
 router
   .route("/")
-  // /products?page=1&limit=10
-  .get(errorCatch(controller.getModerators));
+  // /moderators?page=1&limit=10
+  .get(errorCatch(controller.getModerators))
+  .post(errorCatch(controller.addModerator));
 
-// products/1
-router.route("/:mod_no").get(errorCatch(controller.getModeratorByNo));
+// moderators/1
+router
+  .route("/:mod_no")
+  .get(errorCatch(controller.getModeratorByNo))
+  .put(errorCatch(controller.updateModerator))
+  // Để tạm delete là lock
+  .delete(errorCatch(controller.lockModerator));
 
-// products/name/iPhone12
+// moderators/PhoneNumber/1234567899
 router
   .route("/PhoneNumber/:mod_phoneNumber")
   .get(errorCatch(controller.getModeratorByPhoneNumber));

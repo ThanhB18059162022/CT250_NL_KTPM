@@ -1,4 +1,4 @@
-const { getPaginatedResults } = require("../controllerHelper");
+const { getPaginatedResults, nameOf } = require("../controllerHelper");
 
 module.exports = class ModeratorsControllers {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
@@ -58,6 +58,8 @@ module.exports = class ModeratorsControllers {
     return res.json(moderator);
   };
 
+  // Lấy quản trị viên theo CMND
+
   //#endregion
 
   //#region  ADD
@@ -68,21 +70,27 @@ module.exports = class ModeratorsControllers {
 
     const result = this.validator.validateAddModerator(newModerator);
     if (result.hasAnyError) {
-      return res.status(400).json();
+      return res.status(400).json(result.error);
     }
 
     // Số điện thoại tồn tại
-    const existPhoneNumber = await this.existPhoneNumber(
-      newModerator.mod_phoneNumber
-    );
+    const { mod_phoneNumber } = newModerator;
+    const existPhoneNumber = await this.existPhoneNumber(mod_phoneNumber);
     if (existPhoneNumber) {
-      return res.status(400).json();
+      return res.status(400).json({
+        key: "mod_phoneNumber",
+        content: "mod_phoneNumber has already been taken.",
+      });
     }
 
     // Số CMND tồn tại
-    const existMod_Id = await this.existMod_Id(newModerator.mod_id);
+    const { mod_id } = newModerator;
+    const existMod_Id = await this.existMod_Id(mod_id);
     if (existMod_Id) {
-      return res.status(400).json();
+      return res.status(400).json({
+        key: "mod_id",
+        content: "mod_id has already been taken.",
+      });
     }
 
     const moderator = await this.dao.addModerator(newModerator);
@@ -128,7 +136,7 @@ module.exports = class ModeratorsControllers {
     const valUpResult =
       this.validator.validateUpdateModerator(newModeratorInfo);
     if (valUpResult.hasAnyError) {
-      return res.status(400).json(valNoResult.error);
+      return res.status(400).json(valUpResult.error);
     }
 
     //#endregion
@@ -154,7 +162,10 @@ module.exports = class ModeratorsControllers {
       existPhoneNumber &&
       this.notOldModeratorInfo(moderator, moderatorHasPhoneNumber)
     ) {
-      return res.status(400).json();
+      return res.status(400).json({
+        key: "mod_phoneNumber",
+        content: "mod_phoneNumber has already been taken.",
+      });
     }
 
     // Số CMND tồn tại
@@ -168,7 +179,10 @@ module.exports = class ModeratorsControllers {
       existMod_Id &&
       this.notOldModeratorInfo(moderator, moderatorHasMod_Id)
     ) {
-      return res.status(400).json();
+      return res.status(400).json({
+        key: "mod_id",
+        content: "mod_id has already been taken.",
+      });
     }
 
     //#endregion

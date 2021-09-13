@@ -32,4 +32,14 @@ module.exports = class ModeratorsDAO_Ram {
   getModeratorByPhoneNumber = async (mod_phoneNumber) => {
     return moderators.filter((m) => m.mod_phoneNumber === mod_phoneNumber)[0];
   };
+
+  getModeratorByMod_Id = async (mod_id) => {
+    return moderators.filter((m) => m.mod_id === mod_id)[0];
+  };
+
+  addModerator = async (mod) => {
+    return { mod_no: moderators.length + 1, ...mod };
+  };
+
+  updateModerator = async () => {};
 };
