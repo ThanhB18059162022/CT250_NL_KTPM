@@ -150,7 +150,6 @@ describe("Kiểm tra số điện thoại quản trị mod_phoneNumber", () => {
   });
 });
 
-
 // Thông tin hợp lệ add
 const validAddModeratorModel = {
   mod_name: "alexander",
@@ -578,7 +577,6 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
   test("Vai trò > int max", () => {
     //Arrange
     const moderator = {
-
       ...validAddModeratorModel,
 
       mod_role: Number.MAX_SAFE_INTEGER + 1,
@@ -751,7 +749,6 @@ describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợ
 
   //#endregion
 });
-
 
 // Thông tin hợp lệ cập nhật
 const validUpdateModeratorModel = {
@@ -1232,7 +1229,6 @@ describe("Cập nhật quản trị viên kiểm tra thông tin quản trị vi�
 
   //#endregion
 });
-
 
 describe("Kiểm tra quản trị viên tồn tại", () => {
   test("Quản trị viên undefined", () => {

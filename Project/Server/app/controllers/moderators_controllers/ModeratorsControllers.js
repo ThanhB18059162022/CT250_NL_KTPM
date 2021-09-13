@@ -91,18 +91,6 @@ module.exports = class ModeratorsControllers {
         key: "mod_id",
         content: "mod_id has already been taken.",
       });
-
-    const existPhoneNumber = await this.existPhoneNumber(
-      newModerator.mod_phoneNumber
-    );
-    if (existPhoneNumber) {
-      return res.status(400).json();
-    }
-
-    // Số CMND tồn tại
-    const existMod_Id = await this.existMod_Id(newModerator.mod_id);
-    if (existMod_Id) {
-      return res.status(400).json();
     }
 
     const moderator = await this.dao.addModerator(newModerator);
@@ -155,7 +143,7 @@ module.exports = class ModeratorsControllers {
 
     //#region Kiểm tra tồn tại
 
-    //Quản trị viên
+    //Quản trị viên có tồn tại
     const moderator = await this.dao.getModeratorByNo(mod_no);
     if (!this.validator.existModerator(moderator)) {
       return res.status(404).json({});
@@ -206,9 +194,9 @@ module.exports = class ModeratorsControllers {
   };
 
   // Kiểm tra khi cập nhật lại thông tin cũ
-  notOldModeratorInfo(newInfo, oldInfo) {
+  notOldModeratorInfo = (newInfo, oldInfo) => {
     return newInfo.mod_no !== oldInfo.mod_no;
-  }
+  };
 
   //#endregion
 
