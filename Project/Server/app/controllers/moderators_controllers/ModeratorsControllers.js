@@ -59,6 +59,21 @@ module.exports = class ModeratorsControllers {
   };
 
   // Lấy quản trị viên theo CMND
+  getModeratorByMod_Id = async (req, res) => {
+    const { mod_id } = req.params;
+
+    const result = this.validator.validateMod_Id(mod_id);
+    if (result.hasAnyError) {
+      return res.status(400).json(result.error);
+    }
+
+    const moderator = await this.dao.getModeratorByMod_Id(mod_id);
+    if (!this.validator.existModerator(moderator)) {
+      return res.status(404).json({});
+    }
+
+    return res.json(moderator);
+  };
 
   //#endregion
 

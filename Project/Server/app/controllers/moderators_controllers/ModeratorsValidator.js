@@ -31,6 +31,20 @@ module.exports = class ModeratorsValidator {
     return result;
   };
 
+  validateMod_Id = (mod_id) => {
+    const schema = joi.object({
+      mod_id: joi
+        .string()
+        .length(9)
+        .pattern(/^[0-9]+$/)
+        .required(),
+    });
+
+    const result = this.getResult(schema, { mod_id });
+
+    return result;
+  };
+
   // Thêm quản trị
   validateAddModerator = (moderator = {}) => {
     const schema = joi.object({
