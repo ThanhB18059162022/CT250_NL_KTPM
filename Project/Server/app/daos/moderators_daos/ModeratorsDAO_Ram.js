@@ -42,4 +42,6 @@ module.exports = class ModeratorsDAO_Ram {
   };
 
   updateModerator = async () => {};
+
+  lockModerator = async () => {};
 };

@@ -13,7 +13,10 @@ function devErrorHandler(err, req, res, next) {
 
 // Dùng khi triển khai
 function deployErrorHandler(err, req, res, next) {
-  return res.status(500).json("Error occurred please try again");
+  return res.status(500).json({
+    message: "Error occurred please try again",
+    info: err.message,
+  });
 }
 
 let errorHandler = deployErrorHandler;

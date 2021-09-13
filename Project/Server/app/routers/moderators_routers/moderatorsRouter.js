@@ -30,12 +30,15 @@ router
   .route("/:mod_no")
   .get(errorCatch(controller.getModeratorByNo))
   .put(errorCatch(controller.updateModerator))
-  // Để tạm delete là lock
   .delete(errorCatch(controller.lockModerator));
 
 // moderators/PhoneNumber/1234567899
 router
   .route("/PhoneNumber/:mod_phoneNumber")
   .get(errorCatch(controller.getModeratorByPhoneNumber));
+
+router
+  .route("/Mod_Id/:mod_id")
+  .get(errorCatch(controller.getModeratorByMod_Id));
 
 module.exports = router;
