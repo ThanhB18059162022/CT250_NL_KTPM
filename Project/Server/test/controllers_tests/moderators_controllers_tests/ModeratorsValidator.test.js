@@ -6,6 +6,51 @@ function getModeratorsValidator() {
   return new ModeratorsValidator();
 }
 
+describe("Kiểm tra quản trị viên tồn tại", () => {
+  test("Quản trị viên undefined", () => {
+    // Arrange
+    const moderator = undefined;
+    const validator = getModeratorsValidator();
+    const valid = true;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.existModerator(moderator);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Quản trị viên rỗng", () => {
+    // Arrange
+    const moderator = {};
+    const validator = getModeratorsValidator();
+    const valid = false;
+
+    //Act
+    const expRs = valid;
+    const actRs = validator.existModerator(moderator);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Quản trị viên tồn tại", () => {
+    // Arrange
+    const moderator = { mod_no: 1 };
+
+    const validator = getModeratorsValidator();
+    const valid = true;
+
+    //Act
+    const expRs = valid;
+    const actRs = validator.existModerator(moderator);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+
 describe("Kiểm tra mã quản trị mod_no", () => {
   test("Mã quản trị undefined", () => {
     //Arrange
@@ -1300,49 +1345,4 @@ describe("Cập nhật quản trị viên kiểm tra thông tin quản trị vi�
   });
 
   //#endregion
-});
-
-describe("Kiểm tra quản trị viên tồn tại", () => {
-  test("Quản trị viên undefined", () => {
-    // Arrange
-    const moderator = undefined;
-    const validator = getModeratorsValidator();
-    const valid = true;
-
-    //Act
-    const expRs = !valid;
-    const actRs = validator.existModerator(moderator);
-
-    //Expect
-    expect(actRs).toEqual(expRs);
-  });
-
-  test("Quản trị viên rỗng", () => {
-    // Arrange
-    const moderator = {};
-    const validator = getModeratorsValidator();
-    const valid = false;
-
-    //Act
-    const expRs = valid;
-    const actRs = validator.existModerator(moderator);
-
-    //Expect
-    expect(actRs).toEqual(expRs);
-  });
-
-  test("Quản trị viên tồn tại", () => {
-    // Arrange
-    const moderator = { mod_no: 1 };
-
-    const validator = getModeratorsValidator();
-    const valid = true;
-
-    //Act
-    const expRs = valid;
-    const actRs = validator.existModerator(moderator);
-
-    //Expect
-    expect(actRs).toEqual(expRs);
-  });
 });
