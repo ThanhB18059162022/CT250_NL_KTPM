@@ -41,4 +41,8 @@ router
   .route("/Mod_Id/:mod_id")
   .get(errorCatch(controller.getModeratorByMod_Id));
 
+router
+  .route("/Username/:mod_username")
+  .get(errorCatch(controller.getModeratorByUsername));
+
 module.exports = router;

@@ -1,4 +1,4 @@
-let moderators = [];
+const moderators = [];
 
 module.exports = class ModeratorsDAO_Ram {
   constructor() {
@@ -6,13 +6,13 @@ module.exports = class ModeratorsDAO_Ram {
       const mod = {
         mod_no: i,
         mod_name: "name" + i,
-        mod_id: "555555555",
+        mod_id: "55555555" + i,
         mod_phoneNumber: "000000000" + i,
         mod_sex: "male",
         mod_address: "3/2 NK, CT",
         mod_role: "admin",
-        mod_username: "wtf",
-        mod_password: "wtf",
+        mod_username: "admin",
+        mod_password: "1234",
       };
 
       moderators.push(mod);
@@ -35,6 +35,10 @@ module.exports = class ModeratorsDAO_Ram {
 
   getModeratorByMod_Id = async (mod_id) => {
     return moderators.filter((m) => m.mod_id === mod_id)[0];
+  };
+
+  getModeratorByUsername = async (mod_username) => {
+    return moderators.filter((m) => m.mod_username === mod_username)[0];
   };
 
   addModerator = async (mod) => {

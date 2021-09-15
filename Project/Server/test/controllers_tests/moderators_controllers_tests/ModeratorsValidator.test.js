@@ -6,6 +6,51 @@ function getModeratorsValidator() {
   return new ModeratorsValidator();
 }
 
+describe("Kiểm tra quản trị viên tồn tại", () => {
+  test("Quản trị viên undefined", () => {
+    // Arrange
+    const moderator = undefined;
+    const validator = getModeratorsValidator();
+    const valid = true;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.existModerator(moderator);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Quản trị viên rỗng", () => {
+    // Arrange
+    const moderator = {};
+    const validator = getModeratorsValidator();
+    const valid = false;
+
+    //Act
+    const expRs = valid;
+    const actRs = validator.existModerator(moderator);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Quản trị viên tồn tại", () => {
+    // Arrange
+    const moderator = { mod_no: 1 };
+
+    const validator = getModeratorsValidator();
+    const valid = true;
+
+    //Act
+    const expRs = valid;
+    const actRs = validator.existModerator(moderator);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+
 describe("Kiểm tra mã quản trị mod_no", () => {
   test("Mã quản trị undefined", () => {
     //Arrange
@@ -216,6 +261,79 @@ describe("Kiểm tra CMND quản trị mod_phoneNumber", () => {
     //Act
     const expRs = failed;
     const actRs = validator.validateMod_Id(mod_id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+
+describe("Username Kiểm tra hợp lệ tài khoản", () => {
+  test("Tài khoản undefined", () => {
+    //Arrange
+    const mod_username = undefined;
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tài khoản rỗng", () => {
+    //Arrange
+    const mod_username = "";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tài khoản < 5", () => {
+    //Arrange
+    const mod_username = "alex";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tài khoản > 70", () => {
+    //Arrange
+    const mod_username =
+      "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tài khoản có khoảng trắng", () => {
+    //Arrange
+    const mod_username = "alex awdaw";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
 
     //Expect
     expect(actRs).toEqual(expRs);
@@ -1300,49 +1418,4 @@ describe("Cập nhật quản trị viên kiểm tra thông tin quản trị vi�
   });
 
   //#endregion
-});
-
-describe("Kiểm tra quản trị viên tồn tại", () => {
-  test("Quản trị viên undefined", () => {
-    // Arrange
-    const moderator = undefined;
-    const validator = getModeratorsValidator();
-    const valid = true;
-
-    //Act
-    const expRs = !valid;
-    const actRs = validator.existModerator(moderator);
-
-    //Expect
-    expect(actRs).toEqual(expRs);
-  });
-
-  test("Quản trị viên rỗng", () => {
-    // Arrange
-    const moderator = {};
-    const validator = getModeratorsValidator();
-    const valid = false;
-
-    //Act
-    const expRs = valid;
-    const actRs = validator.existModerator(moderator);
-
-    //Expect
-    expect(actRs).toEqual(expRs);
-  });
-
-  test("Quản trị viên tồn tại", () => {
-    // Arrange
-    const moderator = { mod_no: 1 };
-
-    const validator = getModeratorsValidator();
-    const valid = true;
-
-    //Act
-    const expRs = valid;
-    const actRs = validator.existModerator(moderator);
-
-    //Expect
-    expect(actRs).toEqual(expRs);
-  });
 });

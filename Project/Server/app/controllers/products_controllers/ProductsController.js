@@ -1,4 +1,7 @@
-const { getPaginatedResults } = require("../controllerHelper");
+const {
+  getPaginatedResults,
+  getDuplicateResult,
+} = require("../controllerHelper");
 
 module.exports = class ProductsController {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
@@ -29,14 +32,14 @@ module.exports = class ProductsController {
 
     const prod_no = Number(prod_noParam);
 
-    const result = this.validateNo(prod_no);
+    const result = this.validator.validateNo(prod_no);
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
     }
 
     const product = await this.dao.getProductByNo(prod_no);
 
-    if (!this.existProduct(product)) {
+    if (!this.validator.existProduct(product)) {
       return res.status(404).json({});
     }
 
@@ -47,13 +50,13 @@ module.exports = class ProductsController {
   getProductByName = async (req, res) => {
     const { prod_name } = req.params;
 
-    const result = this.validateName(prod_name);
+    const result = this.validator.validateName(prod_name);
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
     }
 
     const product = await this.dao.getProductByName(prod_name);
-    if (!this.existProduct(product)) {
+    if (!this.validator.existProduct(product)) {
       return res.status(404).json({});
     }
 
@@ -64,21 +67,20 @@ module.exports = class ProductsController {
 
   //#region ADD
 
+  // Thêm sản phẩm
   addProduct = async (req, res) => {
     const { body: newProduct } = req;
 
     //Kiểm tra model hợp lệ
-    const result = this.validateProduct(newProduct);
+    const result = this.validator.validateProduct(newProduct);
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
     }
 
     // Kiểm tra trùng tên sản phẩm khác
-    const productHasName = await this.dao.getProductByName(
-      newProduct.prod_name
-    );
-    if (this.existProduct(productHasName)) {
-      return res.status(400).json();
+    const exist = await this.existName(newProduct.prod_name);
+    if (exist) {
+      return res.status(400).json(getDuplicateResult("prod_name"));
     }
 
     // Thêm vào CSDL trả về prod_no mới thêm
@@ -87,28 +89,38 @@ module.exports = class ProductsController {
     return res.status(201).json({ ...newProduct, prod_no });
   };
 
+  existName = async (prod_name) => {
+    const productHasName = await this.dao.getProductByName(prod_name);
+
+    return this.validator.existProduct(productHasName);
+  };
+
   //#endregion
 
   //#region UPDATE
+
+  // Cập nhật sản phẩm
   updateProduct = async (req, res) => {
     const {
       params: { prod_no },
       body: newProduct,
     } = req;
 
-    //Kiểm tra prod_no, model hợp lệ
-    const valNoResult = this.validateNo(prod_no);
+    //Kiểm tra prod_no hợp lệ
+    const valNoResult = this.validator.validateNo(prod_no);
     if (valNoResult.hasAnyError) {
       return res.status(400).json(valNoResult.error);
     }
 
-    const valProductResult = this.validateProduct(newProduct);
+    // Kiểm tra newProduct hợp lệ
+    const valProductResult = this.validator.validateProduct(newProduct);
     if (valProductResult.hasAnyError) {
       return res.status(400).json(valProductResult.error);
     }
 
+    // Lấy ra thông tin cũ
     const oldProduct = await this.dao.getProductByNo(prod_no);
-    if (!this.existProduct(oldProduct)) {
+    if (!this.validator.existProduct(oldProduct)) {
       return res.status(404).json({});
     }
 
@@ -120,10 +132,10 @@ module.exports = class ProductsController {
     // Kiểm tra tồn tại sản phẩm trùng tên
     // Và xem sản phẩm trùng tên đó phải sản phẩm cũ (oldProduct)
     if (
-      this.existProduct(productHasName) &&
+      this.validator.existProduct(productHasName) &&
       this.notOldProduct(oldProduct, productHasName)
     ) {
-      return res.status(400).json();
+      return res.status(400).json(getDuplicateResult("prod_name"));
     }
 
     return res.status(204).json({});
@@ -141,36 +153,17 @@ module.exports = class ProductsController {
   deleteProduct = async (req, res) => {
     const { prod_no } = req.params;
 
-    const result = this.validateNo(prod_no);
+    const result = this.validator.validateNo(prod_no);
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
     }
 
     const product = await this.dao.getProductByNo(prod_no);
-    if (!this.existProduct(product)) {
+    if (!this.validator.existProduct(product)) {
       return res.status(404).json({});
     }
 
     return res.status(204).json({});
   };
   //#endregion
-
-  existProduct = (product) => {
-    return this.validator.existProduct(product);
-  };
-
-  // Kiểm tra các trường của product xem có hợp lệ hay không
-  validateProduct = (product) => {
-    return this.validator.validateProduct(product);
-  };
-
-  // Kiểm tra mã hợp lệ
-  validateNo = (prod_no) => {
-    return this.validator.validateNo(prod_no);
-  };
-
-  // Kiểm tra tên hợp lệ
-  validateName = (prod_name) => {
-    return this.validator.validateName(prod_name);
-  };
 };

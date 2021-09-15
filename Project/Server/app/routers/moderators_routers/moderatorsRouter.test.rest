@@ -1,5 +1,7 @@
 # Extension REST Client
 
+# GET:8 POST:131 PUT:612
+
 # Mỗi Request cách nhau 3 dấu '#'
 
 # Mặc định page=1, limit=10
@@ -97,6 +99,35 @@ GET http://localhost:8000/api/moderators/Mod_Id/000000090
 
 
 
+
+# ---------------------------------------------------------------------
+
+# Lấy theo tài khoản
+
+### Hợp lệ 200
+GET http://localhost:8000/api/moderators/username/admin
+
+# Không hợp lệ 400
+
+### 1 Không có tài khoản
+GET http://localhost:8000/api/moderators/username/
+
+### 2 Tài khoản < 5
+GET http://localhost:8000/api/moderators/username/admi
+
+### 3 Tài khoản > 70
+GET http://localhost:8000/api/moderators/username/a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa
+
+### 4 Tài khoản có khoản trắng
+GET http://localhost:8000/api/moderators/username/admi n
+
+
+### Không tồn tại - 404
+GET http://localhost:8000/api/moderators/username/alexa
+
+
+
+
 # ---------------------------------------------------------------------
 
 
@@ -122,6 +153,52 @@ Content-Type: application/json
 
 
 # Không hợp lệ 400
+
+
+### Trùng sdt
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000001",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### Trùng CMND
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555555",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "admin1",
+    "mod_password": "123456"
+}
+
+### Trùng username
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "admin",
+    "mod_password": "123456"
+}
 
 ### 1 Không có mod_name 
 POST http://localhost:8000/api/moderators
@@ -534,7 +611,7 @@ Content-Type: application/json
 
 # -------------------------------------------------------------------------------
 
-
+## Không có sửa username
 
 # Sửa thông tin quản trị viên
 
@@ -553,6 +630,34 @@ Content-Type: application/json
 }
 
 # Không hợp lệ 400
+
+### Trùng sdt
+PUT http://localhost:8000/api/moderators/1
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000002",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_password": "123456"
+}
+
+### Trùng CMND
+PUT http://localhost:8000/api/moderators/1
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555555",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_password": "123456"
+}
 
 ### 1 Không có mod_name 
 PUT http://localhost:8000/api/moderators/1

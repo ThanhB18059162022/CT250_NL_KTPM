@@ -6,6 +6,50 @@ function getValidator() {
   return new ProductValidator();
 }
 
+describe("Kiểm tra sản phẩm tồn tại", () => {
+  test("Sản phẩm không tồn tại", () => {
+    //Arrange
+    const product = undefined;
+    const validator = getValidator();
+    const exist = true;
+
+    //Act
+    const expRs = !exist;
+    const actRs = validator.existProduct(product);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Sản phẩm rỗng", () => {
+    //Arrange
+    const product = {};
+    const validator = getValidator();
+    const exist = true;
+
+    //Act
+    const expRs = !exist;
+    const actRs = validator.existProduct(product);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Sản phẩm hợp lệ", () => {
+    //Arrange
+    const product = { prod_no: 1 };
+    const validator = getValidator();
+    const exist = false;
+
+    //Act
+    const expRs = !exist;
+    const actRs = validator.existProduct(product);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+
 describe("Kiểm tra mã sản phẩm hợp lệ", () => {
   test("Mã sản phẩm hợp lệ", () => {
     //Arrange
@@ -140,6 +184,22 @@ describe("Kiểm tra tên sản phẩm hợp lệ", () => {
     //Act
     const expRs = hasError;
     const actRs = validator.validateName(prod_name).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+
+describe("Kiểm tra sản phẩm hợp lệ", () => {
+  test("Sản phẩm undefiend", () => {
+    //Arrange
+    const product = undefined;
+    const validator = getValidator();
+    const valid = true;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProduct(product);
 
     //Expect
     expect(actRs).toEqual(expRs);

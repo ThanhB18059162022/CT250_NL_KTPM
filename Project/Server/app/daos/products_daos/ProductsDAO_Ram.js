@@ -1,40 +1,121 @@
 const products = [];
 const img = "https://dummyimage.com/600x400/000/0fffff&text=Coming+soon";
-// https://fptshop.com.vn/dien-thoai/iphone-12-pro-max?dung-luong=128gb
-// https://www.thegioididong.com/dtdd/iphone-12#top-tskt
+
+// https://www.thegioididong.com/dtdd/samsung-galaxy-z-fold-3
 module.exports = class ProductsDAO_Ram {
   constructor() {
-    for (let i = 1; i <= 1000; i++) {
+    for (let i = 1; i <= 100; i++) {
       const product = {
         prod_no: i,
         prod_name: "Galaxy Z Fold3 | Z Flip3 5G",
-        prod_mfg: new Date("2021-8-1"),
-        prod_releaseDate: new Date("2021-8-1"),
+        //nhà sản xuất
+        prod_manufacturer: {
+          brand_name: "Samsung",
+          releaseDate: new Date("2021-8-1"), // Ngày ra mắt
+          madeIn: "Trung Quốc",
+        },
         prod_screen: {
-          size: "6.43'",
-          type: "IPS FHD+",
-          resolution: "1080 x 2400 Pixel",
-          glass: "Gorilla Glass 3",
-          rate: "",
+          type: "Dynamic AMOLED 2X",
+          resolution: "Full HD+ (1768 x 2208 Pixels)",
+          size: "Chính 7.6' & Phụ 6.2' - Tần số quét 120 Hz",
+          glass: "Kính cường lực Corning Gorilla Glass Victus",
         },
         prod_camera: {
-          back: "48 MP",
-          font: "8 MP",
+          // Sau
+          rear: {
+            spec: "3 camera 12 MP",
+            flash: true,
+            videoQuality: [
+              "4K 2160p@60fps",
+              "FullHD 1080p@240fps",
+              "FullHD 1080p@60fps",
+              "HD 720p@960fps",
+            ],
+            features: [
+              "AI Camera",
+              "Ban đêm (Night Mode)",
+              "Chuyên nghiệp (Pro)",
+              "Chạm lấy nét",
+              "Chống rung quang học (OIS)",
+              "Góc rộng (Wide)",
+              "Góc siêu rộng (Ultrawide)",
+              "HDR",
+              "Làm đẹp",
+              "Lấy nét theo pha (PDAF)",
+              "Nhận diện khuôn mặt",
+              "Quay Siêu chậm (Super Slow Motion)",
+              "Quay chậm (Slow Motion)",
+              "Toàn cảnh (Panorama)",
+              "Tự động lấy nét (AF)",
+              "Xóa phông",
+              "Zoom quang học",
+            ],
+          },
+          //Trước
+          font: {
+            spec: "10 MP & 4 MP 8 MP",
+            features: [
+              " HDR",
+              "Làm đẹp",
+              "Nhận diện khuôn mặt",
+              "Quay video 4K",
+              "Quay video Full HD",
+              "Quay video HD",
+              "Tự động lấy nét (AF)",
+              "Xóa phông",
+            ],
+          },
         },
-        prod_size: "",
-        prod_battery: "4400 mAh",
-        prod_os: "Android 11",
-        prod_hardware: {
-          cpu: "Snapdragon 888",
-          ram: "8 GB",
-          gpu: "ad",
+        prod_hardwareAndOS: {
+          os: "Android 11",
+          cpu: "Snapdragon 888 8 nhân",
+          cpuSpec: "1 nhân 2.84 GHz, 3 nhân 2.42 GHz & 4 nhân 1.8 GHz",
+          gpu: "Adreno 660",
         },
-        nsx: "Xiaomi", //nhà sản xuất
-        sim: "Nano",
+        prod_ramAndStorage: {
+          ram: "12 GB",
+          storage: "256 GB",
+          storageAvailable: "223 GB",
+        },
+        prod_network: {
+          telecom: "5G",
+          SIM: "2 Nano Sim",
+          Wifi: [
+            "Dual-band (2.4 GHz/5 GHz)",
+            "Wi-Fi 802.11 a/b/g/n/ac/ax",
+            "Wi-Fi Direct",
+            "Wi-Fi hotspot",
+          ],
+          GPS: ["A-GPS", "BDS", "GALILEO", "GLONASS"],
+          Bluetooth: ["A2DP", "LEv", "5.2"],
+          connector: "Type-C",
+          others: "NFCOTG",
+        },
+        prod_batteryAndCharger: {
+          battery: "4400 mAh",
+          batteryType: "Li-ion",
+          chargeType: "25W",
+          chargerTech: "Sạc không dây, Sạc pin nhanh",
+        },
+        prod_utilities: {
+          security: "Mở khoá vân tay cạnh viền",
+          specialFeature: "Samsung Pay Âm thanh AKG",
+          waterproof: "IPX8",
+          video: ["3GP", "AVI", "H.264(MPEG4-AVC)", "MP4", "WMV"],
+          audio: ["AAC", "AMR", "FLAC", "MP3", "Midi", "OGG", "WAV", "WMA"],
+        },
+        prod_design: {
+          structural: "Nguyên khối",
+          material: "Khung nhôm & Mặt lưng kính cường lực",
+          sizeAndWeigth:
+            "Dài 158.2 mm - Ngang 128.1 mm - Dày 6.4 mm - Nặng 271 g",
+        },
         prod_status: "",
         prod_img: `/img/${1}/prod_img1.png`,
-        prod_img: img,
-        prod_price: 12990000,
+        prod_price: {
+          origin: 44990000,
+          discount: 0.0,
+        },
       };
 
       products.push(product);
@@ -45,11 +126,11 @@ module.exports = class ProductsDAO_Ram {
     let prods = products.slice(startIndex, endIndex).map((p) => ({
       prod_no: p.prod_no,
       prod_name: p.prod_name,
-      prod_cpu: p.prod_hardware.cpu,
-      prod_ram: p.prod_hardware.ram,
-      prod_battery: p.prod_battery,
+      prod_cpu: p.prod_hardwareAndOS.cpu,
+      prod_ram: p.prod_ramAndStorage.ram,
+      prod_battery: p.prod_batteryAndCharger.battery,
       prod_img: p.prod_img,
-      prod_price: p.prod_price,
+      prod_price: p.prod_price.origin,
     }));
 
     return prods;
@@ -67,56 +148,3 @@ module.exports = class ProductsDAO_Ram {
     return product;
   };
 };
-//#region
-// const product1 = [
-//   {
-//     prod_no: 1,
-//     prod_name: "Galaxy Z Fold3 | Z Flip3 5G",
-//     prod_mfg: new Date("2021-8-1"),
-//     prod_releaseDate: new Date("2021-8-1"),
-//     prod_screen: {
-//       size: "6.43'",
-//       type: "IPS FHD+",
-//       resolution: "1080 x 2400 Pixel",
-//       glass: "Gorilla Glass 3",
-//     },
-//     prod_camera: {
-//       back: "48 MP",
-//       font: "8 MP",
-//     },
-//     prod_size: "",
-//     prod_battery: "4400 mAh",
-//     prod_os: "Android 11",
-//     prod_hardware: {
-//       cpu: "Snapdragon 888",
-//       memory: "8 GB",
-//     },
-//     prod_status: "",
-//     prod_price: 12990000,
-//   },
-//   {
-//     prod_no: 2,
-//     prod_name: "iPhone 12 64GB",
-//     prod_screen: "6.1'",
-//     prod_hardware: {
-//       cpu: "A14 Bionic",
-//       memory: "4 GB",
-//     },
-//     prod_battery: "2815 mAh",
-//     prod_img: "link",
-//     prod_price: 19699000,
-//   },
-//   {
-//     prod_no: 3,
-//     prod_name: "Xiaomi Redmi 10 4GB-128GB",
-//     prod_screen: "6.5'",
-//     prod_hardware: {
-//       cpu: "MediaTek Helio G88A14 Bionic",
-//       memory: "4 GB",
-//     },
-//     prod_battery: "5000 mAh",
-//     prod_img: "link",
-//     prod_price: 4290000,
-//   },
-// ];
-//#endregion

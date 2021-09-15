@@ -47,6 +47,15 @@ async function getPaginatedResults(getCallback, page = 1, limit = 1) {
   return pageResult;
 }
 
+// JSON lỗi trùng dữ liệu cho thuộc tính
+function getDuplicateResult(name) {
+  return {
+    key: name,
+    content: `${name} has already been taken.`,
+  };
+}
+
 module.exports = {
   getPaginatedResults,
+  getDuplicateResult,
 };

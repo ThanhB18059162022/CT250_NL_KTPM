@@ -6,23 +6,18 @@ const { getValidationResult } = require("../validatorHelper");
 // Lớp xác thực dữ liệu truyền vào có hợp lệ hay không
 // Xài joi để xác thực
 module.exports = class ProductsValidator {
-  getResult = (schema, data) => getValidationResult(schema, data);
-
+  // Kiểm tra tồn tại
   existProduct = (product) => {
-    return product !== undefined;
+    return product?.prod_no > 0;
   };
 
-  validateProduct = (product) => {
-    return product !== undefined;
-  };
-
-  // Kiểm tra mã hợp
+  // Kiểm tra mã hợp lệ
   validateNo = (prod_no) => {
     const schema = Joi.object({
       prod_no: Joi.number().integer().min(0).required(),
     });
 
-    const result = this.getResult(schema, { prod_no });
+    const result = getValidationResult(schema, { prod_no });
 
     return result;
   };
@@ -33,8 +28,13 @@ module.exports = class ProductsValidator {
       prod_name: Joi.string().min(5).max(50).required(),
     });
 
-    const result = this.getResult(schema, { prod_name });
+    const result = getValidationResult(schema, { prod_name });
 
     return result;
+  };
+
+  // Kiểm tra sản phẩm hợp lệ
+  validateProduct = (product) => {
+    return product !== undefined;
   };
 };

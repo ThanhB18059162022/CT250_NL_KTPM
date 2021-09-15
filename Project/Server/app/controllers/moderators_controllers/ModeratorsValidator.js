@@ -5,18 +5,21 @@ const joi = require("joi");
 const { getValidationResult } = require("../validatorHelper");
 
 module.exports = class ModeratorsValidator {
-  getResult = (schema, data) => getValidationResult(schema, data);
+  // Kiểm tra tồn tại
+  existModerator = (moderator) => moderator?.mod_no > 0;
 
+  // Kiểm tra mã hợp lệ
   validateNo = (mod_no) => {
     const schema = joi.object({
       mod_no: joi.number().integer().min(0).required(),
     });
 
-    const result = this.getResult(schema, { mod_no });
+    const result = getValidationResult(schema, { mod_no });
 
     return result;
   };
 
+  // Kiểm tra số điện thoại hợp lệ
   validatePhoneNumber = (mod_phoneNumber) => {
     const schema = joi.object({
       mod_phoneNumber: joi
@@ -26,7 +29,33 @@ module.exports = class ModeratorsValidator {
         .required(),
     });
 
-    const result = this.getResult(schema, { mod_phoneNumber });
+    const result = getValidationResult(schema, { mod_phoneNumber });
+
+    return result;
+  };
+
+  // Kiểm tra CMND hợp lệ
+  validateMod_Id = (mod_id) => {
+    const schema = joi.object({
+      mod_id: joi
+        .string()
+        .length(9)
+        .pattern(/^[0-9]+$/)
+        .required(),
+    });
+
+    const result = getValidationResult(schema, { mod_id });
+
+    return result;
+  };
+
+  // Kiểm tra tài khoản hợp lệ
+  validateUsername = (mod_username) => {
+    const schema = joi.object({
+      mod_username: joi.string().alphanum().min(5).max(70).required(),
+    });
+
+    const result = getValidationResult(schema, { mod_username });
 
     return result;
   };
@@ -66,7 +95,7 @@ module.exports = class ModeratorsValidator {
       mod_password: joi.string().min(5).max(64).required(),
     });
 
-    const result = this.getResult(schema, moderator);
+    const result = getValidationResult(schema, moderator);
 
     return result;
   };
@@ -91,10 +120,8 @@ module.exports = class ModeratorsValidator {
       mod_password: joi.string().min(5).max(64).required(),
     });
 
-    const result = this.getResult(schema, moderator);
+    const result = getValidationResult(schema, moderator);
 
     return result;
   };
-
-  existModerator = (moderator) => moderator?.mod_no > 0;
 };

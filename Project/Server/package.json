@@ -2,7 +2,7 @@
   "name": "phone_e-commerece_server",
   "version": "1.0.0",
   "description": "e-commerece server provide api for font end selling phone project of ct250 ",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon app/server.js",
     "test": "jest --verbose --coverage --watchAll"
@@ -16,11 +16,11 @@
     "express": "^4.17.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
-    "nodemon": "^2.0.12"
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
-    "jest": "^27.1.0"
+    "jest": "^27.1.0",
+    "nodemon": "^2.0.12"
   }
 }

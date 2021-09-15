@@ -1,4 +1,7 @@
-const { getPaginatedResults, nameOf } = require("../controllerHelper");
+const {
+  getPaginatedResults,
+  getDuplicateResult,
+} = require("../controllerHelper");
 
 module.exports = class ModeratorsControllers {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
@@ -75,6 +78,23 @@ module.exports = class ModeratorsControllers {
     return res.json(moderator);
   };
 
+  // Lấy quản trị viên theo tài khoản
+  getModeratorByUsername = async (req, res) => {
+    const { mod_username } = req.params;
+
+    const result = this.validator.validateUsername(mod_username);
+    if (result.hasAnyError) {
+      return res.status(400).json(result.error);
+    }
+
+    const moderator = await this.dao.getModeratorByUsername(mod_username);
+    if (!this.validator.existModerator(moderator)) {
+      return res.status(404).json({});
+    }
+
+    return res.json(moderator);
+  };
+
   //#endregion
 
   //#region  ADD
@@ -89,23 +109,23 @@ module.exports = class ModeratorsControllers {
     }
 
     // Số điện thoại tồn tại
-    const { mod_phoneNumber } = newModerator;
-    const existPhoneNumber = await this.existPhoneNumber(mod_phoneNumber);
+    const existPhoneNumber = await this.existPhoneNumber(
+      newModerator.mod_phoneNumber
+    );
     if (existPhoneNumber) {
-      return res.status(400).json({
-        key: "mod_phoneNumber",
-        content: "mod_phoneNumber has already been taken.",
-      });
+      return res.status(400).json(getDuplicateResult("prod_phoneNumber"));
     }
 
     // Số CMND tồn tại
-    const { mod_id } = newModerator;
-    const existMod_Id = await this.existMod_Id(mod_id);
+    const existMod_Id = await this.existMod_Id(newModerator.mod_id);
     if (existMod_Id) {
-      return res.status(400).json({
-        key: "mod_id",
-        content: "mod_id has already been taken.",
-      });
+      return res.status(400).json(getDuplicateResult("mod_id"));
+    }
+
+    // Tài khoản tồn tại
+    const existUsername = await this.existUsername(newModerator.mod_username);
+    if (existUsername) {
+      return res.status(400).json(getDuplicateResult("mod_username"));
     }
 
     const moderator = await this.dao.addModerator(newModerator);
@@ -125,6 +145,14 @@ module.exports = class ModeratorsControllers {
     const moderatorHasMod_Id = await this.dao.getModeratorByMod_Id(mod_id);
 
     return this.validator.existModerator(moderatorHasMod_Id);
+  };
+
+  existUsername = async (mod_username) => {
+    const moderatorHasUsername = await this.dao.getModeratorByUsername(
+      mod_username
+    );
+
+    return this.validator.existModerator(moderatorHasUsername);
   };
 
   //#endregion
@@ -177,10 +205,7 @@ module.exports = class ModeratorsControllers {
       existPhoneNumber &&
       this.notOldModeratorInfo(moderator, moderatorHasPhoneNumber)
     ) {
-      return res.status(400).json({
-        key: "mod_phoneNumber",
-        content: "mod_phoneNumber has already been taken.",
-      });
+      return res.status(400).json(getDuplicateResult("mod_phoneNumber"));
     }
 
     // Số CMND tồn tại
@@ -194,10 +219,7 @@ module.exports = class ModeratorsControllers {
       existMod_Id &&
       this.notOldModeratorInfo(moderator, moderatorHasMod_Id)
     ) {
-      return res.status(400).json({
-        key: "mod_id",
-        content: "mod_id has already been taken.",
-      });
+      return res.status(400).json(getDuplicateResult("mod_id"));
     }
 
     //#endregion
@@ -224,7 +246,7 @@ module.exports = class ModeratorsControllers {
 
     const result = this.validator.validateNo(mod_no);
     if (result.hasAnyError) {
-      return res.status(400).json();
+      return res.status(400).json(result.error);
     }
 
     const moderator = await this.dao.getModeratorByNo(mod_no);
