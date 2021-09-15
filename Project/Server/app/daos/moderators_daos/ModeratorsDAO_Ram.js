@@ -1,4 +1,4 @@
-let moderators = [];
+const moderators = [];
 
 module.exports = class ModeratorsDAO_Ram {
   constructor() {

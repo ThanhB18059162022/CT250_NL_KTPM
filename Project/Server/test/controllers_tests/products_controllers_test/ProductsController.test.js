@@ -114,7 +114,44 @@ describe("Lấy sản phẩm", () => {
   // next và previous là 2 biến chỉ số trang trước và sau trang hiện tại
   // có tối đa 5 phần tử
 
-  test("Lấy danh sách sản phẩm (200) chỉ có next - không query params", async () => {
+  test("Lấy danh sách sản phẩm mặc định (200) - không query params", async () => {
+    //Arrange
+    const products = ProductsDAOMock.products;
+    const page = 1;
+    const limit = 24;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const reqMock = {
+      query: {},
+    };
+
+    const response = {
+      statusCode: 200,
+      body: { items: products },
+    };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.getProducts(reqMock, resMock);
+    console.log(expRes);
+    console.log(actRes);
+
+    //Expect
+    expect(actRes).toBeDefined();
+    expect(actRes).toEqual(expRes);
+
+    expect(daoMock.getProducts).toBeCalledTimes(1);
+    expect(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
+
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledWith({ items: products });
+  });
+
+  test("Lấy danh sách sản phẩm (200) chỉ có next", async () => {
     //Arrange
     const products = ProductsDAOMock.products;
     const page = 1;
@@ -139,10 +176,10 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProducts(reqMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
-    expect(expRes.length).toEqual(actRes.length);
-    expect(expRes).toEqual(actRes);
+    expect(actRes.length).toEqual(expRes.length);
+    expect(actRes).toEqual(expRes);
 
     expect(daoMock.getProducts).toBeCalledTimes(1);
     expect(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
@@ -178,10 +215,10 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProducts(reqMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
-    expect(expRes.length).toEqual(actRes.length);
-    expect(expRes).toEqual(actRes);
+    expect(actRes.length).toEqual(expRes.length);
+    expect(actRes).toEqual(expRes);
 
     expect(daoMock.getProducts).toBeCalledTimes(1);
     expect(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
@@ -216,10 +253,10 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProducts(reqMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
-    expect(expRes.length).toEqual(actRes.length);
-    expect(expRes).toEqual(actRes);
+    expect(actRes.length).toEqual(expRes.length);
+    expect(actRes).toEqual(expRes);
 
     expect(daoMock.getProducts).toBeCalledTimes(1);
     expect(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
@@ -247,7 +284,7 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProductByNo(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -281,9 +318,9 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProductByNo(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
-    expect(expRes).toEqual(actRes);
+    expect(actRes).toEqual(expRes);
 
     expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(validatorMock.validateNo).toBeCalledWith(prod_no);
@@ -314,9 +351,9 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProductByNo(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
-    expect(expRes).toEqual(actRes);
+    expect(actRes).toEqual(expRes);
 
     expect(validatorMock.validateNo).toBeCalledTimes(1);
 
@@ -346,9 +383,9 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProductByNo(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
-    expect(expRes).toEqual(actRes);
+    expect(actRes).toEqual(expRes);
 
     expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(validatorMock.validateNo).toBeCalledWith(prod_no);
@@ -381,7 +418,7 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProductByName(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -416,7 +453,7 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProductByName(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -449,7 +486,7 @@ describe("Lấy sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.getProductByName(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -494,7 +531,7 @@ describe("Thêm sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.addProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -529,7 +566,7 @@ describe("Thêm sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.addProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -563,7 +600,7 @@ describe("Thêm sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.addProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -605,7 +642,7 @@ describe("Sửa sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.updateProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -646,7 +683,7 @@ describe("Sửa sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.updateProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -690,7 +727,7 @@ describe("Sửa sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.updateProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -733,7 +770,7 @@ describe("Sửa sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.updateProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -774,7 +811,7 @@ describe("Sửa sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.updateProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -813,7 +850,7 @@ describe("Sửa sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.updateProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -857,7 +894,7 @@ describe("Xóa sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.deleteProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -889,7 +926,7 @@ describe("Xóa sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.deleteProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
@@ -921,7 +958,7 @@ describe("Xóa sản phẩm", () => {
     const expRes = response;
     const actRes = await controller.deleteProduct(requestMock, resMock);
 
-    //Assert
+    //Expect
     expect(actRes).toBeDefined();
     expect(actRes).toEqual(expRes);
 
