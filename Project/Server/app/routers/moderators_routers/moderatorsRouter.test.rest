@@ -1,5 +1,7 @@
 # Extension REST Client
 
+# GET:8 POST:110 PUT:581
+
 # Mỗi Request cách nhau 3 dấu '#'
 
 # Mặc định page=1, limit=10
@@ -122,6 +124,52 @@ Content-Type: application/json
 
 
 # Không hợp lệ 400
+
+
+### Trùng sdt
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000001",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "alexader",
+    "mod_password": "123456"
+}
+
+### Trùng CMND
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555555",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "admin1",
+    "mod_password": "123456"
+}
+
+### Trùng username
+POST http://localhost:8000/api/moderators
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_username": "admin",
+    "mod_password": "123456"
+}
 
 ### 1 Không có mod_name 
 POST http://localhost:8000/api/moderators
@@ -534,7 +582,7 @@ Content-Type: application/json
 
 # -------------------------------------------------------------------------------
 
-
+## Không có sửa username
 
 # Sửa thông tin quản trị viên
 
@@ -553,6 +601,34 @@ Content-Type: application/json
 }
 
 # Không hợp lệ 400
+
+### Trùng sdt
+PUT http://localhost:8000/api/moderators/1
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555550",
+    "mod_phoneNumber": "0000000002",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_password": "123456"
+}
+
+### Trùng CMND
+PUT http://localhost:8000/api/moderators/1
+Content-Type: application/json
+
+{
+    "mod_name": "Alexa",
+    "mod_id": "555555555",
+    "mod_phoneNumber": "0000000000",
+    "mod_sex": true,
+    "mod_address": "3/2 NK CT",
+    "mod_role": 0,
+    "mod_password": "123456"
+}
 
 ### 1 Không có mod_name 
 PUT http://localhost:8000/api/moderators/1

@@ -137,8 +137,6 @@ describe("Lấy sản phẩm", () => {
     //Act
     const expRes = response;
     const actRes = await controller.getProducts(reqMock, resMock);
-    console.log(expRes);
-    console.log(actRes);
 
     //Expect
     expect(actRes).toBeDefined();
@@ -568,7 +566,7 @@ describe("Thêm sản phẩm", () => {
 
     //Expect
     expect(actRes).toBeDefined();
-    expect(actRes).toEqual(expRes);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
 
     expect(validatorMock.validateProduct).toBeCalledTimes(1);
     expect(validatorMock.validateProduct).toBeCalledWith(product);
@@ -580,7 +578,6 @@ describe("Thêm sản phẩm", () => {
 
     expect(resMock.status).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledWith();
   });
 
   test("Thêm sản phẩm - không hợp lệ (400)", async () => {
@@ -729,7 +726,7 @@ describe("Sửa sản phẩm", () => {
 
     //Expect
     expect(actRes).toBeDefined();
-    expect(actRes).toEqual(expRes);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
 
     expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(validatorMock.validateNo).toBeCalledWith(product.prod_no);
@@ -747,7 +744,6 @@ describe("Sửa sản phẩm", () => {
 
     expect(resMock.status).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledWith();
   });
 
   test("Sửa sản phẩm - không tồn tại (404)", async () => {

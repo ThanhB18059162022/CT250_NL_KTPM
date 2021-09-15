@@ -189,3 +189,19 @@ describe("Kiểm tra tên sản phẩm hợp lệ", () => {
     expect(actRs).toEqual(expRs);
   });
 });
+
+describe("Kiểm tra sản phẩm hợp lệ", () => {
+  test("Sản phẩm undefiend", () => {
+    //Arrange
+    const product = undefined;
+    const validator = getValidator();
+    const valid = true;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProduct(product);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});

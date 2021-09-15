@@ -1,4 +1,7 @@
-const { getPaginatedResults, nameOf } = require("../controllerHelper");
+const {
+  getPaginatedResults,
+  getDuplicateResult,
+} = require("../controllerHelper");
 
 module.exports = class ModeratorsControllers {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
@@ -89,23 +92,17 @@ module.exports = class ModeratorsControllers {
     }
 
     // Số điện thoại tồn tại
-    const { mod_phoneNumber } = newModerator;
-    const existPhoneNumber = await this.existPhoneNumber(mod_phoneNumber);
+    const existPhoneNumber = await this.existPhoneNumber(
+      newModerator.mod_phoneNumber
+    );
     if (existPhoneNumber) {
-      return res.status(400).json({
-        key: "mod_phoneNumber",
-        content: "mod_phoneNumber has already been taken.",
-      });
+      return res.status(400).json(getDuplicateResult("prod_phoneNumber"));
     }
 
     // Số CMND tồn tại
-    const { mod_id } = newModerator;
-    const existMod_Id = await this.existMod_Id(mod_id);
+    const existMod_Id = await this.existMod_Id(newModerator.mod_id);
     if (existMod_Id) {
-      return res.status(400).json({
-        key: "mod_id",
-        content: "mod_id has already been taken.",
-      });
+      return res.status(400).json(getDuplicateResult("mod_id"));
     }
 
     const moderator = await this.dao.addModerator(newModerator);
@@ -177,10 +174,7 @@ module.exports = class ModeratorsControllers {
       existPhoneNumber &&
       this.notOldModeratorInfo(moderator, moderatorHasPhoneNumber)
     ) {
-      return res.status(400).json({
-        key: "mod_phoneNumber",
-        content: "mod_phoneNumber has already been taken.",
-      });
+      return res.status(400).json(getDuplicateResult("mod_phoneNumber"));
     }
 
     // Số CMND tồn tại
@@ -194,10 +188,7 @@ module.exports = class ModeratorsControllers {
       existMod_Id &&
       this.notOldModeratorInfo(moderator, moderatorHasMod_Id)
     ) {
-      return res.status(400).json({
-        key: "mod_id",
-        content: "mod_id has already been taken.",
-      });
+      return res.status(400).json(getDuplicateResult("mod_id"));
     }
 
     //#endregion
@@ -224,7 +215,7 @@ module.exports = class ModeratorsControllers {
 
     const result = this.validator.validateNo(mod_no);
     if (result.hasAnyError) {
-      return res.status(400).json();
+      return res.status(400).json(result.error);
     }
 
     const moderator = await this.dao.getModeratorByNo(mod_no);
