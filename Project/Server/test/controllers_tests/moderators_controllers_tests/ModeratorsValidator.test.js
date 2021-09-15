@@ -267,6 +267,79 @@ describe("Kiểm tra CMND quản trị mod_phoneNumber", () => {
   });
 });
 
+describe("Username Kiểm tra hợp lệ tài khoản", () => {
+  test("Tài khoản undefined", () => {
+    //Arrange
+    const mod_username = undefined;
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tài khoản rỗng", () => {
+    //Arrange
+    const mod_username = "";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tài khoản < 5", () => {
+    //Arrange
+    const mod_username = "alex";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tài khoản > 70", () => {
+    //Arrange
+    const mod_username =
+      "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tài khoản có khoảng trắng", () => {
+    //Arrange
+    const mod_username = "alex awdaw";
+    const validator = getModeratorsValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUsername(mod_username).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+
 // Thông tin hợp lệ add
 const validAddModeratorModel = {
   mod_name: "alexander",

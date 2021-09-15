@@ -10,12 +10,14 @@ const moderators = [
     mod_name: "alex",
     mod_phoneNumber: "0000000000",
     mod_id: "111111111",
+    mod_username: "alexand",
   },
   {
     mod_no: 2,
     mod_name: "alexa",
     mod_phoneNumber: "0000000001",
     mod_id: "222222222",
+    mod_username: "alexand",
   },
 ];
 class ModeratorValidatorMock {
@@ -31,6 +33,10 @@ class ModeratorValidatorMock {
 
   validateMod_Id = jest.fn((id) => {
     return { hasAnyError: id === "" };
+  });
+
+  validateUsername = jest.fn((un) => {
+    return { hasAnyError: un === "" };
   });
 
   existModerator = jest.fn((m) => {
@@ -61,6 +67,10 @@ class ModeratorDAOMock {
 
   getModeratorByMod_Id = jest.fn(async (mod_id) => {
     return moderators.filter((m) => m.mod_id === mod_id)[0];
+  });
+
+  getModeratorByUsername = jest.fn(async (mod_username) => {
+    return moderators.filter((m) => m.mod_username === mod_username)[0];
   });
 
   addModerator = jest.fn(async (mod) => mod);
@@ -277,6 +287,65 @@ describe("Lấy ra quản trị viên", () => {
     //Assert
     expect(validateMock.validateMod_Id).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes).toEqual(expRes);
+  });
+
+  //#endregion
+
+  //#region Theo tài khoản
+
+  test("Tài khoản không hợp lệ - 400", async () => {
+    //Arrange
+    const controller = getController();
+    const mod_username = "";
+    const reqMock = { params: { mod_username } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400, body: undefined };
+    const actRes = await controller.getModeratorByUsername(reqMock, resMock);
+
+    //Assert
+    expect(validateMock.validateUsername).toBeCalledTimes(1);
+
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes).toEqual(expRes);
+  });
+
+  test("Tài khoản không tồn tại - 404", async () => {
+    //Arrange
+    const controller = getController();
+    const mod_username = "wtfaa";
+    const reqMock = { params: { mod_username } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 404, body: {} };
+    const actRes = await controller.getModeratorByUsername(reqMock, resMock);
+
+    //Assert
+    expect(validateMock.validateUsername).toBeCalledTimes(1);
+    expect(daoMock.getModeratorByUsername).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes).toEqual(expRes);
+  });
+
+  test("Tài khoản hợp lệ - 200", async () => {
+    //Arrange
+    const controller = getController();
+    const mod = moderators[0];
+    const { mod_username } = mod;
+    const reqMock = { params: { mod_username } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 200, body: mod };
+    const actRes = await controller.getModeratorByUsername(reqMock, resMock);
+
+    //Assert
+    expect(validateMock.validateUsername).toBeCalledTimes(1);
+    expect(daoMock.getModeratorByUsername).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);
   });

@@ -37,6 +37,10 @@ module.exports = class ModeratorsDAO_Ram {
     return moderators.filter((m) => m.mod_id === mod_id)[0];
   };
 
+  getModeratorByUsername = async (mod_username) => {
+    return moderators.filter((m) => m.mod_username === mod_username)[0];
+  };
+
   addModerator = async (mod) => {
     return { mod_no: moderators.length + 1, ...mod };
   };

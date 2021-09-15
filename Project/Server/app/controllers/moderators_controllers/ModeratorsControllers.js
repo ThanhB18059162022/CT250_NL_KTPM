@@ -78,6 +78,23 @@ module.exports = class ModeratorsControllers {
     return res.json(moderator);
   };
 
+  // Lấy quản trị viên theo tài khoản
+  getModeratorByUsername = async (req, res) => {
+    const { mod_username } = req.params;
+
+    const result = this.validator.validateUsername(mod_username);
+    if (result.hasAnyError) {
+      return res.status(400).json(result.error);
+    }
+
+    const moderator = await this.dao.getModeratorByUsername(mod_username);
+    if (!this.validator.existModerator(moderator)) {
+      return res.status(404).json({});
+    }
+
+    return res.json(moderator);
+  };
+
   //#endregion
 
   //#region  ADD

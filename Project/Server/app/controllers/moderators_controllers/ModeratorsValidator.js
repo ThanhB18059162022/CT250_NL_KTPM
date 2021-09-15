@@ -49,6 +49,17 @@ module.exports = class ModeratorsValidator {
     return result;
   };
 
+  // Kiểm tra tài khoản hợp lệ
+  validateUsername = (mod_username) => {
+    const schema = joi.object({
+      mod_username: joi.string().alphanum().min(5).max(70).required(),
+    });
+
+    const result = getValidationResult(schema, { mod_username });
+
+    return result;
+  };
+
   // Thêm quản trị
   validateAddModerator = (moderator = {}) => {
     const schema = joi.object({

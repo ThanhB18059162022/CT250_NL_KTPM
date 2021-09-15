@@ -1,6 +1,6 @@
 # Extension REST Client
 
-# GET:8 POST:110 PUT:581
+# GET:8 POST:131 PUT:612
 
 # Mỗi Request cách nhau 3 dấu '#'
 
@@ -95,6 +95,35 @@ GET http://localhost:8000/api/moderators/Mod_Id/00000000a
 
 ### Số CMND không tồn tại - 404
 GET http://localhost:8000/api/moderators/Mod_Id/000000090
+
+
+
+
+
+# ---------------------------------------------------------------------
+
+# Lấy theo tài khoản
+
+### Hợp lệ 200
+GET http://localhost:8000/api/moderators/username/admin
+
+# Không hợp lệ 400
+
+### 1 Không có tài khoản
+GET http://localhost:8000/api/moderators/username/
+
+### 2 Tài khoản < 5
+GET http://localhost:8000/api/moderators/username/admi
+
+### 3 Tài khoản > 70
+GET http://localhost:8000/api/moderators/username/a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa
+
+### 4 Tài khoản có khoản trắng
+GET http://localhost:8000/api/moderators/username/admi n
+
+
+### Không tồn tại - 404
+GET http://localhost:8000/api/moderators/username/alexa
 
 
 
