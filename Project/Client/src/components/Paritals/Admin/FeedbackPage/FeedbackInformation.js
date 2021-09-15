@@ -4,12 +4,32 @@ import { AdminButton } from "../../../Controls";
 import "../Admin.Style.scss"
 import AdminReplied from "./AdminReplied";
 import ReplyFeedback from "./ReplyFeedback";
+import Notifications from "../../../../common/Notifications";
 
 const FeedbackInformation = (props) => {
     const {setFbInfo, fbNo} = props
     const cusStyle = {
         margin : "0 0 0 35%"
     }
+
+    const [show, setShow] = useState(false)
+  
+    const [notify, setNotify] = useState({
+        type :"CONFIRMATION", //CONFIRMATION, INFORMATION
+        title :"", // title of the notifications
+        content :"", // content of the notify
+        infoType :""
+    })
+
+  const notifyDeleteFeedback = () =>{
+      setNotify({
+          ...notify,
+          title:"Xác nhận",
+          content:"Xóa bình luận?",
+      })
+      setShow(true)
+  }
+
     const getAdminReplied = (obj) => {
         return(
             <>
@@ -68,12 +88,13 @@ const FeedbackInformation = (props) => {
                     </div>
                     <div className="FbInfoBtn">
                         <AdminButton style={cusStyle} ClickEvent={()=>setRep(1)} IconName={faReply}/> &nbsp;
-                        <AdminButton ClickEvent={()=>window.confirm("Xóa bình luận?")} setID={()=>{}} IconName={faTrashAlt}/> &nbsp;
+                        <AdminButton ClickEvent={notifyDeleteFeedback} setID={()=>{}} IconName={faTrashAlt}/> &nbsp;
                         <AdminButton IconName={faWindowClose} ClickEvent={()=>setFbInfo(0)}/>
                     </div>
                 </div>
             </div>
             {displayFeedbackReply()}
+            <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
         </>
     )
 }

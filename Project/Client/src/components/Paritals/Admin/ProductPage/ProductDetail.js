@@ -1,15 +1,35 @@
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { AdminButton } from "../../../Controls"
+import { useState } from "react";
+import Notifications from "../../../../common/Notifications";
 import "../Admin.Style.scss"
 
 const ProductDetail = () => {
+    const [show, setShow] = useState(false)
+
+    const [notify, setNotify] = useState({
+        type :"CONFIRMATION", //CONFIRMARTION, INFORMATION
+        title :"", // title of the notifications
+        content :"", // content of the notify
+        infoType :""
+    })
+    
+    const notifyDeleteProdDetail = () =>{
+        setNotify({
+            ...notify,
+            title:"Xác nhận",
+            content:"Xóa chi tiết sản phẩm?",
+        })
+        setShow(true)
+    }
+
     const CusStyle = {
         margin: "1% 5px 5px 12%"
     };
     return(
         <>
             <div className="DetailButton">
-                <AdminButton style={CusStyle} IconName={faTrashAlt} ClickEvent={()=>alert("xoa")}/>
+                <AdminButton style={CusStyle} IconName={faTrashAlt} ClickEvent={notifyDeleteProdDetail}/>
             </div>
             <div className="ProductDetail BorderFormat">
                 <form className="ProductDetailForm">
@@ -40,6 +60,7 @@ const ProductDetail = () => {
                 </form>
             </div>
             <hr className="DetailSplit"/>
+            <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
         </>
     )
 }

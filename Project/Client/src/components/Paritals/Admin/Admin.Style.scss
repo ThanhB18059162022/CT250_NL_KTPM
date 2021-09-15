@@ -550,7 +550,7 @@
     top: 55px;
     background-color: rgba(128, 128, 128, 0.822);
     height: calc(100vh - 55px);
-    overflow-y: hidden;
+    overflow-y: auto;
     .FeedbackInformationBorder{
         border: 1px solid black;
         width: 40%;
@@ -608,6 +608,7 @@
     top: 55px;
     background-color: rgba(128, 128, 128, 0.822);
     height: calc(100vh - 55px);
+    overflow: auto;
     .ReplyFeedbackBorder{
         margin: 10% auto;
         border: 1px solid black;

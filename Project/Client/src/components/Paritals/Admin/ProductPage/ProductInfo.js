@@ -1,17 +1,37 @@
 import "../Admin.Style.scss"
 import { AdminButton } from "../../../Controls"
 import { faSave } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import Notifications from "../../../../common/Notifications";
 
 const ProductInfo = (props) => {
     const {prodNo} = props
     const CusStyle = {
         margin: "1% 5px 5px 12%"
     };
+    const [show, setShow] = useState(false)
+
+    const [notify, setNotify] = useState({
+        type :"INFORMATION", //CONFIRMATION, INFORMATION
+        title :"", // title of the notifications
+        content :"", // content of the notify
+        infoType :""
+    })
+
+    const notifySaveProduct = () =>{
+        setNotify({
+            ...notify,
+            title:"Thông báo",
+            content:"Đã lưu sản phẩm",
+            infoType:"SUCCESS"
+        })
+        setShow(true)
+    }
     // console.log(props.id)
     // if (props.toDo === "addNew") {
         return(
             <>
-                <AdminButton style={CusStyle} ClickEvent={()=>alert("luu")} IconName={faSave}/>
+                <AdminButton style={CusStyle} ClickEvent={notifySaveProduct} IconName={faSave}/>
                 <div className="ProductInfo BorderFormat">
                     <p className="Title">Thông tin sản phẩm</p>
                     <form className="AddProductForm">
@@ -53,6 +73,7 @@ const ProductInfo = (props) => {
                         </div>
                     </form>
                 </div>
+                <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
             </>
         )
 //     } else if(props.toDo === "edit") {

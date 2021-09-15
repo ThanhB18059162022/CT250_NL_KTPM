@@ -3,6 +3,7 @@ import { useState } from "react"
 import ModeratorInformation from "../../../../pages/Admin/ModeratorInformation"
 import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
+import Notifications from "../../../../common/Notifications"
 
 const MorderatorList = () => {
     const [editMod, setEditMod] = useState(0)
@@ -17,6 +18,25 @@ const MorderatorList = () => {
             default: return;
         }
     }
+
+    const [show, setShow] = useState(false)
+
+    const [notify, setNotify] = useState({
+        type :"CONFIRMATION", //CONFIRMARTION, INFORMATION
+        title :"", // title of the notifications
+        content :"", // content of the notify
+        infoType :""
+      })
+    
+      const notifyDeleteAdmin = () =>{
+          setNotify({
+              ...notify,
+              title:"Xác nhận",
+              content:"Xóa quản trị viên?",
+          })
+          setShow(true)
+      }
+
     //test data
     let obj2 = [
         {
@@ -51,7 +71,7 @@ const MorderatorList = () => {
                     <p>Hành động</p>
                 </li>
                 <hr/>
-                {obj2.map((item, index)=><Moderator key={index} info={item} cusStyle={cusStyle} setEditMod={setEditMod} setModNo={setModNo}/>)}
+                {obj2.map((item, index)=><Moderator key={index} info={item} cusStyle={cusStyle} setEditMod={setEditMod} setModNo={setModNo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin}/>)}
             </div>
             {displayEditMod()}
         </div>
@@ -59,7 +79,7 @@ const MorderatorList = () => {
 }
 
 const Moderator = (props) => {
-    const {info, cusStyle, setEditMod, setModNo} = props
+    const {info, cusStyle, setEditMod, setModNo, show, setShow, notify, notifyDeleteAdmin} = props
     return(
         <>
             <li className="ModeratorList">
@@ -69,9 +89,10 @@ const Moderator = (props) => {
                 <p>{info.mod_phonenumber}</p>
                 <p>{info.mod_sex}</p>
                 <p>{info.mod_address}</p>
-                <p><AdminButton style={cusStyle} IconName={faEdit} ClickEvent={()=>{setEditMod(1); setModNo(info.mod_no)}}/> <AdminButton style={cusStyle} IconName={faTrashAlt} ClickEvent={()=>alert("xoa?")}/></p>
+                <p><AdminButton style={cusStyle} IconName={faEdit} ClickEvent={()=>{setEditMod(1); setModNo(info.mod_no)}}/> <AdminButton style={cusStyle} IconName={faTrashAlt} ClickEvent={notifyDeleteAdmin}/></p>
             </li>
             <hr/>
+            <Notifications {...notify} isShow={show} onHideRequest={setShow} />
         </>
     )
 }
