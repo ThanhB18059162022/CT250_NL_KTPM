@@ -15,10 +15,10 @@ const ModeratorInformation = (props) => {
     margin: `0 0 0 ${!modNo ? "45%" : "40%"}`,
   };
 
-  const [show, setShow] =useState(false)
+  const [show, setShow] = useState(false)
   
   const [notify, setNotify] = useState({
-    type :"INFORMATION", //CONFIRMARTION, INFORMATION
+    type :"INFORMATION", //CONFIRMATION, INFORMATION
     title :"", // title of the notifications
     content :"", // content of the notify
     infoType :""
@@ -29,6 +29,25 @@ const ModeratorInformation = (props) => {
           ...notify,
           title:"Thông báo",
           content:"Đã đặt lại mật khẩu",
+          infoType:'SUCCESS'
+      })
+      setShow(true)
+  }
+
+  const notifyCreateMod = () =>{
+      setNotify({
+          ...notify,
+          title:"Thông báo",
+          content:"Đã tạo quản trị viên",
+          infoType:'SUCCESS'
+      })
+      setShow(true)
+  }
+  const notifyEditMod = () =>{
+      setNotify({
+          ...notify,
+          title:"Thông báo",
+          content:"Đã lưu thông tin quản trị viên",
           infoType:'SUCCESS'
       })
       setShow(true)
@@ -74,10 +93,7 @@ const ModeratorInformation = (props) => {
             </form>
             <AdminButton
               style={cusStyle}
-              ClickEvent={() => {
-                alert("Da tao quan tri vien");
-                setDisplay(0);
-              }}
+              ClickEvent={notifyCreateMod}
               IconName={faSave}
             />
           </div>
@@ -125,10 +141,7 @@ const ModeratorInformation = (props) => {
             />{" "}
             &nbsp;
             <AdminButton
-              ClickEvent={() => {
-                alert("da luu");
-                setDisplay(0);
-              }}
+              ClickEvent={notifyEditMod}
               IconName={faSave}
             />
           </div>

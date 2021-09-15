@@ -6,7 +6,6 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons"
 
 const ModeratorManagement = () => {
     const [addNew, setAddNew] = useState(0)
-    const [id, setID] = useState("")
     const displayAddModeratorForm = () => {        
         switch(addNew){
             case 1: return <ModeratorInformation setDisplay={setAddNew}/>

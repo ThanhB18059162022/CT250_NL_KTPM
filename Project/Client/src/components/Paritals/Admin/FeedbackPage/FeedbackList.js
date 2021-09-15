@@ -3,11 +3,30 @@ import { useState } from "react"
 import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
 import FeedbackInformation from "./FeedbackInformation"
+import Notifications from "../../../../common/Notifications"
 
 const FeedbackList = () => {
     const cusStyle = {
         fontSize : "15px",
         width : "45px"
+    }
+
+    const [show, setShow] = useState(false)
+
+    const [notify, setNotify] = useState({
+        type :"CONFIRMATION", //CONFIRMATION, INFORMATION
+        title :"", // title of the notifications
+        content :"", // content of the notify
+        infoType :""
+    })
+
+    const notifyDeleteProduct = () =>{
+        setNotify({
+            ...notify,
+            title:"Xác nhận",
+            content:"Xóa sản phẩm?",
+        })
+        setShow(true)
     }
     const [fbInfo, setFbInfo] = useState(0)
     const [fbNo, setFbNo] = useState()
@@ -43,29 +62,32 @@ const FeedbackList = () => {
     ]
 
     return(
-        <div className="ListLayout">
-            <AdminSearchInput/>
-            <div className="AdminListClass BorderFormat">
-                <p className="Title">Danh sách đánh giá</p>
-                <li className="FeedbackList">
-                    <p>Mã đánh giá</p>
-                    <p>Người đánh giá</p>
-                    <p>Nội dung</p>
-                    <p>Sản phẩm</p>
-                    <p>Thời gian</p>
-                    <p>Số phản hồi</p>
-                    <p>Hành động</p>
-                </li>
-                <hr/>
-                {obj2.map((item,index)=><Feedback key={index} info={item} cusStyle={cusStyle} setFbNo={setFbNo} setFbInfo={setFbInfo}/>)}
+        <>
+            <div className="ListLayout">
+                <AdminSearchInput/>
+                <div className="AdminListClass BorderFormat">
+                    <p className="Title">Danh sách đánh giá</p>
+                    <li className="FeedbackList">
+                        <p>Mã đánh giá</p>
+                        <p>Người đánh giá</p>
+                        <p>Nội dung</p>
+                        <p>Sản phẩm</p>
+                        <p>Thời gian</p>
+                        <p>Số phản hồi</p>
+                        <p>Hành động</p>
+                    </li>
+                    <hr/>
+                    {obj2.map((item,index)=><Feedback key={index} info={item} cusStyle={cusStyle} setFbNo={setFbNo} setFbInfo={setFbInfo} show={show} setShow={setShow} notify={notify} notifyDeleteProduct={notifyDeleteProduct}/>)}
+                </div>
+                {displayFbInfoForm()}
             </div>
-            {displayFbInfoForm()}
-        </div>
+            
+        </>
     )
 }
 
 const Feedback = (props) => {
-    const {info, cusStyle, setFbNo, setFbInfo} = props
+    const {info, cusStyle, setFbNo, setFbInfo, show, setShow, notify, notifyDeleteProduct} = props
     return(
         <>
             <li className="FeedbackList">
@@ -75,9 +97,10 @@ const Feedback = (props) => {
                 <p>{info.prod_name}</p>
                 <p>{info.fb_time}</p>
                 <p>...</p>
-                <p><AdminButton IconName={faEye} style={cusStyle} ClickEvent={()=>{setFbInfo(1); setFbNo(info.fb_no)}}/> <AdminButton IconName={faTrashAlt} style={cusStyle} ClickEvent={()=>alert("xoa?")}/></p>
+                <p><AdminButton IconName={faEye} style={cusStyle} ClickEvent={()=>{setFbInfo(1); setFbNo(info.fb_no)}}/> <AdminButton IconName={faTrashAlt} style={cusStyle} ClickEvent={notifyDeleteProduct}/></p>
             </li>
             <hr/>
+            <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
         </>
     )
 }
