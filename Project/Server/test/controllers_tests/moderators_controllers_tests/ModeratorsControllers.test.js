@@ -422,6 +422,32 @@ describe("Thêm quản trị viên", () => {
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
+  test("Trùng tài khoản - 400", async () => {
+    //Arrange
+    const moderator = {
+      mod_id: "111111112",
+      mod_phoneNumber: "5555555555",
+      mod_username: moderators[0].mod_username,
+    };
+
+    const controller = getController();
+
+    const reqMock = { body: moderator };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400, body: undefined };
+    const actRes = await controller.addModerator(reqMock, resMock);
+
+    //Expect
+    expect(validateMock.validateAddModerator).toBeCalledTimes(1);
+    expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
+    expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
+    expect(validateMock.existModerator).toBeCalledTimes(3);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+  });
+
   test("Thêm thành công - 201", async () => {
     //Arrange
     const moderator = { mod_id: "111111119", mod_phoneNumber: "5555555555" };
@@ -439,7 +465,7 @@ describe("Thêm quản trị viên", () => {
     expect(validateMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
-    expect(validateMock.existModerator).toBeCalledTimes(2);
+    expect(validateMock.existModerator).toBeCalledTimes(3);
     expect(daoMock.addModerator).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);

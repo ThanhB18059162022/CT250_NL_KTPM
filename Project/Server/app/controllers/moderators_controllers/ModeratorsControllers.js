@@ -122,6 +122,12 @@ module.exports = class ModeratorsControllers {
       return res.status(400).json(getDuplicateResult("mod_id"));
     }
 
+    // Tài khoản tồn tại
+    const existUsername = await this.existUsername(newModerator.mod_username);
+    if (existUsername) {
+      return res.status(400).json(getDuplicateResult("mod_username"));
+    }
+
     const moderator = await this.dao.addModerator(newModerator);
 
     return res.status(201).json(moderator);
@@ -139,6 +145,14 @@ module.exports = class ModeratorsControllers {
     const moderatorHasMod_Id = await this.dao.getModeratorByMod_Id(mod_id);
 
     return this.validator.existModerator(moderatorHasMod_Id);
+  };
+
+  existUsername = async (mod_username) => {
+    const moderatorHasUsername = await this.dao.getModeratorByUsername(
+      mod_username
+    );
+
+    return this.validator.existModerator(moderatorHasUsername);
   };
 
   //#endregion
