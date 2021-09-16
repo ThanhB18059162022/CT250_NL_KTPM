@@ -37,7 +37,7 @@ export const ProductItem = ({info, compare=false, currentId=-1})=>{
                             <FontAwesomeIcon icon={faMemory}/> {info.prod_ram}
                         </span>
                         <span>
-                            <FontAwesomeIcon icon={faMobileAlt}/> 6.5'
+                            <FontAwesomeIcon icon={faMobileAlt}/> {info.prod_screen}
                         </span>
                         <span>
                             <FontAwesomeIcon icon={faBatteryThreeQuarters}/> {info.prod_battery}
