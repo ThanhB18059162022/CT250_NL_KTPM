@@ -129,6 +129,7 @@ module.exports = class ProductsDAO_Ram {
       prod_cpu: p.prod_hardwareAndOS.cpu,
       prod_ram: p.prod_ramAndStorage.ram,
       prod_battery: p.prod_batteryAndCharger.battery,
+      prod_screen: "7.2'",
       prod_img: p.prod_img,
       prod_price: p.prod_price.origin,
     }));
