@@ -3,14 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMicrochip,faMemory,faMobileAlt,faBatteryThreeQuarters } from "@fortawesome/free-solid-svg-icons"
 import { useHistory } from "react-router"
 const ProductList = (props)=>{
-    const {list} = props
+    const {list, toNextPage} = props
     return(
         <div className="ProductList">
             {
                 list.length>0? <> <ul>
                 {list.map((item,index)=><ProductItem key={index} info ={item} currentId={item.prod_no}/>)}
                 </ul>
-                <button className="product-more">Xem thêm</button>
+                <button className="product-more" onClick={toNextPage}>Xem thêm</button>
                 </>:
                 <div className="list-is-empty">
                     <p>Không có sản phẩm nào</p>

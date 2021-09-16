@@ -1,7 +1,7 @@
 import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
 import { useEffect, useState } from "react"
-import {ApiCaller} from "../../../../api_services/servicesContainer"
+import {caller} from "../../../../api_services/servicesContainer"
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import ProductFullInfo from "../../../../pages/Admin/ProductFullInfo"
 
@@ -10,7 +10,6 @@ const ProductList = () => {
         fontSize : "15px",
         width : "45px"
     }
-    const caller = new ApiCaller()
     const [products, setProducts] =useState([])
     const [prodNo, setProdNo] = useState(0)
     const [editProduct, setEditProduct] = useState(0)
