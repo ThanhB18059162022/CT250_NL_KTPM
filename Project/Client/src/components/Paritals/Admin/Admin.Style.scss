@@ -235,12 +235,21 @@
     }
 }
 
+.AddProductDetail{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #F5F5F5;
+    overflow-y: auto;
+}
+
 .DetailSplit{
-    width: 60%;
-    margin: 20px auto 0;
-    border: 1px dashed black;
-    &:last-child{
-        display: none;
+    &:not(:last-child){
+        width: 60%;
+        margin: 20px auto 0;
+        border: 1px dashed black;
     }
 }
 
@@ -395,7 +404,6 @@
     height: calc(100vh - 55px);
     top: 55px;
     background-color: rgba(128, 128, 128, 0.822);
-    overflow-y: scroll;
     .ProductFullInfoWrapper{
         position: relative;
         height: 100%;
@@ -403,6 +411,7 @@
         background-color: rgba(255, 255, 255, 0.9);
         width: 80%;
         padding: 2% 10%;
+        overflow-y: auto;
         .CloseBtn{
             position: absolute;
             right: 20px;

@@ -1,20 +1,21 @@
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import ModeratorInformation from "../../../../pages/Admin/ModeratorInformation"
 import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
 import Notifications from "../../../../common/Notifications"
+import {caller} from "../../../../api_services/servicesContainer"
 
 const MorderatorList = () => {
     const [editMod, setEditMod] = useState(0)
-    const [modNo, setModNo] = useState()
+    const [modInfo, setModInfo] = useState()
     const cusStyle = {
         fontSize : "15px",
         width : "45px"
     }
     const displayEditMod = () => {
         switch(editMod){
-            case 1: return <ModeratorInformation setDisplay={setEditMod} modNo={modNo}/>
+            case 1: return <ModeratorInformation setDisplay={setEditMod} modInfo={modInfo}/>
             default: return;
         }
     }
@@ -22,7 +23,7 @@ const MorderatorList = () => {
     const [show, setShow] = useState(false)
 
     const [notify, setNotify] = useState({
-        type :"CONFIRMATION", //CONFIRMARTION, INFORMATION
+        type :"CONFIRMATION", //CONFIRMATION, INFORMATION
         title :"", // title of the notifications
         content :"", // content of the notify
         infoType :""
@@ -37,25 +38,14 @@ const MorderatorList = () => {
           setShow(true)
       }
 
-    //test data
-    let obj2 = [
-        {
-            mod_no : "001",
-            mod_name : "Admin01",
-            mod_id : "156878912557",
-            mod_phonenumber : "0123456789",
-            mod_sex : "Nam",
-            mod_address : "Ninh Kiều - Cần Thơ",
-        },
-        {
-            mod_no : "002",
-            mod_name : "Admin02",
-            mod_id : "156878912557",
-            mod_phonenumber : "0123456789",
-            mod_sex : "Nữ",
-            mod_address : "Cái Răng - Cần Thơ",
-        }
-    ]
+    const [mods, setMods] =useState([])
+    useEffect(()=>{
+        (async()=>{
+         let data =  await caller.get('moderators')
+         setMods(data.items)
+        })(); // IIFE // Note setProduct([...products, item])
+     },[])
+
     return(
         <div className="ListLayout">
             <AdminSearchInput/>
@@ -71,7 +61,7 @@ const MorderatorList = () => {
                     <p>Hành động</p>
                 </li>
                 <hr/>
-                {obj2.map((item, index)=><Moderator key={index} info={item} cusStyle={cusStyle} setEditMod={setEditMod} setModNo={setModNo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin}/>)}
+                {mods.map((item, index)=><Moderator key={index} info={item} cusStyle={cusStyle} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin}/>)}
             </div>
             {displayEditMod()}
         </div>
@@ -79,17 +69,17 @@ const MorderatorList = () => {
 }
 
 const Moderator = (props) => {
-    const {info, cusStyle, setEditMod, setModNo, show, setShow, notify, notifyDeleteAdmin} = props
+    const {info, cusStyle, setEditMod, setModInfo, show, setShow, notify, notifyDeleteAdmin} = props
     return(
         <>
             <li className="ModeratorList">
                 <p>{info.mod_no}</p>
                 <p>{info.mod_name}</p>
                 <p>{info.mod_id}</p>
-                <p>{info.mod_phonenumber}</p>
+                <p>{info.mod_phoneNumber}</p>
                 <p>{info.mod_sex}</p>
                 <p>{info.mod_address}</p>
-                <p><AdminButton style={cusStyle} IconName={faEdit} ClickEvent={()=>{setEditMod(1); setModNo(info.mod_no)}}/> <AdminButton style={cusStyle} IconName={faTrashAlt} ClickEvent={notifyDeleteAdmin}/></p>
+                <p><AdminButton style={cusStyle} IconName={faEdit} ClickEvent={()=>{setEditMod(1); setModInfo(info)}}/> <AdminButton style={cusStyle} IconName={faTrashAlt} ClickEvent={notifyDeleteAdmin}/></p>
             </li>
             <hr/>
             <Notifications {...notify} isShow={show} onHideRequest={setShow} />
