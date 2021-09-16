@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Helper from "../../../helpers"
 import Notifications from "../../../common/Notifications"
 import "./CartDetail.Style.scss"
+import PayPalPayment from "../../../api_services/paypal_payment_service/PayPalPayment"
 const CartDetail = () => {
     const [list, setList] = useState([])
     const [total, setTotal] = useState(0)
@@ -59,7 +60,8 @@ const CartDetail = () => {
                     </div>
                 </div>
             </div>
-            <CartTransaction display={display} setDisplay={setDisplay}  />
+            <CartTransaction display={display} setDisplay={setDisplay}/>
+            <PayPalPayment/>
         </div>
     )
 }

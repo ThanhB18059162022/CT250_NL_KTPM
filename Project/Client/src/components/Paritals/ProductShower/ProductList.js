@@ -2,18 +2,13 @@ import "./ProductItem.Style.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMicrochip,faMemory,faMobileAlt,faBatteryThreeQuarters } from "@fortawesome/free-solid-svg-icons"
 import { useHistory } from "react-router"
-const ProductList = ()=>{
-    let arr = []
-    for(let i = 0; i<24; i++){
-        arr[i] ={
-            src: i%2===0?"/image/samsung.jpeg":"/image/iphone.jpeg"
-        }
-    }
+const ProductList = (props)=>{
+    const {list} = props
     return(
         <div className="ProductList">
             {
-                arr.length>0? <> <ul>
-                {arr.map((item,index)=><ProductItem key={index} info ={item} currentId={index}/>)}
+                list.length>0? <> <ul>
+                {list.map((item,index)=><ProductItem key={index} info ={item} currentId={item.prod_no}/>)}
                 </ul>
                 <button className="product-more">Xem thêm</button>
                 </>:
@@ -31,21 +26,21 @@ export const ProductItem = ({info, compare=false, currentId=-1})=>{
     const history = useHistory()
     return(
         <li className="ProductItem" onClick={()=>history.push(`/product/${currentId}`)}>
-            <img src={info.src} alt={info.src}/>
+            <img src={info.prod_img} alt={info.src}/>
             <div className="product-info">
-                <p className="name">iPhone 13 Pro </p>
-                <p className="price">24.000.000đ</p>
+                <p className="name">{info.prod_name}</p>
+                <p className="price">{info.prod_price}</p>
                 <div  className="product-panel">
-                   <p className="chipset"><FontAwesomeIcon icon={faMicrochip}/> Appple A12 Bionic</p>
+                   <p className="chipset"><FontAwesomeIcon icon={faMicrochip}/> {info.prod_cpu}</p>
                     <p>
                         <span>
-                            <FontAwesomeIcon icon={faMemory}/> 8Gb
+                            <FontAwesomeIcon icon={faMemory}/> {info.prod_ram}
                         </span>
                         <span>
                             <FontAwesomeIcon icon={faMobileAlt}/> 6.5'
                         </span>
                         <span>
-                            <FontAwesomeIcon icon={faBatteryThreeQuarters}/>  3000mAh
+                            <FontAwesomeIcon icon={faBatteryThreeQuarters}/> {info.prod_battery}
                         </span>
                     </p>
                 </div>

@@ -111,7 +111,7 @@ module.exports = class ProductsDAO_Ram {
             "Dài 158.2 mm - Ngang 128.1 mm - Dày 6.4 mm - Nặng 271 g",
         },
         prod_status: "",
-        prod_img: `/img/${1}/prod_img1.png`,
+        prod_img: `http://localhost:8000/img/${1}/prod_img1.jpeg`,
         prod_price: {
           origin: 44990000,
           discount: 0.0,
