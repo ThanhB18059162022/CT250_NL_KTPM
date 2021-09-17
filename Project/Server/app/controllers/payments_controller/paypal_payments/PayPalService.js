@@ -89,7 +89,7 @@ module.exports = class PayPalService {
 
   // orderProducts mảng đối tượng có 2 phần tử
   // Mã và số lượng
-  createOrderBody = async (products) => {
+  createOrderBody = async (products = []) => {
     const orderProducts = await this.dao.getOrderProducts(products);
 
     // Tính tổng tiền
