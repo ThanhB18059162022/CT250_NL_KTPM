@@ -3,41 +3,37 @@ import { ProductInfo, ProductDetail } from "../../components/Paritals/Admin"
 import { AdminButton } from "../../components/Controls"
 import { faPlus, faWindowClose } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useState } from "react"
 
 const ProductFullInfo = (props) => {
+    const {productInfo} = props
+    const [details, setDetails] = useState([])
+    const [display, setDisplay] = useState(0)
+    const displayAddDetail = () => {
+        switch(display){
+            case 1: return  <div className="AddProductDetail">
+                                <ProductDetail setDisplay={setDisplay} details={details} setDetails={setDetails}/>
+                            </div>
+            default: return;
+        }
+    }
+
     return(
         <div className="ProductFullInfo">
             <div className="ProductFullInfoWrapper">
                 <button onClick={()=>props.setDisplay(0)} className="CloseBtn"><FontAwesomeIcon icon={faWindowClose}/></button>
-                <ProductInfo prodNo={props.prodNo}/>
+                <ProductInfo productInfo={productInfo}/>
                 <div className="ProductFullInfoSplit">
                     <p className="Title Line"><span>Chi tiết sản phẩm</span></p>
                     <div className="Button">
-                        <AdminButton IconName={faPlus} ClickEvent={()=>alert("them moi")}/>
+                        <AdminButton IconName={faPlus} ClickEvent={()=>setDisplay(1)}/>
                     </div>
                 </div>
-                <ProductDetail/>
+                {details.map((detail,index)=><ProductDetail key={index} info={detail}/>)}
+                {displayAddDetail()}
             </div>
         </div>
     )
-    // }
-    // else if(props.toDo === "edit"){
-    //     return(
-    //         <div className="ProductFullInfo">
-    //             <div>
-    //                 <button onClick={()=>props.setState(0)} className="CloseBtn"><FontAwesomeIcon icon={faWindowClose}/></button>
-    //                 <ProductInfo toDo={props.toDo} id={props.id}/>
-    //                 <div className="ProductFullInfoSplit">
-    //                     <p className="Title Line"><span>Chi tiết sản phẩm</span></p>
-    //                     <div className="Button">
-    //                         <AdminButton IconName={faPlus} />
-    //                     </div>
-    //                 </div>
-    //                 <ProductDetail/>
-    //             </div>
-    //         </div>
-    //     )
-    // }
 }
 
 export default ProductFullInfo

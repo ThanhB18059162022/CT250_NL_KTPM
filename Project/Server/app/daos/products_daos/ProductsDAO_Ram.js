@@ -85,7 +85,7 @@ module.exports = class ProductsDAO_Ram {
       prod_ram: p.prod_ramAndStorage.ram,
       prod_battery: p.prod_batteryAndCharger.battery,
       prod_img: p.prod_img,
-      prod_price: p.prod_price,
+      prod_price: p.prod_price.origin,
     }));
 
     return prods;

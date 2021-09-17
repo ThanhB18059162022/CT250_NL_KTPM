@@ -10,9 +10,9 @@ import { AdminButton } from "../../components/Controls";
 import "../../components/Paritals/Admin/Admin.Style.scss";
 
 const ModeratorInformation = (props) => {
-  const {setDisplay, modNo} = props
+  const {setDisplay, modInfo} = props
   const cusStyle = {
-    margin: `0 0 0 ${!modNo ? "45%" : "40%"}`,
+    margin: `0 0 0 ${!modInfo ? "45%" : "40%"}`,
   };
 
   const [show, setShow] = useState(false)
@@ -55,7 +55,7 @@ const ModeratorInformation = (props) => {
 
   return (
     <>
-      {!modNo ? (
+      {!modInfo ? (
         <div className="ModeratorInformation">
           <div className="ModeratorInformationBoder">
             <button onClick={() => setDisplay(0)} className="CloseBtn">
@@ -108,30 +108,30 @@ const ModeratorInformation = (props) => {
             <form className="ModInfoForm">
               <div>
                 <p>Mã số:</p>
-                <input name="txtModNo" type="text" className="TextField" disabled value={modNo}></input>
+                <input name="txtModNo" type="text" className="TextField" disabled defaultValue={modInfo.mod_no}></input>
               </div>
               <div>
                 <p>Họ tên:</p>
-                <input name="txtModName" type="text" className="TextField"></input>
+                <input name="txtModName" type="text" className="TextField" defaultValue={modInfo.mod_name}></input>
               </div>
               <div>
                 <p>CMND:</p>
-                <input name="txtModID" type="text" className="TextField"></input>
+                <input name="txtModID" type="text" className="TextField" defaultValue={modInfo.mod_id}></input>
               </div>
               <div>
                 <p>SĐT:</p>
-                <input name="txtModPhoneNumber" type="text" className="TextField"></input>
+                <input name="txtModPhoneNumber" type="text" className="TextField" defaultValue={modInfo.mod_phoneNumber}></input>
               </div>
               <div>
                 <p>Giới tính:</p>
                 <div className="Sex">
-                  <input name="txtModSex" type="radio"></input>&nbsp; Nam &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input name="txtModSex" type="radio"></input>&nbsp; Nữ
+                  <input name="txtModSex" type="radio" checked={modInfo.mod_sex==="male"?true:false}></input>&nbsp; Nam &nbsp;&nbsp;&nbsp;&nbsp;
+                  <input name="txtModSex" type="radio" checked={modInfo.mod_sex==="female"?true:false}></input>&nbsp; Nữ
                 </div>
               </div>
               <div>
                 <p>Địa chỉ:</p>
-                <textarea name="txtModAddress" rows="5"></textarea>
+                <textarea name="txtModAddress" rows="5" defaultValue={modInfo.mod_address}></textarea>
               </div>
             </form>
             <AdminButton
