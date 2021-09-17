@@ -10,13 +10,11 @@ const { errorCatch } = require("../routerErrorHandler");
 const {
   PayPalPaymentController,
   PayPalService,
-  PayPalOrderService,
 } = require("../../controllers/controllersContainer");
 
 const payPalService = new PayPalService(config.paypal);
-const orderService = new PayPalOrderService(null, config.paypal.currency_code);
 
-const controller = new PayPalPaymentController(payPalService, orderService);
+const controller = new PayPalPaymentController(payPalService);
 
 // Bắc buộc đăng nhập
 router.route("/clientId").get(errorCatch(controller.getClientId));

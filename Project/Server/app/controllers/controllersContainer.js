@@ -13,7 +13,6 @@ const ProductsValidator = require("./products_controllers/ProductsValidator");
 
 const PayPalPaymentController = require("./payments_controller/paypal_payments/PayPalPaymentController");
 const PayPalService = require("./payments_controller/paypal_payments/PayPalService");
-const PayPalOrderService = require("./payments_controller/paypal_payments/PayPalOrderService");
 
 const ModeratorsController = require("./moderators_controllers/ModeratorsControllers");
 const ModeratorsValidator = require("./moderators_controllers/ModeratorsValidator");
@@ -30,7 +29,6 @@ module.exports = {
 
   PayPalPaymentController,
   PayPalService,
-  PayPalOrderService,
 
   ModeratorsController,
   ModeratorsValidator,
