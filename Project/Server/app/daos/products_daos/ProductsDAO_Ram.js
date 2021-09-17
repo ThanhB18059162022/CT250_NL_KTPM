@@ -1,5 +1,5 @@
 const products = [];
-const img = "https://dummyimage.com/600x400/000/0fffff&text=Coming+soon";
+const cfg = require("../../config");
 
 // https://www.thegioididong.com/dtdd/samsung-galaxy-z-fold-3
 module.exports = class ProductsDAO_Ram {
@@ -24,47 +24,11 @@ module.exports = class ProductsDAO_Ram {
           // Sau
           rear: {
             spec: "3 camera 12 MP",
-            flash: true,
-            videoQuality: [
-              "4K 2160p@60fps",
-              "FullHD 1080p@240fps",
-              "FullHD 1080p@60fps",
-              "HD 720p@960fps",
-            ],
-            features: [
-              "AI Camera",
-              "Ban đêm (Night Mode)",
-              "Chuyên nghiệp (Pro)",
-              "Chạm lấy nét",
-              "Chống rung quang học (OIS)",
-              "Góc rộng (Wide)",
-              "Góc siêu rộng (Ultrawide)",
-              "HDR",
-              "Làm đẹp",
-              "Lấy nét theo pha (PDAF)",
-              "Nhận diện khuôn mặt",
-              "Quay Siêu chậm (Super Slow Motion)",
-              "Quay chậm (Slow Motion)",
-              "Toàn cảnh (Panorama)",
-              "Tự động lấy nét (AF)",
-              "Xóa phông",
-              "Zoom quang học",
-            ],
+            videoQuality:
+              "4K 2160p@60fps, FullHD 1080p@240fps, FullHD 1080p@60fps, HD 720p@960fps",
           },
           //Trước
-          font: {
-            spec: "10 MP & 4 MP 8 MP",
-            features: [
-              " HDR",
-              "Làm đẹp",
-              "Nhận diện khuôn mặt",
-              "Quay video 4K",
-              "Quay video Full HD",
-              "Quay video HD",
-              "Tự động lấy nét (AF)",
-              "Xóa phông",
-            ],
-          },
+          font: "10 MP & 4 MP 8 MP",
         },
         prod_hardwareAndOS: {
           os: "Android 11",
@@ -80,30 +44,23 @@ module.exports = class ProductsDAO_Ram {
         prod_network: {
           telecom: "5G",
           SIM: "2 Nano Sim",
-          Wifi: [
-            "Dual-band (2.4 GHz/5 GHz)",
-            "Wi-Fi 802.11 a/b/g/n/ac/ax",
-            "Wi-Fi Direct",
-            "Wi-Fi hotspot",
-          ],
-          GPS: ["A-GPS", "BDS", "GALILEO", "GLONASS"],
-          Bluetooth: ["A2DP", "LEv", "5.2"],
+          Wifi: "Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac/ax, Wi-Fi Direct, Wi-Fi hotspot",
+          GPS: "A-GPS, BDS, GALILEO, GLONASS",
+          Bluetooth: "A2DP, LEv, 5.2",
           connector: "Type-C",
-          others: "NFCOTG",
+          others: "NFC, OTG",
         },
         prod_batteryAndCharger: {
           battery: "4400 mAh",
           batteryType: "Li-ion",
           chargeType: "25W",
-          chargerTech: "Sạc không dây, Sạc pin nhanh",
         },
-        prod_utilities: {
-          security: "Mở khoá vân tay cạnh viền",
-          specialFeature: "Samsung Pay Âm thanh AKG",
-          waterproof: "IPX8",
-          video: ["3GP", "AVI", "H.264(MPEG4-AVC)", "MP4", "WMV"],
-          audio: ["AAC", "AMR", "FLAC", "MP3", "Midi", "OGG", "WAV", "WMA"],
-        },
+        // Tiện ích Xài Map
+        prod_utilities: [
+          ["Bảo mật", "Mở khoá vân tay cạnh viền"],
+          ["Tính năng đặc biệt", "Samsung Pay Âm thanh AKG"],
+          ["Kháng nước, bụi", "IPX8"],
+        ],
         prod_design: {
           structural: "Nguyên khối",
           material: "Khung nhôm & Mặt lưng kính cường lực",
@@ -111,11 +68,8 @@ module.exports = class ProductsDAO_Ram {
             "Dài 158.2 mm - Ngang 128.1 mm - Dày 6.4 mm - Nặng 271 g",
         },
         prod_status: "",
-        prod_img: `http://localhost:8000/img/${1}/prod_img1.jpeg`,
-        prod_price: {
-          origin: 44990000,
-          discount: 0.0,
-        },
+        prod_img: [`${cfg.baseUri}/img/${1}/prod_img.png`],
+        prod_price: 44990000,
       };
 
       products.push(product);
@@ -126,10 +80,10 @@ module.exports = class ProductsDAO_Ram {
     let prods = products.slice(startIndex, endIndex).map((p) => ({
       prod_no: p.prod_no,
       prod_name: p.prod_name,
+      prod_screen: this.getScreenSize(p),
       prod_cpu: p.prod_hardwareAndOS.cpu,
       prod_ram: p.prod_ramAndStorage.ram,
       prod_battery: p.prod_batteryAndCharger.battery,
-      prod_screen: "7.2'",
       prod_img: p.prod_img,
       prod_price: p.prod_price.origin,
     }));
@@ -137,10 +91,18 @@ module.exports = class ProductsDAO_Ram {
     return prods;
   };
 
-  getProductByNo = async (prod_no) => {
-    const product = products.filter((p) => p.prod_no === prod_no);
+  getScreenSize = (product) => {
+    // Kích thước màn hình dạng 7.6'
+    const rgx_screen = /\d\.\d'/;
+    const size = rgx_screen.exec(product.prod_screen.size);
 
-    return product[0];
+    return size[0];
+  };
+
+  getProductByNo = async (prod_no) => {
+    const product = products.filter((p) => p.prod_no === prod_no)[0];
+
+    return product;
   };
 
   getProductByName = async (prod_name) => {

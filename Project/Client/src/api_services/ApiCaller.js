@@ -4,9 +4,11 @@ import ApiHelper from "./ApiHelper";
 //Lớp adapter dành cho axios
 // Bổ sung thêm header cho jwt
 class ApiCaller {
-  constructor() {
-    const baseUri = "http://localhost:8000/api";
+  constructor(baseUri = "http://localhost:8000/api") {
+    this.baseUri = baseUri;
+
     const jwkToken = ApiHelper.JwkToken;
+
     this.axiosApi = axios.create({
       baseURL: baseUri,
       headers: {
