@@ -14,10 +14,9 @@ function getValidationResult(schema, data) {
       context: { key },
     } = result.error.details[0];
 
-    // Bỏ dấu ngoặc kép
-    const content = message.replace(/['"]+/g, "");
+    const { value } = result;
 
-    return { hasAnyError, error: { key, content } };
+    return { hasAnyError, value, error: { key, message } };
   }
 
   return { hasAnyError };

@@ -1,9 +1,20 @@
-const PayPalPaymentController = require("../../../app/controllers/payments_controller/paypal_payments/PayPalPaymentController");
-const { ResponseMock } = require("../controllerTestHelper");
+const PayPalPaymentController = require("../../../../app/controllers/payments_controller/paypal_payments/PayPalPaymentController");
+const { ResponseMock } = require("../../controllerTestHelper");
 
 // Kiểm tra các end-points của paypal controller
 
 //#region  Init
+
+class PayPalValidatorMock {
+  validateCart = (cart) => {
+    return { hasAnyError: cart.products === undefined };
+  };
+
+  validateOrderID = (id) => {
+    return { hasAnyError: id === undefined };
+  };
+}
+
 class PayPalServiceMock {
   static clientId = "id đây";
 
@@ -33,10 +44,11 @@ class PayPalServiceMock {
 
 //#endregion
 
+let validatorMock;
 let payPalServiceMock;
 
 function getController() {
-  return new PayPalPaymentController(payPalServiceMock);
+  return new PayPalPaymentController(validatorMock, payPalServiceMock);
 }
 
 // 200
@@ -110,6 +122,7 @@ describe("Lấy ra order theo id", () => {
 // 201 - 400 - 404
 describe("Tạo order", () => {
   beforeEach(() => {
+    validatorMock = new PayPalValidatorMock();
     payPalServiceMock = new PayPalServiceMock();
   });
 
@@ -126,7 +139,7 @@ describe("Tạo order", () => {
     //Act
     const expRes = { statusCode: 400 };
     const actRes = await controller.createOrder(reqMock, resMock);
-    console.log(actRes);
+
     //Expect
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
@@ -161,12 +174,30 @@ describe("Tạo order", () => {
 // 200 - 404
 describe("Thanh toán order", () => {
   beforeEach(() => {
+    validatorMock = new PayPalValidatorMock();
     payPalServiceMock = new PayPalServiceMock();
+  });
+
+  test("OrderID không hợp lệ - 400", async () => {
+    //Arrange
+    const orderID = undefined;
+    const controller = getController();
+    const reqMock = { params: { orderID } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400, body: {} };
+    const actRes = await controller.captureOrder(reqMock, resMock);
+
+    //Expect
+    expect(payPalServiceMock.existOrder).toBeCalledTimes(0);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
   test("Order không tồn tại - 404", async () => {
     //Arrange
-    const orderID = undefined;
+    const orderID = "";
     const controller = getController();
     const reqMock = { params: { orderID } };
     const resMock = new ResponseMock();
