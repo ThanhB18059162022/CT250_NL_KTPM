@@ -1,9 +1,8 @@
 module.exports = class PayPalPaymentController {
   // PayPalserivce tạo đơn hàng - thanh toán
   // OrderSerivice tính tiền để tạo đơn hàng - lưu vào csdl
-  constructor(payPalSerivce, orderSerivce) {
+  constructor(payPalSerivce) {
     this.payPalSerivce = payPalSerivce;
-    this.orderSerivce = orderSerivce;
   }
 
   //#region GET
@@ -35,18 +34,14 @@ module.exports = class PayPalPaymentController {
 
   // Tạo order theo danh sách sản phẩm
   createOrder = async (req, res) => {
-    const { products } = req.body;
-
-    let orderBody = {};
+    const { body: cart } = req;
     try {
-      orderBody = await this.orderSerivce.createOrderBody(products);
+      const order = await this.payPalSerivce.createOrder(cart);
+
+      return res.status(201).json(order);
     } catch (error) {
-      return res.status(400).json({ error: error.stack });
+      return res.status(400).json({ error: error.message });
     }
-
-    const order = await this.payPalSerivce.createOrder(orderBody);
-
-    return res.status(201).json(order);
   };
 
   //#endregion
@@ -64,9 +59,6 @@ module.exports = class PayPalPaymentController {
 
     // Thanh toán order
     const order = await this.payPalSerivce.captureOrder(orderID);
-
-    // Lưu vào CSDL
-    await this.orderSerivce.saveOrder(order);
 
     return res.json(order);
   };

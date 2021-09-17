@@ -31,22 +31,12 @@ class PayPalServiceMock {
   });
 }
 
-class OrderSerivceMock {
-  createOrderBody = jest.fn((products) => {
-    if (products.length === 0) throw Error();
-    return { products };
-  });
-
-  saveOrder = jest.fn();
-}
-
 //#endregion
 
 let payPalServiceMock;
-let orderSerivceMock;
 
 function getController() {
-  return new PayPalPaymentController(payPalServiceMock, orderSerivceMock);
+  return new PayPalPaymentController(payPalServiceMock);
 }
 
 // 200
@@ -121,7 +111,6 @@ describe("Lấy ra order theo id", () => {
 describe("Tạo order", () => {
   beforeEach(() => {
     payPalServiceMock = new PayPalServiceMock();
-    orderSerivceMock = new OrderSerivceMock();
   });
 
   test("Danh sách sản phẩm không hợp lệ - 400", async () => {
@@ -137,7 +126,7 @@ describe("Tạo order", () => {
     //Act
     const expRes = { statusCode: 400 };
     const actRes = await controller.createOrder(reqMock, resMock);
-
+    console.log(actRes);
     //Expect
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
@@ -148,15 +137,14 @@ describe("Tạo order", () => {
     const products = [{ id: 1 }];
 
     const controller = getController();
+    const body = { products };
     const reqMock = {
-      body: { products },
+      body,
     };
     const resMock = new ResponseMock();
 
-    const body = orderSerivceMock.createOrderBody(products);
     const order = await payPalServiceMock.createOrder(body);
 
-    orderSerivceMock.createOrderBody.mockClear();
     payPalServiceMock.createOrder.mockClear();
 
     //Act
@@ -209,7 +197,6 @@ describe("Thanh toán order", () => {
     expect(payPalServiceMock.existOrder).toBeCalledTimes(1);
     expect(payPalServiceMock.captureOrder).toBeCalledTimes(1);
 
-    expect(orderSerivceMock.saveOrder).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);
   });
