@@ -11,9 +11,9 @@ const NotesController = require("./notes_controllers/NotesController");
 const ProductsController = require("./products_controllers/ProductsController");
 const ProductsValidator = require("./products_controllers/ProductsValidator");
 
-const PayPalPaymentController = require("./payments_controller/PayPalPaymentController");
-const PayPalService = require("./payments_controller/PayPalService");
-const PayPalOrderService = require("./payments_controller/PayPalOrderService");
+const PayPalPaymentController = require("./payments_controller/paypal_payments/PayPalPaymentController");
+const PayPalService = require("./payments_controller/paypal_payments/PayPalService");
+const PayPalOrderService = require("./payments_controller/paypal_payments/PayPalOrderService");
 
 const ModeratorsController = require("./moderators_controllers/ModeratorsControllers");
 const ModeratorsValidator = require("./moderators_controllers/ModeratorsValidator");
