@@ -67,6 +67,41 @@ module.exports = class ProductsDAO_Ram {
           sizeAndWeigth:
             "Dài 158.2 mm - Ngang 128.1 mm - Dày 6.4 mm - Nặng 271 g",
         },
+        //Review
+        prod_feedbacks: [
+          {
+            fb_cusomter: {
+              cus_name: "Cus1",
+              cus_sex: "Nam",
+            },
+            fb_content: "Sản phẩm chưa ra mà hóng quá",
+            fb_time: new Date("2021-08-17"),
+            // Phản hồi
+            fb_replies: [
+              {
+                rep_mod: "Mod1",
+                rep_content: "Cám ơn anh đã ủng hộ",
+                rep_time: new Date("2021-08-17"),
+              },
+            ],
+          },
+          {
+            fb_cusomter: {
+              cus_name: "Cus2",
+              cus_sex: "Nữ",
+            },
+            fb_content: "Sản phẩm đẹp quá",
+            fb_time: new Date("2021-08-18"),
+            // Phản hồi
+            fb_replies: [
+              {
+                rep_mod: "Mod1",
+                rep_content: "Cám ơn chị đã ủng hộ",
+                rep_time: new Date("2021-08-18"),
+              },
+            ],
+          },
+        ],
         prod_status: "",
         prod_img: [`${cfg.baseUri}/img/${1}/prod_img.png`],
         prod_price: 44990000,
