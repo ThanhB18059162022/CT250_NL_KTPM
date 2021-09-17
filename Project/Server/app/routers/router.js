@@ -1,7 +1,7 @@
 const authenticationRouter = require("./authentication_routers/authenticationRouter");
 const notesRouter = require("./notes_routers/notesRouter");
 const productsRouter = require("./products_routers/productsRouter");
-const payPalRouter = require("./payments_routers/payPalPaymentRouter");
+const payPalRouter = require("./payments_routers/payPalPaymentRouters/payPalPaymentRouter");
 const moderatorsRouter = require("./moderators_routers/moderatorsRouter");
 
 // Mỗi controller sẽ có mỗi router
