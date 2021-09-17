@@ -20,6 +20,8 @@ module.exports = class PayPalValidator {
     return result;
   };
 
+  // Xác thực khách hàng nữa
+
   // Xác thực giỏ hàng
   validateCart = (cart = {}) => {
     const { products } = cart;

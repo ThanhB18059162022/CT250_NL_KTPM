@@ -29,3 +29,5 @@ GET http://localhost:8000/api/paypal/captureorder/6072225628845804W
 
 GET http://localhost:8000/api/paypal/captureorder/6072225628845804H
     
+### 3 Không hợp lệ - 400
+GET http://localhost:8000/api/paypal/captureorder/607222562884580
