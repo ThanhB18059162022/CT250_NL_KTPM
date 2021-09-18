@@ -2,9 +2,9 @@
 //https://stackoverflow.com/questions/57993305/how-can-i-validate-number-of-digits-from-joi-using-nodejs
 
 const joi = require("joi");
-const { getValidationResult } = require("../../validatorHelper");
+const { getValidationResult } = require("../validatorHelper");
 
-module.exports = class PayPalValidator {
+module.exports = class PatmentValidator {
   // Xác thực danh sách sản phẩm trong giỏ
   validateOrderProducts = (products = []) => {
     const schema = joi.array().items(
@@ -34,6 +34,7 @@ module.exports = class PayPalValidator {
     return { hasAnyError: false };
   };
 
+  // Xài cho paypal
   validateOrderID = (orderID) => {
     const schema = joi.object({
       orderID: joi.string().length(17).required(),

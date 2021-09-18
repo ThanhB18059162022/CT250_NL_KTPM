@@ -16,7 +16,8 @@
     "express": "^4.17.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "stripe": "^8.176.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",

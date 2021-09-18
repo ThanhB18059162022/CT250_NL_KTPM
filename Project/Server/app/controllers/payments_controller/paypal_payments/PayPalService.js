@@ -7,7 +7,7 @@ const PayPalCheckout = require("@paypal/checkout-server-sdk");
 // Bên client button createOrder vs onApprove để gọi api bên đây
 module.exports = class PayPalService {
   // Lưu các order đã đặt mà chưa thanh toán sau 1 ngày sẽ xóa
-  static tempOrders = []; //TODO
+  static storedOrders = new Map();
 
   constructor(config, dao) {
     const {
@@ -70,9 +70,13 @@ module.exports = class PayPalService {
   //#region CREATE ORDER
 
   // Tạo đơn hàng theo khách hàng và order body (định dạng theo paypal)
-  createOrder = async ({ customer, products }) => {
+  createOrder = async (cart) => {
+    // Lấy ra danh sách sản phẩm trong giỏ
+    // Bao gồm giá
+    const orderProducts = await this.getOrderProducts(cart.products);
+
     // Tạo order từ giỏ hàng
-    const orderBody = await this.createOrderBody(products);
+    const orderBody = await this.createOrderBody(orderProducts);
 
     // Tạo request paypal để gọi paypal api
     const createRequest = new PayPalCheckout.orders.OrdersCreateRequest();
@@ -82,18 +86,42 @@ module.exports = class PayPalService {
     createRequest.requestBody(orderBody);
 
     // Gọi api paypal để tạo order - có exception khi không hợp lệ body
-    const newOrder = await this.payPalClient.execute(createRequest);
+    const { result: newOrder } = await this.payPalClient.execute(createRequest);
 
-    return newOrder.result;
+    //Lưu tạm order
+    const tmpOrder = {
+      id: newOrder.id,
+      orderProducts,
+      customer: cart.customer,
+    };
+    this.storeOrder(tmpOrder);
+
+    return newOrder;
   };
 
-  // orderProducts mảng đối tượng có 2 phần tử
-  // Mã và số lượng
-  createOrderBody = async (products = []) => {
-    const orderProducts = await this.dao.getOrderProducts(products);
+  // Lấy ra danh sách sản phẩm đặt hàng
+  // Có giá tiền trong CSDL
+  getOrderProducts = async (products) => {
+    const orderProducts = [];
 
+    for (let i = 0; i < products.length; i++) {
+      const prod = products[i];
+      // Lấy giá theo mã
+      const prod_price = await this.dao.getProductPrice(prod.prod_no);
+
+      orderProducts.push({
+        ...prod,
+        prod_price,
+      });
+    }
+
+    return orderProducts;
+  };
+
+  // Tính tiền theo giá và số lượng trong mảng
+  createOrderBody = async (products = []) => {
     // Tính tổng tiền
-    const total = this.getTotalPrice(orderProducts);
+    const total = this.getTotalPrice(products);
 
     const order = {
       // Capture để thanh toán
@@ -127,25 +155,52 @@ module.exports = class PayPalService {
     return total;
   };
 
+  // Save tạm thông tin order vào ram sẽ xóa sau 1 ngày
+  storeOrder = (order) => {
+    const { storedOrders } = PayPalService;
+
+    // Save bằng paypal id
+    storedOrders.set(order.id, order);
+
+    // Số mili giây 1 ngày
+    const miliSecInDay = 86400000;
+
+    // Xóa order
+    setTimeout(() => {
+      storedOrders.delete(order.id);
+    }, miliSecInDay);
+  };
+
   //#endregion
 
   //#region  CAPTURE ORDER
 
   // Thanh toán
   captureOrder = async (orderID) => {
+    // Kiểm tra còn order trước khi thanh toán
+    const { storedOrders } = PayPalService;
+    const order = storedOrders.get(orderID);
+    if (order === undefined) {
+      throw new Error("Order expired");
+    }
+
+    // Thanh toán
+    await this.CaptureOrder(orderID);
+
+    // Lưu vào CSDL
+    await this.dao.saveOrder(order);
+
+    return order;
+  };
+
+  // Cái này gọi để thanh toán tiền
+  CaptureOrder = async (orderID) => {
     const captureRequest = new PayPalCheckout.orders.OrdersCaptureRequest(
       orderID
     );
-
     captureRequest.requestBody({});
 
-    // Cái này gọi để thanh toán tiền
-    const orderCapture = await this.payPalClient.execute(captureRequest);
-
-    // Lưu vào CSDL
-    await this.dao.saveOrder(orderCapture.result);
-
-    return orderCapture.result;
+    await this.payPalClient.execute(captureRequest);
   };
 
   //#endregion

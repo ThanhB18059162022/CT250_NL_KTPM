@@ -5,23 +5,10 @@ const PRODUCTS = [
 ];
 
 module.exports = class CustomersOrdersDAO {
-  getOrderProducts = async (products) => {
-    const orderProducts = [];
+  getProductPrice = async (prod_no) => {
+    const prod = PRODUCTS.filter((p) => p.prod_no === prod_no)[0];
 
-    for (const prod of products) {
-      const product = PRODUCTS.filter((p) => p.prod_no == prod.prod_no)[0];
-
-      if (product?.prod_price === undefined) {
-        throw Error("Chả có cái nào z hết");
-      }
-
-      orderProducts.push({
-        prod_price: product.prod_price,
-        prod_quantity: prod.prod_quantity,
-      });
-    }
-
-    return orderProducts;
+    return prod.prod_price;
   };
 
   saveOrder = async (order) => {

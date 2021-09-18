@@ -10,15 +10,19 @@ const { errorCatch } = require("../../routerErrorHandler");
 const {
   PayPalPaymentController,
   PayPalService,
-  PayPalValidator,
+  PaymentValidator,
 } = require("../../../controllers/controllersContainer");
 
 const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 
+//#region  INIT
+
 const dao = new CustomersOrdersDAO();
 const payPalService = new PayPalService(config.paypal, dao);
-const validator = new PayPalValidator();
+const validator = new PaymentValidator();
 const controller = new PayPalPaymentController(validator, payPalService);
+
+//#endregion
 
 // Bắt buộc đăng nhập
 router.route("/clientId").get(errorCatch(controller.getClientId));
