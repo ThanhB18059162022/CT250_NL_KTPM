@@ -5,10 +5,10 @@ const PRODUCTS = [
 ];
 
 module.exports = class CustomersOrdersDAO {
-  getProductPrice = async (prod_no) => {
+  getOrderProduct = async (prod_no) => {
     const prod = PRODUCTS.filter((p) => p.prod_no === prod_no)[0];
 
-    return prod.prod_price;
+    return prod;
   };
 
   saveOrder = async (order) => {

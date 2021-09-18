@@ -8,8 +8,8 @@ const config = require("../../../config");
 const { errorCatch } = require("../../routerErrorHandler");
 
 const {
-  PayPalPaymentController,
-  PayPalService,
+  StripePaymentController,
+  StripeService,
   PaymentValidator,
 } = require("../../../controllers/controllersContainer");
 
@@ -18,16 +18,12 @@ const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
-const service = new PayPalService(config.paypal, dao);
+const service = new StripeService(config.stripe, dao);
 const validator = new PaymentValidator();
-const controller = new PayPalPaymentController(validator, service);
+const controller = new StripePaymentController(validator, service);
 
 //#endregion
 
-router.route("/clientId").get(errorCatch(controller.getClientId));
-
 router.route("/createOrder").post(errorCatch(controller.createOrder));
-
-router.route("/captureOrder/:orderID").get(errorCatch(controller.captureOrder));
 
 module.exports = router;

@@ -1,0 +1,33 @@
+# Extension REST Client
+
+# Mỗi Request cách nhau 3 dấu '#'
+
+# Tạo order
+
+### 1 Hợp lệ - 201
+POST http://localhost:8000/api/stripe/createorder
+Content-Type: application/json
+
+{
+    // Thông tin khác hàng
+    "customer": {},
+    
+    // Mảng nhận id và số lượng
+    "products":[
+        {"prod_no": 1, "prod_quantity": 100},
+        {"prod_no": 2, "prod_quantity": 2}
+    ]
+}
+
+# Thanh toán
+
+### 1 Đã thanh toán rồi - 500
+
+GET http://localhost:8000/api/paypal/captureorder/6072225628845804W
+
+### 2 Không tồn tại - 404
+
+GET http://localhost:8000/api/paypal/captureorder/6072225628845804H
+    
+### 3 Không hợp lệ - 400
+GET http://localhost:8000/api/paypal/captureorder/607222562884580

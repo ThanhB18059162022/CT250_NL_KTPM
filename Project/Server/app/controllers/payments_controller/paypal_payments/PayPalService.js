@@ -105,13 +105,13 @@ module.exports = class PayPalService {
     const orderProducts = [];
 
     for (let i = 0; i < products.length; i++) {
-      const prod = products[i];
+      const { prod_no, prod_quantity } = products[i];
       // Lấy giá theo mã
-      const prod_price = await this.dao.getProductPrice(prod.prod_no);
+      const prod = await this.dao.getOrderProduct(prod_no);
 
       orderProducts.push({
         ...prod,
-        prod_price,
+        prod_quantity,
       });
     }
 
