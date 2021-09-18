@@ -75,8 +75,11 @@ module.exports = class PayPalService {
     // Bao gồm giá
     const orderProducts = await this.getOrderProducts(cart.products);
 
+    // Tính tổng tiền
+    const total = this.getTotalPrice(orderProducts);
+
     // Tạo order từ giỏ hàng
-    const orderBody = await this.createOrderBody(orderProducts);
+    const orderBody = await this.createOrderBody(total);
 
     // Tạo request paypal để gọi paypal api
     const createRequest = new PayPalCheckout.orders.OrdersCreateRequest();
@@ -86,17 +89,22 @@ module.exports = class PayPalService {
     createRequest.requestBody(orderBody);
 
     // Gọi api paypal để tạo order - có exception khi không hợp lệ body
-    const { result: newOrder } = await this.payPalClient.execute(createRequest);
+    const {
+      result: { id }, //Lấy ra id
+    } = await this.payPalClient.execute(createRequest);
 
     //Lưu tạm order
     const tmpOrder = {
-      id: newOrder.id,
+      id,
       orderProducts,
       customer: cart.customer,
+      total,
+      time: new Date(),
+      paid: false, // Chưa trả tiền
     };
     this.storeOrder(tmpOrder);
 
-    return newOrder;
+    return { orderID: id };
   };
 
   // Lấy ra danh sách sản phẩm đặt hàng
@@ -118,27 +126,6 @@ module.exports = class PayPalService {
     return orderProducts;
   };
 
-  // Tính tiền theo giá và số lượng trong mảng
-  createOrderBody = async (products = []) => {
-    // Tính tổng tiền
-    const total = this.getTotalPrice(products);
-
-    const order = {
-      // Capture để thanh toán
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: this.currency_code,
-            value: total,
-          },
-        },
-      ],
-    };
-
-    return order;
-  };
-
   // Tính tổng tiền trong mảng mà client gửi
   // Tiền * số lượng
   // Làm tròn 2 số sau dấu phẩy
@@ -153,6 +140,24 @@ module.exports = class PayPalService {
       ) / 100;
 
     return total;
+  };
+
+  // Tính tiền theo giá và số lượng trong mảng
+  createOrderBody = async (total) => {
+    const order = {
+      // Capture để thanh toán
+      intent: "CAPTURE",
+      purchase_units: [
+        {
+          amount: {
+            currency_code: this.currency_code,
+            value: total,
+          },
+        },
+      ],
+    };
+
+    return order;
   };
 
   // Save tạm thông tin order vào ram sẽ xóa sau 1 ngày
@@ -185,16 +190,18 @@ module.exports = class PayPalService {
     }
 
     // Thanh toán
-    await this.CaptureOrder(orderID);
+    await this.payPalCaptureOrder(orderID);
+
+    const paidOrder = { ...order, paid: true };
 
     // Lưu vào CSDL
-    await this.dao.saveOrder(order);
+    await this.dao.saveOrder(paidOrder);
 
-    return order;
+    return paidOrder;
   };
 
   // Cái này gọi để thanh toán tiền
-  CaptureOrder = async (orderID) => {
+  payPalCaptureOrder = async (orderID) => {
     const captureRequest = new PayPalCheckout.orders.OrdersCaptureRequest(
       orderID
     );
