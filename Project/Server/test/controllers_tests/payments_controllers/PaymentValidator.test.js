@@ -1,7 +1,7 @@
-const PayPalValidator = require("../../../../app/controllers/payments_controller/paypal_payments/PayPalValidator");
+const PaymentValidator = require("../../../app/controllers/payments_controller/PaymentValidator");
 
 function getValidator() {
-  return new PayPalValidator();
+  return new PaymentValidator();
 }
 
 describe("Kiểm tra sản phẩm có đúng định dạng mã - số lượng", () => {
