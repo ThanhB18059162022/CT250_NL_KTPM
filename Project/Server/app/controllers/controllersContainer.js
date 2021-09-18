@@ -24,6 +24,10 @@ const ProductsValidator = require("./products_controllers/ProductsValidator");
 
 const PayPalPaymentController = require("./payments_controller/paypal_payments/PayPalPaymentController");
 const PayPalService = require("./payments_controller/paypal_payments/PayPalService");
+
+const StripePaymentController = require("./payments_controller/stripe_payments/StripePaymentController");
+const StripeService = require("./payments_controller/stripe_payments/StripeService");
+
 const PaymentValidator = require("./payments_controller/PaymentValidator");
 
 //#endregion
@@ -47,6 +51,8 @@ module.exports = {
 
   PayPalPaymentController,
   PayPalService,
+  StripePaymentController,
+  StripeService,
   PaymentValidator,
 
   ModeratorsController,

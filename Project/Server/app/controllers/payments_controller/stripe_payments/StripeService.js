@@ -30,18 +30,20 @@ module.exports = class StripeService {
 
     //Lưu tạm order
     const tmpOrder = {
-      id,
+      orderId,
       orderProducts,
       customer: cart.customer,
     };
     this.storeOrder(tmpOrder);
 
-    return res.json({ url: session.url });
+    return session;
   };
 
   getOrderId = () => {
+    const { storedOrders } = StripeService;
+
     // Tạo id cho order the số lượng order trong danh sách + thời gian
-    const id = Buffer.from(tempOrders.size + new Date()).toString("base64");
+    const id = Buffer.from(storedOrders.size + new Date()).toString("base64");
 
     return id;
   };
@@ -52,31 +54,67 @@ module.exports = class StripeService {
     const orderProducts = [];
 
     for (let i = 0; i < products.length; i++) {
-      const prod = products[i];
+      const { prod_no, prod_quantity } = products[i];
       // Lấy giá theo mã
-      const prod_price = await this.dao.getProductPrice(prod.prod_no);
+      const prod = await this.dao.getOrderProduct(prod_no);
 
       orderProducts.push({
         ...prod,
-        prod_price,
+        prod_quantity,
       });
     }
 
     return orderProducts;
   };
 
-  createOrderBody = async (orderId, cart) => {
+  createOrderBody = async (orderId, orderProducts) => {
     const order = {
       payment_method_types: ["card"],
       mode: "payment",
       // Danh sách sản phẩm
-      line_items: [],
-      success_url: `${process.env.SERVER_URL}/success/${orderId}?redirect=${req.headers.origin}`,
-      cancel_url: `${req.headers.origin}/cancel.html`,
+      line_items: this.getItems(orderProducts),
+      success_url: `http://localhost:8000/success/${orderId}`,
+      cancel_url: `http://localhost:8000/cancel.html`,
     };
 
     return order;
   };
+
+  // Tạo danh sách sản phẩm theo định dạng của stripe
+  getItems = (orderProducts) => {
+    const items = [];
+
+    for (let i = 0; i < orderProducts.length; i++) {
+      const product = orderProducts[i];
+
+      items.push(this.createItem(product));
+    }
+
+    return items;
+  };
+
+  createItem = (product) => {
+    const item = {
+      price_data: {
+        currency: this.currency,
+        product_data: {
+          name: product.prod_name,
+        },
+        // Tiền phải là cent ko phải đô
+        unit_amount: this.convertDollarsToCents(product.prod_price),
+      },
+      quantity: product.prod_quantity,
+    };
+
+    return item;
+  };
+
+  // Chuyển từ đô sang cent
+  convertDollarsToCents(dollars) {
+    const exchangeRate = 100;
+
+    return dollars * exchangeRate;
+  }
 
   // Save tạm thông tin order vào ram sẽ xóa sau 1 ngày
   storeOrder = (order) => {
