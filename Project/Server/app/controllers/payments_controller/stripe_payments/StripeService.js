@@ -37,12 +37,16 @@ module.exports = class StripeService {
 
     const { url } = await this.stripe.checkout.sessions.create(orderBody);
 
+    const total = this.getTotalPrice(orderProducts);
     //Lưu tạm order
     const tmpOrder = {
       id,
       orderProducts,
       customer: cart.customer,
       successUrl: cart.url.success,
+      total,
+      time: new Date(),
+      paid: false, // Chưa trả tiền
     };
     this.storeOrder(tmpOrder);
 
@@ -129,6 +133,22 @@ module.exports = class StripeService {
     return dollars * exchangeRate;
   }
 
+  // Tính tổng tiền trong mảng mà client gửi
+  // Tiền * số lượng
+  // Làm tròn 2 số sau dấu phẩy
+  // Paypal chỉ lấy 2 số sau dấu phẩy
+  getTotalPrice = (products) => {
+    const total =
+      Math.round(
+        100 *
+          products.reduce((sum, prod) => {
+            return sum + prod.prod_price * prod.prod_quantity;
+          }, 0) // Số 0 là giá trị khởi tạo của sum
+      ) / 100;
+
+    return total;
+  };
+
   // Save tạm thông tin order vào ram sẽ xóa sau 1 ngày
   storeOrder = (order) => {
     const { storedOrders } = StripeService;
@@ -157,10 +177,12 @@ module.exports = class StripeService {
       throw new Error("Order expired");
     }
 
-    // Lưu vào CSDL
-    await this.dao.saveOrder(order);
+    const paidOrder = { ...order, paid: true };
 
-    return order.successUrl;
+    // Lưu vào CSDL
+    await this.dao.saveOrder(paidOrder);
+
+    return paidOrder.successUrl;
   };
 
   //#endregion

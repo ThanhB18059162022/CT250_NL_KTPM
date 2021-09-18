@@ -11,9 +11,11 @@ export default class PayPalPaymentService {
 
   // Tạo đơn hàng theo danh sách sản phẩm
   createOrder = async (products) => {
-    const order = await this.apiCaller.post("paypal/createOrder", { products });
+    const { orderID } = await this.apiCaller.post("paypal/createOrder", {
+      products,
+    });
 
-    return order.id;
+    return orderID;
   };
 
   // Thanh toán đơn hàng
