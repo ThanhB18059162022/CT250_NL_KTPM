@@ -1,5 +1,5 @@
-const PayPalPaymentController = require("../../../../app/controllers/payments_controller/paypal_payments/PayPalPaymentController");
-const { ResponseMock } = require("../../controllerTestHelper");
+const PayPalPaymentController = require("../../../app/controllers/payments_controller/paypal_payments/PayPalPaymentController");
+const { ResponseMock } = require("../controllerTestHelper");
 
 // Kiểm tra các end-points của paypal controller
 
@@ -10,7 +10,7 @@ class PayPalValidatorMock {
     return { hasAnyError: cart.products === undefined };
   };
 
-  validateOrderID = (id) => {
+  validatePayPalOrderID = (id) => {
     return { hasAnyError: id === undefined };
   };
 }

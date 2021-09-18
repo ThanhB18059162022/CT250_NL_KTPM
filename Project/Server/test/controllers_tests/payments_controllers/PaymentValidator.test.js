@@ -194,7 +194,7 @@ describe("Kiểm tra giỏ hàng đúng định dạng", () => {
   });
 });
 
-describe("Kiểm tra OrderID hợp lệ", () => {
+describe("Kiểm tra PayPal OrderID hợp lệ", () => {
   test("OrderID Undefined", () => {
     //Arrange
     const orderID = undefined;
@@ -248,6 +248,66 @@ describe("Kiểm tra OrderID hợp lệ", () => {
     const actRs = validator.validateOrderID(orderID).hasAnyError;
 
     //Assert
+    expect(actRs).toEqual(expRs);
+  });
+});
+
+describe("Kiểm tra stripe OrderId hợp lệ", () => {
+  test("Không có orderId", () => {
+    //Arrange
+    const orderId = undefined;
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateStripeOrderId(orderId).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("OrderId < 64", () => {
+    //Arrange
+    const orderId = "";
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateStripeOrderId(orderId).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("OrderId > 64", () => {
+    //Arrange
+    const orderId =
+      "MFNhdCBTZXAgMTggMjAyMSAxNDoxMDoyNSBHTVQrMDcwMCAoR2nhu50gxJDDtG5nIETGsMahbmcp1";
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateStripeOrderId(orderId).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("OrderId hợp lệ", () => {
+    //Arrange
+    const orderId =
+      "7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44";
+    const validator = getValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateStripeOrderId(orderId).hasAnyError;
+
+    //Expect
     expect(actRs).toEqual(expRs);
   });
 });

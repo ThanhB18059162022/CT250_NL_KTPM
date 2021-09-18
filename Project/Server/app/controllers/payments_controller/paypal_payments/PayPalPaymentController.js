@@ -53,7 +53,7 @@ module.exports = class PayPalPaymentController {
   captureOrder = async (req, res) => {
     const { orderID } = req.params;
 
-    const result = this.validator.validateOrderID(orderID);
+    const result = this.validator.validatePayPalOrderID(orderID);
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
     }

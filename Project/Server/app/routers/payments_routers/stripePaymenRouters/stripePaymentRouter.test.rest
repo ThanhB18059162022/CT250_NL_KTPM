@@ -16,7 +16,11 @@ Content-Type: application/json
     "products":[
         {"prod_no": 1, "prod_quantity": 100},
         {"prod_no": 2, "prod_quantity": 2}
-    ]
+    ],
+    "url": {
+        "success": "http://localhost:3000",
+        "cancel": "http://localhost:3000"
+    }
 }
 
 # Thanh toán
