@@ -27,11 +27,11 @@ Content-Type: application/json
 
 ### 1 Đã thanh toán rồi - 500
 
-GET http://localhost:8000/api/paypal/captureorder/6072225628845804W
+GET http://localhost:8000/api/stripe/saveorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44
 
-### 2 Không tồn tại - 404
-
-GET http://localhost:8000/api/paypal/captureorder/6072225628845804H
     
-### 3 Không hợp lệ - 400
-GET http://localhost:8000/api/paypal/captureorder/607222562884580
+### 2 Không hợp lệ id < 64 - 400
+GET http://localhost:8000/api/stripe/saveorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe4
+
+### 2 Không hợp lệ id > 64 - 400
+GET http://localhost:8000/api/stripe/saveorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efeA11

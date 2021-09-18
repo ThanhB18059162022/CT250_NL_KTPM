@@ -203,7 +203,7 @@ describe("Kiểm tra PayPal OrderID hợp lệ", () => {
 
     //Act
     const expRs = failed;
-    const actRs = validator.validateOrderID(orderID).hasAnyError;
+    const actRs = validator.validatePayPalOrderID(orderID).hasAnyError;
 
     //Assert
     expect(actRs).toEqual(expRs);
@@ -217,7 +217,7 @@ describe("Kiểm tra PayPal OrderID hợp lệ", () => {
 
     //Act
     const expRs = failed;
-    const actRs = validator.validateOrderID(orderID).hasAnyError;
+    const actRs = validator.validatePayPalOrderID(orderID).hasAnyError;
 
     //Assert
     expect(actRs).toEqual(expRs);
@@ -231,7 +231,7 @@ describe("Kiểm tra PayPal OrderID hợp lệ", () => {
 
     //Act
     const expRs = failed;
-    const actRs = validator.validateOrderID(orderID).hasAnyError;
+    const actRs = validator.validatePayPalOrderID(orderID).hasAnyError;
 
     //Assert
     expect(actRs).toEqual(expRs);
@@ -245,7 +245,7 @@ describe("Kiểm tra PayPal OrderID hợp lệ", () => {
 
     //Act
     const expRs = failed;
-    const actRs = validator.validateOrderID(orderID).hasAnyError;
+    const actRs = validator.validatePayPalOrderID(orderID).hasAnyError;
 
     //Assert
     expect(actRs).toEqual(expRs);

@@ -39,7 +39,7 @@ module.exports = class StripeService {
 
     //Lưu tạm order
     const tmpOrder = {
-      orderId,
+      id,
       orderProducts,
       customer: cart.customer,
       successUrl: cart.url.success,
