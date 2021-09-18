@@ -1,4 +1,8 @@
+// Tham khảo: https://stripe.com/docs/api?lang=node
+// https://www.youtube.com/watch?v=1r-F3FIONl8&list=PLYgHz24Rupn93bdW1uJszXkUh2h52dzn1
+// https://www.youtube.com/watch?v=mI_-1tbIXQI&list=PLYgHz24Rupn93bdW1uJszXkUh2h52dzn1
 const Stripe = require("stripe");
+var crypto = require("crypto");
 
 module.exports = class StripeService {
   // Lưu các order đã đặt mà chưa thanh toán sau 1 ngày sẽ xóa
@@ -14,36 +18,45 @@ module.exports = class StripeService {
 
   //#region CREATE ORDER
 
-  // Tạo dơn hàng
-  createOrder = async (cart) => {
+  // Tạo đơn hàng
+  createOrder = async (cart, baseUrl) => {
     // Lấy ra danh sách sản phẩm trong giỏ
     // Bao gồm giá
     const orderProducts = await this.getOrderProducts(cart.products);
 
     // Tạo id để lưu tạm đơn hàng
-    const orderId = this.getOrderId();
+    const id = this.getOrderId();
 
     // Tạo order từ giỏ hàng
-    const orderBody = await this.createOrderBody(orderId, orderProducts);
+    const orderBody = await this.createOrderBody(
+      id,
+      orderProducts,
+      baseUrl,
+      cart.url.cancel
+    );
 
-    const session = await this.stripe.checkout.sessions.create(orderBody);
+    const { url } = await this.stripe.checkout.sessions.create(orderBody);
 
     //Lưu tạm order
     const tmpOrder = {
-      orderId,
+      id,
       orderProducts,
       customer: cart.customer,
+      successUrl: cart.url.success,
     };
     this.storeOrder(tmpOrder);
 
-    return session;
+    return { url };
   };
 
   getOrderId = () => {
     const { storedOrders } = StripeService;
 
     // Tạo id cho order the số lượng order trong danh sách + thời gian
-    const id = Buffer.from(storedOrders.size + new Date()).toString("base64");
+    const id = crypto
+      .createHash("sha256")
+      .update(storedOrders.size + new Date())
+      .digest("hex");
 
     return id;
   };
@@ -67,14 +80,14 @@ module.exports = class StripeService {
     return orderProducts;
   };
 
-  createOrderBody = async (orderId, orderProducts) => {
+  createOrderBody = async (orderId, orderProducts, baseUrl, cancelUrl) => {
     const order = {
       payment_method_types: ["card"],
       mode: "payment",
       // Danh sách sản phẩm
       line_items: this.getItems(orderProducts),
-      success_url: `http://localhost:8000/success/${orderId}`,
-      cancel_url: `http://localhost:8000/cancel.html`,
+      success_url: `${baseUrl}/api/stripe/saveorder/${orderId}`,
+      cancel_url: cancelUrl,
     };
 
     return order;
@@ -130,6 +143,24 @@ module.exports = class StripeService {
     setTimeout(() => {
       storedOrders.delete(order.id);
     }, miliSecInDay);
+  };
+
+  //#endregion
+
+  //#region Save Order
+
+  saveOrder = async (orderId) => {
+    // Kiểm tra còn order trước khi thanh toán
+    const { storedOrders } = StripeService;
+    const order = storedOrders.get(orderId);
+    if (order === undefined) {
+      throw new Error("Order expired");
+    }
+
+    // Lưu vào CSDL
+    await this.dao.saveOrder(order);
+
+    return order.successUrl;
   };
 
   //#endregion

@@ -35,12 +35,23 @@ module.exports = class PatmentValidator {
   };
 
   // Xài cho paypal
-  validateOrderID = (orderID) => {
+  validatePayPalOrderID = (orderID) => {
     const schema = joi.object({
       orderID: joi.string().length(17).required(),
     });
 
     const result = getValidationResult(schema, { orderID });
+
+    return result;
+  };
+
+  // Xài cho stripe
+  validateStripeOrderId = (orderId) => {
+    const schema = joi.object({
+      orderId: joi.string().length(64).required(),
+    });
+
+    const result = getValidationResult(schema, { orderId });
 
     return result;
   };
