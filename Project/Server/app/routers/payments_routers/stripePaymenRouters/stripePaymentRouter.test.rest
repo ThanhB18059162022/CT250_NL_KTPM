@@ -16,7 +16,7 @@ Content-Type: application/json
     "cus_email": "alex@gmail.com",
     "cus_sex": true,
     "cus_address": "3/2 Ninh Kiều Cần Thơ",
-    "cus_phoneNumber": "0000000000",
+    "cus_phoneNumber": "0000000000"
     },
 
     // Mảng nhận id và số lượng
