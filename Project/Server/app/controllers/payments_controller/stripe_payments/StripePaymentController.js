@@ -51,7 +51,7 @@ module.exports = class StripePaymentController extends PaymentController {
     const id = this.getOrderId();
 
     // Về server xử lý trước
-    const serverSuccessUrl = `${req.protocol}://${req.headers.host}/api/stripe/saveorder/${id}?successUrl=${successUrl}`;
+    const serverSuccessUrl = `${req.protocol}://${req.headers.host}/api/stripe/checkoutOrder/${id}?successUrl=${successUrl}`;
 
     const url = await this.stripeService.createOrder(
       orderProducts,
@@ -136,8 +136,6 @@ module.exports = class StripePaymentController extends PaymentController {
 
     // Xóa order lưu tạm
     storedOrders.delete(order.id);
-
-    // console.log(storedOrders);
 
     // Về trang khi thanh toán
     res.writeHead(302, {

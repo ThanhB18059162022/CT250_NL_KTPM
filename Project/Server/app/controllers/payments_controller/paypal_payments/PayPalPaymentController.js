@@ -107,8 +107,6 @@ module.exports = class PayPalPaymentController extends PaymentController {
     // Xóa order lưu tạm
     storedOrders.delete(order.id);
 
-    console.log(storedOrders);
-
     return res.json(paidOrder);
   };
 
