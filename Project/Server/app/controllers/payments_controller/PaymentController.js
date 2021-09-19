@@ -45,7 +45,11 @@ module.exports = class PaymentController {
 
   // Lưu đơn hàng
   saveOrder = async (order) => {
-    const paidOrder = { ...order, paid: true };
+    const paidOrder = {
+      ...order,
+      payTime: new Date(), // Thời gian thanh toán đơn
+      paid: true,
+    };
 
     // Lưu vào CSDL
     await this.dao.saveOrder(paidOrder);

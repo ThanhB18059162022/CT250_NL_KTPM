@@ -16,6 +16,36 @@ class ResponseMock {
   });
 }
 
+class PaymentValidatorMock {
+  validateCart = jest.fn((cart) => {
+    return {
+      hasAnyError: cart.products === undefined,
+    };
+  });
+
+  validatePayPalOrderID = jest.fn((id) => {
+    return { hasAnyError: id === undefined };
+  });
+
+  validateStripeOrderId = jest.fn((id) => {
+    return { hasAnyError: id === undefined };
+  });
+
+  validateUrl = jest.fn((url) => {
+    return { hasAnyError: url === undefined };
+  });
+}
+
+class PaymentDAOMock {
+  getOrderProduct = jest.fn((prod_no) => {});
+
+  saveOrder = jest.fn((order) => {
+    return { ...order, paid: true };
+  });
+}
+
 module.exports = {
   ResponseMock,
+  PaymentValidatorMock,
+  PaymentDAOMock,
 };

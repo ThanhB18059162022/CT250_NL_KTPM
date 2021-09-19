@@ -1,27 +1,13 @@
 const PayPalPaymentController = require("../../../app/controllers/payments_controller/paypal_payments/PayPalPaymentController");
-const { ResponseMock } = require("../controllerTestHelper");
+const {
+  ResponseMock,
+  PaymentValidatorMock,
+  PaymentDAOMock,
+} = require("../controllerTestHelper");
 
 // Kiểm tra các end-points của paypal controller
 
 //#region  Init
-
-class PaymentDAOMock {
-  getOrderProduct = jest.fn((prod_no) => {});
-
-  saveOrder = jest.fn((order) => {
-    return { ...order, paid: true };
-  });
-}
-
-class PaymentValidatorMock {
-  validateCart = jest.fn((cart) => {
-    return { hasAnyError: cart.products === undefined };
-  });
-
-  validatePayPalOrderID = jest.fn((id) => {
-    return { hasAnyError: id === undefined };
-  });
-}
 
 class PayPalServiceMock {
   static clientId = "id đây";

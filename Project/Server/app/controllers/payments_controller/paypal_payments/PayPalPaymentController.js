@@ -60,8 +60,8 @@ module.exports = class PayPalPaymentController extends PaymentController {
   storeOrder = (tempOrder) => {
     const order = {
       ...tempOrder,
-      time: new Date(),
       paid: false, // Chưa trả tiền
+      createTime: new Date(), // Thời gian tạo đơn
     };
 
     const { storedOrders } = PayPalPaymentController;

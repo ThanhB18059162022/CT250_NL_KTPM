@@ -18,9 +18,9 @@ const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
-const service = new StripeService(payment.stripe, dao);
+const service = new StripeService(payment.stripe);
 const validator = new PaymentValidator();
-const controller = new StripePaymentController(validator, service);
+const controller = new StripePaymentController(validator, service, dao);
 
 //#endregion
 
