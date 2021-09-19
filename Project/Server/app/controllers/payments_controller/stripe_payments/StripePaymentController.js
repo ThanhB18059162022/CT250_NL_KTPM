@@ -3,7 +3,7 @@ const PaymentController = require("../PaymentController");
 const crypto = require("crypto");
 
 module.exports = class StripePaymentController extends PaymentController {
-  // Lưu các order đã đặt mà chưa thanh toán sau 1 ngày sẽ xóa
+  // Lưu các order đã đặt mà chưa thanh toán
   static storedOrders = new Map();
 
   constructor(validator, stripeSerivce, dao) {
@@ -109,15 +109,35 @@ module.exports = class StripePaymentController extends PaymentController {
 
   //#region CHECKOUT ORDER
 
-  saveOrder = async (req, res) => {
+  // Lưu đơn hàng đã thanh toán
+  checkoutOrder = async (req, res) => {
     const { id } = req.params;
 
-    const result = this.validator.validateStripeOrderId(id);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
+    const idResult = this.validator.validateStripeOrderId(id);
+    if (idResult.hasAnyError) {
+      return res.status(400).json(idResult.error);
     }
 
-    const successUrl = await this.stripeService.saveOrder(id);
+    const { successUrl } = req.query;
+    const urlResult = this.validator.validateUrl(successUrl);
+    if (urlResult.hasAnyError) {
+      return res.status(400).json(urlResult.error);
+    }
+
+    // Kiểm tra còn order trước khi thanh toán
+    const { storedOrders } = StripePaymentController;
+    const order = storedOrders.get(id);
+    if (order === undefined) {
+      return res.status(404).json({});
+    }
+
+    // Lưu vào CSDL
+    await this.saveOrder(order);
+
+    // Xóa order lưu tạm
+    storedOrders.delete(order.id);
+
+    // console.log(storedOrders);
 
     // Về trang khi thanh toán
     res.writeHead(302, {

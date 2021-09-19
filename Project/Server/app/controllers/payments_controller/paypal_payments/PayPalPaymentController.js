@@ -61,7 +61,7 @@ module.exports = class PayPalPaymentController extends PaymentController {
     const order = {
       ...tempOrder,
       paid: false, // Chưa trả tiền
-      createTime: new Date(), // Thời gian tạo đơn
+      createTime: new Date(), // Thời gian tạo đơn hàng
     };
 
     const { storedOrders } = PayPalPaymentController;
@@ -106,6 +106,8 @@ module.exports = class PayPalPaymentController extends PaymentController {
 
     // Xóa order lưu tạm
     storedOrders.delete(order.id);
+
+    console.log(storedOrders);
 
     return res.json(paidOrder);
   };
