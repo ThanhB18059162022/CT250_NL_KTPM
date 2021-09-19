@@ -4,16 +4,15 @@ export default class PayPalPaymentService {
   }
 
   // Tạo đơn hàng theo danh sách sản phẩm
-  createOrder = async (products) => {
-    const order = await this.apiCaller.post("stripe/createOrder", {
-      customer: {},
-      products,
-      url: {
-        success: "http://localhost:3000",
-        cancel: "http://localhost:3000",
-      },
-    });
+  createOrder = async (cart) => {
+    const successUrl = "http://localhost:3000";
+    const cancelUrl = "http://localhost:3000";
 
-    return order.url;
+    const { url } = await this.apiCaller.post(
+      `stripe/createOrder?successUrl=${successUrl}&cancelUrl=${cancelUrl}`,
+      cart
+    );
+
+    return url;
   };
 }

@@ -16,7 +16,22 @@ export default function StripePayment() {
   ];
 
   async function checkOut() {
-    const url = await payService.createOrder(products);
+    // Thông tin khác hàng
+    const customer = {
+      cus_name: "Alexander",
+      cus_id: "555555555",
+      cus_email: "alex@gmail.com",
+      cus_sex: true,
+      cus_address: "3/2 Ninh Kiều Cần Thơ",
+      cus_phoneNumber: "0000000000",
+    };
+
+    const cart = {
+      customer,
+      products,
+    };
+
+    const url = await payService.createOrder(cart);
 
     window.location = url;
   }
