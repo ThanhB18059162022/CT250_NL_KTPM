@@ -1,21 +1,17 @@
 const StripePaymentController = require("../../../app/controllers/payments_controller/stripe_payments/StripePaymentController");
-const { ResponseMock } = require("../controllerTestHelper");
+const {
+  ResponseMock,
+  PaymentValidatorMock,
+  PaymentDAOMock,
+} = require("../controllerTestHelper");
 // Kiểm tra các api end-points của Stripe Payment
 
 //#region  INIT
 
-class PaymenValidatorMock {
-  validateCart = jest.fn((cart) => {
-    return { hasAnyError: cart.products === undefined };
-  });
-
-  validateStripeOrderId = jest.fn((id) => {
-    return { hasAnyError: id === undefined };
-  });
-}
-
 class StripeServiceMock {
-  createOrder = jest.fn();
+  createOrder = jest.fn(() => {
+    return "wtf";
+  });
 
   saveOrder = jest.fn();
 }
@@ -36,9 +32,11 @@ function getController() {
 // 201 - 400
 describe("Tạo đơn hàng", () => {
   beforeEach(() => {
-    validatorMock = new PaymenValidatorMock();
+    validatorMock = new PaymentValidatorMock();
     serviceMock = new StripeServiceMock();
   });
+
+  jest.useFakeTimers();
 
   test("Thông tin trong giỏ không hợp lệ - 400", async () => {
     //Arrange
@@ -60,6 +58,51 @@ describe("Tạo đơn hàng", () => {
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
+  test("Thiếu successUrl - 400", async () => {
+    //Arrange
+    const cart = { products: [] };
+    const controller = getController();
+
+    const reqMock = {
+      body: cart,
+      query: {},
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400 };
+    const actRes = await controller.createOrder(reqMock, resMock);
+
+    //Expect
+    expect(validatorMock.validateCart).toBeCalledTimes(1);
+    expect(validatorMock.validateUrl).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+  });
+
+  test("Thiếu cancelUrl - 400", async () => {
+    //Arrange
+    const cart = { products: [] };
+    const controller = getController();
+
+    const reqMock = {
+      body: cart,
+      query: { successUrl: "aaa" },
+      headers: {},
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400 };
+    const actRes = await controller.createOrder(reqMock, resMock);
+
+    //Expect
+    expect(validatorMock.validateCart).toBeCalledTimes(1);
+    expect(validatorMock.validateUrl).toBeCalledTimes(2);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+  });
+
   test("Tạo thành công - 201", async () => {
     //Arrange
     const cart = { products: [] };
@@ -70,6 +113,10 @@ describe("Tạo đơn hàng", () => {
       protocol: "",
       headers: {
         host: "",
+      },
+      query: {
+        successUrl: "yes",
+        cancelUrl: "wtf",
       },
     };
     const resMock = new ResponseMock();
@@ -88,7 +135,7 @@ describe("Tạo đơn hàng", () => {
 
 describe("Lưu đơn hàng đã thanh toán", () => {
   beforeEach(() => {
-    validatorMock = new PaymenValidatorMock();
+    validatorMock = new PaymentValidatorMock();
     serviceMock = new StripeServiceMock();
   });
 

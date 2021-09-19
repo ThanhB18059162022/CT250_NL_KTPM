@@ -5,7 +5,7 @@
 # Tạo order
 
 ### 1 Hợp lệ - 201
-POST http://localhost:8000/api/stripe/createorder
+POST http://localhost:8000/api/stripe/createorder?cancelUrl=http://abc.com
 Content-Type: application/json
 
 {

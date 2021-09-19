@@ -1,5 +1,14 @@
-module.exports = class StripePaymentController {
-  constructor(validator, stripeSerivce) {
+const PaymentController = require("../PaymentController");
+
+const crypto = require("crypto");
+
+module.exports = class StripePaymentController extends PaymentController {
+  // Lưu các order đã đặt mà chưa thanh toán sau 1 ngày sẽ xóa
+  static storedOrders = new Map();
+
+  constructor(validator, stripeSerivce, dao) {
+    super(dao);
+
     this.validator = validator;
     this.stripeService = stripeSerivce;
   }
@@ -7,6 +16,8 @@ module.exports = class StripePaymentController {
   //#region  CREATE ORDER
 
   // Tạo đơn hàng
+  // Nhận vào giỏ hàng là body
+  // 2 query để điều hướng thành công và hủy
   createOrder = async (req, res) => {
     const { body: cart } = req;
 
@@ -15,10 +26,83 @@ module.exports = class StripePaymentController {
       return res.status(400).json(result.error);
     }
 
-    const baseUrl = `${req.protocol}://${req.headers.host}`;
-    const newOrder = await this.stripeService.createOrder(cart, baseUrl);
+    const { successUrl, cancelUrl } = req.query;
 
-    return res.status(201).json(newOrder);
+    const scsResult = this.validator.validateUrl(successUrl);
+    if (scsResult.hasAnyError) {
+      return res.status(400).json(scsResult.error);
+    }
+
+    const cnlResult = this.validator.validateUrl(cancelUrl);
+    if (cnlResult.hasAnyError) {
+      return res.status(400).json(cnlResult.error);
+    }
+
+    const { products, customer } = cart;
+
+    // Lấy ra danh sách sản phẩm trong giỏ
+    // Bao gồm giá
+    const orderProducts = await this.getOrderProducts(products);
+
+    // Tính tổng tiền
+    const total = this.getTotalPrice(orderProducts);
+
+    // Tạo id để lưu tạm đơn hàng
+    const id = this.getOrderId();
+
+    // Về server xử lý trước
+    const serverSuccessUrl = `${req.protocol}://${req.headers.host}/api/stripe/saveorder/${id}?successUrl=${successUrl}`;
+
+    const url = await this.stripeService.createOrder(
+      orderProducts,
+      serverSuccessUrl,
+      cancelUrl
+    );
+
+    //Lưu tạm order
+    const tempOrder = {
+      id,
+      orderProducts,
+      customer,
+      total,
+    };
+    this.storeOrder(tempOrder);
+
+    return res.status(201).json({ url });
+  };
+
+  getOrderId = () => {
+    const { storedOrders } = StripePaymentController;
+
+    // Tạo id cho order theo số lượng order trong danh sách + thời gian
+    const id = crypto
+      .createHash("sha256")
+      .update(storedOrders.size + new Date())
+      .digest("hex");
+
+    return id;
+  };
+
+  // Save tạm thông tin order vào ram sẽ xóa sau 1 ngày
+  storeOrder = (tempOrder) => {
+    const order = {
+      ...tempOrder,
+      paid: false, // Chưa trả tiền
+      createTime: new Date(), // Thời gian tạo đơn
+    };
+
+    const { storedOrders } = StripePaymentController;
+
+    // Save bằng paypal id
+    storedOrders.set(order.id, order);
+
+    // Số mili giây 1 ngày
+    const miliSecInDay = 86400000;
+
+    // Xóa order
+    setTimeout(() => {
+      storedOrders.delete(order.id);
+    }, miliSecInDay);
   };
 
   //#endregion

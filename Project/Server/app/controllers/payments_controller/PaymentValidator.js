@@ -70,6 +70,11 @@ module.exports = class PatmentValidator {
     return { hasAnyError: false };
   };
 
+  // Xác thực đường dẫn
+  validateUrl = () => {
+    return { hasAnyError: false };
+  };
+
   // Xài cho paypal
   validatePayPalOrderID = (orderID) => {
     const schema = joi.object({
