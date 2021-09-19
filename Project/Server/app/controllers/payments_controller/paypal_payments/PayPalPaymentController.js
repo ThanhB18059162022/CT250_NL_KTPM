@@ -1,5 +1,12 @@
-module.exports = class PayPalPaymentController {
-  constructor(validator, payPalSerivce) {
+const PaymentController = require("../PaymentController");
+
+module.exports = class PayPalPaymentController extends PaymentController {
+  // Lưu các đơn hàng chưa thanh toán
+  static storedOrders = new Map();
+
+  constructor(validator, payPalSerivce, dao) {
+    super(dao);
+
     this.validator = validator;
     this.payPalSerivce = payPalSerivce;
   }
@@ -11,20 +18,6 @@ module.exports = class PayPalPaymentController {
     const { clientId } = this.payPalSerivce;
 
     return res.json({ clientId });
-  };
-
-  // Lấy ra order theo id
-  getOrderById = async (req, res) => {
-    const { id } = req.params;
-
-    const exist = await this.payPalSerivce.existOrder(id);
-    if (!exist) {
-      return res.status(404).json({});
-    }
-
-    const order = await this.payPalSerivce.getOrderById(id);
-
-    return res.json(order);
   };
 
   //#endregion
@@ -40,9 +33,49 @@ module.exports = class PayPalPaymentController {
       return res.status(400).json(result.error);
     }
 
-    const order = await this.payPalSerivce.createOrder(cart);
+    const { customer, products } = cart;
 
-    return res.status(201).json(order);
+    // Lấy ra danh sách sản phẩm trong giỏ
+    // Bao gồm giá
+    const orderProducts = await this.getOrderProducts(products);
+
+    // Tính tổng tiền
+    const total = this.getTotalPrice(orderProducts);
+
+    const orderID = await this.payPalSerivce.createOrder(total);
+
+    // Lưu tạm đơn hàng
+    const tempOrder = {
+      id: orderID,
+      customer,
+      orderProducts,
+      total,
+    };
+    this.storeOrder(tempOrder);
+
+    return res.status(201).json({ orderID });
+  };
+
+  // Save tạm thông tin order vào ram sẽ xóa sau 1 ngày
+  storeOrder = (tempOrder) => {
+    const order = {
+      ...tempOrder,
+      time: new Date(),
+      paid: false, // Chưa trả tiền
+    };
+
+    const { storedOrders } = PayPalPaymentController;
+
+    // Save bằng paypal id
+    storedOrders.set(order.id, order);
+
+    // Số mili giây 1 ngày
+    const miliSecInDay = 86400000;
+
+    // Xóa order
+    setTimeout(() => {
+      storedOrders.delete(order.id);
+    }, miliSecInDay);
   };
 
   //#endregion
@@ -58,7 +91,8 @@ module.exports = class PayPalPaymentController {
       return res.status(400).json(result.error);
     }
 
-    const exist = await this.payPalSerivce.existOrder(orderID);
+    // Kiểm tra còn order trước khi thanh toán
+    const exist = this.existOrder(orderID);
     if (!exist) {
       return res.status(404).json({});
     }
@@ -66,7 +100,16 @@ module.exports = class PayPalPaymentController {
     // Thanh toán order
     const order = await this.payPalSerivce.captureOrder(orderID);
 
-    return res.json(order);
+    const paidOrder = await this.saveOrder(order);
+
+    return res.json(paidOrder);
+  };
+
+  existOrder = (orderID) => {
+    const { storedOrders } = PayPalPaymentController;
+    const order = storedOrders.get(orderID);
+
+    return order !== undefined;
   };
 
   //#endregion

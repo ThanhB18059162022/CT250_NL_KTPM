@@ -27,15 +27,12 @@ module.exports = class StripeService {
     // Tạo id để lưu tạm đơn hàng
     const id = this.getOrderId();
 
-    // Tạo order từ giỏ hàng
-    const orderBody = await this.createOrderBody(
+    const { url } = await this.createCheckoutSession(
       id,
       orderProducts,
       baseUrl,
       cart.url.cancel
     );
-
-    const { url } = await this.stripe.checkout.sessions.create(orderBody);
 
     const total = this.getTotalPrice(orderProducts);
     //Lưu tạm order
@@ -84,7 +81,12 @@ module.exports = class StripeService {
     return orderProducts;
   };
 
-  createOrderBody = async (orderId, orderProducts, baseUrl, cancelUrl) => {
+  createCheckoutSession = async (
+    orderId,
+    orderProducts,
+    baseUrl,
+    cancelUrl
+  ) => {
     const order = {
       payment_method_types: ["card"],
       mode: "payment",
@@ -94,7 +96,9 @@ module.exports = class StripeService {
       cancel_url: cancelUrl,
     };
 
-    return order;
+    const session = this.stripe.checkout.sessions.create(order);
+
+    return session;
   };
 
   // Tạo danh sách sản phẩm theo định dạng của stripe
@@ -167,9 +171,9 @@ module.exports = class StripeService {
 
   //#endregion
 
-  //#region Save Order
+  //#region Checkout Order
 
-  saveOrder = async (orderId) => {
+  checkoutOrder = async (orderId) => {
     // Kiểm tra còn order trước khi thanh toán
     const { storedOrders } = StripeService;
     const order = storedOrders.get(orderId);

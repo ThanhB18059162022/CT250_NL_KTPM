@@ -5,14 +5,18 @@ const { ResponseMock } = require("../controllerTestHelper");
 
 //#region  Init
 
-class PayPalValidatorMock {
-  validateCart = (cart) => {
-    return { hasAnyError: cart.products === undefined };
-  };
+class PaymentDAOMock {
+  getOrderProduct = jest.fn((prod_no) => {});
+}
 
-  validatePayPalOrderID = (id) => {
+class PaymentValidatorMock {
+  validateCart = jest.fn((cart) => {
+    return { hasAnyError: cart.products === undefined };
+  });
+
+  validatePayPalOrderID = jest.fn((id) => {
     return { hasAnyError: id === undefined };
-  };
+  });
 }
 
 class PayPalServiceMock {
@@ -23,15 +27,8 @@ class PayPalServiceMock {
     details: {},
   };
 
-  existOrder = jest.fn(async (id) => PayPalServiceMock.order.id === id);
-
-  getOrderById = jest.fn(async () => PayPalServiceMock.order);
-
-  createOrder = jest.fn(async (body) => {
-    return {
-      id: body.products.length,
-      body,
-    };
+  createOrder = jest.fn(async (total) => {
+    return 1;
   });
 
   captureOrder = jest.fn(async (orderID) => {
@@ -46,9 +43,26 @@ class PayPalServiceMock {
 
 let validatorMock;
 let payPalServiceMock;
+let daoMock;
+
+class PayPalPaymentControllerFake extends PayPalPaymentController {
+  getOrderProducts = jest.fn();
+
+  getTotalPrice = jest.fn();
+
+  storeOrder = jest.fn();
+
+  existOrder = jest.fn((id) => PayPalServiceMock.order.id === id);
+
+  saveOrder = jest.fn((order) => order);
+}
 
 function getController() {
-  return new PayPalPaymentController(validatorMock, payPalServiceMock);
+  return new PayPalPaymentControllerFake(
+    validatorMock,
+    payPalServiceMock,
+    daoMock
+  );
 }
 
 // 200
@@ -72,58 +86,12 @@ describe("Lấy ra paypal id client để gửi cho client", () => {
   });
 });
 
-// Paypal có api sẵn r
-// 200 - 404
-describe("Lấy ra order theo id", () => {
-  beforeEach(() => {
-    payPalServiceMock = new PayPalServiceMock();
-  });
-
-  test("Lấy order theo id - 200", async () => {
-    //Arrange
-    const controller = getController();
-    const order = PayPalServiceMock.order;
-
-    const reqMock = {
-      params: { id: order.id },
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 200, body: order };
-    const actRes = await controller.getOrderById(reqMock, resMock);
-
-    //Expect
-    expect(payPalServiceMock.getOrderById).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes).toEqual(expRes);
-  });
-
-  test("Lấy order theo id - 404", async () => {
-    //Arrange
-    const controller = getController();
-
-    const reqMock = {
-      params: { id: "aa" },
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404, body: {} };
-    const actRes = await controller.getOrderById(reqMock, resMock);
-
-    //Expect
-    expect(payPalServiceMock.getOrderById).toBeCalledTimes(0);
-    expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes).toEqual(expRes);
-  });
-});
-
 // 201 - 400 - 404
 describe("Tạo order", () => {
   beforeEach(() => {
-    validatorMock = new PayPalValidatorMock();
+    validatorMock = new PaymentValidatorMock();
     payPalServiceMock = new PayPalServiceMock();
+    daoMock = new PaymentDAOMock();
   });
 
   test("Danh sách sản phẩm không hợp lệ - 400", async () => {
@@ -141,6 +109,7 @@ describe("Tạo order", () => {
     const actRes = await controller.createOrder(reqMock, resMock);
 
     //Expect
+    expect(validatorMock.validateCart).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
@@ -156,16 +125,22 @@ describe("Tạo order", () => {
     };
     const resMock = new ResponseMock();
 
-    const order = await payPalServiceMock.createOrder(body);
+    const orderID = await payPalServiceMock.createOrder(1);
 
     payPalServiceMock.createOrder.mockClear();
 
     //Act
-    const expRes = { statusCode: 201, body: order };
+    const expRes = { statusCode: 201, body: { orderID } };
     const actRes = await controller.createOrder(reqMock, resMock);
 
     //Expect
+    expect(validatorMock.validateCart).toBeCalledTimes(1);
     expect(payPalServiceMock.createOrder).toBeCalledTimes(1);
+
+    expect(controller.getOrderProducts).toBeCalledTimes(1);
+    expect(controller.getTotalPrice).toBeCalledTimes(1);
+    expect(controller.storeOrder).toBeCalledTimes(1);
+
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);
   });
@@ -174,7 +149,7 @@ describe("Tạo order", () => {
 // 200 - 404
 describe("Thanh toán order", () => {
   beforeEach(() => {
-    validatorMock = new PayPalValidatorMock();
+    validatorMock = new PaymentValidatorMock();
     payPalServiceMock = new PayPalServiceMock();
   });
 
@@ -190,7 +165,8 @@ describe("Thanh toán order", () => {
     const actRes = await controller.captureOrder(reqMock, resMock);
 
     //Expect
-    expect(payPalServiceMock.existOrder).toBeCalledTimes(0);
+    expect(validatorMock.validatePayPalOrderID).toBeCalledTimes(1);
+    expect(controller.existOrder).toBeCalledTimes(0);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
@@ -207,7 +183,8 @@ describe("Thanh toán order", () => {
     const actRes = await controller.captureOrder(reqMock, resMock);
 
     //Expect
-    expect(payPalServiceMock.existOrder).toBeCalledTimes(1);
+    expect(validatorMock.validatePayPalOrderID).toBeCalledTimes(1);
+    expect(controller.existOrder).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);
   });
@@ -225,7 +202,7 @@ describe("Thanh toán order", () => {
     const actRes = await controller.captureOrder(reqMock, resMock);
 
     //Expect
-    expect(payPalServiceMock.existOrder).toBeCalledTimes(1);
+    expect(controller.existOrder).toBeCalledTimes(1);
     expect(payPalServiceMock.captureOrder).toBeCalledTimes(1);
 
     expect(resMock.json).toBeCalledTimes(1);
