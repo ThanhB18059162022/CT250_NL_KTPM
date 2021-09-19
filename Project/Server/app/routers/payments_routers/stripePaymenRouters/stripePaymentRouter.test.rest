@@ -5,7 +5,7 @@
 # Tạo order
 
 ### 1 Hợp lệ - 201
-POST http://localhost:8000/api/stripe/createorder?cancelUrl=http://abc.com
+POST http://localhost:8000/api/stripe/createorder?successUrl=http://localhost:3000&cancelUrl=http://localhost:3000
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ### 1 Đã thanh toán rồi - 500
 
-GET http://localhost:8000/api/stripe/saveorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44
+GET http://localhost:8000/api/stripe/saveorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?successUrl=http://localhost
 
     
 ### 2 Không hợp lệ id < 64 - 400

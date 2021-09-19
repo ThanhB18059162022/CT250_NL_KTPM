@@ -12,3 +12,16 @@ const tmpOrder = {
 this.storeOrder(tmpOrder);
 
 return { url };
+
+//#region Checkout Order
+
+checkoutOrder = async (orderId) => {
+  const paidOrder = { ...order, paid: true };
+
+  // Lưu vào CSDL
+  await this.dao.saveOrder(paidOrder);
+
+  return paidOrder.successUrl;
+};
+
+//#endregion

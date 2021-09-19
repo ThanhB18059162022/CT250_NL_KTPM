@@ -12,8 +12,6 @@ module.exports = class StripeService {
     this.dao = dao;
   }
 
-  //#region CREATE ORDER
-
   // Tạo đơn hàng
   createOrder = async (orderProducts, successUrl, cancelUrl) => {
     const { url } = await this.createCheckoutSession(
@@ -75,26 +73,4 @@ module.exports = class StripeService {
 
     return dollars * exchangeRate;
   }
-
-  //#endregion
-
-  //#region Checkout Order
-
-  checkoutOrder = async (orderId) => {
-    // Kiểm tra còn order trước khi thanh toán
-    const { storedOrders } = StripeService;
-    const order = storedOrders.get(orderId);
-    if (order === undefined) {
-      throw new Error("Order expired");
-    }
-
-    const paidOrder = { ...order, paid: true };
-
-    // Lưu vào CSDL
-    await this.dao.saveOrder(paidOrder);
-
-    return paidOrder.successUrl;
-  };
-
-  //#endregion
 };

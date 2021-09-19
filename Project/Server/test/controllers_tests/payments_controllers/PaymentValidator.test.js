@@ -630,6 +630,78 @@ describe("Kiểm tra giỏ hàng đúng định dạng", () => {
   });
 });
 
+describe("Kiểm url hợp lệ", () => {
+  test("Url Undefined", () => {
+    //Arrange
+    const url = undefined;
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUrl(url).hasAnyError;
+
+    //Assert
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Url rỗng", () => {
+    //Arrange
+    const url = "";
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUrl(url).hasAnyError;
+
+    //Assert
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Không có protocol http - https", () => {
+    //Arrange
+    const url = "//localhost";
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUrl(url).hasAnyError;
+
+    //Assert
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Không có //", () => {
+    //Arrange
+    const url = "http:";
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUrl(url).hasAnyError;
+
+    //Assert
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Hợp lệ", () => {
+    //Arrange
+    const url = "http://localhost";
+    const validator = getValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateUrl(url).hasAnyError;
+
+    //Assert
+    expect(actRs).toEqual(expRs);
+  });
+});
+
 describe("Kiểm tra PayPal OrderID hợp lệ", () => {
   test("OrderID Undefined", () => {
     //Arrange

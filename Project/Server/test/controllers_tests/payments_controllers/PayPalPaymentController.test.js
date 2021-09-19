@@ -72,7 +72,7 @@ describe("Lấy ra paypal id client để gửi cho client", () => {
   });
 });
 
-// 201 - 400 - 404
+// 201 - 400
 describe("Tạo order", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
@@ -124,7 +124,6 @@ describe("Tạo order", () => {
     //Expect
     expect(validatorMock.validateCart).toBeCalledTimes(1);
     expect(payPalServiceMock.createOrder).toBeCalledTimes(1);
-
     expect(controller.getOrderProducts).toBeCalledTimes(1);
     expect(controller.getTotalPrice).toBeCalledTimes(1);
 
@@ -166,7 +165,7 @@ describe("Tạo order", () => {
   });
 });
 
-// 200 - 404
+// 200 - 404 - 400
 describe("Thanh toán order", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();

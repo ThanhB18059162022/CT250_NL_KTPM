@@ -26,6 +26,6 @@ const controller = new StripePaymentController(validator, service, dao);
 
 router.route("/createOrder").post(errorCatch(controller.createOrder));
 
-router.route("/saveOrder/:id").get(errorCatch(controller.saveOrder));
+router.route("/saveOrder/:id").get(errorCatch(controller.checkoutOrder));
 
 module.exports = router;

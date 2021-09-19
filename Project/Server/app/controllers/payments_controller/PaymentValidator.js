@@ -71,8 +71,14 @@ module.exports = class PatmentValidator {
   };
 
   // Xác thực đường dẫn
-  validateUrl = () => {
-    return { hasAnyError: false };
+  validateUrl = (url) => {
+    const schema = joi.object({
+      url: joi.string().uri().required(),
+    });
+
+    const result = getValidationResult(schema, { url });
+
+    return result;
   };
 
   // Xài cho paypal

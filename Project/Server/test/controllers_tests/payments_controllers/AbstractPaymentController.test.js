@@ -65,6 +65,6 @@ describe("Abstract Test", () => {
 
     //Expect
     expect(daoMock.saveOrder).toBeCalledTimes(1);
-    expect(actRs).toEqual(expRs);
+    expect(actRs.paid).toEqual(expRs.paid);
   });
 });
