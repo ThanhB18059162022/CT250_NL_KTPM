@@ -7,8 +7,8 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <PayPalPayment />
+    <App />
+    {/* <PayPalPayment /> */}
     {/* <StripePayment /> */}
   </React.StrictMode>,
   document.getElementById("root")

@@ -135,7 +135,430 @@ describe("Kiểm tra sản phẩm có đúng định dạng mã - số lượng"
   });
 });
 
-const validCart = { products: [{ prod_no: 1, prod_quantity: 1 }] };
+const validCustomer = {
+  cus_name: "Alexander",
+  cus_id: "555555555",
+  cus_email: "alex@gmail.com",
+  cus_sex: true,
+  cus_address: "3/2 Ninh Kiều Cần Thơ",
+  cus_phoneNumber: "0000000000",
+};
+describe("Kiểm tra thông tin khách hàng", () => {
+  test("Hợp lệ", () => {
+    //Arrange
+    const customer = validCustomer;
+    const validator = getValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Khách hàng undefined", () => {
+    //Arrange
+    const customer = undefined;
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#region  Tên
+
+  test("Không có tên", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_name: undefined };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tên rỗng", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_name: "" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tên < 5", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_name: "aaaa" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tên > 70", () => {
+    //Arrange
+    const customer = {
+      ...validCustomer,
+      cus_name:
+        "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa",
+    };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region CMND
+
+  test("CMND undefined", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_id: undefined };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND rỗng", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_id: "" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND < 9", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_id: "55555555" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND > 9", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_id: "1111111111" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("CMND không phải số", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_id: "11111111s" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region  Email
+
+  test("Email undefined", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_email: undefined };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Email rỗng", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_email: "" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Email không có @", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_email: "alexgmail" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Email không có gì sau @", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_email: "alex@" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Email không có . tên miền", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_email: "alex@gmail" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region Giới tính
+
+  test("Giới tính undefined", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_sex: undefined };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Giới tính không phải bool", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_sex: "" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region Địa chỉ
+
+  test("Địa chỉ undefined", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_address: undefined };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Địa chỉ rỗng", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_address: "" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Địa chỉ < 10", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_address: "aaaaa" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Địa chỉ > 128", () => {
+    //Arrange
+    const customer = {
+      ...validCustomer,
+      cus_address:
+        "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa1",
+    };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+
+  //#region Số điện thoại
+
+  test("Số điện thoại undefined", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_phoneNumber: undefined };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Số điện thoại rỗng", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_phoneNumber: "" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Số điện thoại < 10", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_phoneNumber: "111111111" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Số điện thoại > 10", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_phoneNumber: "111111111111" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Số điện thoại không phải số", () => {
+    //Arrange
+    const customer = { ...validCustomer, cus_phoneNumber: "111111111a" };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCustomer(customer).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  //#endregion
+});
+
+const validCart = {
+  customer: validCustomer,
+  products: [{ prod_no: 1, prod_quantity: 1 }],
+};
 describe("Kiểm tra giỏ hàng đúng định dạng", () => {
   test("Giỏ hàng undefined", () => {
     //Arrange
@@ -167,7 +590,7 @@ describe("Kiểm tra giỏ hàng đúng định dạng", () => {
 
   test("Giỏ hàng danh sách sản phẩm không hợp lệ", () => {
     //Arrange
-    const cart = { validCart, products: [] };
+    const cart = { ...validCart, products: [] };
     const validator = getValidator();
     const failed = true;
 
@@ -179,7 +602,21 @@ describe("Kiểm tra giỏ hàng đúng định dạng", () => {
     expect(actRs).toEqual(expRs);
   });
 
-  test("Giỏ hàng danh sách sản phẩm hợp lệ", () => {
+  test("Giỏ hàng thông tin khách hàng không hợp lệ", () => {
+    //Arrange
+    const cart = { ...validCart, customer: {} };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateCart(cart).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Giỏ hàng hợp lệ", () => {
     //Arrange
     const cart = validCart;
     const validator = getValidator();
@@ -188,7 +625,6 @@ describe("Kiểm tra giỏ hàng đúng định dạng", () => {
     //Act
     const expRs = failed;
     const actRs = validator.validateCart(cart).hasAnyError;
-
     //Expect
     expect(actRs).toEqual(expRs);
   });
