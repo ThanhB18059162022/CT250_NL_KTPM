@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const config = require("../../../config");
+const { payment } = require("../../../config");
 
 // Router gắn endpoints vào controller
 
@@ -18,7 +18,7 @@ const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
-const service = new PayPalService(config.paypal);
+const service = new PayPalService(payment.paypal);
 const validator = new PaymentValidator();
 const controller = new PayPalPaymentController(validator, service, dao);
 

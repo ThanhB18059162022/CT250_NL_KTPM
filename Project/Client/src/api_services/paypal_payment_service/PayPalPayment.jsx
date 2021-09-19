@@ -73,7 +73,21 @@ const PayPalPayment = () => {
   ];
   // createOrder nhận vào id của order
   async function creatOrderForPayment() {
-    const orderID = await payService.createOrder(products);
+    // Thông tin khác hàng
+    const customer = {
+      cus_name: "Alexander",
+      cus_id: "555555555",
+      cus_email: "alex@gmail.com",
+      cus_sex: true,
+      cus_address: "3/2 Ninh Kiều Cần Thơ",
+      cus_phoneNumber: "0000000000",
+    };
+
+    const cart = {
+      customer,
+      products,
+    };
+    const orderID = await payService.createOrder(cart);
 
     return orderID;
   }
