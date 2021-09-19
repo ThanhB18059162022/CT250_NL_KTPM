@@ -23,7 +23,7 @@ module.exports = class StripePaymentController {
 
   //#endregion
 
-  //#region SAVE ORDER
+  //#region CHECKOUT ORDER
 
   saveOrder = async (req, res) => {
     const { id } = req.params;

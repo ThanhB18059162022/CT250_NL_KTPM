@@ -18,9 +18,9 @@ const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
-const service = new PayPalService(config.paypal, dao);
+const service = new PayPalService(config.paypal);
 const validator = new PaymentValidator();
-const controller = new PayPalPaymentController(validator, service);
+const controller = new PayPalPaymentController(validator, service, dao);
 
 //#endregion
 
