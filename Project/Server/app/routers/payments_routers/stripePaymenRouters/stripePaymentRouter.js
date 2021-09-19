@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const config = require("../../../config");
+const { payment } = require("../../../config");
 
 // Router gắn endpoints vào controller
 
@@ -18,7 +18,7 @@ const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
-const service = new StripeService(config.stripe, dao);
+const service = new StripeService(payment.stripe, dao);
 const validator = new PaymentValidator();
 const controller = new StripePaymentController(validator, service);
 

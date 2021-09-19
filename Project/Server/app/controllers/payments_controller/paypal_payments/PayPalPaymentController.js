@@ -92,24 +92,22 @@ module.exports = class PayPalPaymentController extends PaymentController {
     }
 
     // Kiểm tra còn order trước khi thanh toán
-    const exist = this.existOrder(orderID);
-    if (!exist) {
+    const { storedOrders } = PayPalPaymentController;
+    const order = storedOrders.get(orderID);
+    if (order === undefined) {
       return res.status(404).json({});
     }
 
     // Thanh toán order
-    const order = await this.payPalSerivce.captureOrder(orderID);
+    await this.payPalSerivce.captureOrder(order.id);
 
+    // Lưu vào CSDL
     const paidOrder = await this.saveOrder(order);
 
+    // Xóa order lưu tạm
+    storedOrders.delete(order.id);
+
     return res.json(paidOrder);
-  };
-
-  existOrder = (orderID) => {
-    const { storedOrders } = PayPalPaymentController;
-    const order = storedOrders.get(orderID);
-
-    return order !== undefined;
   };
 
   //#endregion
