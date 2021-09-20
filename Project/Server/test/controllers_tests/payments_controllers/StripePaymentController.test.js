@@ -48,6 +48,7 @@ describe("Tạo đơn hàng", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
     serviceMock = new StripeServiceMock();
+    daoMock = new PaymentDAOMock();
     exServiceMock = new CurrencyExchangeServiceMock();
   });
 
@@ -132,7 +133,7 @@ describe("Tạo đơn hàng", () => {
 
   test("Tạo thành công - 201", async () => {
     //Arrange
-    const cart = { products: [] };
+    const cart = { products: [{ prod_pice: 2000 }] };
     const controller = getController();
 
     const reqMock = {
@@ -155,6 +156,9 @@ describe("Tạo đơn hàng", () => {
     //Expect
     expect(validatorMock.validateCart).toBeCalledTimes(1);
     expect(serviceMock.createOrder).toBeCalledTimes(1);
+    expect(daoMock.getOrderProduct).toBeCalledTimes(1);
+    expect(exServiceMock.convert).toBeCalledTimes(1);
+
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });

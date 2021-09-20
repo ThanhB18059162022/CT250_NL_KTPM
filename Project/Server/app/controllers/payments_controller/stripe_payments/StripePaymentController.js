@@ -53,8 +53,10 @@ module.exports = class StripePaymentController extends PaymentController {
     // Về server xử lý trước
     const serverSuccessUrl = `${req.protocol}://${req.headers.host}/api/stripe/checkoutOrder/${id}?successUrl=${successUrl}`;
 
+    const usdOrderProducts = await this.convertToUSD(orderProducts);
+
     const url = await this.stripeService.createOrder(
-      orderProducts,
+      usdOrderProducts,
       serverSuccessUrl,
       cancelUrl
     );
@@ -81,6 +83,24 @@ module.exports = class StripePaymentController extends PaymentController {
       .digest("hex");
 
     return id;
+  };
+
+  // Chuyển giá tiền trong danh sách đặt hàng sang USD
+  convertToUSD = async (orderProducts) => {
+    const usdOrderProductsPromise = orderProducts.map(async (op) => {
+      const usdPrice = await this.exchangeService
+        .convert(op.prod_price)
+        .to("USD");
+
+      return {
+        ...op,
+        prod_price: usdPrice,
+      };
+    });
+
+    const usdOrderProducts = await Promise.all(usdOrderProductsPromise);
+
+    return usdOrderProducts;
   };
 
   // Save tạm thông tin order vào ram sẽ xóa sau 1 ngày

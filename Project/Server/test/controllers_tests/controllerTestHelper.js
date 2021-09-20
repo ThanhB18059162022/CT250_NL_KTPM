@@ -37,6 +37,8 @@ class PaymentValidatorMock {
 }
 
 class PaymentDAOMock {
+  getOrderProduct = jest.fn();
+
   saveOrder = jest.fn((order) => {
     return { ...order, paid: true };
   });
