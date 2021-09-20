@@ -2,3 +2,6 @@
 Niên luận kỹ thuật phần mềm 
 
 Cô chỉ chấm bài báo cáo niên luận.
+
+Đổi môi trường với powershell
+$env:NODE_ENV="production"

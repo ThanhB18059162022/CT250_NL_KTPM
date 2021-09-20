@@ -42,8 +42,13 @@ class PaymentDAOMock {
   });
 }
 
+class CurrencyExchangeServiceMock {
+  roundTakeTwo = jest.fn((total) => total);
+}
+
 module.exports = {
   ResponseMock,
   PaymentValidatorMock,
   PaymentDAOMock,
+  CurrencyExchangeServiceMock,
 };

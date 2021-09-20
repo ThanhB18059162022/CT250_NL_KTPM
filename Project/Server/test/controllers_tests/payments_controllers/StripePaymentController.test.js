@@ -3,6 +3,7 @@ const {
   ResponseMock,
   PaymentValidatorMock,
   PaymentDAOMock,
+  CurrencyExchangeServiceMock,
 } = require("../controllerTestHelper");
 // Kiểm tra các api end-points của Stripe Payment
 
@@ -27,9 +28,15 @@ class StripeServiceMock {
 let validatorMock;
 let serviceMock;
 let daoMock;
+let exServiceMock;
 
 function getController() {
-  return new StripePaymentControllerFake(validatorMock, serviceMock, daoMock);
+  return new StripePaymentControllerFake(
+    validatorMock,
+    serviceMock,
+    daoMock,
+    exServiceMock
+  );
 }
 
 // Tạo một đơn hàng cần
@@ -41,6 +48,7 @@ describe("Tạo đơn hàng", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
     serviceMock = new StripeServiceMock();
+    exServiceMock = new CurrencyExchangeServiceMock();
   });
 
   jest.useFakeTimers();

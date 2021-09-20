@@ -1,5 +1,7 @@
 const PaymentController = require("../../../app/controllers/payments_controller/PaymentController");
 
+const { CurrencyExchangeServiceMock } = require("../controllerTestHelper");
+
 class DAOMock {
   getOrderProduct = jest.fn((prod_no) => {
     return {
@@ -14,13 +16,16 @@ class DAOMock {
 class PaymentControllerObject extends PaymentController {}
 
 let daoMock;
+let serviceMock;
+
 function getController() {
-  return new PaymentControllerObject(daoMock);
+  return new PaymentControllerObject(daoMock, serviceMock);
 }
 
 describe("Abstract Test", () => {
   beforeEach(() => {
     daoMock = new DAOMock();
+    serviceMock = new CurrencyExchangeServiceMock();
   });
 
   test("Khởi tạo lớp trừu tượng", () => {
