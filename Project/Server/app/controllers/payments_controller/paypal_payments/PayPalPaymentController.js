@@ -4,8 +4,8 @@ module.exports = class PayPalPaymentController extends PaymentController {
   // Lưu các đơn hàng chưa thanh toán
   static storedOrders = new Map();
 
-  constructor(validator, payPalSerivce, dao) {
-    super(dao);
+  constructor(validator, payPalSerivce, dao, exchangeService) {
+    super(dao, exchangeService);
 
     this.validator = validator;
     this.payPalSerivce = payPalSerivce;
@@ -42,7 +42,10 @@ module.exports = class PayPalPaymentController extends PaymentController {
     // Tính tổng tiền
     const total = this.getTotalPrice(orderProducts);
 
-    const orderID = await this.payPalSerivce.createOrder(total);
+    // Đổi sang USD
+    const usdTotal = await this.exchangeService.convert(total).to("USD");
+
+    const orderID = await this.payPalSerivce.createOrder(usdTotal);
 
     // Lưu tạm đơn hàng
     const tempOrder = {

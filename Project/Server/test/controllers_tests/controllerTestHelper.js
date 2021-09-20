@@ -43,6 +43,12 @@ class PaymentDAOMock {
 }
 
 class CurrencyExchangeServiceMock {
+  convert = jest.fn(() => {
+    return this;
+  });
+
+  to = jest.fn();
+
   roundTakeTwo = jest.fn((total) => total);
 }
 

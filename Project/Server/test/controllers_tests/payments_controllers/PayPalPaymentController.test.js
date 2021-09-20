@@ -3,6 +3,7 @@ const {
   ResponseMock,
   PaymentValidatorMock,
   PaymentDAOMock,
+  CurrencyExchangeServiceMock,
 } = require("../controllerTestHelper");
 
 // Kiểm tra các end-points của paypal controller
@@ -34,20 +35,20 @@ class PayPalServiceMock {
 let validatorMock;
 let payPalServiceMock;
 let daoMock;
+let exServiceMock;
 
 class PayPalPaymentControllerFake extends PayPalPaymentController {
   getOrderProducts = jest.fn();
 
   getTotalPrice = jest.fn();
-
-  // existOrder = jest.fn((id) => PayPalServiceMock.order.id === id);
 }
 
 function getController() {
   return new PayPalPaymentControllerFake(
     validatorMock,
     payPalServiceMock,
-    daoMock
+    daoMock,
+    exServiceMock
   );
 }
 
@@ -78,6 +79,7 @@ describe("Tạo order", () => {
     validatorMock = new PaymentValidatorMock();
     payPalServiceMock = new PayPalServiceMock();
     daoMock = new PaymentDAOMock();
+    exServiceMock = new CurrencyExchangeServiceMock();
   });
 
   test("Danh sách sản phẩm không hợp lệ - 400", async () => {

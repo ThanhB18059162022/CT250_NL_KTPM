@@ -1,12 +1,12 @@
 // Abstract class
 module.exports = class PaymentController {
-  constructor(dao, service) {
+  constructor(dao, exchangeService) {
     if (this.constructor === PaymentController) {
       throw new Error("Abstract classes can't be instantiated.");
     }
 
     this.dao = dao;
-    this.service = service;
+    this.exchangeService = exchangeService;
   }
 
   // Lấy ra danh sách sản phẩm đặt hàng
@@ -38,7 +38,7 @@ module.exports = class PaymentController {
     }, 0); // Số 0 là giá trị khởi tạo của sum
 
     // Lấy 2 số sau số 0
-    return this.service.roundTakeTwo(total);
+    return this.exchangeService.roundTakeTwo(total);
   };
 
   // Lưu đơn hàng
