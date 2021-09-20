@@ -194,6 +194,38 @@ describe("Tạo đơn hàng", () => {
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
+
+  test("Tạo thành công order hết hạng sau 1 ngày", async () => {
+    //Arrange
+    const cart = { products: [] };
+    const controller = getController();
+
+    const reqMock = {
+      body: cart,
+      protocol: "",
+      headers: {
+        host: "",
+      },
+      query: {
+        successUrl: "yes",
+        cancelUrl: "wtf",
+      },
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 201 };
+    const actRes = await controller.createOrder(reqMock, resMock);
+
+    // Gia tốc bỏ qua 1 ngày
+    jest.advanceTimersByTime(86400000);
+
+    //Expect
+    expect(validatorMock.validateCart).toBeCalledTimes(1);
+    expect(serviceMock.createOrder).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+  });
 });
 
 describe("Lưu đơn hàng đã thanh toán", () => {
