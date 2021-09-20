@@ -1,11 +1,12 @@
 // Abstract class
 module.exports = class PaymentController {
-  constructor(dao) {
+  constructor(dao, exchangeService) {
     if (this.constructor === PaymentController) {
       throw new Error("Abstract classes can't be instantiated.");
     }
 
     this.dao = dao;
+    this.exchangeService = exchangeService;
   }
 
   // Lấy ra danh sách sản phẩm đặt hàng
@@ -32,15 +33,12 @@ module.exports = class PaymentController {
   // Làm tròn 2 số sau dấu phẩy
   // Paypal chỉ lấy 2 số sau dấu phẩy
   getTotalPrice = (products) => {
-    const total =
-      Math.round(
-        100 *
-          products.reduce((sum, prod) => {
-            return sum + prod.prod_price * prod.prod_quantity;
-          }, 0) // Số 0 là giá trị khởi tạo của sum
-      ) / 100;
+    const total = products.reduce((sum, prod) => {
+      return sum + prod.prod_price * prod.prod_quantity;
+    }, 0); // Số 0 là giá trị khởi tạo của sum
 
-    return total;
+    // Lấy 2 số sau số 0
+    return this.exchangeService.roundTakeTwo(total);
   };
 
   // Lưu đơn hàng

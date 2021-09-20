@@ -3,8 +3,7 @@
 // Middleware này dùng để bắt các lỗi bên phía server, như kết nối không được database, undefine
 
 // Có 2 hàm hiển thị lỗi - dev sẽ hiện thêm stack trace
-// Mặc định không có NODE_ENV là dev
-const isDev = !process.env.NODE_ENV;
+const isProduction = process.env.NODE_ENV === "production";
 
 // Dùng khi lập trình hiện stacktrace
 function devErrorHandler(err, req, res, next) {
@@ -12,18 +11,18 @@ function devErrorHandler(err, req, res, next) {
 }
 
 // Dùng khi triển khai
-function deployErrorHandler(err, req, res, next) {
+function productionErrorHandler(err, req, res, next) {
   return res.status(500).json({
     message: "Error occurred please try again",
     info: err.message,
   });
 }
 
-let errorHandler = deployErrorHandler;
+let errorHandler = devErrorHandler;
 
-// Nếu là môi trường phát tiển thì hiển thị stack trace
-if (isDev) {
-  errorHandler = devErrorHandler;
+// Nếu là môi trường triển khai thì Không hiển thị stack trace
+if (isProduction) {
+  errorHandler = productionErrorHandler;
 }
 
 // Dùng để bao các hàm cần xử lý lỗi wapper function

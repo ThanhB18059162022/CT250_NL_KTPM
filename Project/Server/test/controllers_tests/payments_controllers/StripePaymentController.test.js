@@ -3,6 +3,7 @@ const {
   ResponseMock,
   PaymentValidatorMock,
   PaymentDAOMock,
+  CurrencyExchangeServiceMock,
 } = require("../controllerTestHelper");
 // Kiểm tra các api end-points của Stripe Payment
 
@@ -27,9 +28,15 @@ class StripeServiceMock {
 let validatorMock;
 let serviceMock;
 let daoMock;
+let exServiceMock;
 
 function getController() {
-  return new StripePaymentControllerFake(validatorMock, serviceMock, daoMock);
+  return new StripePaymentControllerFake(
+    validatorMock,
+    serviceMock,
+    daoMock,
+    exServiceMock
+  );
 }
 
 // Tạo một đơn hàng cần
@@ -41,6 +48,8 @@ describe("Tạo đơn hàng", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
     serviceMock = new StripeServiceMock();
+    daoMock = new PaymentDAOMock();
+    exServiceMock = new CurrencyExchangeServiceMock();
   });
 
   jest.useFakeTimers();
@@ -124,6 +133,38 @@ describe("Tạo đơn hàng", () => {
 
   test("Tạo thành công - 201", async () => {
     //Arrange
+    const cart = { products: [{ prod_pice: 2000 }] };
+    const controller = getController();
+
+    const reqMock = {
+      body: cart,
+      protocol: "",
+      headers: {
+        host: "",
+      },
+      query: {
+        successUrl: "yes",
+        cancelUrl: "wtf",
+      },
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 201 };
+    const actRes = await controller.createOrder(reqMock, resMock);
+
+    //Expect
+    expect(validatorMock.validateCart).toBeCalledTimes(1);
+    expect(serviceMock.createOrder).toBeCalledTimes(1);
+    expect(daoMock.getOrderProduct).toBeCalledTimes(1);
+    expect(exServiceMock.convert).toBeCalledTimes(1);
+
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+  });
+
+  test("Tạo thành công order hết hạng sau 1 ngày", async () => {
+    //Arrange
     const cart = { products: [] };
     const controller = getController();
 
@@ -143,6 +184,9 @@ describe("Tạo đơn hàng", () => {
     //Act
     const expRes = { statusCode: 201 };
     const actRes = await controller.createOrder(reqMock, resMock);
+
+    // Gia tốc bỏ qua 1 ngày
+    jest.advanceTimersByTime(86400000);
 
     //Expect
     expect(validatorMock.validateCart).toBeCalledTimes(1);

@@ -37,13 +37,26 @@ class PaymentValidatorMock {
 }
 
 class PaymentDAOMock {
+  getOrderProduct = jest.fn();
+
   saveOrder = jest.fn((order) => {
     return { ...order, paid: true };
   });
+}
+
+class CurrencyExchangeServiceMock {
+  convert = jest.fn(() => {
+    return this;
+  });
+
+  to = jest.fn();
+
+  roundTakeTwo = jest.fn((total) => total);
 }
 
 module.exports = {
   ResponseMock,
   PaymentValidatorMock,
   PaymentDAOMock,
+  CurrencyExchangeServiceMock,
 };
