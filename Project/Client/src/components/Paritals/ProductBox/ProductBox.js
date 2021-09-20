@@ -3,7 +3,7 @@ import "./ProductBox.Style.scss"
 const ProductBox = ()=>{
     const product_info = {
         image:[
-            '/image/iphone.jpeg',
+            'https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2021/3/17/637515991822611897_vivo-y12s-2021-den-1.jpg',
             '/image/samsung.jpeg',
             '/image/iphone.jpeg',
             '/image/samsung.jpeg',

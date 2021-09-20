@@ -2,6 +2,7 @@ import "./ProductItem.Style.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMicrochip,faMemory,faMobileAlt,faBatteryThreeQuarters } from "@fortawesome/free-solid-svg-icons"
 import { useHistory } from "react-router"
+import Helper from "../../../helpers"
 const ProductList = (props)=>{
     const {list, toNextPage} = props
     return(
@@ -29,7 +30,7 @@ export const ProductItem = ({info, compare=false, currentId=-1})=>{
             <img src={info.prod_img} alt={info.src}/>
             <div className="product-info">
                 <p className="name">{info.prod_name}</p>
-                <p className="price">{info.prod_price}</p>
+                <p className="price">{Helper.Exchange.toMoney(info.prod_price)} VND</p>
                 <div  className="product-panel">
                    <p className="chipset"><FontAwesomeIcon icon={faMicrochip}/> {info.prod_cpu}</p>
                     <p>

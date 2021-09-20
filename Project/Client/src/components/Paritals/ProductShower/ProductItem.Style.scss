@@ -1,9 +1,9 @@
 .ProductItem {
     list-style: none;
-    display: inline-block;
-    flex-basis: 23%;
-    margin:10px 1% ;
-    padding: 10px 15px;
+    // display: inline-block;
+    flex-basis: 25%;
+    margin:10px 0% ;
+    padding: 10px;
     overflow: hidden;
     border-radius: 10px;
     background: white;
@@ -74,13 +74,13 @@
 }
 @media screen and (max-width:1020px) {
     .ProductItem {
-        flex-basis: 31.33%;
+        flex-basis: 33.33%;
     }
 }
 
 @media screen and (max-width:768px) {
     .ProductItem {
-        flex-basis: 48%;
+        flex-basis: 50%;
     }
 }
 
