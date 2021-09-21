@@ -32,7 +32,7 @@ module.exports = class ZaloPaySerivce {
   };
 
   // Id tự tạo, tên khách hàng, tổng tiền và url gọi khi thành công
-  createOrderBody = async (id, cus_name, amount, url) => {
+  createOrderBody = (id, cus_name, amount, url) => {
     const currentDate = new Date();
 
     // Định dạng YYMMDD - 210921
@@ -61,6 +61,8 @@ module.exports = class ZaloPaySerivce {
     order.mac = this.generateHmac(order);
 
     console.log(order);
+
+    return order;
   };
 
   generateHmac = (order) => {

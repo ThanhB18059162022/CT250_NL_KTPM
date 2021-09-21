@@ -1,19 +1,9 @@
-const https = require("https");
+const axios = require("axios");
 
-//Lớp adapter dành cho https
+//Lớp adapter dành cho axios
 module.exports = class ApiCaller {
-  constructor(baseUri = "http://localhost:8000/api") {
-    this.baseUri = baseUri;
-
-    const jwkToken = ApiHelper.JwkToken;
-
-    this.axiosApi = axios.create({
-      baseURL: baseUri,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.getToken(jwkToken),
-      },
-    });
+  constructor() {
+    this.axiosApi = axios.default;
   }
 
   get = async (uri) => {
@@ -40,5 +30,3 @@ module.exports = class ApiCaller {
     return res.data;
   };
 };
-
-export default ApiCaller;
