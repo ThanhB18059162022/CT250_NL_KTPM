@@ -14,8 +14,8 @@ module.exports = class ZaloPaySerivce {
     this.apiCaller = apiCaller;
   }
 
-  createOrder = async (id, amount, url) => {
-    const orderBody = this.createOrderBody(id, amount, url);
+  createOrder = async (id, name, amount, url) => {
+    const orderBody = this.createOrderBody(id, name, amount, url);
 
     // Vì tạo order nhận orderBody là url query
     // Chuyển orderBody sang queryString
@@ -24,15 +24,15 @@ module.exports = class ZaloPaySerivce {
       .join("&");
 
     // Gọi api
-    const { data } = await apiCaller.post(`${this.endpoint}?${queryString}`);
+    const { order_url } = await this.apiCaller.post(
+      `${this.endpoint}?${queryString}`
+    );
 
-    console.log(data);
-
-    return data;
+    return order_url;
   };
 
   // Id tự tạo, tên khách hàng, tổng tiền và url gọi khi thành công
-  createOrderBody = (id, cus_name, amount, url) => {
+  createOrderBody = (id, name, amount, url) => {
     const currentDate = new Date();
 
     // Định dạng YYMMDD - 210921
@@ -49,18 +49,16 @@ module.exports = class ZaloPaySerivce {
 
     const order = {
       app_id: this.app_id,
-      app_trans_id: `${currentDateFormat}_${id}`,
-      app_user: cus_name,
+      app_trans_id: `${currentDateFormat}_${id.slice(33, 64)}`, // Max 40 ký tự
+      app_user: name,
       app_time: currentDate.getTime(), // miliseconds
       item: JSON.stringify(items),
       embed_data: JSON.stringify(embed_data),
       amount, // Tổng tiền
-      description: `Đơn hàng của ${cus_name} có giá trị ${amount}`,
+      description: `${name}'s' order total: ${amount}`,
     };
 
     order.mac = this.generateHmac(order);
-
-    console.log(order);
 
     return order;
   };

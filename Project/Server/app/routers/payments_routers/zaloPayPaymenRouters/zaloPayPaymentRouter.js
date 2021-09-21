@@ -1,0 +1,40 @@
+const express = require("express");
+const router = express.Router();
+const { payment } = require("../../../config");
+
+// Router gắn endpoints vào controller
+
+// Bắt lỗi server
+const { errorCatch } = require("../../routerErrorHandler");
+
+const {
+  ZaloPayPaymentController,
+  ZaloPayService,
+  PaymentValidator,
+  CurrencyExchangeService,
+  ApiCaller,
+} = require("../../../controllers/controllersContainer");
+
+const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
+
+//#region  INIT
+
+const dao = new CustomersOrdersDAO();
+const apiCaller = new ApiCaller();
+const service = new ZaloPayService(payment.zalo, apiCaller);
+const validator = new PaymentValidator();
+const exService = new CurrencyExchangeService(payment.currency);
+const controller = new ZaloPayPaymentController(
+  validator,
+  service,
+  dao,
+  exService
+);
+
+//#endregion
+
+router.route("/createOrder").post(errorCatch(controller.createOrder));
+
+router.route("/checkoutOrder/:id").get(errorCatch(controller.checkoutOrder));
+
+module.exports = router;
