@@ -51,7 +51,7 @@ export const CartButton = ({handle, amount}) => {
             <button onClick={handle}>
                 <div className="cart_shower">
                     <CartIcon/>
-                    {amount!==undefined && <span className="cart_amount">{amount}</span>}
+                    {amount!==0 && <span className="cart_amount">{amount}</span>}
                 </div>
                 <p> Giỏ hàng</p>
             </button>

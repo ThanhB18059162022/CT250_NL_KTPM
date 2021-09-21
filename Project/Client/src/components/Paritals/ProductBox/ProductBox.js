@@ -1,6 +1,10 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { CartContext } from "../../../providers/CartProviders"
 import "./ProductBox.Style.scss"
-const ProductBox = ()=>{
+const ProductBox = ({product})=>{
+    const {upItem} = useContext(CartContext)
+
+    //need delete in the future
     const product_info = {
         image:[
             'https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2021/3/17/637515991822611897_vivo-y12s-2021-den-1.jpg',
@@ -37,7 +41,7 @@ const ProductBox = ()=>{
                 </div>
             </div>
             <div className="product-box-detail">
-                <p className="name">iPhone 13 Pro Max Max Max Max MAx MMax Max Maxs</p>
+                <p className="name">{product.prod_name}</p>
                 <div className="class-price">
                     {product_info.price.map((item,index)=>
                         <div onClick={()=>setChoose(index)} 
@@ -50,9 +54,9 @@ const ProductBox = ()=>{
                 <div className="sell-ways">
                     <img src="/icon/zalopayicon.png" alt="zalo" />
                     <img src="/icon/paypalicon.png" alt="paypal"/>
-                    <img src="/icon/codicon.png" alt="cod"/>
+                    <img src="/icon/stripeicon.png" alt="cod"/>
                 </div>
-                <button>Thêm vào giỏ hàng</button>
+                <button onClick={()=>upItem(product.prod_no)}>Thêm vào giỏ hàng</button>
             </div>
             <div className="product-box-notify">
                 <div>

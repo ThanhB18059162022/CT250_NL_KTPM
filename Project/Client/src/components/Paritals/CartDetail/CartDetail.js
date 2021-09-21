@@ -1,45 +1,80 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import Helper from "../../../helpers"
 import Notifications from "../../../common/Notifications"
 import "./CartDetail.Style.scss"
+import { caller } from "../../../api_services/servicesContainer"
 import PayPalPayment from "../../../api_services/paypal_payment_service/PayPalPayment"
+import ZaloPaymentService from "../../../api_services/zalopay_payment/ZaloPaymentService"
+import { StripePaymentService } from "../../../api_services/servicesContainer"
+import { CartContext } from "../../../providers/CartProviders"
+
+//==================To the Getway payment ===================
+const goToGetway = (url) => {
+    window.location.href = url
+}
+
+const checkout = async (services, cartContent) => {
+    goToGetway(await services.createOrder(cartContent))
+}
+
+const paymentServices = [
+    new ZaloPaymentService(caller),
+    new StripePaymentService(caller)
+]
+//===========================================================
+
 const CartDetail = () => {
     const [list, setList] = useState([])
     const [total, setTotal] = useState(0)
-
-    const [display, setDisplay] =useState(false)
-
+    const { clearItem, getItemList, upItem, removeItem, downItem, amount } = useContext(CartContext)
+    const [display, setDisplay] = useState(false)
+    const [show, setShow] = useState(false)
+    const [notify, setNotify] = useState({
+        content: "",
+        title: "",
+        type: "CONFIRMATION",
+        infoType: "INFO",
+        onHideRequest:setShow
+    })
     useEffect(() => {
-        const myList = []
-        for (let i = 0; i < 10; i++) {
-            myList.push({
-                id: i,
-                src: i % 2 === 0 ? '/image/iphone.jpeg' : '/image/samsung.jpeg',
-                name: i % 2 === 0 ? 'iPhone 13 ProMax XXXX XXXX' : 'Samsung Galaxy Fold',
-                storage: i % 2 === 0 ? '64' : '128',
-                price: i % 2 === 0 ? "800000" : (i % 3 === 0) ? "1200000" : (i % 5 === 0) ? "20000000" : "30000000",
-                amount: 1
-            })
-        }
-        setList(myList)
 
-    }, [])
+        (async () => {
+            let listItem = await Promise.all(getItemList().map(async (item) => {
+                let data = await caller.get(`products/${item.id}`)
+                data.amount = item.amount
+                return data
+            }))
+            setList(listItem)
+        })()
+    }, [amount])
 
     const onValueChange = (id, value) => {
         const newList = list.map(item => {
-            if (item.id === id)
+            if (item.prod_no === id) {
+                item.amount > value ? downItem(id) : upItem(id)
                 item.amount = value
+            }
             return item
         })
-
         setList(newList);
+    }
+
+    const onRemoveItem = id => {
+        setNotify({
+            ...notify,
+            content:'Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng',
+            title:'Xác nhận',
+            type:'CONFIRMATION',
+            handle: ()=> removeItem(id)
+        })
+        setShow(true)
     }
 
     useEffect(() => {
         let count = 0;
-        list.forEach(element => count += Number(element.price) * Number(element.amount));
+        list.forEach(element => count += Number(element.prod_price) * Number(element.amount));
         setTotal(count)
     }, [list])
 
@@ -48,20 +83,23 @@ const CartDetail = () => {
             <h3>Giỏ hàng của bạn</h3>
             <div className="detail-wrapper">
                 <div className="cart-list">
-                    <ul>
-                        {list.map((item, index) => <CartItem key={index} info={item} changeValue={onValueChange} />)}
-                    </ul>
+                    {list.length > 0 ? <ul>
+                        {list.map((item, index) => <CartItem key={index} info={item} changeValue={onValueChange} removeItem={onRemoveItem} />)}
+                    </ul> :
+                        <p>Giỏ hàng trống! Tiếp tục mua hàng đi nào!</p>
+                    }
                 </div>
                 <div className="cart-transaction">
                     <div className="wrapper">
                         <p>Tạm tính:</p>
-                        <p className="total-price">{total}</p>
-                        <button onClick={()=>setDisplay(true)}>Thanh toán</button>
+                        <p className="total-price">{Helper.Exchange.toMoney(total)} VNĐ</p>
+                        <button onClick={() => { setDisplay(true); clearItem() }}>Thanh toán</button>
                     </div>
                 </div>
             </div>
-            <CartTransaction display={display} setDisplay={setDisplay}/>
-            <PayPalPayment/>
+            <CartTransaction display={display} setDisplay={setDisplay} listPay={list} />
+            {/* <PayPalPayment/> */}
+            <Notifications {...notify} isShow={show} onHideRequest={setShow} />
         </div>
     )
 }
@@ -69,99 +107,102 @@ const CartDetail = () => {
 export default CartDetail;
 
 function CartTransaction(props) {
-    const {display, setDisplay} =props
+    const { display, setDisplay, listPay } = props
 
-    const [step,setStep] =useState(0)
+    const [step, setStep] = useState(0)
 
     const [location, setLocation] = useState(false)
 
     const [customerinfo, setCustomerInfo] = useState({
-        ccid:'',
-        email:'',
-        name:'',
-        gender:-1,
-        address:'',
-        phone:'',
-        transactionway:-1
+        ccid: '',
+        email: '',
+        name: '',
+        gender: -1,
+        address: '',
+        phone: '',
+        transactionway: -1
     })
 
-    const [show,setShow] =useState(false)
+    const [show, setShow] = useState(false)
 
     const [notify, setNotify] = useState({
-        content:"",
-        title:"",
-        type:"INFORMATION",
-        infoType:"INFO",
+        content: "",
+        title: "",
+        type: "INFORMATION",
+        infoType: "INFO",
     })
 
-    const setAddress = (value)=>{
-        setCustomerInfo({...customerinfo,address:value})
+    const setAddress = (value) => {
+        setCustomerInfo({ ...customerinfo, address: value })
     }
 
-    const previousStep = ()=>{
-        if(step!==0){
-            setStep(step+1)
+    const previousStep = () => {
+        if (step !== 0) {
+            setStep(step + 1)
         }
     }
 
-    const nextStep = ()=>{
-        if(step!==-2){
-            if(step===0){
-                if(validateStep1())
-                    setStep(step-1)
+    const nextStep = () => {
+        if (step !== -2) {
+            if (step === 0) {
+                if (validateStep1())
+                    setStep(step - 1)
             }
-            if(step===-1){
-                if(validateStep2())
-                    setStep(step-1)
+            if (step === -1) {
+                if (validateStep2())
+                    setStep(step - 1)
             }
         }
-        else{
-            if(customerinfo.transactionway===-1){
+        else {
+            if (customerinfo.transactionway === -1) {
                 setNotify({
                     ...notify,
-                    content:'Vui lòng chọn hình thức thanh toán!',
-                    infoType:'INFO'
+                    content: 'Vui lòng chọn hình thức thanh toán!',
+                    infoType: 'INFO'
                 })
                 setShow(true)
             }
-            else{
-                alert("Thanh tóan")
-                console.log(customerinfo)
+            else {
+                checkout(paymentServices[customerinfo.transactionway - 1], {
+                    customer: customerinfo,
+                    products: listPay
+                })
             }
+            /*TODO*/
         }
     }
 
-    const validateStep1 = ()=>{
+    const validateStep1 = () => {
         const validateCCID = Helper.TransactionValidator.checkingCCID(customerinfo.ccid)
-        if(!validate(validateCCID)) return false
+        if (!validate(validateCCID)) return false
 
         const validateEmail = Helper.TransactionValidator.checkingEmail(customerinfo.email)
-        if(!validate(validateEmail)) return false
+        if (!validate(validateEmail)) return false
 
         return true
     }
 
-    const validateStep2 = ()=>{
+    const validateStep2 = () => {
         const validateName = Helper.TransactionValidator.checkingName(customerinfo.name);
-        if(!validate(validateName)) return false
+        if (!validate(validateName)) return false
 
         const validateGender = Helper.TransactionValidator.checkingGender(customerinfo.gender)
-        if(!validate(validateGender)) return false
+        if (!validate(validateGender)) return false
 
         const validateAddress = Helper.TransactionValidator.checkingAddress(customerinfo.address)
-        if(!validate(validateAddress)) return false
+        if (!validate(validateAddress)) return false
 
         const validatePhone = Helper.TransactionValidator.checkingPhone(customerinfo.phone)
-        if(!validate(validatePhone)) return false
+        if (!validate(validatePhone)) return false
         return true
     }
 
     const validate = (result) => {
-        if(!result.result){
+        if (!result.result) {
             setNotify({
                 ...notify,
-                title:"Cảnh báo",
-                infoType:"WARN",
+                title: "Cảnh báo",
+                infoType: "WARN",
                 content: result.resson
             })
             setShow(true)
@@ -172,133 +213,133 @@ function CartTransaction(props) {
 
     return (
         <>
-        <div className={`carttransaction ${display?"show":""}`}>
-            <div className="transaction-wrapper">
-                <div className="transaction-info">
-                    <h3>Thông tin đơn hàng của bạn</h3>
-                    <div className="wrapper">
-                        <p><span>Tổng giá trị đơn hàng: </span></p>
-                        <p><span>Thời gian thực hiện: </span></p>
-                        <p><span>Số lượng sản phẩm: </span></p>
-                        <p><span>Số lượng chi tiết: </span></p>
+            <div className={`carttransaction ${display ? "show" : ""}`}>
+                <div className="transaction-wrapper">
+                    <div className="transaction-info">
+                        <h3>Thông tin đơn hàng của bạn</h3>
+                        <div className="wrapper">
+                            <p><span>Tổng giá trị đơn hàng: </span></p>
+                            <p><span>Thời gian thực hiện: </span></p>
+                            <p><span>Số lượng sản phẩm: </span></p>
+                            <p><span>Số lượng chi tiết: </span></p>
+                        </div>
+                    </div>
+                    <div className="transaction-input">
+                        <h3>Thông tin thanh toán</h3>
+                        <div className="transaction-slider">
+                            <div className="slider-element" style={{ left: `${100 * step}%` }}>
+                                <p><input value={customerinfo.ccid} onChange={e => setCustomerInfo({ ...customerinfo, ccid: e.target.value })} type="text" placeholder="CMND/CCCD (bắt buộc)" /></p>
+                                <p><input value={customerinfo.email} onChange={e => setCustomerInfo({ ...customerinfo, email: e.target.value })} type="email" placeholder="Email (bắt buộc)" /></p>
+                            </div>
+                            <div className="slider-element" style={{ left: `${100 * (step)}%` }}>
+                                <p><input type="text" placeholder="Họ tên (bắt buộc)" value={customerinfo.name} onChange={e => setCustomerInfo({ ...customerinfo, name: e.target.value })} /></p>
+                                <p>
+                                    <select value={customerinfo.gender} onChange={e => setCustomerInfo({ ...customerinfo, gender: e.target.value })}>
+                                        <option value="-1" disabled>Giới tính</option>
+                                        <option value="1">Nam</option>
+                                        <option value="0">Nữ</option>
+                                    </select>
+                                </p>
+                                <p><input type="text" onKeyDown={e => e.preventDefault()} onClick={() => setLocation(true)} style={{ cursor: "pointer" }} placeholder="Địa chỉ nhận hàng (bắt buộc)" value={customerinfo.address} readOnly={true} /></p>
+                                <p><input type="phone" placeholder="Số điện thoại nhận hàng (bắt buộc)" value={customerinfo.phone} onChange={e => setCustomerInfo({ ...customerinfo, phone: e.target.value })} /></p>
+                            </div>
+                            <div className="slider-element" style={{ left: `${100 * (step)}%` }}>
+                                <p><input onClick={() => setCustomerInfo({ ...customerinfo, transactionway: 1 })} name="transaction-way" type="radio" /><span><img alt="zalopay" src="/icon/zalopayicon.png" /></span><span>Zalo pay</span></p>
+                                <p><input onClick={() => setCustomerInfo({ ...customerinfo, transactionway: 3 })} name="transaction-way" type="radio" /><span><img alt="stripe" src="/icon/stripeicon.png" /></span><span>Stripe</span></p>
+                                <p><input onClick={() => setCustomerInfo({ ...customerinfo, transactionway: 2 })} name="transaction-way" type="radio" /><span><img alt="paypal" src="/icon/paypalicon.png" /></span><span>Paypal</span></p>
+                            </div>
+                        </div>
+                        <div className="transaction-control">
+                            <button onClick={() => { setDisplay(!display); setStep(0) }} >Hủy</button>
+                            <button onClick={previousStep}>Trở lại</button>
+                            <button onClick={nextStep}>Tiếp tục</button>
+                        </div>
                     </div>
                 </div>
-                <div className="transaction-input">
-                    <h3>Thông tin thanh toán</h3>
-                    <div className="transaction-slider">
-                        <div className="slider-element" style={{left:`${100*step}%`}}>
-                            <p><input value={customerinfo.ccid} onChange={e=>setCustomerInfo({...customerinfo,ccid:e.target.value})} type="text" placeholder="CMND/CCCD (bắt buộc)" /></p>
-                            <p><input value={customerinfo.email} onChange={e=>setCustomerInfo({...customerinfo,email:e.target.value})} type="email" placeholder="Email (bắt buộc)" /></p>
-                        </div>
-                        <div className="slider-element" style={{left:`${100*(step)}%`}}>
-                            <p><input type="text" placeholder="Họ tên (bắt buộc)" value={customerinfo.name} onChange={e=>setCustomerInfo({...customerinfo,name:e.target.value})} /></p>
-                            <p>
-                                <select value={customerinfo.gender} onChange={e=>setCustomerInfo({...customerinfo,gender:e.target.value})}>
-                                    <option value="-1" disabled>Giới tính</option>
-                                    <option value="1">Nam</option>
-                                    <option value="0">Nữ</option>
-                                </select>
-                            </p>
-                            <p><input type="text" onKeyDown={e=>e.preventDefault()} onClick={()=>setLocation(true)} style={{cursor:"pointer"}} placeholder="Địa chỉ nhận hàng (bắt buộc)" value={customerinfo.address} readOnly={true} /></p>
-                            <p><input type="phone" placeholder="Số điện thoại nhận hàng (bắt buộc)" value={customerinfo.phone} onChange={e=>setCustomerInfo({...customerinfo,phone:e.target.value})} /></p>
-                        </div>
-                        <div className="slider-element" style={{left:`${100*(step)}%`}}>
-                            <p><input onClick={()=>setCustomerInfo({...customerinfo,transactionway:1})} name="transaction-way" type="radio"/><span><img alt="zalopay" src="/icon/zalopayicon.png"/></span><span>Zalo pay</span></p>
-                            <p><input onClick={()=>setCustomerInfo({...customerinfo,transactionway:2})} name="transaction-way" type="radio"/><span><img alt="paypal" src="/icon/paypalicon.png"/></span><span>Paypal</span></p>
-                            <p><input onClick={()=>setCustomerInfo({...customerinfo,transactionway:3})} name="transaction-way" type="radio"/><span><img alt="cod" src="/icon/codicon.png"/></span><span>Thanh toán khi nhận hàng</span></p>
-                        </div>
-                    </div>
-                    <div className="transaction-control">
-                        <button onClick={()=>{setDisplay(!display); setStep(0)}} >Hủy</button>
-                        <button onClick={previousStep}>Trở lại</button>
-                        <button onClick={nextStep}>Tiếp tục</button>
-                    </div>
-                </div>
+                <SetLocation display={location} setDisplay={setLocation} setAddress={setAddress} />
             </div>
-            <SetLocation display={location} setDisplay={setLocation} setAddress={setAddress} />
-        </div>
-        <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
+            <Notifications {...notify} isShow={show} onHideRequest={setShow} />
         </>
     )
 }
 
-function SetLocation(props){
-    const {display, setDisplay, setAddress}  = props
+function SetLocation(props) {
+    const { display, setDisplay, setAddress } = props
 
     const [location, setLocation] = useState({
-        provinces:[],
-        districts:[],
+        provinces: [],
+        districts: [],
         communes: []
     })
 
     const [chooseLocation, setChooseLocation] = useState({
-        province:-1,
-        district:-1,
-        commune:-1,
-        detail:''
+        province: -1,
+        district: -1,
+        commune: -1,
+        detail: ''
     })
 
     const submitAddress = () => {
-       if(chooseLocation.province===-1 || chooseLocation.district ===-1 || 
-        chooseLocation.commune===-1 || chooseLocation.detail.trim().length===0){ 
-           alert('Chưa nhập đủ thông tin')
+        if (chooseLocation.province === -1 || chooseLocation.district === -1 ||
+            chooseLocation.commune === -1 || chooseLocation.detail.trim().length === 0) {
+            alert('Chưa nhập đủ thông tin')
             return false;
         }
-        const locationString =  Helper.Location.getLocationString(chooseLocation.province,  chooseLocation.district, chooseLocation.commune)
+        const locationString = Helper.Location.getLocationString(chooseLocation.province, chooseLocation.district, chooseLocation.commune)
         setAddress(`${chooseLocation.detail}, ${locationString}`)
         setDisplay(false)
     }
 
-    useEffect(()=>{
-        (async()=>{
+    useEffect(() => {
+        (async () => {
             let _province = await Helper.Location.getProvince()
-            setLocation(l=>({...l,provinces:_province}))
+            setLocation(l => ({ ...l, provinces: _province }))
         })()
-    },[])
+    }, [])
 
-    useEffect(()=>{
-        (async()=>{
+    useEffect(() => {
+        (async () => {
             let _districts = await Helper.Location.getDistricts(chooseLocation.province)
-            setLocation(l=>({...l,districts:_districts}))
-            setChooseLocation(c=>({...c,district:-1, commune:-1}))
+            setLocation(l => ({ ...l, districts: _districts }))
+            setChooseLocation(c => ({ ...c, district: -1, commune: -1 }))
         })()
-    },[chooseLocation.province])
+    }, [chooseLocation.province])
 
-    useEffect(()=>{
-        (async()=>{
+    useEffect(() => {
+        (async () => {
             let _commune = await Helper.Location.getCommunes(chooseLocation.district)
-            setLocation(l=>({...l,communes:_commune}))
-            setChooseLocation(c=>({...c, commune:-1}))
+            setLocation(l => ({ ...l, communes: _commune }))
+            setChooseLocation(c => ({ ...c, commune: -1 }))
         })()
-    },[chooseLocation.district])
+    }, [chooseLocation.district])
 
-    return(
-        <div className={`carttransaction ${display?"show":""}`}>
+    return (
+        <div className={`carttransaction ${display ? "show" : ""}`}>
             <div className="address-wrapper">
                 <h3>Thông tin địa chỉ giao hàng</h3>
                 <div className="location-group">
-                    <select value={chooseLocation.province} onChange={e=>setChooseLocation({...chooseLocation,province:e.target.value})}>
+                    <select value={chooseLocation.province} onChange={e => setChooseLocation({ ...chooseLocation, province: e.target.value })}>
                         <option value="-1" >Chọn tỉnh/ thành phố</option>
-                        {location.provinces.map((item,index)=><option key={index} value={item.id}>{item.name}</option>)}
+                        {location.provinces.map((item, index) => <option key={index} value={item.id}>{item.name}</option>)}
                     </select>
                 </div>
                 <div className="location-group">
-                    <select value={chooseLocation.district} onChange={e=>setChooseLocation({...chooseLocation,district:e.target.value})}>
+                    <select value={chooseLocation.district} onChange={e => setChooseLocation({ ...chooseLocation, district: e.target.value })}>
                         <option value="-1" >Chọn huyện/ quận</option>
-                        {location.districts.map((item,index)=><option key={index} value={item.id}>{item.name}</option>)}
+                        {location.districts.map((item, index) => <option key={index} value={item.id}>{item.name}</option>)}
                     </select>
                 </div>
                 <div className="location-group">
-                    <select value={chooseLocation.commune} onChange={e=>setChooseLocation({...chooseLocation,commune:e.target.value})}>
+                    <select value={chooseLocation.commune} onChange={e => setChooseLocation({ ...chooseLocation, commune: e.target.value })}>
                         <option value="-1" >Chọn xã phường</option>
-                        {location.communes.map((item,index)=><option key={index} value={item.id}>{item.name}</option>)}
+                        {location.communes.map((item, index) => <option key={index} value={item.id}>{item.name}</option>)}
                     </select>
                 </div>
                 <div className="location-group">
-                    <input value={chooseLocation.detail} placeholder="Số nhà/ Tên đường" onChange={e=>setChooseLocation({...chooseLocation,detail:e.target.value})} />
+                    <input value={chooseLocation.detail} placeholder="Số nhà/ Tên đường" onChange={e => setChooseLocation({ ...chooseLocation, detail: e.target.value })} />
                 </div>
                 <div className="location-group">
-                    <button onClick={()=>setDisplay(false)}>Hủy</button>
+                    <button onClick={() => setDisplay(false)}>Hủy</button>
                     <button onClick={submitAddress}>Xong</button>
                 </div>
             </div>
@@ -307,18 +348,20 @@ function SetLocation(props){
 }
 
 function CartItem(props) {
-    const { info, changeValue } = props
+    const { info, changeValue, removeItem } = props
 
-    const onValueChange = (e) => changeValue(info.id, e.target.value)
+    const onValueChange = e => changeValue(info.prod_no, e.target.value)
+
+    const onRemoveItem = e => removeItem(info.prod_no)
 
     return (
         <li>
-            <span className="img"><img src={info.src} alt={info.name} /></span>
-            <span className="name">{info.name}</span>
-            <span className="storage element" ><span>{info.storage} Gb</span></span>
-            <span className="price element" >{info.price} đ</span>
+            <span className="img"><img src={info.prod_img[0]} alt={info.prod_name} /></span>
+            <span className="name">{info.prod_name}</span>
+            <span className="storage element" ><span>{info.prod_ramAndStorage.storage}</span></span>
+            <span className="price element" >{Helper.Exchange.toMoney(info.prod_price)} VNĐ</span>
             <span className="amount element" ><input onKeyDown={(evt) => evt.preventDefault()} type="number" min="1" onChange={onValueChange} value={info.amount} /></span>
-            <span><FontAwesomeIcon icon={faTimes} /></span>
+            <span onClick={onRemoveItem}><FontAwesomeIcon icon={faTimes} /></span>
         </li>
     )
 }

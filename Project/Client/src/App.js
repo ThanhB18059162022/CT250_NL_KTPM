@@ -1,17 +1,19 @@
-import { Switch, Route,BrowserRouter as Router } from "react-router-dom"
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom"
 
 import "./App.css";
 import route from "./pages/route";
-
+import CartProvider from "./providers/CartProviders";
 function App() {
   return (
-    <Router>
-      <Switch>
-        {route.map(({ component: Component, path, ...rest }) =>
-          <Route key={path} component={Component} path={path} {...rest} />
-        )}
-      </Switch>
-    </Router>
+    <CartProvider>
+      <Router>
+        <Switch>
+          {route.map(({ component: Component, path, ...rest }) =>
+            <Route key={path} component={Component} path={path} {...rest} />
+          )}
+        </Switch>
+      </Router>
+    </CartProvider>
   );
 }
 

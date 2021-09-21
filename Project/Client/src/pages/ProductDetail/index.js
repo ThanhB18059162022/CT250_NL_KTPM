@@ -6,41 +6,51 @@ import Footer from "../../components/Paritals/Footer"
 import ProductModalDetail from "../../components/Paritals/ProductModalDetail"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-const ProductDetail = (props)=>{
-    const {id} = useParams()
-    const [show,setShow] = useState(false)
-    const showDetail = () =>{
+import { caller } from "../../api_services/servicesContainer"
+import Notifications from "../../common/Notifications"
+const ProductDetail = (props) => {
+    const { id } = useParams()
+    const [show, setShow] = useState(false)
+
+    const [product, setProduct] = useState(null)
+    const showDetail = () => {
         setShow(true)
         window.scrollTo({
-            left:0,
-            top:0,
-            behavior:'smooth'
+            left: 0,
+            top: 0,
+            behavior: 'smooth'
         })
     }
 
     useEffect(() => {
-        //call product API here
-        window.scrollTo({
-            left:0,
-            top:0,
-            behavior:'smooth'
-        })
+        (async () => {
+            let data = await caller.get(`products/${id}`)
+            setProduct(data)
+            window.scrollTo({
+                left: 0,
+                top: 0,
+                behavior: 'smooth'
+            })
+        })()
     }, [id])
 
-    return(
+    return (
         <div className="Home">
-            <SearchHeader/>
-            <br/>
+            <SearchHeader />
+            <br />
             <div className="home-body-content">
-             <ProductBox/>
-             <br/>
-             <DetailAndRate showDetail= {showDetail}/>
-             <br/>
-            <ProductSuggestion/>
+                {product !== null && <>
+                    <ProductBox product={product} />
+                    <br />
+                    <DetailAndRate showDetail={showDetail} />
+                    <br />
+                    <ProductSuggestion  arr={[]}/>
+                </>
+                }
             </div>
-           
+
             <ProductModalDetail active={show} productId={1} setActive={setShow} />
-            <Footer/>
+            <Footer />
         </div>
     )
 }

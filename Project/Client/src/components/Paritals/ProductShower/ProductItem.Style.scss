@@ -7,10 +7,10 @@
     overflow: hidden;
     border-radius: 10px;
     background: white;
-    transition: all ease .5s;
+    transition: all ease .3s;
     &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.425);
+        transform: translateY(-5px);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.596);
     }
     img {
         width: 120%;
