@@ -1,8 +1,8 @@
 import ApiCaller from "../ApiCaller";
-import StripePaymentService from "./StripePaymentService";
-const payService = new StripePaymentService(new ApiCaller());
+import ZaloPaymentService from "./ZaloPaymentService";
+const payService = new ZaloPaymentService(new ApiCaller());
 
-export default function StripePayment() {
+export default function ZaloPayment() {
   // Mảng sản phẩm phải có 2 trường là id và số lượng
   const products = [
     {
@@ -18,7 +18,7 @@ export default function StripePayment() {
   async function checkOut() {
     // Thông tin khác hàng
     const customer = {
-      cus_name: "Alexander Stripe",
+      cus_name: "Alexander Zalo",
       cus_id: "555555555",
       cus_email: "alex@gmail.com",
       cus_sex: true,
@@ -38,7 +38,7 @@ export default function StripePayment() {
 
   return (
     <>
-      <button onClick={checkOut}>Tính tiền</button>
+      <button onClick={checkOut}>Tính tiền Zalo</button>
     </>
   );
 }

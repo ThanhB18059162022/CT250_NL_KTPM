@@ -1,13 +1,9 @@
 const PaymentController = require("../PaymentController");
 
 module.exports = class PayPalPaymentController extends PaymentController {
-  // Lưu các đơn hàng chưa thanh toán
-  static storedOrders = new Map();
+  constructor(validator, dao, exchangeService, payPalSerivce) {
+    super(validator, dao, exchangeService);
 
-  constructor(validator, payPalSerivce, dao, exchangeService) {
-    super(dao, exchangeService);
-
-    this.validator = validator;
     this.payPalSerivce = payPalSerivce;
   }
 
@@ -49,7 +45,7 @@ module.exports = class PayPalPaymentController extends PaymentController {
 
     // Lưu tạm đơn hàng
     const tempOrder = {
-      id: orderID,
+      id: orderID, // Xài luôn id của paypal khỏi tạo
       customer,
       orderProducts,
       total,
@@ -57,28 +53,6 @@ module.exports = class PayPalPaymentController extends PaymentController {
     this.storeOrder(tempOrder);
 
     return res.status(201).json({ orderID });
-  };
-
-  // Save tạm thông tin order vào ram sẽ xóa sau 1 ngày
-  storeOrder = (tempOrder) => {
-    const order = {
-      ...tempOrder,
-      paid: false, // Chưa trả tiền
-      createTime: new Date(), // Thời gian tạo đơn hàng
-    };
-
-    const { storedOrders } = PayPalPaymentController;
-
-    // Save bằng paypal id
-    storedOrders.set(order.id, order);
-
-    // Số mili giây 1 ngày
-    const miliSecInDay = 86400000;
-
-    // Xóa order
-    setTimeout(() => {
-      storedOrders.delete(order.id);
-    }, miliSecInDay);
   };
 
   //#endregion

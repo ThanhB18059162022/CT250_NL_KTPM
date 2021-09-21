@@ -8,10 +8,11 @@ const { payment } = require("../../../config");
 const { errorCatch } = require("../../routerErrorHandler");
 
 const {
-  PayPalPaymentController,
-  PayPalService,
+  ZaloPayPaymentController,
+  ZaloPayService,
   PaymentValidator,
   CurrencyExchangeService,
+  ApiCaller,
 } = require("../../../controllers/controllersContainer");
 
 const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
@@ -19,10 +20,11 @@ const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
-const service = new PayPalService(payment.paypal);
+const apiCaller = new ApiCaller();
+const service = new ZaloPayService(payment.zalo, apiCaller);
 const validator = new PaymentValidator();
 const exService = new CurrencyExchangeService(payment.currency);
-const controller = new PayPalPaymentController(
+const controller = new ZaloPayPaymentController(
   validator,
   dao,
   exService,
@@ -31,10 +33,8 @@ const controller = new PayPalPaymentController(
 
 //#endregion
 
-router.route("/clientId").get(errorCatch(controller.getClientId));
-
 router.route("/createOrder").post(errorCatch(controller.createOrder));
 
-router.route("/captureOrder/:orderID").get(errorCatch(controller.captureOrder));
+router.route("/checkoutOrder/:id").get(errorCatch(controller.checkoutOrder));
 
 module.exports = router;

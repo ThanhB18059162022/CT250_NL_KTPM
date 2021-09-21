@@ -1,29 +1,20 @@
-const StripePaymentController = require("../../../app/controllers/payments_controller/stripe_payments/StripePaymentController");
+const ZaloPayPaymentController = require("../../../app/controllers/payments_controller/zalopay_payments/ZaloPayPaymentController");
 const {
   ResponseMock,
   PaymentValidatorMock,
   PaymentDAOMock,
   CurrencyExchangeServiceMock,
 } = require("../controllerTestHelper");
-// Kiểm tra các api end-points của Stripe Payment
-
-class StripePaymentControllerFake extends StripePaymentController {
-  getOrderId = jest.fn(() => {
-    return 1;
-  });
-}
 
 //#region  INIT
 
-class StripeServiceMock {
-  createOrder = jest.fn(() => {
-    return "wtf";
-  });
-
-  saveOrder = jest.fn();
+class ZaloPayServiceMock {
+  createOrder = jest.fn();
 }
 
 //#endregion
+
+// Test cái api end-point của Thanh toán Zalo
 
 let validatorMock;
 let serviceMock;
@@ -31,7 +22,7 @@ let daoMock;
 let exServiceMock;
 
 function getController() {
-  return new StripePaymentControllerFake(
+  return new ZaloPayPaymentController(
     validatorMock,
     daoMock,
     exServiceMock,
@@ -47,7 +38,7 @@ function getController() {
 describe("Tạo đơn hàng", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
-    serviceMock = new StripeServiceMock();
+    serviceMock = new ZaloPayServiceMock();
     daoMock = new PaymentDAOMock();
     exServiceMock = new CurrencyExchangeServiceMock();
   });
@@ -96,32 +87,9 @@ describe("Tạo đơn hàng", () => {
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
-  test("Thiếu cancelUrl - 400", async () => {
-    //Arrange
-    const cart = { products: [] };
-    const controller = getController();
-
-    const reqMock = {
-      body: cart,
-      query: { successUrl: "aaa" },
-      headers: {},
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400 };
-    const actRes = await controller.createOrder(reqMock, resMock);
-
-    //Expect
-    expect(validatorMock.validateCart).toBeCalledTimes(1);
-    expect(validatorMock.validateUrl).toBeCalledTimes(2);
-    expect(resMock.json).toBeCalledTimes(1);
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-  });
-
   test("Lấy id", async () => {
     //Arrange
-    const controller = new StripePaymentController();
+    const controller = new ZaloPayPaymentController();
 
     //Act
     const id = controller.getOrderId();
@@ -133,7 +101,7 @@ describe("Tạo đơn hàng", () => {
 
   test("Tạo thành công - 201", async () => {
     //Arrange
-    const cart = { products: [{ prod_pice: 2000 }] };
+    const cart = { products: [{ prod_pice: 2000 }], customer: {} };
     const controller = getController();
 
     const reqMock = {
@@ -157,7 +125,6 @@ describe("Tạo đơn hàng", () => {
     expect(validatorMock.validateCart).toBeCalledTimes(1);
     expect(serviceMock.createOrder).toBeCalledTimes(1);
     expect(daoMock.getOrderProduct).toBeCalledTimes(1);
-    expect(exServiceMock.convert).toBeCalledTimes(1);
 
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
@@ -165,7 +132,7 @@ describe("Tạo đơn hàng", () => {
 
   test("Tạo thành công order hết hạng sau 1 ngày", async () => {
     //Arrange
-    const cart = { products: [] };
+    const cart = { products: [], customer: {} };
     const controller = getController();
 
     const reqMock = {
@@ -197,7 +164,7 @@ describe("Tạo đơn hàng", () => {
 
   test("Tạo thành công order hết hạng sau 1 ngày", async () => {
     //Arrange
-    const cart = { products: [] };
+    const cart = { products: [], customer: {} };
     const controller = getController();
 
     const reqMock = {
@@ -231,7 +198,7 @@ describe("Tạo đơn hàng", () => {
 describe("Lưu đơn hàng đã thanh toán", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
-    serviceMock = new StripeServiceMock();
+    serviceMock = new ZaloPayServiceMock();
     daoMock = new PaymentDAOMock();
   });
 
@@ -312,7 +279,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     resMock.writeHead = jest.fn();
     resMock.end = jest.fn();
 
-    const { storedOrders } = StripePaymentController;
+    const { storedOrders } = ZaloPayPaymentController;
     storedOrders.set(id, {});
 
     //Act

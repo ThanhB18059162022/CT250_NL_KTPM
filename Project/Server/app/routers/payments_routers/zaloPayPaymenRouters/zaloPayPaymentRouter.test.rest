@@ -1,0 +1,44 @@
+# Extension REST Client
+
+# Mỗi Request cách nhau 3 dấu '#'
+
+# Tạo order
+
+### 1 Hợp lệ - 201
+POST http://localhost:8000/api/zalo/createorder?successUrl=http://localhost:3000
+Content-Type: application/json
+
+{
+    // Thông tin khác hàng
+    "customer": {
+    "cus_name": "Alexander",
+    "cus_id": "555555555",
+    "cus_email": "alex@gmail.com",
+    "cus_sex": true,
+    "cus_address": "3/2 Ninh Kiều Cần Thơ",
+    "cus_phoneNumber": "0000000000"
+    },
+
+    // Mảng nhận id và số lượng
+    "products":[
+        {"prod_no": 1, "prod_quantity": 10},
+        {"prod_no": 2, "prod_quantity": 2}
+    ],
+    "url": {
+        "success": "http://localhost:3000",
+        "cancel": "http://localhost:3000"
+    }
+}
+
+# Thanh toán
+
+### 1 Đã thanh toán rồi - 500
+
+GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?successUrl=http://localhost
+
+    
+### 2 Không hợp lệ id < 64 - 400
+GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe4
+
+### 2 Không hợp lệ id > 64 - 400
+GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efeA11
