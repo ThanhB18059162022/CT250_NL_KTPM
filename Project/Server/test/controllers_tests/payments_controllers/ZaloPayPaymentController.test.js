@@ -101,7 +101,7 @@ describe("Tạo đơn hàng", () => {
 
   test("Tạo thành công - 201", async () => {
     //Arrange
-    const cart = { products: [{ prod_pice: 2000 }] };
+    const cart = { products: [{ prod_pice: 2000 }], customer: {} };
     const controller = getController();
 
     const reqMock = {
@@ -132,7 +132,7 @@ describe("Tạo đơn hàng", () => {
 
   test("Tạo thành công order hết hạng sau 1 ngày", async () => {
     //Arrange
-    const cart = { products: [] };
+    const cart = { products: [], customer: {} };
     const controller = getController();
 
     const reqMock = {
@@ -164,7 +164,7 @@ describe("Tạo đơn hàng", () => {
 
   test("Tạo thành công order hết hạng sau 1 ngày", async () => {
     //Arrange
-    const cart = { products: [] };
+    const cart = { products: [], customer: {} };
     const controller = getController();
 
     const reqMock = {

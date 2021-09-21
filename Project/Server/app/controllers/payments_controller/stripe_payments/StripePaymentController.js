@@ -6,8 +6,8 @@ module.exports = class StripePaymentController extends PaymentController {
   // Lưu các order đã đặt mà chưa thanh toán
   static storedOrders = new Map();
 
-  constructor(validator, stripeSerivce, dao, currencyService) {
-    super(dao, currencyService);
+  constructor(validator, stripeSerivce, dao, exchangeService) {
+    super(dao, exchangeService);
 
     this.validator = validator;
     this.stripeService = stripeSerivce;
