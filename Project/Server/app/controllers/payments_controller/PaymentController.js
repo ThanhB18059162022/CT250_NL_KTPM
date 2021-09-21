@@ -1,13 +1,32 @@
+const crypto = require("crypto");
+
 // Abstract class
 module.exports = class PaymentController {
-  constructor(dao, exchangeService) {
+  // Lưu các order đã đặt mà chưa thanh toán sẽ xóa sau 1 ngày
+  static storedOrders = new Map();
+
+  constructor(validator, dao, exchangeService) {
     if (this.constructor === PaymentController) {
       throw new Error("Abstract classes can't be instantiated.");
     }
 
+    this.validator = validator;
     this.dao = dao;
     this.exchangeService = exchangeService;
   }
+
+  // Tạo id dài 64 ký tự cho đơn hàng
+  getOrderId = () => {
+    const { storedOrders } = PaymentController;
+
+    // Tạo id cho order theo số lượng order trong danh sách + thời gian
+    const id = crypto
+      .createHash("sha256")
+      .update(storedOrders.size + new Date())
+      .digest("hex");
+
+    return id;
+  };
 
   // Lấy ra danh sách sản phẩm đặt hàng
   // Có giá tiền trong CSDL
@@ -39,6 +58,28 @@ module.exports = class PaymentController {
 
     // Lấy 2 số sau số 0
     return this.exchangeService.roundTakeTwo(total);
+  };
+
+  // Lưu tạm thông tin order vào ram sẽ xóa sau 1 ngày
+  storeOrder = (tempOrder) => {
+    const order = {
+      ...tempOrder,
+      paid: false, // Chưa trả tiền
+      createTime: new Date(), // Thời gian tạo đơn
+    };
+
+    const { storedOrders } = PaymentController;
+
+    // Save bằng paypal id
+    storedOrders.set(order.id, order);
+
+    // Số mili giây 1 ngày
+    const miliSecInDay = 86400000;
+
+    // Xóa order
+    setTimeout(() => {
+      storedOrders.delete(order.id);
+    }, miliSecInDay);
   };
 
   // Lưu đơn hàng

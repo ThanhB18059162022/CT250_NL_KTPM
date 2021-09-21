@@ -27,7 +27,7 @@ class PaymentValidatorMock {
     return { hasAnyError: id === undefined };
   });
 
-  validateStripeOrderId = jest.fn((id) => {
+  validateId = jest.fn((id) => {
     return { hasAnyError: id === undefined };
   });
 

@@ -19,7 +19,7 @@ let daoMock;
 let serviceMock;
 
 function getController() {
-  return new PaymentControllerObject(daoMock, serviceMock);
+  return new PaymentControllerObject(null, daoMock, serviceMock);
 }
 
 describe("Abstract Test", () => {

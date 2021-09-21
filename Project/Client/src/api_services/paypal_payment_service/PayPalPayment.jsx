@@ -75,7 +75,7 @@ const PayPalPayment = () => {
   async function creatOrderForPayment() {
     // Thông tin khác hàng
     const customer = {
-      cus_name: "Alexander",
+      cus_name: "Alexander PayPal",
       cus_id: "555555555",
       cus_email: "alex@gmail.com",
       cus_sex: true,

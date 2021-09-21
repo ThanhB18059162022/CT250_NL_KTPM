@@ -33,9 +33,9 @@ let exServiceMock;
 function getController() {
   return new StripePaymentControllerFake(
     validatorMock,
-    serviceMock,
     daoMock,
-    exServiceMock
+    exServiceMock,
+    serviceMock
   );
 }
 
@@ -250,7 +250,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     const actRes = await controller.checkoutOrder(reqMock, resMock);
 
     //Expect
-    expect(validatorMock.validateStripeOrderId).toBeCalledTimes(1);
+    expect(validatorMock.validateId).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
@@ -271,7 +271,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     const actRes = await controller.checkoutOrder(reqMock, resMock);
 
     //Expect
-    expect(validatorMock.validateStripeOrderId).toBeCalledTimes(1);
+    expect(validatorMock.validateId).toBeCalledTimes(1);
     expect(validatorMock.validateUrl).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
@@ -293,7 +293,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     const actRes = await controller.checkoutOrder(reqMock, resMock);
 
     //Expect
-    expect(validatorMock.validateStripeOrderId).toBeCalledTimes(1);
+    expect(validatorMock.validateId).toBeCalledTimes(1);
     expect(validatorMock.validateUrl).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
@@ -319,7 +319,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     await controller.checkoutOrder(reqMock, resMock);
 
     //Expect
-    expect(validatorMock.validateStripeOrderId).toBeCalledTimes(1);
+    expect(validatorMock.validateId).toBeCalledTimes(1);
     expect(daoMock.saveOrder).toBeCalledTimes(1);
     expect(resMock.end).toBeCalledTimes(1);
   });

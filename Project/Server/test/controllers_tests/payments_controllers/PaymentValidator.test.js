@@ -760,7 +760,7 @@ describe("Kiểm tra PayPal OrderID hợp lệ", () => {
   });
 });
 
-describe("Kiểm tra stripe OrderId hợp lệ", () => {
+describe("Kiểm tra OrderId hợp lệ", () => {
   test("Không có orderId", () => {
     //Arrange
     const orderId = undefined;
@@ -769,7 +769,7 @@ describe("Kiểm tra stripe OrderId hợp lệ", () => {
 
     //Act
     const expRs = failed;
-    const actRs = validator.validateStripeOrderId(orderId).hasAnyError;
+    const actRs = validator.validateId(orderId).hasAnyError;
 
     //Expect
     expect(actRs).toEqual(expRs);
@@ -783,7 +783,7 @@ describe("Kiểm tra stripe OrderId hợp lệ", () => {
 
     //Act
     const expRs = failed;
-    const actRs = validator.validateStripeOrderId(orderId).hasAnyError;
+    const actRs = validator.validateId(orderId).hasAnyError;
 
     //Expect
     expect(actRs).toEqual(expRs);
@@ -798,7 +798,7 @@ describe("Kiểm tra stripe OrderId hợp lệ", () => {
 
     //Act
     const expRs = failed;
-    const actRs = validator.validateStripeOrderId(orderId).hasAnyError;
+    const actRs = validator.validateId(orderId).hasAnyError;
 
     //Expect
     expect(actRs).toEqual(expRs);
@@ -813,7 +813,7 @@ describe("Kiểm tra stripe OrderId hợp lệ", () => {
 
     //Act
     const expRs = failed;
-    const actRs = validator.validateStripeOrderId(orderId).hasAnyError;
+    const actRs = validator.validateId(orderId).hasAnyError;
 
     //Expect
     expect(actRs).toEqual(expRs);

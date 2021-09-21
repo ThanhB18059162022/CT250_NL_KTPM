@@ -3,13 +3,15 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import PayPalPayment from "./api_services/paypal_payment_service/PayPalPayment";
 import StripePayment from "./api_services/stripe_payment/StripePayment";
+import ZaloPayment from "./api_services/zalopay_payment/ZaloPayment";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
     {/* <PayPalPayment /> */}
     {/* <StripePayment /> */}
+    <ZaloPayment />
   </React.StrictMode>,
   document.getElementById("root")
 );

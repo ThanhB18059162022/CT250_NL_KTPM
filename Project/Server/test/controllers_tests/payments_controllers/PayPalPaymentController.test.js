@@ -46,9 +46,9 @@ class PayPalPaymentControllerFake extends PayPalPaymentController {
 function getController() {
   return new PayPalPaymentControllerFake(
     validatorMock,
-    payPalServiceMock,
     daoMock,
-    exServiceMock
+    exServiceMock,
+    payPalServiceMock
   );
 }
 

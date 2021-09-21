@@ -26,9 +26,9 @@ const validator = new PaymentValidator();
 const exService = new CurrencyExchangeService(payment.currency);
 const controller = new ZaloPayPaymentController(
   validator,
-  service,
   dao,
-  exService
+  exService,
+  service
 );
 
 //#endregion
