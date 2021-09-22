@@ -146,6 +146,43 @@ module.exports = class ProductsDAO_Ram {
     return prods;
   };
 
+  getProductsByPrice = async (min, max, startIndex, endIndex) => {
+    let prods = products
+      .filter((p) => this.inRange(p, min, max))
+      .slice(startIndex, endIndex)
+      .map((p) => {
+        const {
+          prod_no,
+          prod_name,
+          prod_imgs,
+          prod_hardwareAndOS,
+          prod_batteryAndCharger,
+          prod_details,
+        } = p;
+
+        const even = prod_no % 2;
+
+        return {
+          prod_no,
+          prod_name,
+          prod_screen: this.getScreenSize(p),
+          prod_cpu: prod_hardwareAndOS.cpu,
+          prod_ram: prod_details[even].ram,
+          prod_battery: prod_batteryAndCharger.battery,
+          prod_img: prod_imgs[0],
+          prod_price: prod_details[even].price,
+        };
+      });
+
+    return prods;
+  };
+
+  inRange = (p, min, max) => {
+    const { price } = p.prod_details[0];
+
+    return price >= min && price <= max;
+  };
+
   getScreenSize = (product) => {
     // Kích thước màn hình dạng 7.6'
     const rgx_screen = /\d\.\d'/;

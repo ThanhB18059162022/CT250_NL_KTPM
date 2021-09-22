@@ -13,12 +13,11 @@ module.exports = class Controller {
   // Tham khảo https://www.youtube.com/watch?v=ZX3qt0UWifc&list=PLYgHz24Rupn93bdW1uJszXkUh2h52dzn1
   getStartEndIndex = (page, limit) => {
     page = parseInt(page);
-    limit = parseInt(limit);
-
     if (isNaN(page)) {
       page = 1;
     }
 
+    limit = parseInt(limit);
     if (isNaN(limit)) {
       limit = 1;
     }

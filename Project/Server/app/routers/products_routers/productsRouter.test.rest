@@ -15,6 +15,23 @@ GET http://localhost:8000/api/products?page=wtf&limit=1
 GET http://localhost:8000/api/products?page=1&limit=wtf
 
 
+# Lấy danh sách theo mức giá
+### 1 Mặc định lấy tất
+GET http://localhost:8000/api/products/price/
+
+### 2 Lấy theo khoảng giá và số trang
+GET http://localhost:8000/api/products/price/?min=41990000&max=44990000&page=1&limit=2
+
+
+### 3 Min không phải số
+GET http://localhost:8000/api/products/price/?min=wtf&max=44990000&page=1&limit=2
+
+### 3 Max không phải số
+GET http://localhost:8000/api/products/price/?min=41990000&max=wtf&page=1&limit=2
+
+
+
+
 
 # ---------------------------------------------------------------------
 
