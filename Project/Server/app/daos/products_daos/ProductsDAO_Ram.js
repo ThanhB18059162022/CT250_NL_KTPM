@@ -1,9 +1,8 @@
 const products = [];
-const cfg = require("../../config");
 
 // https://www.thegioididong.com/dtdd/samsung-galaxy-z-fold-3
 module.exports = class ProductsDAO_Ram {
-  constructor() {
+  constructor(baseImgUri) {
     for (let i = 1; i <= 100; i++) {
       const product = {
         prod_no: i,
@@ -35,11 +34,6 @@ module.exports = class ProductsDAO_Ram {
           cpu: "Snapdragon 888 8 nhân",
           cpuSpec: "1 nhân 2.84 GHz, 3 nhân 2.42 GHz & 4 nhân 1.8 GHz",
           gpu: "Adreno 660",
-        },
-        prod_ramAndStorage: {
-          ram: "12 GB",
-          storage: "256 GB",
-          storageAvailable: "223 GB",
         },
         prod_network: {
           telecom: "5G",
@@ -103,8 +97,21 @@ module.exports = class ProductsDAO_Ram {
           },
         ],
         prod_status: "",
-        prod_img: [`${cfg.baseUri}/img/${1}/prod_img.png`],
-        prod_price: 44990000,
+        prod_imgs: [`${baseImgUri}/img/${1}/prod_img.png`],
+        prod_details: [
+          {
+            ram: "12 GB",
+            storage: "256 GB",
+            storageAvailable: "223 GB",
+            price: 41990000,
+          },
+          {
+            ram: "12 GB",
+            storage: "512 GB",
+            storageAvailable: "480 GB",
+            price: 44990000,
+          },
+        ],
       };
 
       products.push(product);
@@ -112,16 +119,29 @@ module.exports = class ProductsDAO_Ram {
   }
 
   getProducts = async (startIndex, endIndex) => {
-    let prods = products.slice(startIndex, endIndex).map((p) => ({
-      prod_no: p.prod_no,
-      prod_name: p.prod_name,
-      prod_screen: this.getScreenSize(p),
-      prod_cpu: p.prod_hardwareAndOS.cpu,
-      prod_ram: p.prod_ramAndStorage.ram,
-      prod_battery: p.prod_batteryAndCharger.battery,
-      prod_img: p.prod_img,
-      prod_price: p.prod_price,
-    }));
+    let prods = products.slice(startIndex, endIndex).map((p) => {
+      const {
+        prod_no,
+        prod_name,
+        prod_imgs,
+        prod_hardwareAndOS,
+        prod_batteryAndCharger,
+        prod_details,
+      } = p;
+
+      const even = prod_no % 2;
+
+      return {
+        prod_no,
+        prod_name,
+        prod_screen: this.getScreenSize(p),
+        prod_cpu: prod_hardwareAndOS.cpu,
+        prod_ram: prod_details[even].ram,
+        prod_battery: prod_batteryAndCharger.battery,
+        prod_img: prod_imgs[0],
+        prod_price: prod_details[even].price,
+      };
+    });
 
     return prods;
   };
