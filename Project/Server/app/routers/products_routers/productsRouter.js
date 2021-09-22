@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { baseImgUri } = require("../../config");
 
 // Router gán các endpoints vào ProductsController
 
@@ -15,7 +16,7 @@ const {
 // Lớp truy cập CSDL
 const { ProductsDAO } = require("../../daos/daosContainer");
 
-const dao = new ProductsDAO();
+const dao = new ProductsDAO(baseImgUri);
 const validator = new ProductsValidator();
 const controller = new ProductsController(validator, dao);
 
