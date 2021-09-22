@@ -2,6 +2,9 @@
 
 GET http://localhost:8000/api/notes?page=2&limit=5
 
+###
+GET http://localhost:8000/api/notes/ex/?max=1200&min=10&page=2&limit=5
+
 # Lấy theo mã 
 ### products/1
 GET http://localhost:8000/api/notes/1

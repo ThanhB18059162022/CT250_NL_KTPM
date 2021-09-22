@@ -42,6 +42,19 @@ module.exports = class NotesController {
     return res.json(rs);
   };
 
+  getListEx = async (req, res) => {
+    console.log(req.query);
+    const { page, limit } = req.query;
+
+    const rs = await getPaginatedResults(
+      async (s, e) => arr.slice(s, e),
+      page,
+      limit
+    );
+
+    return res.json(rs);
+  };
+
   //Lấy theo id
   getById = (req, res) => {
     const id = req.params.id;

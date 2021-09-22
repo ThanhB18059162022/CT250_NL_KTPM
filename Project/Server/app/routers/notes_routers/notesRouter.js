@@ -20,6 +20,7 @@ const { NotesController } = require("../../controllers/controllersContainer");
 let controller = new NotesController();
 
 router.route("/").get(errorCatch(controller.getList)).post(controller.post);
+router.route("/ex").get(errorCatch(controller.getListEx));
 
 router
   .route("/:id")
