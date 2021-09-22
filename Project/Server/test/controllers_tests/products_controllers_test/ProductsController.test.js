@@ -309,6 +309,96 @@ describe("List Lấy danh sách sản phẩm", () => {
     expect(resMock.json).toBeCalledWith({ items: products });
   });
 
+  test("Lấy danh sách sản phẩm theo mức giá (200) - min không phải số ", async () => {
+    //Arrange
+    const max = 100;
+    const min = "wtf";
+    const page = 2;
+    const limit = 3;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const products = ProductsDAOMock.products.slice(startIndex, endIndex);
+
+    const reqMock = {
+      query: { max, min, page, limit },
+    };
+
+    const previous = { page: page - 1, limit };
+    const response = {
+      statusCode: 200,
+      body: { items: products, previous },
+    };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.getProductsByPrice(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toBeDefined();
+    expect(actRes.length).toEqual(expRes.length);
+    expect(actRes).toEqual(expRes);
+
+    expect(daoMock.getProductsByPrice).toBeCalledTimes(1);
+    expect(daoMock.getProductsByPrice).toBeCalledWith(
+      0,
+      max,
+      startIndex,
+      endIndex
+    );
+
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledWith({ items: products, previous });
+  });
+
+  test("Lấy danh sách sản phẩm theo mức giá (200) - max không phải là số ", async () => {
+    //Arrange
+    const max = "wtf";
+    const min = 10;
+    const page = 2;
+    const limit = 3;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const products = ProductsDAOMock.products.slice(startIndex, endIndex);
+
+    const reqMock = {
+      query: { max, min, page, limit },
+    };
+
+    const previous = { page: page - 1, limit };
+    const response = {
+      statusCode: 200,
+      body: { items: products, previous },
+    };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.getProductsByPrice(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toBeDefined();
+    expect(actRes.length).toEqual(expRes.length);
+    expect(actRes).toEqual(expRes);
+
+    expect(daoMock.getProductsByPrice).toBeCalledTimes(1);
+    expect(daoMock.getProductsByPrice).toBeCalledWith(
+      min,
+      0,
+      startIndex,
+      endIndex
+    );
+
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledWith({ items: products, previous });
+  });
+
   test("Lấy danh sách sản phẩm theo mức giá (200) ", async () => {
     //Arrange
     const max = 100;

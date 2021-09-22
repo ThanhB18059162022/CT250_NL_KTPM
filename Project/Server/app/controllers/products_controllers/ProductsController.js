@@ -29,12 +29,22 @@ module.exports = class ProductsController extends Controller {
 
   // Lấy danh sách theo mức giá trở xuống
   getProductsByPrice = async (req, res) => {
-    const {
+    let {
       min = 0,
       max = Number.MAX_SAFE_INTEGER,
       page = 1,
       limit = 24,
     } = req.query;
+
+    min = parseInt(min);
+    if (isNaN(min)) {
+      min = 0;
+    }
+
+    max = parseInt(max);
+    if (isNaN(max)) {
+      max = 0;
+    }
 
     const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
 
