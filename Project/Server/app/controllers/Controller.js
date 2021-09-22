@@ -15,6 +15,14 @@ module.exports = class Controller {
     page = parseInt(page);
     limit = parseInt(limit);
 
+    if (isNaN(page)) {
+      page = 1;
+    }
+
+    if (isNaN(limit)) {
+      limit = 1;
+    }
+
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 

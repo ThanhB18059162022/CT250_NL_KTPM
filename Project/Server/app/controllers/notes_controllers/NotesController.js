@@ -1,8 +1,6 @@
-const { number } = require("joi");
 const Joi = require("joi");
+const Controller = require("../Controller");
 // Tham khảo https://joi.dev/api/?v=17.4.2
-
-const { getPaginatedResults } = require("../controllerHelper");
 
 const arr = [];
 
@@ -13,8 +11,10 @@ class Err extends Error {
 }
 
 class E extends Error {}
-module.exports = class NotesController {
+module.exports = class NotesController extends Controller {
   constructor() {
+    super();
+
     for (let i = 1; i <= 100; i++) {
       const memo = {
         id: i,
@@ -33,11 +33,11 @@ module.exports = class NotesController {
   getList = async (req, res) => {
     const { page, limit } = req.query;
 
-    const rs = await getPaginatedResults(
-      async (s, e) => arr.slice(s, e),
-      page,
-      limit
-    );
+    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+
+    const notes = arr.slice(startIndex, endIndex);
+
+    const rs = this.getPaginatedResults(notes, page, limit);
 
     return res.json(rs);
   };
