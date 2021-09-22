@@ -8,10 +8,10 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
+    <App />
     {/* <PayPalPayment /> */}
     {/* <StripePayment /> */}
-    <ZaloPayment />
+    {/* <ZaloPayment /> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

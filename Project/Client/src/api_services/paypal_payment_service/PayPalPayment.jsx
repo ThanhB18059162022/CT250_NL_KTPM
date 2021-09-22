@@ -29,7 +29,6 @@ const PayPalPayment = () => {
   // Chưa coi dispose
   useEffect(() => {
     addScript();
-
     displayButton();
   });
 
@@ -106,11 +105,11 @@ const PayPalPayment = () => {
   function renderProductInfo() {
     const product = products[0];
     return (
-      <div>
-        <h1>Buy this picture for ${product.price}</h1>
+      <div style={{maxWidth:'100px'}}>
+        {/* <h1>Buy this picture for ${product.price}</h1>
         <p>{product.description}</p>
-        <img src={img} alt="beautiful girl" />
-        <div ref={(v) => (payPalRef = v)}> Hello</div>
+        <img src={img} alt="beautiful girl" /> */}
+        <div ref={(v) => (payPalRef = v)}></div>
       </div>
     );
   }
