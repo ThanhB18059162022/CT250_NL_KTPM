@@ -1,11 +1,10 @@
-const {
-  getPaginatedResults,
-  getDuplicateResult,
-} = require("../controllerHelper");
+const Controller = require("../Controller");
 
-module.exports = class ModeratorsControllers {
+module.exports = class ModeratorsControllers extends Controller {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
   constructor(validator, dao) {
+    super();
+
     this.validator = validator;
     this.dao = dao;
   }
@@ -16,11 +15,11 @@ module.exports = class ModeratorsControllers {
   getModerators = async (req, res) => {
     const { page = 1, limit = 10 } = req.query;
 
-    const moderatorsPage = await getPaginatedResults(
-      this.dao.getModerators,
-      page,
-      limit
-    );
+    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+
+    const moderators = await this.dao.getModerators(startIndex, endIndex);
+
+    const moderatorsPage = this.getPaginatedResults(moderators, page, limit);
 
     return res.json(moderatorsPage);
   };
@@ -113,19 +112,19 @@ module.exports = class ModeratorsControllers {
       newModerator.mod_phoneNumber
     );
     if (existPhoneNumber) {
-      return res.status(400).json(getDuplicateResult("prod_phoneNumber"));
+      return res.status(400).json(this.getDuplicateResult("prod_phoneNumber"));
     }
 
     // Số CMND tồn tại
     const existMod_Id = await this.existMod_Id(newModerator.mod_id);
     if (existMod_Id) {
-      return res.status(400).json(getDuplicateResult("mod_id"));
+      return res.status(400).json(this.getDuplicateResult("mod_id"));
     }
 
     // Tài khoản tồn tại
     const existUsername = await this.existUsername(newModerator.mod_username);
     if (existUsername) {
-      return res.status(400).json(getDuplicateResult("mod_username"));
+      return res.status(400).json(this.getDuplicateResult("mod_username"));
     }
 
     const moderator = await this.dao.addModerator(newModerator);
@@ -205,7 +204,7 @@ module.exports = class ModeratorsControllers {
       existPhoneNumber &&
       this.notOldModeratorInfo(moderator, moderatorHasPhoneNumber)
     ) {
-      return res.status(400).json(getDuplicateResult("mod_phoneNumber"));
+      return res.status(400).json(this.getDuplicateResult("mod_phoneNumber"));
     }
 
     // Số CMND tồn tại
@@ -219,7 +218,7 @@ module.exports = class ModeratorsControllers {
       existMod_Id &&
       this.notOldModeratorInfo(moderator, moderatorHasMod_Id)
     ) {
-      return res.status(400).json(getDuplicateResult("mod_id"));
+      return res.status(400).json(this.getDuplicateResult("mod_id"));
     }
 
     //#endregion

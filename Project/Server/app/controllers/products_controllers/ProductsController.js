@@ -1,30 +1,58 @@
-const {
-  getPaginatedResults,
-  getDuplicateResult,
-} = require("../controllerHelper");
+const Controller = require("../Controller");
 
-module.exports = class ProductsController {
+module.exports = class ProductsController extends Controller {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
   constructor(validator, dao) {
+    super();
+
     this.validator = validator;
     this.dao = dao;
   }
 
   //#region GET
 
+  //#region  Danh sách
+
   // Lấy danh sách
   // Số trang và số lượng
   getProducts = async (req, res) => {
     const { page = 1, limit = 24 } = req.query;
 
-    const productsPage = await getPaginatedResults(
-      this.dao.getProducts,
-      page,
-      limit
-    );
+    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+
+    const products = await this.dao.getProducts(startIndex, endIndex);
+
+    const productsPage = this.getPaginatedResults(products, page, limit);
 
     return res.json(productsPage);
   };
+
+  // Lấy danh sách theo mức giá trở xuống
+  getProductsByPrice = async (req, res) => {
+    const {
+      min = 0,
+      max = Number.MAX_SAFE_INTEGER,
+      page = 1,
+      limit = 24,
+    } = req.query;
+
+    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+
+    const products = await this.dao.getProductsByPrice(
+      min,
+      max,
+      startIndex,
+      endIndex
+    );
+
+    const productsPage = this.getPaginatedResults(products, page, limit);
+
+    return res.json(productsPage);
+  };
+
+  //#endregion
+
+  //#region  Chi tiết
 
   // Lấy theo mã sản phẩm
   getProductByNo = async (req, res) => {
@@ -65,6 +93,8 @@ module.exports = class ProductsController {
 
   //#endregion
 
+  //#endregion
+
   //#region ADD
 
   // Thêm sản phẩm
@@ -80,7 +110,7 @@ module.exports = class ProductsController {
     // Kiểm tra trùng tên sản phẩm khác
     const exist = await this.existName(newProduct.prod_name);
     if (exist) {
-      return res.status(400).json(getDuplicateResult("prod_name"));
+      return res.status(400).json(this.getDuplicateResult("prod_name"));
     }
 
     // Thêm vào CSDL trả về prod_no mới thêm
@@ -135,7 +165,7 @@ module.exports = class ProductsController {
       this.validator.existProduct(productHasName) &&
       this.notOldProduct(oldProduct, productHasName)
     ) {
-      return res.status(400).json(getDuplicateResult("prod_name"));
+      return res.status(400).json(this.getDuplicateResult("prod_name"));
     }
 
     return res.status(204).json({});
