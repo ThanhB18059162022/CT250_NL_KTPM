@@ -31,8 +31,5 @@ jobs:
 
       # Cài môi trường cho server
       - name: Cài đặt các npm package
-        run: cd ./Project/server | npm install
-
-      # Runs a set of commands using the runners shell
-      - name: Chạy test server
-        run: ./Project/server | npm test
+        run:  npm install | npm test
+        working-directory: /Project/server
