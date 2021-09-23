@@ -1,9 +1,10 @@
 import { faEye, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
 import FeedbackInformation from "./FeedbackInformation"
 import Notifications from "../../../../common/Notifications"
+import {caller} from "../../../../api_services/servicesContainer"
 
 const FeedbackList = () => {
     const cusStyle = {
@@ -60,6 +61,16 @@ const FeedbackList = () => {
             ]
         }
     ]
+
+    const [feedbacks, setFeedbacks] = useState([])
+    useEffect(()=>{
+        (async()=>{
+         let data =  await caller.get('moderators')
+         setFeedbacks(data.items.prod_feedbacks)
+        })(); // IIFE // Note setProduct([...products, item])
+    },[])
+
+    console.log(feedbacks)
 
     return(
         <>

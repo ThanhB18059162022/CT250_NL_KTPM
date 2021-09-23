@@ -1,126 +1,267 @@
 import "../Admin.Style.scss"
-import { AdminButton } from "../../../Controls"
-import { faSave } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import Notifications from "../../../../common/Notifications";
 
 const ProductInfo = (props) => {
-    const {productInfo} = props
-    const CusStyle = {
-        margin: "1% 5px 5px 12%"
-    };
-    const [show, setShow] = useState(false)
+    const {productFullInfo, setProductFullInfo, newProductFullInfo, setNewProductFullInfo} = props
 
-    const [notify, setNotify] = useState({
-        type :"INFORMATION", //CONFIRMATION, INFORMATION
-        title :"", // title of the notifications
-        content :"", // content of the notify
-        infoType :""
-    })
-
-    const notifySaveProduct = () =>{
-        setNotify({
-            ...notify,
-            title:"Thông báo",
-            content:"Đã lưu sản phẩm",
-            infoType:"SUCCESS"
-        })
-        setShow(true)
-    }
     return(
         <>
-        {productInfo?(
+        {productFullInfo?( 
             <>
-                <AdminButton style={CusStyle} ClickEvent={notifySaveProduct} IconName={faSave}/>
                 <div className="ProductInfo BorderFormat">
                     <p className="Title">Thông tin sản phẩm</p>
                     <form className="AddProductForm">
-                        <div className="InfoTitle">
-                            <p>Mã sản phẩm:</p>
-                            <input name="txtPropNo" type="text" disabled defaultValue={productInfo.prod_no}/> <br/>
-                        </div>
                         <div>
                             <p>Tên sản phẩm:</p>
-                            <input name="txtPropName" type="text" defaultValue={productInfo.prod_name}/> <br/>
+                            <input name="txtPropName" type="text" value={productFullInfo.prod_name} onChange={e=>setProductFullInfo({...productFullInfo, prod_name: e.target.value})}/> <br/>
                         </div>
                         <div>
-                            <p>Ngày sản xuất:</p>
-                            <input name="txtPropMFG" type="text"/> <br/>
+                            <p>Nhãn hiệu:</p>
+                            <input name="txtMFBrandName" type="text" value={productFullInfo.prod_manufacturer.brand_name} onChange={e=>setProductFullInfo({...productFullInfo, prod_manufacturer: {...productFullInfo.prod_manufacturer, brand_name: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Màn hình:</p>
-                            <input name="txtScreen" type="text"/> <br/>
+                            <p>Ngày ra mắt:</p>
+                            <input name="txtMFReleaseDate" type="text" value={productFullInfo.prod_manufacturer.releaseDate} onChange={e=>setProductFullInfo({...productFullInfo, prod_manufacturer: {...productFullInfo.prod_manufacturer, releaseDate: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Máy ảnh:</p>
-                            <input name="txtCamera" type="text"/> <br/>
+                            <p>Xuất xứ:</p>
+                            <input name="txtPropMadeIn" type="text" value={productFullInfo.prod_manufacturer.madeIn} onChange={e=>setProductFullInfo({...productFullInfo, prod_manufacturer: {...productFullInfo.prod_manufacturer, madeIn: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Kích thước:</p>
-                            <input name="txtSize" type="text"/> <br/>
+                            <p>Công nghệ màn hình:</p>
+                            <input name="txtScreenType" type="text" value={productFullInfo.prod_screen.type} onChange={e=>setProductFullInfo({...productFullInfo, prod_screen: {...productFullInfo.prod_screen, type:e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Pin:</p>
-                            <input name="txtBattery" type="text" defaultValue={productInfo.prod_battery}/> <br/>
+                            <p>Độ phân giải:</p>
+                            <input name="txtScreenResolution" type="text" value={productFullInfo.prod_screen.resolution} onChange={e=>setProductFullInfo({...productFullInfo, prod_screen: {...productFullInfo.prod_screen, resolution:e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Màn hình rộng:</p>
+                            <input name="txtScreenSize" type="text" value={productFullInfo.prod_screen.size} onChange={e=>setProductFullInfo({...productFullInfo, prod_screen: {...productFullInfo.prod_screen, size:e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Mặt kính cảm ứng:</p>
+                            <input name="txtScreen" type="text" value={productFullInfo.prod_screen.type} onChange={e=>setProductFullInfo({...productFullInfo, prod_screen: {...productFullInfo.prod_screen, glass:e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Camera sau:</p>
+                            <input name="txtCameraRear" type="text" value={productFullInfo.prod_camera.rear.spec} onChange={e=>setProductFullInfo({...productFullInfo, prod_camera: {...productFullInfo.prod_camera.rear, spec: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Quay phim:</p>
+                            <input name="txtCameraVideoQuality" type="text" value={productFullInfo.prod_camera.rear.videoQuality} onChange={e=>setProductFullInfo({...productFullInfo, prod_camera: {...productFullInfo.prod_camera.rear, videoQuality: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Camera trước:</p>
+                            <input name="txtCameraFont" type="text" value={productFullInfo.prod_camera.font} onChange={e=>setProductFullInfo({...productFullInfo, prod_camera: {...productFullInfo.prod_camera, font: e.target.value}})}/> <br/>
                         </div>
                         <div>
                             <p>Hệ điều hành:</p>
-                            <input name="txtOS" type="text"/> <br/>
+                            <input name="txtOS" type="text" value={productFullInfo.prod_hardwareAndOS.os} onChange={e=>setProductFullInfo({...productFullInfo, prod_hardwareAndOS: {...productFullInfo.prod_hardwareAndOS, os: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Phần cứng:</p>
-                            <input name="txtHardware" type="text" defaultValue={productInfo.prod_cpu + " " + productInfo.prod_ram}/> <br/>
+                            <p>Chip xử lý (CPU):</p>
+                            <input name="txtCPU" type="text" value={productFullInfo.prod_hardwareAndOS.cpu} onChange={e=>setProductFullInfo({...productFullInfo, prod_hardwareAndOS: {...productFullInfo.prod_hardwareAndOS, cpu: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Tốc độ CPU:</p>
+                            <input name="txtCPUSpec" type="text" value={productFullInfo.prod_hardwareAndOS.cpuSpec} onChange={e=>setProductFullInfo({...productFullInfo, prod_hardwareAndOS: {...productFullInfo.prod_hardwareAndOS, cpuSpec: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Chip đồ họa (GPU):</p>
+                            <input name="txtGPU" type="text" value={productFullInfo.prod_hardwareAndOS.gpu} onChange={e=>setProductFullInfo({...productFullInfo, prod_hardwareAndOS: {...productFullInfo.prod_hardwareAndOS, gpu: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Mạng di động:</p>
+                            <input name="txtTelecom" type="text" value={productFullInfo.prod_network.telecom} onChange={e=>setProductFullInfo({...productFullInfo, prod_network: {...productFullInfo.prod_network, telecom: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Sim:</p>
+                            <input name="txtSim" type="text" value={productFullInfo.prod_network.SIM} onChange={e=>setProductFullInfo({...productFullInfo, prod_network: {...productFullInfo.prod_network, SIM: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Wifi:</p>
+                            <input name="txtWifi" type="text" value={productFullInfo.prod_network.Wifi} onChange={e=>setProductFullInfo({...productFullInfo, prod_network: {...productFullInfo.prod_network, Wifi: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>GPS:</p>
+                            <input name="txtGPS" type="text" value={productFullInfo.prod_network.GPS} onChange={e=>setProductFullInfo({...productFullInfo, prod_network: {...productFullInfo.prod_network, GPS: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Bluetooth:</p>
+                            <input name="txtBluetooth" type="text" value={productFullInfo.prod_network.Bluetooth} onChange={e=>setProductFullInfo({...productFullInfo, prod_network: {...productFullInfo.prod_network, Bluetooth: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Cổng kết nối/sạc:</p>
+                            <input name="txtConnector" type="text" value={productFullInfo.prod_network.connector} onChange={e=>setProductFullInfo({...productFullInfo, prod_network: {...productFullInfo.prod_network, connector: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Kết nối khác:</p>
+                            <input name="txtOthers" type="text" value={productFullInfo.prod_network.others} onChange={e=>setProductFullInfo({...productFullInfo, prod_network: {...productFullInfo.prod_network, others: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Dung lượng pin:</p>
+                            <input name="txtBattery" type="text" value={productFullInfo.prod_batteryAndCharger.battery} onChange={e=>setProductFullInfo({...productFullInfo, prod_batteryAndCharger: {...productFullInfo.prod_batteryAndCharger, battery: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Loại pin:</p>
+                            <input name="txtBatteryType" type="text" value={productFullInfo.prod_batteryAndCharger.batteryType} onChange={e=>setProductFullInfo({...productFullInfo, prod_batteryAndCharger: {...productFullInfo.prod_batteryAndCharger, batteryType: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Công suất sạc tối đa:</p>
+                            <input name="txtChargeType" type="text" value={productFullInfo.prod_batteryAndCharger.chargeType} onChange={e=>setProductFullInfo({...productFullInfo, prod_batteryAndCharger: {...productFullInfo.prod_batteryAndCharger, chargeType: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Tiện ích:</p>
+                            <input name="txtUtilities" type="text" value={"đang cập nhật"}/> <br/>
+                        </div>
+                        <div>
+                            <p>Thiết kế:</p>
+                            <input name="txtStructural" type="text" value={productFullInfo.prod_design.structural} onChange={e=>setProductFullInfo({...productFullInfo, prod_design: {...productFullInfo.prod_design, structural: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Chất liệu:</p>
+                            <input name="txtMaterial" type="text" value={productFullInfo.prod_design.material} onChange={e=>setProductFullInfo({...productFullInfo, prod_design: {...productFullInfo.prod_design, material: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Kích thước, khối lượng:</p>
+                            <input name="txtSizeAndWeight" type="text" value={productFullInfo.prod_design.sizeAndWeigth} onChange={e=>setProductFullInfo({...productFullInfo, prod_design: {...productFullInfo.prod_design, sizeAndWeigth: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Hình ảnh:</p>
+                            <input type="file" id="myFile" name="imgUpload" multiple />
                         </div>
                     </form>
                 </div>
             </>
         ):(
             <>
-            <AdminButton style={CusStyle} ClickEvent={notifySaveProduct} IconName={faSave}/>
                 <div className="ProductInfo BorderFormat">
                     <p className="Title">Thông tin sản phẩm</p>
                     <form className="AddProductForm">
-                        <div className="InfoTitle">
-                            <p>Mã sản phẩm:</p>
-                            <input name="txtPropNo" type="text" disabled defaultValue={"chua co ma so"} /> <br/>
-                        </div>
-                        <div>
+                    <div>
                             <p>Tên sản phẩm:</p>
-                            <input name="txtPropName" type="text" /> <br/>
+                            <input name="txtPropName" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_name: e.target.value})}/> <br/>
                         </div>
                         <div>
-                            <p>Ngày sản xuất:</p>
-                            <input name="txtPropMFG" type="text" /> <br/>
+                            <p>Nhãn hiệu:</p>
+                            <input name="txtMFBrandName" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_manufacturer: {...newProductFullInfo.prod_manufacturer, brand_name: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Màn hình:</p>
-                            <input name="txtScreen" type="text" /> <br/>
+                            <p>Ngày ra mắt:</p>
+                            <input name="txtMFReleaseDate" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_manufacturer: {...newProductFullInfo.prod_manufacturer, releaseDate: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Máy ảnh:</p>
-                            <input name="txtCamera" type="text" /> <br/>
+                            <p>Xuất xứ:</p>
+                            <input name="txtPropMadeIn" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_manufacturer: {...newProductFullInfo.prod_manufacturer, madeIn: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Kích thước:</p>
-                            <input name="txtSize" type="text" /> <br/>
+                            <p>Công nghệ màn hình:</p>
+                            <input name="txtScreenType" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_screen: {...newProductFullInfo.prod_screen, type:e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Pin:</p>
-                            <input name="txtBattery" type="text" /> <br/>
+                            <p>Độ phân giải:</p>
+                            <input name="txtScreenResolution" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_screen: {...newProductFullInfo.prod_screen, resolution:e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Màn hình rộng:</p>
+                            <input name="txtScreenSize" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_screen: {...newProductFullInfo.prod_screen, size:e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Mặt kính cảm ứng:</p>
+                            <input name="txtScreenGlass" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_screen: {...newProductFullInfo.prod_screen, glass:e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Camera sau:</p>
+                            <input name="txtCameraRearSpec" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_camera: {...newProductFullInfo.prod_camera.rear, spec: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Quay phim:</p>
+                            <input name="txtCameraRearVideoQuality" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_camera: {...newProductFullInfo.prod_camera.rear, videoQuality: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Camera trước:</p>
+                            <input name="txtCameraFont" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_camera: {...newProductFullInfo.prod_camera, font: e.target.value}})}/> <br/>
                         </div>
                         <div>
                             <p>Hệ điều hành:</p>
-                            <input name="txtOS" type="text" /> <br/>
+                            <input name="txtOS" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_hardwareAndOS: {...newProductFullInfo.prod_hardwareAndOS, os: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Phần cứng:</p>
-                            <input name="txtHardware" type="text" /> <br/>
+                            <p>Chip xử lý (CPU):</p>
+                            <input name="txtCPU" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_hardwareAndOS: {...newProductFullInfo.prod_hardwareAndOS, cpu: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Tốc độ CPU:</p>
+                            <input name="txtCPUSpec" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_hardwareAndOS: {...newProductFullInfo.prod_hardwareAndOS, cpuSpec: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Chip đồ họa (GPU):</p>
+                            <input name="txtGPU" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_hardwareAndOS: {...newProductFullInfo.prod_hardwareAndOS, gpu: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Mạng di động:</p>
+                            <input name="txtTelecom" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_network: {...newProductFullInfo.prod_network, telecom: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Sim:</p>
+                            <input name="txtSim" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_network: {...newProductFullInfo.prod_network, SIM: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Wifi:</p>
+                            <input name="txtWifi" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_network: {...newProductFullInfo.prod_network, Wifi: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>GPS:</p>
+                            <input name="txtGPS" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_network: {...newProductFullInfo.prod_network, GPS: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Bluetooth:</p>
+                            <input name="txtBluetooth" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_network: {...newProductFullInfo.prod_network, Bluetooth: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Cổng kết nối/sạc:</p>
+                            <input name="txtConnector" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_network: {...newProductFullInfo.prod_network, connector: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Kết nối khác:</p>
+                            <input name="txtOthers" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_network: {...newProductFullInfo.prod_network, others: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Dung lượng pin:</p>
+                            <input name="txtBattery" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_batteryAndCharger: {...newProductFullInfo.prod_batteryAndCharger, battery: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Loại pin:</p>
+                            <input name="txtBatteryType" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_batteryAndCharger: {...newProductFullInfo.prod_batteryAndCharger, batteryType: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Công suất sạc tối đa:</p>
+                            <input name="txtChargeType" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_batteryAndCharger: {...newProductFullInfo.prod_batteryAndCharger, chargeType: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Tiện ích:</p>
+                            <input name="txtUtilities" type="text" defaultValue={"đang cập nhật"}/> <br/>
+                        </div>
+                        <div>
+                            <p>Thiết kế:</p>
+                            <input name="txtStructural" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_design: {...newProductFullInfo.prod_design, structural: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Chất liệu:</p>
+                            <input name="txtMaterial" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_design: {...newProductFullInfo.prod_design, material: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Kích thước, khối lượng:</p>
+                            <input name="txtSizeAndWeight" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_design: {...newProductFullInfo.prod_design, sizeAndWeigth: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Hình ảnh:</p>
+                            <input type="file" id="myFile" name="imgUpload" multiple />
                         </div>
                     </form>
                 </div>
             </>
         )}
-            <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
         </>
     )
 }

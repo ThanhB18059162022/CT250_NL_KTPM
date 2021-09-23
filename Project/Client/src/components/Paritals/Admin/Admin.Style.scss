@@ -209,11 +209,16 @@
             display: flex;
             width: 100%;
             justify-content: right;
-            margin: 2% -18%;
+            margin: 2% -5%;
             width: 100%;
+            p{
+                font-weight: bold;
+            }
             input{
-                width: 60%;
+                width: 70%;
                 margin-left: 2%;
+                padding: 2px;
+                font-size: 16px;
             }
         }
     }
@@ -225,11 +230,16 @@
         div{
             display: flex;
             justify-content: right;
-            margin: 2% -18%;
+            margin: 2% -15%;
             width: 100%;
+            p{
+                font-weight: bold;
+            }
             input{
                 width: 60%;
                 margin-left: 2%;
+                padding: 2px;
+                font-size: 16px;
             }
         }
     }
@@ -357,46 +367,46 @@
 //     }
 // }
 
-.ModeratorRecord{
-    display: flex;
-    align-items: center;
-    p + p{
-        border-left: 2px solid black;
-    }
-    p{
-        height: 26px;
-        text-align: center;
-        padding: 3px 0;
-        &:nth-child(1){
-            width: 5%;
-        }
-        &:nth-child(2){
-            width: 20%;
-        }
-        &:nth-child(3){
-            width: 9%;
-        }
-        &:nth-child(4){
-            width: 9%;
-        }
-        &:nth-child(5){
-            width: 5%;
-        }
-        &:nth-child(6){
-            width: 43%;
-        }
-        &:nth-child(7){
-            width: 9%;
-        }
-    }
-    + hr{
-        width: 98%;
-        margin: 5px auto;
-        &:last-child{
-            display: none;
-        }
-    }
-}
+// .ModeratorRecord{
+//     display: flex;
+//     align-items: center;
+//     p + p{
+//         border-left: 2px solid black;
+//     }
+//     p{
+//         height: 26px;
+//         text-align: center;
+//         padding: 3px 0;
+//         &:nth-child(1){
+//             width: 5%;
+//         }
+//         &:nth-child(2){
+//             width: 20%;
+//         }
+//         &:nth-child(3){
+//             width: 9%;
+//         }
+//         &:nth-child(4){
+//             width: 9%;
+//         }
+//         &:nth-child(5){
+//             width: 5%;
+//         }
+//         &:nth-child(6){
+//             width: 43%;
+//         }
+//         &:nth-child(7){
+//             width: 9%;
+//         }
+//     }
+//     + hr{
+//         width: 98%;
+//         margin: 5px auto;
+//         &:last-child{
+//             display: none;
+//         }
+//     }
+// }
 
 .ProductFullInfo{
     position: absolute;

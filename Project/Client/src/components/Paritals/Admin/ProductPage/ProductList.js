@@ -1,12 +1,13 @@
 import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
-import { useEffect, useState } from "react"
-import {caller} from "../../../../api_services/servicesContainer"
+import { useState } from "react"
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import ProductFullInfo from "../../../../pages/Admin/ProductFullInfo"
 import Notifications from "../../../../common/Notifications"
 
-const ProductList = () => {
+const ProductList = (props) => {
+    const {productsList} = props
+    
     const cusStyle = {
         fontSize : "15px",
         width : "45px"
@@ -19,33 +20,30 @@ const ProductList = () => {
         title :"", // title of the notifications
         content :"", // content of the notify
         infoType :""
-      })
+    })
     
-    const notifyDeleteProduct = () =>{
+    const DeleteProduct = (id) => {
+        console.log(id)
+    }
+
+    const notifyDeleteProduct = (id) =>{
         setNotify({
             ...notify,
             title:"Xác nhận",
             content:"Xóa sản phẩm?",
+            handle: ()=>DeleteProduct(id)
         })
         setShow(true)
     }
 
-    const [products, setProducts] =useState([])
-    const [detail, setDetail] = useState({})
-    const [editProduct, setEditProduct] = useState(0)
+    const [productNo, setProductNo] = useState()
+    const [displayEditProd, setDisplayEditProduct] = useState(0)
     const displayEditProduct = () => {
-        switch(editProduct){
-            case 1: return <ProductFullInfo productInfo={detail} setDisplay={setEditProduct}/>
+        switch(displayEditProd){
+            case 1: return <ProductFullInfo productNo={productNo} setDisplayEditProduct={setDisplayEditProduct}/>
             default: return;
         }
     }
-
-    useEffect(()=>{
-       (async()=>{
-        let data =  await caller.get('products')
-        setProducts(data.items)
-       })(); // IIFE // Note setProduct([...products, item])
-    },[])
 
     return(
         <div className="ListLayout">
@@ -61,7 +59,7 @@ const ProductList = () => {
                     <p>Hành động</p>
                 </li>
                 <hr/>
-                {products.map((item,index)=><Item key={index} info={item} setDetail={setDetail} setEditProduct={setEditProduct} cusStyle={cusStyle} show={show} setShow={setShow} notify={notify} notifyDeleteProduct={notifyDeleteProduct}/>)}
+                {productsList.map((item,index)=><Item key={index} info={item} setProductNo={setProductNo} setDisplayEditProduct={setDisplayEditProduct} cusStyle={cusStyle} show={show} setShow={setShow} notify={notify} notifyDeleteProduct={notifyDeleteProduct}/>)}
             </div>
             {displayEditProduct()}
         </div>
@@ -69,18 +67,18 @@ const ProductList = () => {
 }
 
 const Item = (props) => {
-    const {info, setDetail, setEditProduct, cusStyle, show, setShow, notify, notifyDeleteProduct} = props
+    const {info, setProductNo, setDisplayEditProduct, cusStyle, show, setShow, notify, notifyDeleteProduct} = props
     
-    const hardware = info.prod_cpu + " / " + info.prod_ram + " / " + info.prod_battery
+    const hardware = info.prod_cpu + " / " + info.prod_battery
     return(
         <>
             <li className="ProductList">
                 <p>{info.prod_no}</p>
                 <p>{info.prod_name}</p>
-                <p>...</p>
+                <p>{info.prod_os}</p>
                 <p>{hardware}</p>
-                <p>...</p>
-                <p><AdminButton style={cusStyle} ClickEvent={()=>{setEditProduct(1); setDetail(info)}} IconName={faEdit}/> <AdminButton style={cusStyle} IconName={faTrashAlt} ClickEvent={notifyDeleteProduct}/></p>
+                <p>{info.prod_detailsLength}</p>
+                <p><AdminButton style={cusStyle} ClickEvent={()=>{setDisplayEditProduct(1); setProductNo(info.prod_no)}} IconName={faEdit}/> <AdminButton style={cusStyle} IconName={faTrashAlt} ClickEvent={()=>notifyDeleteProduct(info.prod_no)}/></p>
             </li>
             <hr/>
             <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
