@@ -4,17 +4,13 @@ import ApiCaller from "../ApiCaller";
 
 // Dùng tạm thời nữa cải tiến sau
 // Chú ý orderID chứ ko phải orderId vì api nó trả về là orderID
-
-const img =
-  "https://susanlacerra.com/wp-content/uploads/2016/06/giving-up-perfection-450-square.jpg";
-
 const payService = new PayPalPaymentService(new ApiCaller());
 
 const PayPalPayment = () => {
   const [paidFor, setPaidFor] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const [clientId, setClientId] = useState("");
 
+  // Chạy 1 lần
   useEffect(() => {
     getId();
   }, []);
@@ -28,35 +24,37 @@ const PayPalPayment = () => {
 
   // Chưa coi dispose
   useEffect(() => {
-    addScript();
-    displayButton();
-  });
+    // Use state khởi tạo cũng làm thay đổi clientId
+    if (clientId?.length > 10) {
+      //Load paypal script
+      const payPalScript = document.createElement("script");
+      payPalScript.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      payPalScript.defer = true;
 
-  function addScript() {
-    //Load paypal script
-    const payPalScript = document.createElement("script");
-    payPalScript.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      document.body.appendChild(payPalScript);
 
-    payPalScript.addEventListener("load", () => setLoaded(true));
+      //Chờ cho load xong
+      // Event load là event load trang html
+      payPalScript.addEventListener("load", () => {
+        displayButton();
+      });
 
-    document.body.appendChild(payPalScript);
-  }
+      return () => {
+        document.removeChild(payPalScript);
+      };
+    }
+  }, [clientId]);
 
   //Button tham chiếu bên ui dom
   let payPalRef = useRef();
   function displayButton() {
-    //Chờ cho load xong
-    if (loaded) {
-      setTimeout(() => {
-        window.paypal
-          .Buttons({
-            createOrder: creatOrderForPayment,
-            onApprove: saveOrderTransaction,
-            onError: (err) => console.log(err),
-          })
-          .render(payPalRef);
-      });
-    }
+    window.paypal
+      .Buttons({
+        createOrder: creatOrderForPayment,
+        onApprove: saveOrderTransaction,
+        onError: (err) => console.error(err),
+      })
+      .render(payPalRef);
   }
 
   // Mảng sản phẩm phải có 2 trường là id và số lượng
@@ -103,12 +101,8 @@ const PayPalPayment = () => {
   }
 
   function renderProductInfo() {
-    const product = products[0];
     return (
-      <div style={{maxWidth:'100px'}}>
-        {/* <h1>Buy this picture for ${product.price}</h1>
-        <p>{product.description}</p>
-        <img src={img} alt="beautiful girl" /> */}
+      <div style={{ maxWidth: "100px" }}>
         <div ref={(v) => (payPalRef = v)}></div>
       </div>
     );

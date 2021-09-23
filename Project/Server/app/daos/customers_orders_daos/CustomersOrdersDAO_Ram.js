@@ -14,4 +14,9 @@ module.exports = class CustomersOrdersDAO {
   saveOrder = async (order) => {
     console.log("Đã save", order);
   };
+
+  // tên người
+  // thời gian
+  // hình thức thanh toán paypa; stripe
+  // tổng tiền
 };
