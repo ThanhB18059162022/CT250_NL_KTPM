@@ -123,7 +123,7 @@ module.exports = class ProductsDAO_Ram {
       products.push(product);
     }
   }
-
+  //
   getProducts = async (startIndex, endIndex) => {
     let prods = products.slice(startIndex, endIndex).map((p) => {
       const {
