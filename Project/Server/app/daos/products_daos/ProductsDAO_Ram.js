@@ -146,7 +146,8 @@ module.exports = class ProductsDAO_Ram {
         prod_battery: prod_batteryAndCharger.battery,
         prod_img: prod_imgs[0],
         prod_price: prod_details[even].price,
-        // tổng đã bán - còn hàng
+        prod_os: prod_hardwareAndOS.os,
+        prod_detailsLength: prod_details.length,
       };
     });
 
@@ -178,8 +179,6 @@ module.exports = class ProductsDAO_Ram {
           prod_battery: prod_batteryAndCharger.battery,
           prod_img: prod_imgs[0],
           prod_price: prod_details[even].price,
-
-          // tổng đã bán - còn hàng
         };
       });
 
