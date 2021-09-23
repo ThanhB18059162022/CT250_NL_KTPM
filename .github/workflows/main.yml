@@ -26,12 +26,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+  
       # ----------------------------- SERVER -----------------------------------------------
 
       # Cài môi trường cho server
-      - name: Cài đặt các npm package và chạy test
-        run: | 
-          npm install
-          npm test
+      - name: Cài đặt các npm package
+        run: npm install
+        working-directory: ./Project/Server
+      
+      - name: Chạy unit test
+        run: npm test
         working-directory: ./Project/Server
