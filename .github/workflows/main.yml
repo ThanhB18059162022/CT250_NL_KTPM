@@ -35,4 +35,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Chạy test server
-        run: npm test
+        run: ./Project/server | npm test
