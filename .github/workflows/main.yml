@@ -28,8 +28,8 @@ jobs:
       - uses: actions/checkout@v2
 
       # Cài môi trường
-      - name: Khởi tạo npm
-        run: npm init
+      - name: Cài đặt các npm package
+        run: npm install
 
       # Runs a set of commands using the runners shell
       - name: Chạy test server
