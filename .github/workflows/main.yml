@@ -32,4 +32,4 @@ jobs:
       # Cài môi trường cho server
       - name: Cài đặt các npm package
         run: npm install
-         
+        working-directory: ./Project/Server
