@@ -27,9 +27,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Cài môi trường
+      # ----------------------------- SERVER -----------------------------------------------
+
+      # Cài môi trường cho server
       - name: Cài đặt các npm package
-        run: npm install
+        run: cd ./Project/server | npm install
 
       # Runs a set of commands using the runners shell
       - name: Chạy test server
