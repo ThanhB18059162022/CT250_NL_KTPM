@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon app/server.js",
-    "test": "jest --verbose --coverage --watchAll"
+    "test": "jest --verbose --coverage --watchAll",
+    "test-ci": "jest --verbose --coverage "
   },
   "author": "Group5: Vuong Cam Thanh, Thach Chi Tam, Phan Phu Cuong",
   "license": "ISC",
