@@ -1,5 +1,8 @@
 const products = [];
 
+// Lấy đánh giá mới nhất vs số lượng
+// tổng đã bán - còn hàng
+
 // https://www.thegioididong.com/dtdd/samsung-galaxy-z-fold-3
 module.exports = class ProductsDAO_Ram {
   constructor(baseImgUri) {
@@ -140,6 +143,7 @@ module.exports = class ProductsDAO_Ram {
         prod_battery: prod_batteryAndCharger.battery,
         prod_img: prod_imgs[0],
         prod_price: prod_details[even].price,
+        // tổng đã bán - còn hàng
       };
     });
 
@@ -171,6 +175,8 @@ module.exports = class ProductsDAO_Ram {
           prod_battery: prod_batteryAndCharger.battery,
           prod_img: prod_imgs[0],
           prod_price: prod_details[even].price,
+
+          // tổng đã bán - còn hàng
         };
       });
 

@@ -26,23 +26,24 @@ const PayPalPayment = () => {
   useEffect(() => {
     // Use state khởi tạo cũng làm thay đổi clientId
     if (clientId?.length > 10) {
-      addScript();
+      //Load paypal script
+      const payPalScript = document.createElement("script");
+      payPalScript.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      payPalScript.defer = true;
+
+      document.body.appendChild(payPalScript);
+
+      //Chờ cho load xong
+      // Event load là event load trang html
+      payPalScript.addEventListener("load", () => {
+        displayButton();
+      });
+
+      return () => {
+        document.removeChild(payPalScript);
+      };
     }
   }, [clientId]);
-
-  function addScript() {
-    //Load paypal script
-    const payPalScript = document.createElement("script");
-    payPalScript.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-
-    document.body.appendChild(payPalScript);
-
-    //Chờ cho load xong
-    // Event load là event load trang html
-    payPalScript.addEventListener("load", () => {
-      displayButton();
-    });
-  }
 
   //Button tham chiếu bên ui dom
   let payPalRef = useRef();
