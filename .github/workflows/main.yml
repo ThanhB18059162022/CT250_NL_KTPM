@@ -35,5 +35,5 @@ jobs:
         working-directory: ./Project/Server
       
       - name: Chạy unit test
-        run: npm test
+        run: npm run test-ci 
         working-directory: ./Project/Server
