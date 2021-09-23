@@ -32,6 +32,6 @@ jobs:
       # Cài môi trường cho server
       - name: Cài đặt các npm package và chạy test
         run: | 
-          npm install jest
+          npm install
           npm test
         working-directory: ./Project/Server
