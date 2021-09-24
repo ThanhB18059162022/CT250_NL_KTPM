@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import PayPalPayment from "./api_services/paypal_payment_service/PayPalPayment";
-import StripePayment from "./api_services/stripe_payment/StripePayment";
-import ZaloPayment from "./api_services/zalopay_payment/ZaloPayment";
+import PayPalPayment from "./api_services/payment_services/PayPalPayment";
+import StripePayment from "./api_services/payment_services/StripePayment";
+import ZaloPayment from "./api_services/payment_services/ZaloPayment";
 import BarChart from "./api_services/statistic/BarChart";
 import reportWebVitals from "./reportWebVitals";
 
@@ -12,7 +12,7 @@ ReactDOM.render(
     {/* <App /> */}
     {/* <PayPalPayment /> */}
     {/* <StripePayment /> */}
-    {/* <ZaloPayment /> */}
+    <ZaloPayment />
     <BarChart />
   </React.StrictMode>,
   document.getElementById("root")

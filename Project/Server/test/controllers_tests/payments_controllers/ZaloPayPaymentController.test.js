@@ -10,6 +10,10 @@ const {
 
 class ZaloPayServiceMock {
   createOrder = jest.fn();
+
+  validRedirectQuery = jest.fn(({ data }) => {
+    return data !== undefined;
+  });
 }
 
 //#endregion
@@ -244,6 +248,29 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
 
+  test("Dự liệu zalo đã bị sửa", async () => {
+    //Arrange
+    const id = "";
+    const controller = getController();
+
+    const reqMock = {
+      params: { id },
+      query: { successUrl: "aa", data: undefined },
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400 };
+    const actRes = await controller.checkoutOrder(reqMock, resMock);
+
+    //Expect
+    expect(validatorMock.validateId).toBeCalledTimes(1);
+    expect(validatorMock.validateUrl).toBeCalledTimes(1);
+    expect(serviceMock.validRedirectQuery).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+  });
+
   test("Order không tồn tại", async () => {
     //Arrange
     const id = "";
@@ -251,7 +278,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
 
     const reqMock = {
       params: { id },
-      query: { successUrl: "" },
+      query: { successUrl: "", data: "" },
     };
     const resMock = new ResponseMock();
 
@@ -273,7 +300,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
 
     const reqMock = {
       params: { id },
-      query: { successUrl: "yes" },
+      query: { successUrl: "yes", data: "" },
     };
     const resMock = new ResponseMock();
 
