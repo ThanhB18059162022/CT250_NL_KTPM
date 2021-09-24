@@ -30,16 +30,12 @@ module.exports = class CheckoutPaymentController extends PaymentController {
     }
 
     // Lưu vào CSDL
-    await this.saveOrder(order);
+    const saveOrderId = await this.saveOrder(order);
     // Xóa order lưu tạm
     storedOrders.delete(order.id);
 
     // Về trang khi thanh toán
-    res.writeHead(302, {
-      Location: successUrl,
-    });
-
-    return res.end();
+    return res.status(301).redirect(`${successUrl}/${saveOrderId}`);
   };
 
   //#endregion

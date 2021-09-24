@@ -14,6 +14,8 @@ class ResponseMock {
 
     return { statusCode, body };
   });
+
+  redirect = jest.fn();
 }
 
 class PaymentValidatorMock {

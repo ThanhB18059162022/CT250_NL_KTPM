@@ -276,8 +276,6 @@ describe("Lưu đơn hàng đã thanh toán", () => {
       query: { successUrl: "yes" },
     };
     const resMock = new ResponseMock();
-    resMock.writeHead = jest.fn();
-    resMock.end = jest.fn();
 
     const { storedOrders } = ZaloPayPaymentController;
     storedOrders.set(id, {});
@@ -288,6 +286,6 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     //Expect
     expect(validatorMock.validateId).toBeCalledTimes(1);
     expect(daoMock.saveOrder).toBeCalledTimes(1);
-    expect(resMock.end).toBeCalledTimes(1);
+    expect(resMock.redirect).toBeCalledTimes(1);
   });
 });
