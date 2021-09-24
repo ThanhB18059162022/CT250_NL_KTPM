@@ -108,7 +108,7 @@ let validatorMock;
 function getController() {
   return new ProductsController(validatorMock, daoMock);
 }
-// 200 - 400 -404
+// 200
 describe("List Lấy danh sách sản phẩm", () => {
   beforeEach(() => {
     daoMock = new ProductsDAOMock();
@@ -445,6 +445,7 @@ describe("List Lấy danh sách sản phẩm", () => {
   });
 });
 
+// 200 - 400 - 404
 describe("Lấy chi tiết sản phẩm", () => {
   beforeEach(() => {
     daoMock = new ProductsDAOMock();
