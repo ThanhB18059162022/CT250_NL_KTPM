@@ -36,7 +36,7 @@ describe("Abstract Test", () => {
     //Act
     const expRs = products;
     const actRs = await controller.getOrderProducts(products);
-
+    console.log(actRs);
     //Expect
     expect(daoMock.getOrderProduct).toBeCalledTimes(1);
     expect(actRs).toEqual(expRs);

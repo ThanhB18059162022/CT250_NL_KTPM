@@ -36,7 +36,7 @@ class PaymentValidatorMock {
   });
 
   validateSaveOrderId = jest.fn((id) => {
-    return { hasAnyError: id === undefined };
+    return { hasAnyError: isNaN(id) };
   });
 
   validateUrl = jest.fn((url) => {
@@ -45,7 +45,9 @@ class PaymentValidatorMock {
 }
 
 class PaymentDAOMock {
-  getOrderProduct = jest.fn();
+  getOrderProduct = jest.fn((prod_no) => {
+    return { prod_no };
+  });
 
   saveOrder = jest.fn((order) => {
     return { ...order, paid: true };

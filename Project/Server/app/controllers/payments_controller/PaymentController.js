@@ -98,7 +98,9 @@ module.exports = class PaymentController {
 
   //Lấy ra đơn hàng đã lưu trong CSDL
   getSaveOrder = async (req, res) => {
-    const { saveOrderId } = req.params;
+    const { saveOrderId: saveOrderIdParam } = req.params;
+
+    const saveOrderId = Number(saveOrderIdParam);
 
     const result = this.validator.validateSaveOrderId(saveOrderId);
     if (result.hasAnyError) {
