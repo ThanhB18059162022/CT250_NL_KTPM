@@ -15,6 +15,8 @@ module.exports = class StripePaymentController extends PaymentController {
   createOrder = async (req, res) => {
     const { body: cart } = req;
 
+    //#region  Validate
+
     const result = this.validator.validateCart(cart);
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
@@ -31,6 +33,8 @@ module.exports = class StripePaymentController extends PaymentController {
     if (cnlResult.hasAnyError) {
       return res.status(400).json(cnlResult.error);
     }
+
+    //#endregion
 
     const { products, customer } = cart;
 
@@ -61,6 +65,7 @@ module.exports = class StripePaymentController extends PaymentController {
       orderProducts,
       customer,
       total,
+      payment: "stripe",
     };
     this.storeOrder(tempOrder);
 

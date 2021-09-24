@@ -42,7 +42,7 @@ class PaymentValidatorMock {
   });
 
   validateUrl = jest.fn((url) => {
-    return { hasAnyError: url === undefined };
+    return { hasAnyError: url === "//" };
   });
 }
 

@@ -86,7 +86,7 @@ module.exports = class ZaloPaySerivce {
     return hmac;
   };
 
-  validRedirectQuery = async (query) => {
+  validRedirectQuery = (query) => {
     const {
       appid,
       apptransid,
@@ -98,7 +98,7 @@ module.exports = class ZaloPaySerivce {
       checksum,
     } = query;
 
-    data =
+    const data =
       appid +
       "|" +
       apptransid +

@@ -5,7 +5,7 @@
 # Tạo order
 
 ### 1 Hợp lệ - 201
-POST http://localhost:8000/api/zalo/createorder?successUrl=http://localhost:3000
+POST http://localhost:8000/api/zalo/createorder?successUrl=http://localhost:3000&cancelUrl=http://localhost:3000
 Content-Type: application/json
 
 {
@@ -23,11 +23,7 @@ Content-Type: application/json
     "products":[
         {"prod_no": 1, "prod_quantity": 10},
         {"prod_no": 2, "prod_quantity": 2}
-    ],
-    "url": {
-        "success": "http://localhost:3000",
-        "cancel": "http://localhost:3000"
-    }
+    ]
 }
 
 
@@ -48,8 +44,25 @@ GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac09
 ### 2 Không hợp lệ id < 64 - 400
 GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe4
 
-### 2 Không hợp lệ id > 64 - 400
+### 3 Không hợp lệ id > 64 - 400
 GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efeA11
+
+### 4 Không có successUrl - 400
+GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?cancelUrl=http://localhost/wtf
+
+
+### 5 Không có cancelUrl - 400
+GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?successUrl=http://localhost:3000
+
+
+### 6 Sửa query của zalo - 400
+http://localhost:8000/api/zalo/checkoutOrder/c5a7dcbe2df78a8c2c8ccc83fd81dcd94efc1eb825132546f35cb0c92571d37d?successUrl=http%3A%2F%2Flocalhost%3A3000&cancelUrl=http://localhost&amount=101000&discountamount=0&appid=2553&checksum=b824269081e4cf8cc347345b805ad937455f36d9665bd1954ad268b39380369d&apptransid=210924_efc1eb825132546f35cb0c92571d37d&pmcid=1&bankcode=&status=-49
+
+### 7 Chưa thanh toán về trang cancel - 301
+http://localhost:8000/api/zalo/checkoutOrder/c5a7dcbe2df78a8c2c8ccc83fd81dcd94efc1eb825132546f35cb0c92571d37d?successUrl=http%3A%2F%2Flocalhost%3A3000&cancelUrl=http://localhost:8000&amount=101000&discountamount=0&appid=2553&checksum=b824269081e4cf8cc347345b805ad937455f36d9665bd1954ad268b39380369d&apptransid=210924_efc1eb825132546f35cb0c92571d37d&pmcid=0&bankcode=&status=-49
+
+
+
 
 
 

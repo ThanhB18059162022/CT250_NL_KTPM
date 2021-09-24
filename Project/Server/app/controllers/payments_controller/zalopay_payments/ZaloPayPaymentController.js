@@ -12,17 +12,26 @@ module.exports = class ZaloPayPaymentController extends PaymentController {
   createOrder = async (req, res) => {
     const { body: cart } = req;
 
+    //#region  Validate
+
     const result = this.validator.validateCart(cart);
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
     }
 
-    const { successUrl } = req.query;
+    const { successUrl, cancelUrl } = req.query;
 
-    const urlResult = this.validator.validateUrl(successUrl);
-    if (urlResult.hasAnyError) {
-      return res.status(400).json(urlResult.error);
+    const scsResult = this.validator.validateUrl(successUrl);
+    if (scsResult.hasAnyError) {
+      return res.status(400).json(scsResult.error);
     }
+
+    const cnlResult = this.validator.validateUrl(cancelUrl);
+    if (cnlResult.hasAnyError) {
+      return res.status(400).json(cnlResult.error);
+    }
+
+    //#endregion
 
     const { products, customer } = cart;
 
@@ -37,7 +46,7 @@ module.exports = class ZaloPayPaymentController extends PaymentController {
     const id = this.getOrderId();
 
     // Về server xử lý trước
-    const serverSuccessUrl = `${req.protocol}://${req.headers.host}/api/zalo/checkoutOrder/${id}?successUrl=${successUrl}`;
+    const serverSuccessUrl = `${req.protocol}://${req.headers.host}/api/zalo/checkoutOrder/${id}?url=${successUrl}-${cancelUrl}`;
 
     const url = await this.zaloPayService.createOrder(
       id,
@@ -52,6 +61,7 @@ module.exports = class ZaloPayPaymentController extends PaymentController {
       orderProducts,
       customer,
       total,
+      payment: "zalopay",
     };
     this.storeOrder(tempOrder);
 
@@ -64,6 +74,10 @@ module.exports = class ZaloPayPaymentController extends PaymentController {
 
   // Lưu đơn hàng đã thanh toán
   checkoutOrder = async (req, res) => {
+    //#region  Validate
+
+    //#region  Id
+
     const { id } = req.params;
 
     const idResult = this.validator.validateId(id);
@@ -71,16 +85,46 @@ module.exports = class ZaloPayPaymentController extends PaymentController {
       return res.status(400).json(idResult.error);
     }
 
-    const { successUrl } = req.query;
-    const urlResult = this.validator.validateUrl(successUrl);
-    if (urlResult.hasAnyError) {
-      return res.status(400).json(urlResult.error);
+    //#endregion
+
+    //#region  Url
+
+    const { url } = req.query;
+    const [successUrl, cancelUrl] = url.split("-");
+
+    const scsResult = this.validator.validateUrl(successUrl);
+    if (scsResult.hasAnyError) {
+      return res.status(400).json(scsResult.error);
     }
+
+    const cnlResult = this.validator.validateUrl(cancelUrl);
+    if (cnlResult.hasAnyError) {
+      return res.status(400).json(cnlResult.error);
+    }
+
+    //#endregion
+
+    //#region Zalo url query
 
     // Kiểm tra thông tin thanh toán không bị thay đổi
     const valid = this.zaloPayService.validRedirectQuery(req.query);
     if (!valid) {
-      return res.status(400).json({ error: "Url query string not valid" });
+      return res.status(400).json({
+        key: "Url query string",
+        message: "Url query string has been changed",
+      });
+    }
+
+    //#endregion
+
+    //#endregion
+
+    // Kiểm tra khách hàng đã thanh toán
+    const { status } = req.query;
+    const paid = Number(status) === 1;
+    if (!paid) {
+      //Về trang khách hàng
+      return res.status(301).redirect(cancelUrl);
     }
 
     // Kiểm tra còn order trước khi thanh toán

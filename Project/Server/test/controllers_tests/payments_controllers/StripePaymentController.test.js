@@ -81,7 +81,7 @@ describe("Tạo đơn hàng", () => {
 
     const reqMock = {
       body: cart,
-      query: {},
+      query: { successUrl: "//" },
     };
     const resMock = new ResponseMock();
 
@@ -103,7 +103,7 @@ describe("Tạo đơn hàng", () => {
 
     const reqMock = {
       body: cart,
-      query: { successUrl: "aaa" },
+      query: { successUrl: "aaa", cancelUrl: "//" },
       headers: {},
     };
     const resMock = new ResponseMock();
@@ -262,7 +262,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
 
     const reqMock = {
       params: { id },
-      query: {},
+      query: { successUrl: "//" },
     };
     const resMock = new ResponseMock();
 
