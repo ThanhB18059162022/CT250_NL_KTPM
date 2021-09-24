@@ -35,6 +35,12 @@ const controller = new ZaloPayPaymentController(
 
 router.route("/createOrder").post(errorCatch(controller.createOrder));
 
+// Thanh toán đơn hàng
 router.route("/checkoutOrder/:id").get(errorCatch(controller.checkoutOrder));
+
+// Lấy đơn hàng đã lưu
+router
+  .route("/getSaveOrder/:saveOrderId")
+  .get(errorCatch(controller.getSaveOrder));
 
 module.exports = router;

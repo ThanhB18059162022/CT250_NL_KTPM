@@ -29,6 +29,13 @@ Content-Type: application/json
     ]
 }
 
+
+
+
+# ---------------------------------------------------------------------
+
+
+
 # Thanh toán
 
 ### 1 Đã thanh toán rồi - 500
@@ -44,3 +51,29 @@ GET http://localhost:8000/api/paypal/captureorder/607222562884580
 
 ### 4 Không hợp lệ orderID > 17 - 400
 GET http://localhost:8000/api/paypal/captureorder/6072225628845804H1
+
+
+
+# ---------------------------------------------------------------------
+
+
+
+# Lấy ra order đã thanh toán trong CSDL
+### Hợp lệ 200
+GET http://localhost:8000/api/paypal/getsaveorder/1
+
+# Không hợp lệ 400
+### 1 Id undefined
+GET http://localhost:8000/api/paypal/getsaveorder/""
+
+### 2 Id không phải số
+GET http://localhost:8000/api/paypal/getsaveorder/wtf
+
+### 3 Id < 0
+GET http://localhost:8000/api/paypal/getsaveorder/-1
+
+### 4 Id > int max
+GET http://localhost:8000/api/paypal/getsaveorder/9007199254740992
+
+### Không tồn tại - 404
+GET http://localhost:8000/api/paypal/getsaveorder/666

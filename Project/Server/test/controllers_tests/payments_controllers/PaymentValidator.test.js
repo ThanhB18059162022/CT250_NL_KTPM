@@ -819,3 +819,75 @@ describe("Kiểm tra OrderId hợp lệ", () => {
     expect(actRs).toEqual(expRs);
   });
 });
+
+describe("Kiểm tra saveOrderId hợp lệ", () => {
+  test("Id undefined", () => {
+    //Arrange
+    const id = undefined;
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateSaveOrderId(id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Id không phải số", () => {
+    //Arrange
+    const id = "wtf";
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateSaveOrderId(id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Id < 0", () => {
+    //Arrange
+    const id = -1;
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateSaveOrderId(id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Id > int max", () => {
+    //Arrange
+    const id = Number.MAX_SAFE_INTEGER + 1;
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateSaveOrderId(id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Id hợp lệ", () => {
+    //Arrange
+    const id = 1;
+    const validator = getValidator();
+    const failed = false;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateSaveOrderId(id).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});

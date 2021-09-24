@@ -95,4 +95,25 @@ module.exports = class PaymentController {
 
     return paidOrder;
   };
+
+  //Lấy ra đơn hàng đã lưu trong CSDL
+  getSaveOrder = async (req, res) => {
+    const { saveOrderId: saveOrderIdParam } = req.params;
+
+    const saveOrderId = Number(saveOrderIdParam);
+
+    const result = this.validator.validateSaveOrderId(saveOrderId);
+    if (result.hasAnyError) {
+      return res.status(400).json(result.error);
+    }
+
+    const saveOrder = await this.dao.getSaveOrder(saveOrderId);
+
+    const exist = this.validator.existSaveOrder(saveOrder);
+    if (!exist) {
+      return res.status(404).json({});
+    }
+
+    return res.json(saveOrder);
+  };
 };

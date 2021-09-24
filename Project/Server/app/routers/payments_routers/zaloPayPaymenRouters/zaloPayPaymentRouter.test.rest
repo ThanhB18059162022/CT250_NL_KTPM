@@ -30,6 +30,14 @@ Content-Type: application/json
     }
 }
 
+
+
+
+# ---------------------------------------------------------------------
+
+
+
+
 # Thanh toán
 
 ### 1 Đã thanh toán rồi - 500
@@ -42,3 +50,29 @@ GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac09
 
 ### 2 Không hợp lệ id > 64 - 400
 GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efeA11
+
+
+
+# ---------------------------------------------------------------------
+
+
+
+# Lấy ra order đã thanh toán trong CSDL
+### Hợp lệ 200
+GET http://localhost:8000/api/zalo/getsaveorder/1
+
+# Không hợp lệ 400
+### 1 Id undefined
+GET http://localhost:8000/api/zalo/getsaveorder/""
+
+### 2 Id không phải số
+GET http://localhost:8000/api/zalo/getsaveorder/wtf
+
+### 3 Id < 0
+GET http://localhost:8000/api/zalo/getsaveorder/-1
+
+### 4 Id > int max
+GET http://localhost:8000/api/zalo/getsaveorder/9007199254740992
+
+### Không tồn tại - 404
+GET http://localhost:8000/api/zalo/getsaveorder/666

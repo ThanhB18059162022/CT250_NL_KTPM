@@ -92,6 +92,17 @@ module.exports = class PatmentValidator {
     return result;
   };
 
+  // Xài cho id tự tạo
+  validateSaveOrderId = (saveOrderId) => {
+    const schema = joi.object({
+      saveOrderId: joi.number().min(0).max(Number.MAX_SAFE_INTEGER).required(),
+    });
+
+    const result = getValidationResult(schema, { saveOrderId });
+
+    return result;
+  };
+
   // Xài cho paypal
   validatePayPalOrderID = (orderID) => {
     const schema = joi.object({
@@ -101,5 +112,10 @@ module.exports = class PatmentValidator {
     const result = getValidationResult(schema, { orderID });
 
     return result;
+  };
+
+  // Kiểm tra tồn tại order
+  existSaveOrder = (saveOrder) => {
+    return saveOrder !== undefined;
   };
 };
