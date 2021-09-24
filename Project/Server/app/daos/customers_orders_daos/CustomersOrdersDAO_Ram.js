@@ -15,8 +15,15 @@ module.exports = class CustomersOrdersDAO {
     console.log("Đã save", order);
   };
 
-  // tên người
-  // thời gian
-  // hình thức thanh toán paypa; stripe
-  // tổng tiền
+  getSaveOrder = async (id) => {
+    if (id === 1) {
+      return {
+        id,
+        customer: "alexander",
+        time: Date.now(),
+        payment: "Paypal",
+        total: 6666666666,
+      };
+    }
+  };
 };

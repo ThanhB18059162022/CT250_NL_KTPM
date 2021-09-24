@@ -113,4 +113,9 @@ module.exports = class PatmentValidator {
 
     return result;
   };
+
+  // Kiểm tra tồn tại order
+  existSaveOrder = (saveOrder) => {
+    return saveOrder !== undefined;
+  };
 };

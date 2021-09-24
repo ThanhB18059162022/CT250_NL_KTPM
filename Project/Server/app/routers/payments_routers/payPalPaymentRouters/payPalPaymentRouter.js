@@ -35,6 +35,12 @@ router.route("/clientId").get(errorCatch(controller.getClientId));
 
 router.route("/createOrder").post(errorCatch(controller.createOrder));
 
+// Thanh toán order
 router.route("/captureOrder/:orderID").get(errorCatch(controller.captureOrder));
+
+// Lấy ra order đã thanh toán
+router
+  .route("/getSaveOrder/:saveOrderId")
+  .get(errorCatch(controller.getSaveOrder));
 
 module.exports = router;

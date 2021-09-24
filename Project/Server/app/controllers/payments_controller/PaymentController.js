@@ -111,7 +111,7 @@ module.exports = class PaymentController {
 
     const exist = this.validator.existSaveOrder(saveOrder);
     if (!exist) {
-      return res.status(404).json();
+      return res.status(404).json({});
     }
 
     return res.json(saveOrder);
