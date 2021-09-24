@@ -1,11 +1,11 @@
-import { faSave, faTrashAlt, faWindowClose } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faSave, faTrashAlt, faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { AdminButton } from "../../../Controls"
 import { useState } from "react";
 import Notifications from "../../../../common/Notifications";
 import "../Admin.Style.scss"
 
 const ProductDetail = (props) => {
-    const {setDisplay, details, setDetails, info} = props
+    const {setDisplay, productDetails, setProductDetails, productDetail} = props
     const [show, setShow] = useState(false)
 
     const [notify, setNotify] = useState({
@@ -34,11 +34,14 @@ const ProductDetail = (props) => {
         setShow(true)
     }
 
-    const [detail, setDetail] = useState({pd_no: "", pd_memory: "", pd_price: 0, pd_amount: 0, pd_sold: 0})
+    const [detail, setDetail] = useState({ram: "", storage: "", storageAvailable: "", price: 0, amount: 0})
 
     const getDetail = () => {
-        setDetails([...details, detail])
+        setProductDetails([...productDetails, detail])
         notifySaveProdDetail()
+        setTimeout(() => {
+            setDisplay(0)
+        }, 3000);
     }
 
     const CusStyle = {
@@ -46,7 +49,7 @@ const ProductDetail = (props) => {
     };
     return(
         <>
-        {!info ? (
+        {!productDetail ? (
             <>
                 <div className="DetailButton">
                     {!setDisplay?(<AdminButton style={CusStyle} IconName={faTrashAlt} ClickEvent={notifyDeleteProdDetail}/>) : (<><AdminButton style={CusStyle} IconName={faSave} ClickEvent={()=>getDetail()}/> <AdminButton IconName={faWindowClose} ClickEvent={()=>setDisplay(0)}/> </>)}
@@ -54,28 +57,24 @@ const ProductDetail = (props) => {
                 <div className="ProductDetail BorderFormat">
                     <form className="ProductDetailForm">
                         <div>
-                            <p>Mã chi tiết:</p>
-                            <input name="txtPDNo" type="text" disabled onChange={e=>setDetail({...detail,pd_no: e.target.value})} />
+                            <p>Ram:</p>
+                            <input name="txtPDRam" type="text" onChange={e=>setDetail({...detail,ram: e.target.value})} /> <br/>
                         </div>
                         <div>
                             <p>Bộ nhớ:</p>
-                            <input name="txtPDMemory" type="text" onChange={e=>setDetail({...detail,pd_memory: e.target.value})} /> <br/>
+                            <input name="txtPDStorage" type="text" onChange={e=>setDetail({...detail,storage: e.target.value})} /> <br/>
+                        </div>
+                        <div>
+                            <p>Bộ nhớ khả dụng:</p>
+                            <input name="txtPDStorageAvailable" type="text" onChange={e=>setDetail({...detail,storageAvailable: e.target.value})} /> <br/>
                         </div>
                         <div>
                             <p>Giá:</p>
-                            <input name="txtPDPrice" type="text" onChange={e=>setDetail({...detail,pd_price: Number(e.target.value)})} /> <br/>
+                            <input name="txtPDPrice" type="text" onChange={e=>setDetail({...detail,price: Number(e.target.value)})} /> <br/>
                         </div>
                         <div>
                             <p>Số lượng:</p>
-                            <input name="txtPDAmount" type="text" onChange={e=>setDetail({...detail,pd_amount: Number(e.target.value)})} /> <br/>
-                        </div>
-                        <div>
-                            <p>Đã bán:</p>
-                            <input name="txtPDSold" type="text" onChange={e=>setDetail({...detail,pd_sold: Number(e.target.value)})} /> <br/>
-                        </div>
-                        <div>
-                            <p>Hình ảnh:</p>
-                            <input type="file" id="myFile" name="filename" multiple />
+                            <input name="txtPDAmount" type="text" onChange={e=>setDetail({...detail,amount: Number(e.target.value)})} /> <br/>
                         </div>
                     </form>
                 </div>
@@ -89,28 +88,24 @@ const ProductDetail = (props) => {
                 <div className="ProductDetail BorderFormat">
                     <form className="ProductDetailForm">
                         <div>
-                            <p>Mã chi tiết:</p>
-                            <input name="txtPDNo" type="text" disabled onChange={e=>setDetail({...detail,pd_no: e.target.value})} />
+                            <p>Ram:</p>
+                            <input name="txtPDRam" type="text" onChange={e=>setDetail({...detail,ram: e.target.value})} defaultValue={productDetail.ram}/> <br/>
                         </div>
                         <div>
                             <p>Bộ nhớ:</p>
-                            <input name="txtPDMemory" type="text" onChange={e=>setDetail({...detail,pd_memory: e.target.value})} value={info.pd_memory}/> <br/>
+                            <input name="txtPDStorage" type="text" onChange={e=>setDetail({...detail,storage: e.target.value})} defaultValue={productDetail.storage}/> <br/>
+                        </div>
+                        <div>
+                            <p>Bộ nhớ khả dụng:</p>
+                            <input name="txtPDStorageAvailable" type="text" onChange={e=>setDetail({...detail,storageAvailable: e.target.value})} defaultValue={productDetail.storageAvailable}/> <br/>
                         </div>
                         <div>
                             <p>Giá:</p>
-                            <input name="txtPDPrice" type="text" onChange={e=>setDetail({...detail,pd_price: Number(e.target.value)})} value={info.pd_price}/> <br/>
+                            <input name="txtPDPrice" type="text" onChange={e=>setDetail({...detail,price: Number(e.target.value)})} defaultValue={productDetail.price}/> <br/>
                         </div>
                         <div>
                             <p>Số lượng:</p>
-                            <input name="txtPDAmount" type="text" onChange={e=>setDetail({...detail,pd_amount: Number(e.target.value)})} value={info.pd_amount}/> <br/>
-                        </div>
-                        <div>
-                            <p>Đã bán:</p>
-                            <input name="txtPDSold" type="text" onChange={e=>setDetail({...detail,pd_sold: Number(e.target.value)})} value={info.pd_sold}/> <br/>
-                        </div>
-                        <div>
-                            <p>Hình ảnh:</p>
-                            <input type="file" id="myFile" name="filename" multiple />
+                            <input name="txtPDAmount" type="text" onChange={e=>setDetail({...detail,amount: Number(e.target.value)})} defaultValue={productDetail.amount}/> <br/>
                         </div>
                     </form>
                 </div>

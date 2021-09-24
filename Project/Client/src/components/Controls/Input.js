@@ -48,10 +48,16 @@ export const SearchHeaderInput = ({ searchHandle }) => {
   )
 }
 
-export const AdminSearchInput = () => {
+export const AdminSearchInput = (props) => {
+  const {filterModerator} = props
+  const [search, setSearch] = useState('')
+  const SetSearchValue = (text) => {
+    setSearch(text.target.value)
+    filterModerator(text.target.value)
+  }
   return(
     <div className="AdminSearchInput">
-      <input placeholder="Tìm kiếm"/>
+      <input placeholder="Tìm kiếm" value={search} onChange={SetSearchValue}/>
       <button><SearchIcon/></button>
     </div>
   )

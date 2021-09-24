@@ -6,7 +6,7 @@ import Notifications from "../../../../common/Notifications"
 import "../Admin.Style.scss"
 
 const ReplyFeedback = (props) => {
-    const {fbNo, setRep} = props
+    const {setRep} = props
     const CusStyle = {
         margin : "0 0 0 40%"
     }
