@@ -17,6 +17,10 @@ class ResponseMock {
 }
 
 class PaymentValidatorMock {
+  existSaveOrder = jest.fn((order) => {
+    return order !== undefined;
+  });
+
   validateCart = jest.fn((cart) => {
     return {
       hasAnyError: cart.products === undefined,
@@ -31,6 +35,10 @@ class PaymentValidatorMock {
     return { hasAnyError: id === undefined };
   });
 
+  validateSaveOrderId = jest.fn((id) => {
+    return { hasAnyError: id === undefined };
+  });
+
   validateUrl = jest.fn((url) => {
     return { hasAnyError: url === undefined };
   });
@@ -41,6 +49,10 @@ class PaymentDAOMock {
 
   saveOrder = jest.fn((order) => {
     return { ...order, paid: true };
+  });
+
+  getSaveOrder = jest.fn((id) => {
+    return id > 0 ? {} : undefined;
   });
 }
 

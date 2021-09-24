@@ -1,30 +1,26 @@
 const PaymentController = require("../../../app/controllers/payments_controller/PaymentController");
 
-const { CurrencyExchangeServiceMock } = require("../controllerTestHelper");
-
-class DAOMock {
-  getOrderProduct = jest.fn((prod_no) => {
-    return {
-      prod_no,
-    };
-  });
-
-  saveOrder = jest.fn();
-}
+const {
+  CurrencyExchangeServiceMock,
+  ResponseMock,
+  PaymentDAOMock,
+  PaymentValidatorMock,
+} = require("../controllerTestHelper");
 
 // Test lớp cha của payment
 class PaymentControllerObject extends PaymentController {}
 
+let validatorMock;
 let daoMock;
 let serviceMock;
 
 function getController() {
-  return new PaymentControllerObject(null, daoMock, serviceMock);
+  return new PaymentControllerObject(validatorMock, daoMock, serviceMock);
 }
 
 describe("Abstract Test", () => {
   beforeEach(() => {
-    daoMock = new DAOMock();
+    daoMock = new PaymentDAOMock();
     serviceMock = new CurrencyExchangeServiceMock();
   });
 
@@ -71,5 +67,78 @@ describe("Abstract Test", () => {
     //Expect
     expect(daoMock.saveOrder).toBeCalledTimes(1);
     expect(actRs.paid).toEqual(expRs.paid);
+  });
+});
+
+// 200 - 400 - 404
+describe("Lấy ra order đã thanh toán trong CSDL", () => {
+  beforeEach(() => {
+    validatorMock = new PaymentValidatorMock();
+    daoMock = new PaymentDAOMock();
+    serviceMock = new CurrencyExchangeServiceMock();
+  });
+
+  test("Lấy ra order - id không hợp lệ 400", async () => {
+    //Arrange
+    const saveOrderId = undefined;
+    const controller = getController();
+
+    const reqMock = {
+      params: { saveOrderId },
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRs = { statusCode: 400 };
+    const actRs = await controller.getSaveOrder(reqMock, resMock);
+
+    //Expect
+    expect(validatorMock.validateSaveOrderId).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRs.statusCode).toEqual(expRs.statusCode);
+  });
+
+  test("Lấy ra order - id không tồn tại 404", async () => {
+    //Arrange
+    const saveOrderId = -1;
+    const controller = getController();
+
+    const reqMock = {
+      params: { saveOrderId },
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRs = { statusCode: 404 };
+    const actRs = await controller.getSaveOrder(reqMock, resMock);
+
+    //Expect
+    expect(validatorMock.validateSaveOrderId).toBeCalledTimes(1);
+    expect(daoMock.getSaveOrder).toBeCalledTimes(1);
+    expect(validatorMock.existSaveOrder).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRs.statusCode).toEqual(expRs.statusCode);
+  });
+
+  test("Lấy ra order hợp lệ - 200", async () => {
+    //Arrange
+    const saveOrderId = 1;
+    const controller = getController();
+
+    const reqMock = {
+      params: { saveOrderId },
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRs = { statusCode: 200 };
+    const actRs = await controller.getSaveOrder(reqMock, resMock);
+
+    //Expect
+    expect(validatorMock.validateSaveOrderId).toBeCalledTimes(1);
+    expect(daoMock.getSaveOrder).toBeCalledTimes(1);
+    expect(validatorMock.existSaveOrder).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRs.statusCode).toEqual(expRs.statusCode);
   });
 });
