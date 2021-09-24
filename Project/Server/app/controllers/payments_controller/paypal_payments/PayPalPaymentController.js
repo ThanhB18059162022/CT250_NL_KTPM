@@ -49,6 +49,7 @@ module.exports = class PayPalPaymentController extends PaymentController {
       customer,
       orderProducts,
       total,
+      payment: "paypal",
     };
     this.storeOrder(tempOrder);
 
@@ -79,12 +80,12 @@ module.exports = class PayPalPaymentController extends PaymentController {
     await this.payPalSerivce.captureOrder(order.id);
 
     // Lưu vào CSDL
-    const paidOrder = await this.saveOrder(order);
+    const saveOrderId = await this.saveOrder(order);
 
     // Xóa order lưu tạm
     storedOrders.delete(order.id);
 
-    return res.json(paidOrder);
+    return res.json({ saveOrderId });
   };
 
   //#endregion

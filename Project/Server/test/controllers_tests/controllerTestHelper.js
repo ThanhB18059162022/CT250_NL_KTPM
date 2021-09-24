@@ -14,6 +14,8 @@ class ResponseMock {
 
     return { statusCode, body };
   });
+
+  redirect = jest.fn();
 }
 
 class PaymentValidatorMock {
@@ -40,7 +42,7 @@ class PaymentValidatorMock {
   });
 
   validateUrl = jest.fn((url) => {
-    return { hasAnyError: url === undefined };
+    return { hasAnyError: url === "//" };
   });
 }
 

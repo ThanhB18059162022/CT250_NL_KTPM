@@ -91,9 +91,9 @@ module.exports = class PaymentController {
     };
 
     // Lưu vào CSDL
-    await this.dao.saveOrder(paidOrder);
+    const saveOrderId = await this.dao.saveOrder(paidOrder);
 
-    return paidOrder;
+    return saveOrderId;
   };
 
   //Lấy ra đơn hàng đã lưu trong CSDL

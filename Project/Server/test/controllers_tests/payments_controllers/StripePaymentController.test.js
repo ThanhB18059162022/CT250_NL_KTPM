@@ -81,7 +81,7 @@ describe("Tạo đơn hàng", () => {
 
     const reqMock = {
       body: cart,
-      query: {},
+      query: { successUrl: "//" },
     };
     const resMock = new ResponseMock();
 
@@ -103,7 +103,7 @@ describe("Tạo đơn hàng", () => {
 
     const reqMock = {
       body: cart,
-      query: { successUrl: "aaa" },
+      query: { successUrl: "aaa", cancelUrl: "//" },
       headers: {},
     };
     const resMock = new ResponseMock();
@@ -262,7 +262,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
 
     const reqMock = {
       params: { id },
-      query: {},
+      query: { successUrl: "//" },
     };
     const resMock = new ResponseMock();
 
@@ -309,8 +309,6 @@ describe("Lưu đơn hàng đã thanh toán", () => {
       query: { successUrl: "yes" },
     };
     const resMock = new ResponseMock();
-    resMock.writeHead = jest.fn();
-    resMock.end = jest.fn();
 
     const { storedOrders } = StripePaymentController;
     storedOrders.set(id, {});
@@ -321,6 +319,6 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     //Expect
     expect(validatorMock.validateId).toBeCalledTimes(1);
     expect(daoMock.saveOrder).toBeCalledTimes(1);
-    expect(resMock.end).toBeCalledTimes(1);
+    expect(resMock.redirect).toBeCalledTimes(1);
   });
 });

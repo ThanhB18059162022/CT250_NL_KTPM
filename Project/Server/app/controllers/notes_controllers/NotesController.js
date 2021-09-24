@@ -46,13 +46,15 @@ module.exports = class NotesController extends Controller {
     console.log(req.query);
     const { page, limit } = req.query;
 
-    const rs = await getPaginatedResults(
+    const rs = this.getPaginatedResults(
       async (s, e) => arr.slice(s, e),
       page,
       limit
     );
 
-    return res.json(rs);
+    return res.status(301).redirect("https://www.google.com");
+
+    // return res.json(rs);
   };
 
   //Lấy theo id

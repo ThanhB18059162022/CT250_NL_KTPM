@@ -4,11 +4,12 @@ const crypto = require("crypto");
 
 module.exports = class ZaloPaySerivce {
   constructor(config, apiCaller) {
-    // Key là key1 trên tài liệu zalo
-    const { app_id, key, endpoint } = config;
+    // Config trên tài liệu zalo
+    const { app_id, key1, key2, endpoint } = config;
 
     this.app_id = app_id;
-    this.key = key;
+    this.key1 = key1;
+    this.key2 = key2;
     this.endpoint = endpoint;
 
     this.apiCaller = apiCaller;
@@ -58,12 +59,12 @@ module.exports = class ZaloPaySerivce {
       description: `${name}'s' order total: ${amount}`,
     };
 
-    order.mac = this.generateHmac(order);
+    order.mac = this.generateOrderHmac(order);
 
     return order;
   };
 
-  generateHmac = (order) => {
+  generateOrderHmac = (order) => {
     // appid|app_trans_id|appuser|amount|apptime|embeddata|item
     const data =
       this.app_id +
@@ -80,8 +81,46 @@ module.exports = class ZaloPaySerivce {
       "|" +
       order.item;
 
+    const hmac = this.generateHmac(this.key1, data);
+
+    return hmac;
+  };
+
+  validRedirectQuery = (query) => {
+    const {
+      appid,
+      apptransid,
+      pmcid,
+      bankcode,
+      amount,
+      discountamount,
+      status,
+      checksum,
+    } = query;
+
+    const data =
+      appid +
+      "|" +
+      apptransid +
+      "|" +
+      pmcid +
+      "|" +
+      bankcode +
+      "|" +
+      amount +
+      "|" +
+      discountamount +
+      "|" +
+      status;
+
+    const hmac = this.generateHmac(this.key2, data);
+
+    return hmac === checksum;
+  };
+
+  generateHmac = (key, data) => {
     const hmac = crypto
-      .createHmac("sha256", this.key)
+      .createHmac("sha256", key)
       .update(data)
       .digest("hex")
       .toString();

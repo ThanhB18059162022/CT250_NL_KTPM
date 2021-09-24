@@ -13,6 +13,8 @@ module.exports = class CustomersOrdersDAO {
 
   saveOrder = async (order) => {
     console.log("Đã save", order);
+
+    return order.id;
   };
 
   getSaveOrder = async (id) => {

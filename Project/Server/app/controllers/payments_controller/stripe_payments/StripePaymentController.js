@@ -1,8 +1,6 @@
-const CheckoutPaymentController = require("../CheckoutPaymentController");
+const PaymentController = require("../PaymentController");
 
-module.exports = class StripePaymentController extends (
-  CheckoutPaymentController
-) {
+module.exports = class StripePaymentController extends PaymentController {
   constructor(validator, dao, exchangeService, stripeSerivce) {
     super(validator, dao, exchangeService);
 
@@ -16,6 +14,8 @@ module.exports = class StripePaymentController extends (
   // 2 query để điều hướng thành công và hủy
   createOrder = async (req, res) => {
     const { body: cart } = req;
+
+    //#region  Validate
 
     const result = this.validator.validateCart(cart);
     if (result.hasAnyError) {
@@ -33,6 +33,8 @@ module.exports = class StripePaymentController extends (
     if (cnlResult.hasAnyError) {
       return res.status(400).json(cnlResult.error);
     }
+
+    //#endregion
 
     const { products, customer } = cart;
 
@@ -63,6 +65,7 @@ module.exports = class StripePaymentController extends (
       orderProducts,
       customer,
       total,
+      payment: "stripe",
     };
     this.storeOrder(tempOrder);
 
@@ -85,6 +88,41 @@ module.exports = class StripePaymentController extends (
     const usdOrderProducts = await Promise.all(usdOrderProductsPromise);
 
     return usdOrderProducts;
+  };
+
+  //#endregion
+
+  //#region CHECKOUT ORDER
+
+  // Lưu đơn hàng đã thanh toán
+  checkoutOrder = async (req, res) => {
+    const { id } = req.params;
+
+    const idResult = this.validator.validateId(id);
+    if (idResult.hasAnyError) {
+      return res.status(400).json(idResult.error);
+    }
+
+    const { successUrl } = req.query;
+    const urlResult = this.validator.validateUrl(successUrl);
+    if (urlResult.hasAnyError) {
+      return res.status(400).json(urlResult.error);
+    }
+
+    // Kiểm tra còn order trước khi thanh toán
+    const { storedOrders } = PaymentController;
+    const order = storedOrders.get(id);
+    if (order === undefined) {
+      return res.status(404).json({});
+    }
+
+    // Lưu vào CSDL
+    const saveOrderId = await this.saveOrder(order);
+    // Xóa order lưu tạm
+    storedOrders.delete(order.id);
+
+    // Về trang khi thanh toán
+    return res.status(301).redirect(`${successUrl}/${saveOrderId}`);
   };
 
   //#endregion
