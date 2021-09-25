@@ -77,6 +77,8 @@ class ProductsDAOMock {
 
     return ProductsDAOMock.products.length;
   });
+
+  updateProduct = jest.fn();
 }
 
 class ProductsValidatorMock {
@@ -846,6 +848,8 @@ describe("Sửa sản phẩm", () => {
     expect(daoMock.getProductByName).toBeCalledTimes(1);
     expect(daoMock.getProductByName).toBeCalledWith(product.prod_name);
 
+    expect(daoMock.updateProduct).toBeCalledTimes(1);
+
     expect(resMock.status).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledWith({});
@@ -886,6 +890,8 @@ describe("Sửa sản phẩm", () => {
     // Kiểm tra trùng tên
     expect(daoMock.getProductByName).toBeCalledTimes(1);
     expect(daoMock.getProductByNo).toBeCalledWith(product.prod_no);
+
+    expect(daoMock.updateProduct).toBeCalledTimes(1);
 
     expect(resMock.status).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
