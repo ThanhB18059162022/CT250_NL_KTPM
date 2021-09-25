@@ -1,12 +1,12 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect, useContext } from "react";
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Helper from "../../../helpers";
 import Notifications from "../../../common/Notifications";
 import "./CartDetail.Style.scss";
 import { caller } from "../../../api_services/servicesContainer";
-import PayPalPayment from "../../../api_services/payment_services/PayPalPayment";
+// import PayPalPayment from "../../../api_services/payment_services/PayPalPayment";
 import ZaloPaymentService from "../../../api_services/payment_services/ZaloPaymentService";
 import { StripePaymentService } from "../../../api_services/servicesContainer";
 import { CartContext } from "../../../providers/CartProviders";
@@ -28,11 +28,16 @@ const paymentServices = [
 
 const CartDetail = () => {
   const [list, setList] = useState([]);
+
   const [total, setTotal] = useState(0);
+
   const { clearItem, getItemList, upItem, removeItem, downItem, amount } =
     useContext(CartContext);
+
   const [display, setDisplay] = useState(false);
+
   const [show, setShow] = useState(false);
+
   const [notify, setNotify] = useState({
     content: "",
     title: "",
@@ -40,6 +45,7 @@ const CartDetail = () => {
     infoType: "INFO",
     onHideRequest: setShow,
   });
+
   useEffect(() => {
     (async () => {
       let listItem = await Promise.all(
@@ -52,12 +58,12 @@ const CartDetail = () => {
       );
       setList(listItem);
     })();
-  }, [amount]);
+  }, [amount, getItemList]);
 
-  const onValueChange = (id, value,choosedType) => {
+  const onValueChange = (id, value, choosedType) => {
     const newList = list.map((item) => {
       if (item.prod_no === id && item.choosedType === choosedType) {
-        item.amount > value ? downItem(id,choosedType) : upItem(id,choosedType);
+        item.amount > value ? downItem(id, choosedType) : upItem(id, choosedType);
         item.amount = value;
       }
       return item;
@@ -65,14 +71,13 @@ const CartDetail = () => {
     setList(newList);
   };
 
-  const onRemoveItem = (id,type) => {
-    console.log({id, type})
+  const onRemoveItem = (id, type) => {
     setNotify({
       ...notify,
       content: "Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng",
       title: "Xác nhận",
       type: "CONFIRMATION",
-      handle: () => removeItem(id,type),
+      handle: () => removeItem(id, type),
     });
     setShow(true);
   };
@@ -108,19 +113,20 @@ const CartDetail = () => {
         </div>
         <div className="cart-transaction">
           <div className="wrapper">
+            <h3>Thông tin thanh toán</h3>
             <p className="total_title">Tạm tính:</p>
             <p className="total_data">{Helper.Exchange.toMoney(total)} VNĐ</p>
 
             <p className="total_title">Số lượng sản phẩm:</p>
             <p className="total_data">{getItemList().length} sản phẩm</p>
 
-            <p className="total_title">Tổng số lượng:</p>
-            <p className="total_data">{getItemList().reduce((pre,item)=>pre+item.amount,0)}</p>
+            <p className="total_title">Số lượng chi tiết:</p>
+            <p className="total_data">{getItemList().reduce((pre, item) => pre + item.amount, 0)} chi tiết</p>
 
             <button
               onClick={() => {
                 setDisplay(true);
-                clearItem();
+                // clearItem();
               }}
             >
               Thanh toán
@@ -132,6 +138,7 @@ const CartDetail = () => {
         display={display}
         setDisplay={setDisplay}
         listPay={list}
+        total={total}
       />
       {/* <PayPalPayment/> */}
       <Notifications {...notify} isShow={show} onHideRequest={setShow} />
@@ -142,7 +149,9 @@ const CartDetail = () => {
 export default CartDetail;
 
 function CartTransaction(props) {
-  const { display, setDisplay, listPay } = props;
+  const { display, setDisplay, total, listPay } = props;
+
+  const { getItemList } = useContext(CartContext)
 
   const [step, setStep] = useState(0);
 
@@ -262,16 +271,19 @@ function CartTransaction(props) {
             <h3>Thông tin đơn hàng của bạn</h3>
             <div className="wrapper">
               <p>
-                <span>Tổng giá trị đơn hàng: </span>
+                <span>Tổng giá trị: </span> {Helper.Exchange.toMoney(total)} VNĐ
               </p>
               <p>
-                <span>Thời gian thực hiện: </span>
+                <span>Thời gian: </span>
+                {Helper.Exchange.toLocalDate(new Date().toISOString())}
               </p>
               <p>
                 <span>Số lượng sản phẩm: </span>
+                {getItemList().length}
               </p>
               <p>
-                <span>Số lượng chi tiết: </span>
+                <span>Số lượng chi tiết:</span>
+                {getItemList().reduce((pre, item) => pre + item.amount, 0)}
               </p>
             </div>
           </div>
@@ -368,9 +380,7 @@ function CartTransaction(props) {
               >
                 <p>
                   <input
-                    onClick={() =>
-                      setCustomerInfo({ ...customerinfo, transactionway: 1 })
-                    }
+                    onClick={() => setCustomerInfo({ ...customerinfo, transactionway: 1 })}
                     name="transaction-way"
                     type="radio"
                   />
@@ -382,7 +392,7 @@ function CartTransaction(props) {
                 <p>
                   <input
                     onClick={() =>
-                      setCustomerInfo({ ...customerinfo, transactionway: 3 })
+                      setCustomerInfo({ ...customerinfo, transactionway: 2 })
                     }
                     name="transaction-way"
                     type="radio"
@@ -395,7 +405,7 @@ function CartTransaction(props) {
                 <p>
                   <input
                     onClick={() =>
-                      setCustomerInfo({ ...customerinfo, transactionway: 2 })
+                      setCustomerInfo({ ...customerinfo, transactionway: 3 })
                     }
                     name="transaction-way"
                     type="radio"
@@ -561,7 +571,7 @@ function SetLocation(props) {
 
 function CartItem(props) {
   const { info, changeValue, removeItem } = props;
-  
+
   const history = useHistory()
 
   const onValueChange = (e) => changeValue(info.prod_no, e.target.value, info.choosedType);
@@ -571,7 +581,7 @@ function CartItem(props) {
   return (
     <li>
       <span className="img">
-        <img src={info.prod_imgs[0]} alt={info.prod_name} onClick={()=>history.push(`/product/${info.prod_no}`)}/>
+        <img src={info.prod_imgs[0]} alt={info.prod_name} onClick={() => history.push(`/product/${info.prod_no}`)} />
       </span>
       <span className="name">{info.prod_name}</span>
       <span className="storage element">

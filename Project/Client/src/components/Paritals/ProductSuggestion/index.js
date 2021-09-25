@@ -1,13 +1,6 @@
 import { ProductItem } from "../ProductShower/ProductList"
 import "./ProductSuggestion.Style.scss"
 const ProductSuggestion = ({arr, compare = false}) => {
-   // console.log(arr)
-    // let arr = []
-    // for (let i = 0; i < 10; i++) {
-    //     arr[i] = {
-    //         src: i % 2 === 0 ? "/image/samsung.jpeg" : "/image/iphone.jpeg"
-    //     }
-    // }
     return (
         <div className="ProductSuggestion">
             {

@@ -50,7 +50,7 @@ const Confirm = (props) => {
     return (
         <div className={`Notifications notify_confirm ${isShow ? "show" : ""}`}>
             <div className="notify_image">
-                <img src="notify/confirm.png" alt="question" />
+                <img src="/notify/confirm.png" alt="question" />
             </div>
             <div className="notify_content">
                 <p>{title}</p>
@@ -72,17 +72,15 @@ const Information = (props) => {
     const getImage = () => {
         switch (infoType) {
             case "WARN":
-                return <img src="notify/warn.png" alt="warn" />;
+                return <img src="/notify/warn.png" alt="warn" />;
             case "ERROR":
-                return <img src="notify/error.png" alt="error" />;
+                return <img src="/notify/error.png" alt="error" />;
             case "SUCCESS":
-                return <img src="notify/success.png" alt="success" />;
+                return <img src="/notify/success.png" alt="success" />;
             default:
-                return <img src="notify/info.png" alt="info" />;
+                return <img src="/notify/info.png" alt="info" />;
         }
     };
-
-
 
     useEffect(() => {
         let timeout = setTimeout(callback, duration);

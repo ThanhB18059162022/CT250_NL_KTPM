@@ -28,6 +28,7 @@ export default function CartProvider(props){
         }
         else carts.push({id:id, amount:1, type})
         _updateListItem(carts)
+        return isExist
     }
 
     const downItem = (id,type) =>{

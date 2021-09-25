@@ -24,8 +24,6 @@
             & > img {
                 width: 120%;
                 margin-left: -10%;
-                // width: 80%;
-                // margin-left:10%;
             }
             ul {
                 display: flex;
@@ -71,9 +69,8 @@
                 transition: all ease 0.5s;
                 color: rgb(85, 85, 85);
                 &.choose {
-                    background: var(--backgroundColor);
+                    background: var(--backgroundBlur);
                     color: black;
-                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.397);
                 }
             }
 
@@ -84,7 +81,7 @@
         p.product-box-price {
             font-size: 36px;
             font-weight: 700;
-            color: red;
+            color: rgb(240, 48, 48);
             margin: 20px 0;
         }
         div.sell-ways {

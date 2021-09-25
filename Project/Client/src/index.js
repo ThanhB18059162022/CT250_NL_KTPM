@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import PayPalPayment from "./api_services/payment_services/PayPalPayment";
-import StripePayment from "./api_services/payment_services/StripePayment";
-import ZaloPayment from "./api_services/payment_services/ZaloPayment";
-import BarChart from "./api_services/statistic/BarChart";
+// import PayPalPayment from "./api_services/payment_services/PayPalPayment";
+// import StripePayment from "./api_services/payment_services/StripePayment";
+// import ZaloPayment from "./api_services/payment_services/ZaloPayment";
+// import BarChart from "./api_services/statistic/BarChart";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(

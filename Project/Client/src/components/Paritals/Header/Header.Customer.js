@@ -1,7 +1,7 @@
 import { CartButton } from "../../Controls"
 import { SearchHeaderInput } from "../../Controls"
 import {SearchIcon, TimesIcon } from "../../Controls/FlatIcon"
-import { useState,useEffect, useContext } from "react"
+import { useState,useContext } from "react"
 import { useHistory } from 'react-router'
 import { AdminInformation, ChangePwd } from "../Admin"
 import "./Header.Style.scss"
