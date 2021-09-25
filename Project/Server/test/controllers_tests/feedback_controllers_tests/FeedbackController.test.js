@@ -5,6 +5,22 @@ const { ResponseMock } = require("../controllerTestHelper");
 
 //#region INIT
 
+class FeedBackValidatorMock {
+  validateFeedback = jest.fn((fb) => {
+    return {
+      hasAnyError: fb === undefined,
+    };
+  });
+
+  validateFeedbackNo = jest.fn((no) => {
+    return {
+      hasAnyError: isNaN(no),
+    };
+  });
+
+  existFeedback = jest.fn((fb) => fb !== undefined);
+}
+
 const FEEDBACK = [
   { fb: 1, date: new Date("2021-09-24") },
   { fb: 2, date: new Date() },
@@ -12,6 +28,16 @@ const FEEDBACK = [
 
 class FeedbackDAOMock {
   getFeedback = jest.fn(async () => FEEDBACK);
+
+  getFeedbackByNo = jest.fn(async (no) => {
+    if (no === 1) {
+      return FEEDBACK[0];
+    }
+  });
+
+  addFeedback = jest.fn(async () => FEEDBACK.length + 1);
+
+  deleteFeedback = jest.fn();
 }
 
 //#endregion
@@ -22,6 +48,7 @@ function getController() {
   return new FeedbackController(validatorMock, daoMock);
 }
 
+// 200
 describe("Lấy danh sách phản hồi", () => {
   beforeEach(() => {
     daoMock = new FeedbackDAOMock();
@@ -47,8 +74,10 @@ describe("Lấy danh sách phản hồi", () => {
   });
 });
 
+// 201 - 400
 describe("Thêm phản hồi", () => {
   beforeEach(() => {
+    validatorMock = new FeedBackValidatorMock();
     daoMock = new FeedbackDAOMock();
   });
 
@@ -69,5 +98,102 @@ describe("Thêm phản hồi", () => {
 
     //Expect
     expect(actRes).toEqual(expRes);
+    expect(validatorMock.validateFeedback).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Thêm thành công - 201", async () => {
+    //Arrange
+    const feedback = {};
+    const controller = getController();
+
+    const reqMock = {
+      body: feedback,
+    };
+
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 201, body: { fb_no: FEEDBACK.length + 1 } };
+    const actRes = await controller.addFeedback(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(validatorMock.validateFeedback).toBeCalledTimes(1);
+    expect(daoMock.addFeedback).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+});
+
+// 204 - 400 - 404
+describe("Xóa phản hồi", () => {
+  beforeEach(() => {
+    validatorMock = new FeedBackValidatorMock();
+    daoMock = new FeedbackDAOMock();
+  });
+
+  test("Mã phản hồi không hợp lệ - 400", async () => {
+    //Arrange
+    const fb_no = undefined;
+    const controller = getController();
+
+    const reqMock = {
+      params: { fb_no },
+    };
+
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400 };
+    const actRes = await controller.deleteFeedback(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Không tồn tại - 404", async () => {
+    //Arrange
+    const fb_no = "2";
+    const controller = getController();
+
+    const reqMock = {
+      params: { fb_no },
+    };
+
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 404, body: {} };
+    const actRes = await controller.deleteFeedback(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
+    expect(daoMock.getFeedbackByNo).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Xóa thành công - 204", async () => {
+    //Arrange
+    const fb_no = "1";
+    const controller = getController();
+
+    const reqMock = {
+      params: { fb_no },
+    };
+
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 204, body: {} };
+    const actRes = await controller.deleteFeedback(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
+    expect(daoMock.getFeedbackByNo).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
   });
 });

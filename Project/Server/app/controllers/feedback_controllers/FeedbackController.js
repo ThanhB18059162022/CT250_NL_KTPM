@@ -3,6 +3,7 @@ const Controller = require("../Controller");
 module.exports = class FeedbackController extends Controller {
   constructor(validator, dao) {
     super();
+    this.validator = validator;
     this.dao = dao;
   }
 
@@ -36,12 +37,41 @@ module.exports = class FeedbackController extends Controller {
   //#region ADD
 
   addFeedback = async (req, res) => {
-    const { body: feedback } = req;
+    const { body: newFeedback } = req;
 
-    // const result = this.validator.validateFeedback(feedback);
-    // if(result.hasAnyError)
+    const result = this.validator.validateFeedback(newFeedback);
+    if (result.hasAnyError) {
+      return res.status(400).json(result.error);
+    }
 
-    return res.status(400).json();
+    // Thêm vào CSDL trả về fb_no
+    const fb_no = await this.dao.addFeedback(newFeedback);
+
+    return res.status(201).json({ ...newFeedback, fb_no });
+  };
+
+  //#endregion
+
+  //#region DELETE
+
+  deleteFeedback = async (req, res) => {
+    const { fb_no: fb_noParam } = req.params;
+
+    const fb_no = Number(fb_noParam);
+    const result = this.validator.validateFeedbackNo(fb_no);
+    if (result.hasAnyError) {
+      return res.status(400).json(result.error);
+    }
+
+    const feedback = await this.dao.getFeedbackByNo(fb_no);
+    if (!this.validator.existFeedback(feedback)) {
+      return res.status(404).json({});
+    }
+
+    // Xóa feedback trong CSDL
+    await this.dao.deleteFeedback(fb_no);
+
+    return res.status(204).json({});
   };
 
   //#endregion
