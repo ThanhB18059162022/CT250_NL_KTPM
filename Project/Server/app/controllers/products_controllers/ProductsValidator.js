@@ -1,29 +1,24 @@
-// Tham khảo https://joi.dev/api/?v=17.4.2
-const Joi = require("joi");
+const Validator = require("../Validator");
 
-const { getValidationResult } = require("../validatorHelper");
-
-// Lớp xác thực dữ liệu truyền vào có hợp lệ hay không
-// Xài joi để xác thực
-module.exports = class ProductsValidator {
+module.exports = class ProductsValidator extends Validator {
   // Kiểm tra mã hợp lệ
   validateNo = (prod_no) => {
-    const schema = Joi.object({
-      prod_no: Joi.number().integer().min(0).required(),
+    const schema = this.joi.object({
+      prod_no: this.joi.number().integer().min(0).required(),
     });
 
-    const result = getValidationResult(schema, { prod_no });
+    const result = this.getValidationResult(schema, { prod_no });
 
     return result;
   };
 
   // Kiểm tra tên hợp lệ
   validateName = (prod_name) => {
-    const schema = Joi.object({
-      prod_name: Joi.string().min(5).max(50).required(),
+    const schema = this.joi.object({
+      prod_name: this.joi.string().min(5).max(50).required(),
     });
 
-    const result = getValidationResult(schema, { prod_name });
+    const result = this.getValidationResult(schema, { prod_name });
 
     return result;
   };

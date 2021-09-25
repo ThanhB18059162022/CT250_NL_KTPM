@@ -1,44 +1,40 @@
-// Tham khảo https://joi.dev/api/?v=17.4.2
-//https://stackoverflow.com/questions/57993305/how-can-i-validate-number-of-digits-from-joi-using-nodejs
+const Validator = require("../Validator");
 
-const joi = require("joi");
-const { getValidationResult } = require("../validatorHelper");
-
-module.exports = class PatmentValidator {
+module.exports = class PatmentValidator extends Validator {
   // Xác thực danh sách sản phẩm trong giỏ
   validateOrderProducts = (products = []) => {
-    const schema = joi.array().items(
-      joi
+    const schema = this.joi.array().items(
+      this.joi
         .object({
-          prod_no: joi.number().integer().min(0).required(),
-          prod_quantity: joi.number().integer().min(1).required(),
+          prod_no: this.joi.number().integer().min(0).required(),
+          prod_quantity: this.joi.number().integer().min(1).required(),
         })
         .required()
     );
-    const result = getValidationResult(schema, products);
+    const result = this.getValidationResult(schema, products);
 
     return result;
   };
 
   // Xác thực khách hàng nữa
   validateCustomer = (customer = {}) => {
-    const schema = joi
+    const schema = this.joi
       .object({
-        cus_name: joi.string().min(5).max(70).required(),
-        cus_id: joi
+        cus_name: this.joi.string().min(5).max(70).required(),
+        cus_id: this.joi
           .string()
           .length(9)
           .pattern(/^[0-9]+$/)
           .required(),
-        cus_email: joi
+        cus_email: this.joi
           .string()
           .pattern(
             /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           )
           .required(),
-        cus_sex: joi.boolean().required(),
-        cus_address: joi.string().min(10).max(128).required(),
-        cus_phoneNumber: joi
+        cus_sex: this.joi.boolean().required(),
+        cus_address: this.joi.string().min(10).max(128).required(),
+        cus_phoneNumber: this.joi
           .string()
           .length(10)
           .pattern(/^[0-9]+$/)
@@ -46,7 +42,7 @@ module.exports = class PatmentValidator {
       })
       .required();
 
-    const result = getValidationResult(schema, customer);
+    const result = this.getValidationResult(schema, customer);
 
     return result;
   };
@@ -72,44 +68,48 @@ module.exports = class PatmentValidator {
 
   // Xác thực đường dẫn
   validateUrl = (url) => {
-    const schema = joi.object({
-      url: joi.string().uri().required(),
+    const schema = this.joi.object({
+      url: this.joi.string().uri().required(),
     });
 
-    const result = getValidationResult(schema, { url });
+    const result = this.getValidationResult(schema, { url });
 
     return result;
   };
 
   // Xài cho id tự tạo
   validateId = (orderId) => {
-    const schema = joi.object({
-      orderId: joi.string().length(64).required(),
+    const schema = this.joi.object({
+      orderId: this.joi.string().length(64).required(),
     });
 
-    const result = getValidationResult(schema, { orderId });
+    const result = this.getValidationResult(schema, { orderId });
 
     return result;
   };
 
   // Xài cho id tự tạo
   validateSaveOrderId = (saveOrderId) => {
-    const schema = joi.object({
-      saveOrderId: joi.number().min(0).max(Number.MAX_SAFE_INTEGER).required(),
+    const schema = this.joi.object({
+      saveOrderId: this.joi
+        .number()
+        .min(0)
+        .max(Number.MAX_SAFE_INTEGER)
+        .required(),
     });
 
-    const result = getValidationResult(schema, { saveOrderId });
+    const result = this.getValidationResult(schema, { saveOrderId });
 
     return result;
   };
 
   // Xài cho paypal
   validatePayPalOrderID = (orderID) => {
-    const schema = joi.object({
-      orderID: joi.string().length(17).required(),
+    const schema = this.joi.object({
+      orderID: this.joi.string().length(17).required(),
     });
 
-    const result = getValidationResult(schema, { orderID });
+    const result = this.getValidationResult(schema, { orderID });
 
     return result;
   };
