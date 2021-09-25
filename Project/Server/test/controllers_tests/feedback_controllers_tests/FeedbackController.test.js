@@ -85,7 +85,7 @@ describe("Lấy danh sách phản hồi", () => {
 
     //Expect
     expect(resMock.json).toBeCalledTimes(1);
-    expect(expRes).toEqual(actRes);
+    expect(actRes).toEqual(expRes);
   });
 
   //#region  Sản phẩm
@@ -106,7 +106,7 @@ describe("Lấy danh sách phản hồi", () => {
     const actRes = await controller.getFeedbackByProductNo(reqMock, resMock);
 
     //Expect
-    expect(expRes.statusCode).toEqual(actRes.statusCode);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
     expect(validatorMock.validateProductNo).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
   });
@@ -127,8 +127,9 @@ describe("Lấy danh sách phản hồi", () => {
     const actRes = await controller.getFeedbackByProductNo(reqMock, resMock);
 
     //Expect
-    expect(expRes).toEqual(actRes);
+    expect(actRes).toEqual(expRes);
     expect(resMock.json).toBeCalledTimes(1);
+    expect(daoMock.existProduct).toBeCalledTimes(1);
     expect(validatorMock.validateProductNo).toBeCalledTimes(1);
   });
 
@@ -148,15 +149,18 @@ describe("Lấy danh sách phản hồi", () => {
     const actRes = await controller.getFeedbackByProductNo(reqMock, resMock);
 
     //Expect
+    expect(actRes).toEqual(expRes);
+    expect(validatorMock.validateProductNo).toBeCalledTimes(1);
+    expect(daoMock.existProduct).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-    expect(expRes).toEqual(actRes);
   });
 
   //#endregion
 
-  test("Lấy danh sách trả lời phản hồi của phản hồi - 200", async () => {
+  //#region SubFeedback
+
+  test("Lấy danh sách trả lời phản hồi của phản hồi không hợp lệ - 400", async () => {
     //Arrange
-    const feedback = FEEDBACK;
     const controller = getController();
 
     const reqMock = {
@@ -166,13 +170,59 @@ describe("Lấy danh sách phản hồi", () => {
     const resMock = new ResponseMock();
 
     //Act
+    const expRes = { statusCode: 400 };
+    const actRes = await controller.getSubFeedbackOfFeedback(reqMock, resMock);
+
+    //Expect
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Lấy danh sách trả lời phản hồi của phản hồi không tồn tại - 404", async () => {
+    //Arrange
+    const controller = getController();
+
+    const reqMock = {
+      params: { fb_no: "6" },
+      query: {},
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 404, body: {} };
+    const actRes = await controller.getSubFeedbackOfFeedback(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
+    expect(daoMock.getFeedbackByNo).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Lấy danh sách trả lời phản hồi của phản hồi - 200", async () => {
+    //Arrange
+    const feedback = FEEDBACK;
+    const controller = getController();
+
+    const reqMock = {
+      params: { fb_no: "1" },
+      query: {},
+    };
+    const resMock = new ResponseMock();
+
+    //Act
     const expRes = { statusCode: 200, body: { items: feedback } };
     const actRes = await controller.getSubFeedbackOfFeedback(reqMock, resMock);
 
     //Expect
+    expect(actRes).toEqual(expRes);
+    expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
+    expect(daoMock.getFeedbackByNo).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-    expect(expRes).toEqual(actRes);
   });
+
+  //#endregion
 });
 
 // 201 - 400

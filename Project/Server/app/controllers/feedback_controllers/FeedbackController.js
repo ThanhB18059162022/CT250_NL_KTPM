@@ -71,7 +71,18 @@ module.exports = class FeedbackController extends Controller {
 
   // Lấy danh sách trả lời phản hồi của phản hồi
   getSubFeedbackOfFeedback = async (req, res) => {
-    const { fb_no } = req.params;
+    const { fb_no: fb_noParam } = req.params;
+
+    const fb_no = Number(fb_noParam);
+    const result = this.validator.validateFeedbackNo(fb_no);
+    if (result.hasAnyError) {
+      return res.status(400).json(result.error);
+    }
+
+    const fb = await this.dao.getFeedbackByNo(fb_no);
+    if (!this.validator.existFeedback(fb)) {
+      return res.status(404).json({});
+    }
 
     const { page = 1, limit = 3 } = req.query;
 
