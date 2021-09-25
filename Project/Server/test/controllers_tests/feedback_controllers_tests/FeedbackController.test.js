@@ -23,8 +23,6 @@ class FeedBackValidatorMock {
       hasAnyError: isNaN(no),
     };
   });
-
-  // existFeedback = jest.fn((fb) => fb !== undefined);
 }
 
 const FEEDBACK = [

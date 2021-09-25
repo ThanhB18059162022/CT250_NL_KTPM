@@ -19,4 +19,14 @@ module.exports = class FeedbackValidator {
 
     return result;
   };
+
+  // Kiểm tra phản hồi
+  validateFeedback = () => {
+    return { hasAnyError: true };
+  };
+
+  // Kiểm tra mã sản phẩm
+  validateProductNo = (prod_no) => {
+    return this.productValidator.validateNo(prod_no);
+  };
 };
