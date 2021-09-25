@@ -25,6 +25,7 @@ const ProductDetail = (props) => {
     useEffect(() => {
         (async () => {
             let data = await caller.get(`products/${id}`)
+            console.log(data)
             setProduct(data)
             window.scrollTo({
                 left: 0,
