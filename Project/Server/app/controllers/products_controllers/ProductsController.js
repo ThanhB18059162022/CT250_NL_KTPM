@@ -186,6 +186,9 @@ module.exports = class ProductsController extends Controller {
 
     //#endregion
 
+    // Cập nhật thông tin
+    await this.dao.updateProduct(prod_no, newProduct);
+
     return res.status(204).json({});
   };
 

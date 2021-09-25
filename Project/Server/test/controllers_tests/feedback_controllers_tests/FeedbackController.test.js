@@ -35,6 +35,8 @@ class FeedbackDAOMock {
     }
   });
 
+  getFeedbackByProductNo = jest.fn(async () => FEEDBACK);
+
   addFeedback = jest.fn(async () => FEEDBACK.length + 1);
 
   deleteFeedback = jest.fn();
@@ -54,7 +56,7 @@ describe("Lấy danh sách phản hồi", () => {
     daoMock = new FeedbackDAOMock();
   });
 
-  test("Không query params", async () => {
+  test("Lấy danh sách phản hồi mới nhất không query params", async () => {
     //Arrange
     const feedback = FEEDBACK;
     const controller = getController();
@@ -67,6 +69,26 @@ describe("Lấy danh sách phản hồi", () => {
     //Act
     const expRes = { statusCode: 200, body: { items: feedback } };
     const actRes = await controller.getFeedback(reqMock, resMock);
+
+    //Expect
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(expRes).toEqual(actRes);
+  });
+
+  test("Lấy danh sách phản theo của 1 sản phẩm", async () => {
+    //Arrange
+    const feedback = FEEDBACK;
+    const controller = getController();
+
+    const reqMock = {
+      params: {},
+      query: {},
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 200, body: { items: feedback } };
+    const actRes = await controller.getFeedbackByProductNo(reqMock, resMock);
 
     //Expect
     expect(resMock.json).toBeCalledTimes(1);

@@ -15,12 +15,38 @@ module.exports = class FeedbackController extends Controller {
       date = new Date(),
       order = "DESC",
       page = 1,
-      limit = 24,
+      limit = 3,
     } = req.query;
 
     const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
 
     const feedback = await this.dao.getFeedback(
+      date,
+      order,
+      startIndex,
+      endIndex
+    );
+
+    const productsPage = this.getPaginatedResults(feedback, page, limit);
+
+    return res.json(productsPage);
+  };
+
+  // Lấy phản hồi theo mã sản phẩm
+  getFeedbackByProductNo = async (req, res) => {
+    const { prod_no } = req.params;
+
+    const {
+      date = new Date(),
+      order = "DESC",
+      page = 1,
+      limit = 3,
+    } = req.query;
+
+    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+
+    const feedback = await this.dao.getFeedbackByProductNo(
+      prod_no,
       date,
       order,
       startIndex,
