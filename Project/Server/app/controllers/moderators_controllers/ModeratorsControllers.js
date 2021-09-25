@@ -36,7 +36,7 @@ module.exports = class ModeratorsControllers extends Controller {
     }
 
     const moderator = await this.dao.getModeratorByNo(mod_no);
-    if (!this.validator.existModerator(moderator)) {
+    if (this.dao.emptyModerator(moderator)) {
       return res.status(404).json({});
     }
 
@@ -53,7 +53,7 @@ module.exports = class ModeratorsControllers extends Controller {
     }
 
     const moderator = await this.dao.getModeratorByPhoneNumber(mod_phoneNumber);
-    if (!this.validator.existModerator(moderator)) {
+    if (this.dao.emptyModerator(moderator)) {
       return res.status(404).json({});
     }
 
@@ -70,7 +70,7 @@ module.exports = class ModeratorsControllers extends Controller {
     }
 
     const moderator = await this.dao.getModeratorByMod_Id(mod_id);
-    if (!this.validator.existModerator(moderator)) {
+    if (this.dao.emptyModerator(moderator)) {
       return res.status(404).json({});
     }
 
@@ -87,7 +87,7 @@ module.exports = class ModeratorsControllers extends Controller {
     }
 
     const moderator = await this.dao.getModeratorByUsername(mod_username);
-    if (!this.validator.existModerator(moderator)) {
+    if (this.dao.emptyModerator(moderator)) {
       return res.status(404).json({});
     }
 
@@ -106,6 +106,8 @@ module.exports = class ModeratorsControllers extends Controller {
     if (result.hasAnyError) {
       return res.status(400).json(result.error);
     }
+
+    //#region  Exist
 
     // Số điện thoại tồn tại
     const existPhoneNumber = await this.existPhoneNumber(
@@ -127,6 +129,8 @@ module.exports = class ModeratorsControllers extends Controller {
       return res.status(400).json(this.getDuplicateResult("mod_username"));
     }
 
+    //#endregion
+
     const moderator = await this.dao.addModerator(newModerator);
 
     return res.status(201).json(moderator);
@@ -137,13 +141,13 @@ module.exports = class ModeratorsControllers extends Controller {
       phoneNumber
     );
 
-    return this.validator.existModerator(moderatorHasPhoneNumber);
+    return !this.dao.emptyModerator(moderatorHasPhoneNumber);
   };
 
   existMod_Id = async (mod_id) => {
     const moderatorHasMod_Id = await this.dao.getModeratorByMod_Id(mod_id);
 
-    return this.validator.existModerator(moderatorHasMod_Id);
+    return !this.dao.emptyModerator(moderatorHasMod_Id);
   };
 
   existUsername = async (mod_username) => {
@@ -151,7 +155,7 @@ module.exports = class ModeratorsControllers extends Controller {
       mod_username
     );
 
-    return this.validator.existModerator(moderatorHasUsername);
+    return !this.dao.emptyModerator(moderatorHasUsername);
   };
 
   //#endregion
@@ -187,7 +191,7 @@ module.exports = class ModeratorsControllers extends Controller {
 
     //Quản trị viên có tồn tại
     const moderator = await this.dao.getModeratorByNo(mod_no);
-    if (!this.validator.existModerator(moderator)) {
+    if (this.dao.emptyModerator(moderator)) {
       return res.status(404).json({});
     }
 
@@ -195,9 +199,7 @@ module.exports = class ModeratorsControllers extends Controller {
     const moderatorHasPhoneNumber = await this.dao.getModeratorByPhoneNumber(
       newModeratorInfo.mod_phoneNumber
     );
-    const existPhoneNumber = this.validator.existModerator(
-      moderatorHasPhoneNumber
-    );
+    const existPhoneNumber = !this.dao.emptyModerator(moderatorHasPhoneNumber);
 
     // Tồn tại số điện thoại và số điện thoại của mod khác
     if (
@@ -211,7 +213,7 @@ module.exports = class ModeratorsControllers extends Controller {
     const moderatorHasMod_Id = await this.dao.getModeratorByMod_Id(
       newModeratorInfo.mod_id
     );
-    const existMod_Id = this.validator.existModerator(moderatorHasMod_Id);
+    const existMod_Id = !this.dao.emptyModerator(moderatorHasMod_Id);
 
     // Tồn tại số CMND và của mod khác
     if (
@@ -249,7 +251,7 @@ module.exports = class ModeratorsControllers extends Controller {
     }
 
     const moderator = await this.dao.getModeratorByNo(mod_no);
-    if (!this.validator.existModerator(moderator)) {
+    if (this.dao.emptyModerator(moderator)) {
       return res.status(404).json({});
     }
 

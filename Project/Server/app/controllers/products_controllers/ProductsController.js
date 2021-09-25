@@ -76,8 +76,7 @@ module.exports = class ProductsController extends Controller {
     }
 
     const product = await this.dao.getProductByNo(prod_no);
-
-    if (!this.validator.existProduct(product)) {
+    if (this.dao.emptyProduct(product)) {
       return res.status(404).json({});
     }
 
@@ -94,7 +93,7 @@ module.exports = class ProductsController extends Controller {
     }
 
     const product = await this.dao.getProductByName(prod_name);
-    if (!this.validator.existProduct(product)) {
+    if (this.dao.emptyProduct(product)) {
       return res.status(404).json({});
     }
 
@@ -132,7 +131,7 @@ module.exports = class ProductsController extends Controller {
   existName = async (prod_name) => {
     const productHasName = await this.dao.getProductByName(prod_name);
 
-    return this.validator.existProduct(productHasName);
+    return !this.dao.emptyProduct(productHasName);
   };
 
   //#endregion
@@ -166,7 +165,7 @@ module.exports = class ProductsController extends Controller {
 
     // Lấy ra thông tin cũ
     const oldProduct = await this.dao.getProductByNo(prod_no);
-    if (!this.validator.existProduct(oldProduct)) {
+    if (this.dao.emptyProduct(oldProduct)) {
       return res.status(404).json({});
     }
 
@@ -178,7 +177,7 @@ module.exports = class ProductsController extends Controller {
     // Kiểm tra tồn tại sản phẩm trùng tên
     // Và xem sản phẩm trùng tên đó phải sản phẩm cũ (oldProduct)
     if (
-      this.validator.existProduct(productHasName) &&
+      !this.dao.emptyProduct(productHasName) &&
       this.notOldProduct(oldProduct, productHasName)
     ) {
       return res.status(400).json(this.getDuplicateResult("prod_name"));
@@ -210,7 +209,7 @@ module.exports = class ProductsController extends Controller {
     }
 
     const product = await this.dao.getProductByNo(prod_no);
-    if (!this.validator.existProduct(product)) {
+    if (this.dao.emptyProduct(product)) {
       return res.status(404).json({});
     }
 

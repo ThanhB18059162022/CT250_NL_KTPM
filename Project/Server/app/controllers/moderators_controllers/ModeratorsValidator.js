@@ -5,9 +5,6 @@ const joi = require("joi");
 const { getValidationResult } = require("../validatorHelper");
 
 module.exports = class ModeratorsValidator {
-  // Kiểm tra tồn tại
-  existModerator = (moderator) => moderator?.mod_no > 0;
-
   // Kiểm tra mã hợp lệ
   validateNo = (mod_no) => {
     const schema = joi.object({

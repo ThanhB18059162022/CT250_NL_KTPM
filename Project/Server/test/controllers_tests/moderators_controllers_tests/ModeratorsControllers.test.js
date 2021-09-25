@@ -39,10 +39,6 @@ class ModeratorValidatorMock {
     return { hasAnyError: un === "" };
   });
 
-  existModerator = jest.fn((m) => {
-    return m !== undefined;
-  });
-
   validateAddModerator = jest.fn((mod) => {
     return { hasAnyError: mod === undefined };
   });
@@ -53,6 +49,10 @@ class ModeratorValidatorMock {
 }
 
 class ModeratorDAOMock {
+  emptyModerator = jest.fn((m) => {
+    return m === undefined;
+  });
+
   getModerators = jest.fn(async () => {
     return moderators;
   });
@@ -395,7 +395,7 @@ describe("Thêm quản trị viên", () => {
     //Expect
     expect(validateMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
-    expect(validateMock.existModerator).toBeCalledTimes(1);
+    expect(daoMock.emptyModerator).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
@@ -417,7 +417,7 @@ describe("Thêm quản trị viên", () => {
     expect(validateMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
-    expect(validateMock.existModerator).toBeCalledTimes(2);
+    expect(daoMock.emptyModerator).toBeCalledTimes(2);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
@@ -443,7 +443,7 @@ describe("Thêm quản trị viên", () => {
     expect(validateMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
-    expect(validateMock.existModerator).toBeCalledTimes(3);
+    expect(daoMock.emptyModerator).toBeCalledTimes(3);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes.statusCode).toEqual(expRes.statusCode);
   });
@@ -465,7 +465,7 @@ describe("Thêm quản trị viên", () => {
     expect(validateMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
-    expect(validateMock.existModerator).toBeCalledTimes(3);
+    expect(daoMock.emptyModerator).toBeCalledTimes(3);
     expect(daoMock.addModerator).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRes).toEqual(expRes);

@@ -36,7 +36,7 @@ describe("Abstract Test", () => {
     //Act
     const expRs = products;
     const actRs = await controller.getOrderProducts(products);
-    console.log(actRs);
+
     //Expect
     expect(daoMock.getOrderProduct).toBeCalledTimes(1);
     expect(actRs).toEqual(expRs);
@@ -115,7 +115,7 @@ describe("Lấy ra order đã thanh toán trong CSDL", () => {
     //Expect
     expect(validatorMock.validateSaveOrderId).toBeCalledTimes(1);
     expect(daoMock.getSaveOrder).toBeCalledTimes(1);
-    expect(validatorMock.existSaveOrder).toBeCalledTimes(1);
+    expect(daoMock.emptySaveOrder).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRs.statusCode).toEqual(expRs.statusCode);
   });
@@ -137,7 +137,7 @@ describe("Lấy ra order đã thanh toán trong CSDL", () => {
     //Expect
     expect(validatorMock.validateSaveOrderId).toBeCalledTimes(1);
     expect(daoMock.getSaveOrder).toBeCalledTimes(1);
-    expect(validatorMock.existSaveOrder).toBeCalledTimes(1);
+    expect(daoMock.emptySaveOrder).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
     expect(actRs.statusCode).toEqual(expRs.statusCode);
   });

@@ -5,8 +5,6 @@ const joi = require("joi");
 const { getValidationResult } = require("../validatorHelper");
 
 module.exports = class PatmentValidator {
-  //#region  VALIDATE
-
   // Xác thực danh sách sản phẩm trong giỏ
   validateOrderProducts = (products = []) => {
     const schema = joi.array().items(
@@ -114,13 +112,5 @@ module.exports = class PatmentValidator {
     const result = getValidationResult(schema, { orderID });
 
     return result;
-  };
-
-
-  //#endregion
-
-  // Kiểm tra tồn tại order
-  existSaveOrder = (saveOrder) => {
-    return saveOrder !== undefined;
   };
 };

@@ -48,4 +48,7 @@ module.exports = class ModeratorsDAO_Ram {
   updateModerator = async () => {};
 
   lockModerator = async () => {};
+
+  // Kiểm tra rỗng
+  emptyData = (moderator) => moderator === undefined;
 };

@@ -6,11 +6,6 @@ const { getValidationResult } = require("../validatorHelper");
 // Lớp xác thực dữ liệu truyền vào có hợp lệ hay không
 // Xài joi để xác thực
 module.exports = class ProductsValidator {
-  // Kiểm tra tồn tại
-  existProduct = (product) => {
-    return product?.prod_no > 0;
-  };
-
   // Kiểm tra mã hợp lệ
   validateNo = (prod_no) => {
     const schema = Joi.object({
