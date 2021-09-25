@@ -34,7 +34,7 @@ export const ProductItem = ({ info, compare = false, currentId = -1 }) => {
     return (
         <li className="ProductItem">
             <div  onClick={()=>history.push(`/product/${currentId}`)}>
-                <img src={info.prod_img} alt={info.src} />
+                <img src={info.prod_img} alt="product_shower"/>
                 <div className="product-info">
                     <p className="name">{info.prod_name}</p>
                     <p className="price">{Helper.Exchange.toMoney(info.prod_price)} VND</p>
@@ -55,7 +55,7 @@ export const ProductItem = ({ info, compare = false, currentId = -1 }) => {
                 </div>
             </div>
             <div className="product-behavior">
-                <button className="add-cart" onClick={addToLocalCart}>Thêm vào giỏ hàng</button>
+                <button className="add-cart" aria-label="Add product to the cart" onClick={addToLocalCart}>Thêm vào giỏ hàng</button>
                 {compare && <button>So sánh</button>}
             </div>
         </li>

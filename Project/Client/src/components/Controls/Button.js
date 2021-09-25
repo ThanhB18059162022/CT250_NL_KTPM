@@ -48,7 +48,7 @@ export default Button
 export const CartButton = ({handle, amount}) => {
     return (
         <div className="CartButton">
-            <button onClick={handle}>
+            <button onClick={handle} aria-label="Go to your cart">
                 <div className="cart_shower">
                     <CartIcon/>
                     {amount!==0 && <span className="cart_amount">{amount}</span>}

@@ -40,7 +40,7 @@ export const SearchHeaderInput = ({ searchHandle }) => {
     <div className="HeaderSearch">
       <div className="header-search">
         <input value={text} onChange={e => setText(e.target.value)} type="text" placeholder="Nhập sản phẩm bạn cần tìm..." />
-        <button onClick={searchEvent}>
+        <button onClick={searchEvent} aria-label="Search your product">
           <SearchIcon />
         </button>
       </div>

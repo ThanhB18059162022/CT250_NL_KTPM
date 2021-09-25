@@ -53,9 +53,9 @@ module.exports = class ProductsDAO_Ram {
         },
         // Tiện ích Xài Map
         prod_utilities: [
-          ["Bảo mật", "Mở khoá vân tay cạnh viền"],
-          ["Tính năng đặc biệt", "Samsung Pay Âm thanh AKG"],
-          ["Kháng nước, bụi", "IPX8"],
+          {"Bảo mật": "Mở khoá vân tay cạnh viền"},
+          {"Tính năng đặc biệt": "Samsung Pay Âm thanh AKG"},
+          {"Kháng nước, bụi": "IPX8"},
         ],
         prod_design: {
           structural: "Nguyên khối",

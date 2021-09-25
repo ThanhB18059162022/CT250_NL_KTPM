@@ -5,7 +5,12 @@ const Exchange = (() =>{
             currency:'VND'
         }).format(money)
     }
-    return {toMoney}
+
+    const toLocalDate = string =>{
+        const date = new Date(string);
+        return Intl.DateTimeFormat("vi-VN").format(date)
+    }
+    return {toMoney, toLocalDate}
 })()
 
 export default Exchange

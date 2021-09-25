@@ -2,84 +2,40 @@ import "./DetailAndRate.Style.scss"
 import { Comment } from '../../Controls/'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCogs } from "@fortawesome/free-solid-svg-icons"
-const DetailAndRate = ({ productID,showDetail }) => {
-    const commnets = [
-        {
-            user: 'Lê Thanh Ngân',
-            content: 'Sản phẩm tốt, sài êm'
-        },
-        {
-            user: 'Cẩm Thanh',
-            content: 'Màn hình dễ vỡ, yêu cầu trả hàng!'
-        },
-        {
-            user: 'Lê Thanh Ngân',
-            content: 'Pin tốt, chơi game hơn 1 ngày'
-        },
-        {
-            user: 'Lê Thanh Ngân',
-            content: 'Sản phẩm tốt, sài êm'
-        },
-        {
-            user: 'Lê Thanh Ngân',
-            content: 'Sản phẩm tốt, sài êm'
-        },
-        {
-            user: 'Cẩm Thanh',
-            content: 'Màn hình dễ vỡ, yêu cầu trả hàng!'
-        },
-        {
-            user: 'Lê Thanh Ngân',
-            content: 'Pin tốt, chơi game hơn 1 ngày'
-        },
-        {
-            user: 'Lê Thanh Ngân',
-            content: 'Sản phẩm tốt, sài êm'
-        },
-        {
-            user: 'Lê Thanh Ngân',
-            content: 'Sản phẩm tốt, sài êm'
-        },
-        {
-            user: 'Cẩm Thanh',
-            content: 'Màn hình dễ vỡ, yêu cầu trả hàng!'
-        },
-        {
-            user: 'Lê Thanh Ngân',
-            content: 'Pin tốt, chơi game hơn 1 ngày'
-        },
-        {
-            user: 'Lê Thanh Ngân',
-            content: 'Sản phẩm tốt, sài êm'
-        }
-    ]
+import Helper from "../../../helpers"
+const DetailAndRate = ({ product, showDetail }) => {
     return (
         <div className="DetailAndRate">
-
             <div className="Comments">
                 <h3>Nhận xét sản phẩm</h3>
                 <div className="comment-area">
-                    <input placeholder="Nhận xét của bạn về sản phẩm"/>
+                    <input placeholder="Nhận xét của bạn về sản phẩm" />
                     <button>Đăng</button>
                 </div>
-                
+
                 <ul>
-                    {commnets.map((item, index) => <li key={index}><Comment style={{ background: "#69baff33" }} title={item.user} content={item.content} options="left" /></li>)}
+                    {product.prod_feedbacks.map((item, index) =>
+                        <li key={index}>
+                            <Comment style={{ background: "#69baff33" }} title={item.fb_cusomter.cus_name} content={item.fb_content} options="left" time={Helper.Exchange.toLocalDate(item.fb_time)}
+                                children={item.fb_replies.map(e => <Comment style={{ background: "#69baff33" }} title={e.rep_mod} content={e.rep_content} options="left" time={Helper.Exchange.toLocalDate(e.rep_time)} />)} />
+                        </li>)}
                 </ul>
             </div>
             <div className="DetailInfo">
                 <div className="detail-wrapper">
                     <h3>Thông số kỹ thuật</h3>
-                    <img src='http://localhost:8000/img/1/prod_img1.jpeg' alt="phone" />
-                    <p><span>Tên sản phẩm:</span> iPhone 13 Pro max</p>
-                    <p><span>Vi xử lý:</span> Apple A13 Bionic</p>
-                    <p><span>Màn hình:</span> 6.5' 1280 x 800</p>
-                    <p><span>Pin:</span> Lithion 4000mAh</p>
-
+                    <img src={product.prod_imgs[0]} alt="phone" />
+                    <div className="some_info">
+                        <p><span>Tên sản phẩm:</span>{product.prod_name}</p>
+                        <p><span>Vi xử lý:</span> {product.prod_hardwareAndOS.cpu}</p>
+                        <p><span>Màn hình:</span> 6.5' 1280 x 800</p>
+                        <p><span>Pin:</span>{product.prod_batteryAndCharger.batteryType} {product.prod_batteryAndCharger.battery}</p>
+                        <p><span>Thiết kế:</span>{product.prod_design.structural}</p>
+                    </div>
                 </div>
                 <div className="detail-ways" onClick={showDetail}>
-                    <p> <FontAwesomeIcon icon={faCogs} /><span> Chi tiết cấu hình</span></p>
-                </div>
+                        <p> <FontAwesomeIcon icon={faCogs} /><span> Chi tiết cấu hình</span></p>
+                    </div>
             </div>
         </div>
     )
