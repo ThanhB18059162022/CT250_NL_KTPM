@@ -27,9 +27,9 @@ module.exports = class FeedbackController extends Controller {
       endIndex
     );
 
-    const productsPage = this.getPaginatedResults(feedback, page, limit);
+    const feedbackPage = this.getPaginatedResults(feedback, page, limit);
 
-    return res.json(productsPage);
+    return res.json(feedbackPage);
   };
 
   // Lấy phản hồi theo mã sản phẩm
@@ -53,9 +53,28 @@ module.exports = class FeedbackController extends Controller {
       endIndex
     );
 
-    const productsPage = this.getPaginatedResults(feedback, page, limit);
+    const feedbackPage = this.getPaginatedResults(feedback, page, limit);
 
-    return res.json(productsPage);
+    return res.json(feedbackPage);
+  };
+
+  // Lấy danh sách trả lời phản hồi của phản hồi
+  getSubFeedbackOfFeedback = async (req, res) => {
+    const { fb_no } = req.params;
+
+    const { page = 1, limit = 3 } = req.query;
+
+    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+
+    const feedback = await this.dao.getSubFeedbackOfFeedback(
+      fb_no,
+      startIndex,
+      endIndex
+    );
+
+    const subFeedbackPage = this.getPaginatedResults(feedback, page, limit);
+
+    return res.json(subFeedbackPage);
   };
 
   //#endregion
