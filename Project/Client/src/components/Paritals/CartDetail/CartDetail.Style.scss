@@ -56,8 +56,8 @@
                         text-align: center;
                     }
                     span.amount {
-                        width: 50px;
-                        min-width: 50px;
+                        width: 70px;
+                        min-width: 70px;
                         input {
                             width: 100%;
                             padding: 10px;
@@ -104,16 +104,17 @@
                 padding: 10px;
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.507);
                 border-radius: 10px;
-                p:first-child {
+                p.total_data {
+                    font-size: 24px;
+                    font-weight: 600;
+                    margin-bottom: 15px;
+                }
+
+                p.total_title{
                     font-size: 14px;
                     font-weight: 600;
                 }
-                p.total-price {
-                    font-size: 24px;
-                    font-weight: 600;
-                    color: red;
-                    padding: 10px 0;
-                }
+
                 button {
                     width: 100%;
                     font-size: 24px;

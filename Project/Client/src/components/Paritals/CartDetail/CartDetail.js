@@ -1,6 +1,7 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect, useContext } from "react";
+import {useHistory} from 'react-router-dom'
 import Helper from "../../../helpers";
 import Notifications from "../../../common/Notifications";
 import "./CartDetail.Style.scss";
@@ -45,6 +46,7 @@ const CartDetail = () => {
         getItemList().map(async (item) => {
           let data = await caller.get(`products/${item.id}`);
           data.amount = item.amount;
+          data.choosedType = item.type
           return data;
         })
       );
@@ -52,10 +54,10 @@ const CartDetail = () => {
     })();
   }, [amount]);
 
-  const onValueChange = (id, value) => {
+  const onValueChange = (id, value,choosedType) => {
     const newList = list.map((item) => {
-      if (item.prod_no === id) {
-        item.amount > value ? downItem(id) : upItem(id);
+      if (item.prod_no === id && item.choosedType === choosedType) {
+        item.amount > value ? downItem(id,choosedType) : upItem(id,choosedType);
         item.amount = value;
       }
       return item;
@@ -63,13 +65,14 @@ const CartDetail = () => {
     setList(newList);
   };
 
-  const onRemoveItem = (id) => {
+  const onRemoveItem = (id,type) => {
+    console.log({id, type})
     setNotify({
       ...notify,
       content: "Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng",
       title: "Xác nhận",
       type: "CONFIRMATION",
-      handle: () => removeItem(id),
+      handle: () => removeItem(id,type),
     });
     setShow(true);
   };
@@ -78,7 +81,7 @@ const CartDetail = () => {
     let count = 0;
     list.forEach(
       (element) =>
-        (count += Number(element.prod_price) * Number(element.amount))
+        (count += Number(element.prod_details[element.choosedType].price) * Number(element.amount))
     );
     setTotal(count);
   }, [list]);
@@ -105,8 +108,15 @@ const CartDetail = () => {
         </div>
         <div className="cart-transaction">
           <div className="wrapper">
-            <p>Tạm tính:</p>
-            <p className="total-price">{Helper.Exchange.toMoney(total)} VNĐ</p>
+            <p className="total_title">Tạm tính:</p>
+            <p className="total_data">{Helper.Exchange.toMoney(total)} VNĐ</p>
+
+            <p className="total_title">Số lượng sản phẩm:</p>
+            <p className="total_data">{getItemList().length} sản phẩm</p>
+
+            <p className="total_title">Tổng số lượng:</p>
+            <p className="total_data">{getItemList().reduce((pre,item)=>pre+item.amount,0)}</p>
+
             <button
               onClick={() => {
                 setDisplay(true);
@@ -551,22 +561,24 @@ function SetLocation(props) {
 
 function CartItem(props) {
   const { info, changeValue, removeItem } = props;
+  
+  const history = useHistory()
 
-  const onValueChange = (e) => changeValue(info.prod_no, e.target.value);
+  const onValueChange = (e) => changeValue(info.prod_no, e.target.value, info.choosedType);
 
-  const onRemoveItem = (e) => removeItem(info.prod_no);
+  const onRemoveItem = (e) => removeItem(info.prod_no, info.choosedType);
 
   return (
     <li>
       <span className="img">
-        <img src={info.prod_img[0]} alt={info.prod_name} />
+        <img src={info.prod_imgs[0]} alt={info.prod_name} onClick={()=>history.push(`/product/${info.prod_no}`)}/>
       </span>
       <span className="name">{info.prod_name}</span>
       <span className="storage element">
-        <span>{info.prod_ramAndStorage.storage}</span>
+        <span>{info.prod_details[info.choosedType].storage}</span>
       </span>
       <span className="price element">
-        {Helper.Exchange.toMoney(info.prod_price)} VNĐ
+        {Helper.Exchange.toMoney(info.prod_details[info.choosedType].price)} VNĐ
       </span>
       <span className="amount element">
         <input

@@ -74,3 +74,5 @@ GET http://localhost:8000/api/products/name/a8fad5592ed3d048090aa7d80fc2a4c4207f
 ### Không tồn tại 404
 GET http://localhost:8000/api/products/name/Xiaomi
 
+###
+GET  http://localhost:8000/api/products/price?min=0&max=60000000&page=1&limit=24

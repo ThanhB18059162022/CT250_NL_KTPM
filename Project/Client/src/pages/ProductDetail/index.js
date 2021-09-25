@@ -8,11 +8,13 @@ import { useState, useEffect } from "react"
 import { useParams } from "react-router"
 import { caller } from "../../api_services/servicesContainer"
 import Notifications from "../../common/Notifications"
-const ProductDetail = (props) => {
+const ProductDetail = () => {
     const { id } = useParams()
     const [show, setShow] = useState(false)
 
     const [product, setProduct] = useState(null)
+
+    const [suggest,setSuggest] = useState([])
     const showDetail = () => {
         setShow(true)
         window.scrollTo({
@@ -22,16 +24,21 @@ const ProductDetail = (props) => {
         })
     }
 
+    useEffect(()=>{
+        show?document.querySelector('body').style.overflowY='hidden':document.querySelector('body').style.overflowY='auto'
+    },[show])
+
     useEffect(() => {
         (async () => {
             let data = await caller.get(`products/${id}`)
-            console.log(data)
             setProduct(data)
             window.scrollTo({
                 left: 0,
                 top: 0,
                 behavior: 'smooth'
             })
+            let sg = await caller.get(`products/price?min=${data.prod_details[0].price - 1000000}&max=${data.prod_details[0].price + 1000000}&page=1&limit=24`)
+            setSuggest(sg.items)
         })()
     }, [id])
 
@@ -45,12 +52,13 @@ const ProductDetail = (props) => {
                     <br />
                     <DetailAndRate product={product} showDetail={showDetail} />
                     <br />
-                    <ProductSuggestion  arr={[]}/>
+                    <ProductSuggestion  arr={suggest}/>
                 </>
                 }
             </div>
-
-            <ProductModalDetail active={show} productId={1} setActive={setShow} />
+            {product !== null && 
+            <ProductModalDetail active={show} product={product} setActive={setShow} />
+        }
             <Footer />
         </div>
     )

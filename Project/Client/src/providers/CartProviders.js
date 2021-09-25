@@ -10,6 +10,7 @@ export default function CartProvider(props){
     }
 
     const _updateListItem = list =>{
+        console.log(list)
         window.localStorage.setItem('optopus_store',JSON.stringify(list));
         setAmount(list.length);
     }
@@ -18,20 +19,20 @@ export default function CartProvider(props){
         return _getListItem()
     }
 
-    const upItem = id =>{
+    const upItem = (id, type=0) =>{
         let carts = _getListItem()
-        let index  = carts.findIndex(item=>item.id === id)
+        let index  = carts.findIndex(item=>item.id === id && item.type===type)
         let isExist = index !== -1
         if(isExist){
             carts[index].amount++
         }
-        else carts.push({id:id, amount:1})
+        else carts.push({id:id, amount:1, type})
         _updateListItem(carts)
     }
 
-    const downItem = id =>{
+    const downItem = (id,type) =>{
         let carts = _getListItem()
-        let index  = carts.findIndex(item=>item.id === id)
+        let index  = carts.findIndex(item=>item.id === id && item.type===type)
         let isExist = index !==-1
         if(isExist){
             carts[index].amount--
@@ -40,8 +41,9 @@ export default function CartProvider(props){
         _updateListItem(carts)
     }
 
-    const removeItem = id =>{
-        let carts = _getListItem().filter(item=>item.id !==id)
+    const removeItem = (id,type) =>{
+        let carts = _getListItem().filter(item=>!(item.id ===id && item.type===type))
+        
         _updateListItem(carts)
     }
 

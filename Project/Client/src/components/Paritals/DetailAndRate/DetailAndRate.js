@@ -17,7 +17,7 @@ const DetailAndRate = ({ product, showDetail }) => {
                     {product.prod_feedbacks.map((item, index) =>
                         <li key={index}>
                             <Comment style={{ background: "#69baff33" }} title={item.fb_cusomter.cus_name} content={item.fb_content} options="left" time={Helper.Exchange.toLocalDate(item.fb_time)}
-                                children={item.fb_replies.map(e => <Comment style={{ background: "#69baff33" }} title={e.rep_mod} content={e.rep_content} options="left" time={Helper.Exchange.toLocalDate(e.rep_time)} />)} />
+                                children={item.fb_replies.map((e,idx) => <Comment key={idx} style={{ background: "#69baff33" }} title={e.rep_mod} content={e.rep_content} options="left" time={Helper.Exchange.toLocalDate(e.rep_time)} />)} />
                         </li>)}
                 </ul>
             </div>

@@ -36,7 +36,7 @@ const ProductBox = ({product})=>{
                 <div className="sell-ways">
                     {sellway.map((item,index)=><img key={index} src={item.src} alt={item.alt}/>)}
                 </div>
-                <button onClick={()=>upItem(product.prod_no)}>Thêm vào giỏ hàng</button>
+                <button onClick={()=>upItem(product.prod_no, choose)}>Thêm vào giỏ hàng</button>
             </div>
             <div className="product-box-notify">
                 <div>
