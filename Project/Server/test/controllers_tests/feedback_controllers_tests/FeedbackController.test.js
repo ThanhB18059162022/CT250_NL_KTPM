@@ -24,7 +24,7 @@ class FeedBackValidatorMock {
     };
   });
 
-  existFeedback = jest.fn((fb) => fb !== undefined);
+  // existFeedback = jest.fn((fb) => fb !== undefined);
 }
 
 const FEEDBACK = [
@@ -48,6 +48,8 @@ class FeedbackDAOMock {
   existProduct = jest.fn((pro_no) => {
     return pro_no === 1;
   });
+
+  existFeedback = jest.fn((fb_no) => fb_no === 1);
 
   addFeedback = jest.fn(async () => FEEDBACK.length + 1);
 
@@ -196,7 +198,7 @@ describe("Lấy danh sách phản hồi", () => {
     //Expect
     expect(actRes).toEqual(expRes);
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
-    expect(daoMock.getFeedbackByNo).toBeCalledTimes(1);
+    expect(daoMock.existFeedback).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
   });
 
@@ -218,7 +220,7 @@ describe("Lấy danh sách phản hồi", () => {
     //Expect
     expect(actRes).toEqual(expRes);
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
-    expect(daoMock.getFeedbackByNo).toBeCalledTimes(1);
+    expect(daoMock.existFeedback).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
   });
 
@@ -322,7 +324,7 @@ describe("Xóa phản hồi", () => {
     //Expect
     expect(actRes).toEqual(expRes);
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
-    expect(daoMock.getFeedbackByNo).toBeCalledTimes(1);
+    expect(daoMock.existFeedback).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
   });
 
@@ -344,7 +346,7 @@ describe("Xóa phản hồi", () => {
     //Expect
     expect(actRes).toEqual(expRes);
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
-    expect(daoMock.getFeedbackByNo).toBeCalledTimes(1);
+    expect(daoMock.existFeedback).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
   });
 });

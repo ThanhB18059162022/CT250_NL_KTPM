@@ -79,8 +79,8 @@ module.exports = class FeedbackController extends Controller {
       return res.status(400).json(result.error);
     }
 
-    const fb = await this.dao.getFeedbackByNo(fb_no);
-    if (!this.validator.existFeedback(fb)) {
+    const exist = await this.dao.existFeedback(fb_no);
+    if (!exist) {
       return res.status(404).json({});
     }
 
@@ -130,8 +130,8 @@ module.exports = class FeedbackController extends Controller {
       return res.status(400).json(result.error);
     }
 
-    const feedback = await this.dao.getFeedbackByNo(fb_no);
-    if (!this.validator.existFeedback(feedback)) {
+    const exist = await this.dao.existFeedback(fb_no);
+    if (!exist) {
       return res.status(404).json({});
     }
 
