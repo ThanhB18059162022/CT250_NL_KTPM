@@ -34,7 +34,18 @@ module.exports = class FeedbackController extends Controller {
 
   // Lấy phản hồi theo mã sản phẩm
   getFeedbackByProductNo = async (req, res) => {
-    const { prod_no } = req.params;
+    const { prod_no: prod_noParam } = req.params;
+
+    const prod_no = Number(prod_noParam);
+    const result = this.validator.validateProductNo(prod_no);
+    if (result.hasAnyError) {
+      return res.status(400).json(result.error);
+    }
+
+    const exist = await this.dao.existProduct(prod_no);
+    if (!exist) {
+      return res.status(404).json({});
+    }
 
     const {
       date = new Date(),

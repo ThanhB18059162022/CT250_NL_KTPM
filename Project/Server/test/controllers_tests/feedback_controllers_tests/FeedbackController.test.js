@@ -18,6 +18,12 @@ class FeedBackValidatorMock {
     };
   });
 
+  validateProductNo = jest.fn((no) => {
+    return {
+      hasAnyError: isNaN(no),
+    };
+  });
+
   existFeedback = jest.fn((fb) => fb !== undefined);
 }
 
@@ -39,6 +45,10 @@ class FeedbackDAOMock {
 
   getSubFeedbackOfFeedback = jest.fn(async () => FEEDBACK);
 
+  existProduct = jest.fn((pro_no) => {
+    return pro_no === 1;
+  });
+
   addFeedback = jest.fn(async () => FEEDBACK.length + 1);
 
   deleteFeedback = jest.fn();
@@ -55,6 +65,7 @@ function getController() {
 // 200 - 404 - 400
 describe("Lấy danh sách phản hồi", () => {
   beforeEach(() => {
+    validatorMock = new FeedBackValidatorMock();
     daoMock = new FeedbackDAOMock();
   });
 
@@ -77,13 +88,57 @@ describe("Lấy danh sách phản hồi", () => {
     expect(expRes).toEqual(actRes);
   });
 
-  test("Lấy danh sách phản hồi theo của 1 sản phẩm - 200", async () => {
+  //#region  Sản phẩm
+
+  test("Lấy danh sách phản hồi của 1 sản phẩm theo mã không hợp lệ - 400", async () => {
+    //Arrange
+    const prod_no = undefined;
+    const controller = getController();
+
+    const reqMock = {
+      params: { prod_no },
+      query: {},
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400 };
+    const actRes = await controller.getFeedbackByProductNo(reqMock, resMock);
+
+    //Expect
+    expect(expRes.statusCode).toEqual(actRes.statusCode);
+    expect(validatorMock.validateProductNo).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Lấy danh sách phản hồi của 1 sản phẩm không tồn tại - 404", async () => {
+    //Arrange
+    const prod_no = "3";
+    const controller = getController();
+
+    const reqMock = {
+      params: { prod_no },
+      query: {},
+    };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 404, body: {} };
+    const actRes = await controller.getFeedbackByProductNo(reqMock, resMock);
+
+    //Expect
+    expect(expRes).toEqual(actRes);
+    expect(resMock.json).toBeCalledTimes(1);
+    expect(validatorMock.validateProductNo).toBeCalledTimes(1);
+  });
+
+  test("Lấy danh sách phản hồi của 1 sản phẩm - 200", async () => {
     //Arrange
     const feedback = FEEDBACK;
     const controller = getController();
 
     const reqMock = {
-      params: {},
+      params: { prod_no: "1" },
       query: {},
     };
     const resMock = new ResponseMock();
@@ -96,6 +151,8 @@ describe("Lấy danh sách phản hồi", () => {
     expect(resMock.json).toBeCalledTimes(1);
     expect(expRes).toEqual(actRes);
   });
+
+  //#endregion
 
   test("Lấy danh sách trả lời phản hồi của phản hồi - 200", async () => {
     //Arrange
