@@ -53,9 +53,9 @@ module.exports = class ProductsDAO_Ram {
         },
         // Tiện ích Xài Map
         prod_utilities: [
-          ["Bảo mật", "Mở khoá vân tay cạnh viền"],
-          ["Tính năng đặc biệt", "Samsung Pay Âm thanh AKG"],
-          ["Kháng nước, bụi", "IPX8"],
+          {"Bảo mật": "Mở khoá vân tay cạnh viền"},
+          {"Tính năng đặc biệt": "Samsung Pay Âm thanh AKG"},
+          {"Kháng nước, bụi": "IPX8"},
         ],
         prod_design: {
           structural: "Nguyên khối",
@@ -99,7 +99,13 @@ module.exports = class ProductsDAO_Ram {
           },
         ],
         prod_status: "",
-        prod_imgs: [`${baseImgUri}/img/${1}/prod_img.png`],
+        prod_imgs: [
+          `${baseImgUri}/img/${1}/prod_img.jpg`,
+          `${baseImgUri}/img/${1}/prod_img1.jpg`,
+          `${baseImgUri}/img/${1}/prod_img2.jpg`,
+          `${baseImgUri}/img/${1}/prod_img3.jpg`,
+          `${baseImgUri}/img/${1}/prod_img4.jpg`
+        ],
         prod_details: [
           {
             ram: "12 GB",
@@ -117,6 +123,14 @@ module.exports = class ProductsDAO_Ram {
             totalProducts: 20, // Tổng sản phẩm
             soldProducts: 5, // Đã bán
           },
+          {
+            "ram": "12 GB",
+            "storage": "512 GB",
+            "storageAvailable": "480 GB",
+            "price": 44990000,
+            "totalProducts": 20,
+            "soldProducts": 5
+          }
         ],
       };
 

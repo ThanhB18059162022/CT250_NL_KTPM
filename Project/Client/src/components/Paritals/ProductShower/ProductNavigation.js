@@ -22,7 +22,6 @@ const Filter = () => {
                 <label htmlFor="check-list-trademade">Nhãn hiệu <FontAwesomeIcon icon={faSortDown} />
                     <input type="checkbox" id="check-list-trademade"/>
                     <div className="trademade-list">
-                        
                             <p>iPhone</p>
                             <p>Nokia</p>
                             <p>Oppo</p>
@@ -36,7 +35,7 @@ const Filter = () => {
 
 const Sort = () => {
     return (
-        <select className="Sort">
+        <select id="sort_product_list" className="Sort">
             <option>Mặc định</option>
             <option>Giá thấp</option>
             <option>Giá cao</option>

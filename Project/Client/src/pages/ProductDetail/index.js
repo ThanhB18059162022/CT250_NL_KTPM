@@ -25,6 +25,7 @@ const ProductDetail = (props) => {
     useEffect(() => {
         (async () => {
             let data = await caller.get(`products/${id}`)
+            console.log(data)
             setProduct(data)
             window.scrollTo({
                 left: 0,
@@ -42,7 +43,7 @@ const ProductDetail = (props) => {
                 {product !== null && <>
                     <ProductBox product={product} />
                     <br />
-                    <DetailAndRate showDetail={showDetail} />
+                    <DetailAndRate product={product} showDetail={showDetail} />
                     <br />
                     <ProductSuggestion  arr={[]}/>
                 </>

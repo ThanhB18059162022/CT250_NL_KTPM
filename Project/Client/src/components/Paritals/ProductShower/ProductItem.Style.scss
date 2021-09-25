@@ -1,13 +1,14 @@
 .ProductItem {
     list-style: none;
     // display: inline-block;
-    flex-basis: 25%;
-    margin:10px 0% ;
+    flex-basis: calc(25% - 10px);
+    margin:10px 5px ;
     padding: 10px;
     overflow: hidden;
     border-radius: 10px;
     background: white;
     transition: all ease .3s;
+    user-select: none;
     &:hover {
         transform: translateY(-5px);
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.596);
@@ -74,13 +75,13 @@
 }
 @media screen and (max-width:1020px) {
     .ProductItem {
-        flex-basis: 33.33%;
+        flex-basis: calc(33.33% - 10px);
     }
 }
 
 @media screen and (max-width:768px) {
     .ProductItem {
-        flex-basis: 50%;
+        flex-basis: calc(50% - 10px);
     }
 }
 

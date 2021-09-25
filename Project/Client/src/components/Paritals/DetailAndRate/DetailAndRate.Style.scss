@@ -4,12 +4,12 @@
         border-radius: 10px;
     }
     .Comments {
-        flex-basis: 58%;
+        flex-basis: calc(60% - 10px);
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.466);
         padding: 10px 20px;
-        .comment-area{
+        .comment-area {
             position: relative;
-            input{
+            input {
                 padding: 10px;
                 margin: 10px 0;
                 width: 100%;
@@ -18,11 +18,11 @@
                 background: var(--backgroundBlur);
                 border-radius: 20px;
             }
-            button{
+            button {
                 position: absolute;
                 right: 0;
-                top:10px;
-                padding:10px 20px;
+                top: 10px;
+                padding: 10px 20px;
                 border: none;
                 border-radius: 100px;
                 font-weight: 600;
@@ -34,9 +34,9 @@
         ul {
             display: flex;
             flex-direction: column;
-            height: 490px;
             padding: 10px;
             overflow-y: scroll;
+            height: 450px;
             li {
                 list-style: none;
             }
@@ -48,41 +48,48 @@
     .DetailInfo {
         flex-basis: 40%;
         position: relative;
-        margin-left: 2%;
+        margin-left: 10px;
         .detail-wrapper {
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.452);
             border-radius: 10px;
             overflow: hidden;
             padding: 10px 10px 25px;
-            height: 94%;
+            height: calc(100% - 50px);
+            overflow: hidden;
             img {
-                width: 70%;
-                margin-left: 15%;
+                margin: 0 auto;
+                margin-top: 10px;
+                width: 100%;
+                max-width: 400px;
+                display: block;
+               
             }
-            p {
-                padding: 7px 10px;
-                flex-grow: 1;
-                display: inline-block ;
-                margin-left: 15%;
-                span {
-                    font-weight: 600;
-                    width: 110px;
-                    display: inline-block;
+            div.some_info {
+                margin-bottom: 50px;
+                width: fit-content;
+                margin: 10px auto;
+                p {
+                    padding: 10px 0;
+                    span {
+                        font-weight: 600;
+                        width: 110px;
+                        text-align: right;
+                        margin-right: 20px;
+                        display: inline-block;
+                    }
                 }
-            }
+            }  
         }
         .detail-ways {
             box-shadow: 0 0px 5px rgba(0, 0, 0, 0.438);
-            width: 70%;
-            padding: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+            width: 100%;
             position: absolute;
             bottom: 0;
-            height: 6%;
-            border-radius: 20px;
+            height: 30px;
+            border-radius: 10px;
             z-index: 2;
             background: white;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -125,7 +132,7 @@
             ul {
                 display: flex;
                 flex-direction: column;
-                height: 430px;
+                height: 470px;
             }
             flex-basis: 50%;
         }
@@ -145,6 +152,10 @@
             margin: 15px 0;
             .detail-wrapper {
                 height: 100%;
+                img {
+                    height: auto;
+                    width: 100%;
+                }
             }
             .detail-ways {
                 top: 0;

@@ -50,10 +50,10 @@ const Banner = () => {
         <div className="Banner">
             <div className="banner-slider">
                 <img src={banners[show].src} alt={banners[show].alt}/>
-                <button onClick={()=>setShow(show>0?show-1:banners.length-1)}>
+                <button onClick={()=>setShow(show>0?show-1:banners.length-1)} aria-label="Previous banner">
                     <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
-                <button onClick={()=>setShow(show===banners.length-1?0:show+1)}>
+                <button onClick={()=>setShow(show===banners.length-1?0:show+1)} aria-label="Next banner">
                     <FontAwesomeIcon icon={faChevronRight} />
                 </button>
             </div>
