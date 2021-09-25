@@ -146,6 +146,8 @@ module.exports = class ProductsController extends Controller {
       body: newProduct,
     } = req;
 
+    //#region Validate
+
     //Kiểm tra prod_no hợp lệ
     const valNoResult = this.validator.validateNo(prod_no);
     if (valNoResult.hasAnyError) {
@@ -157,6 +159,10 @@ module.exports = class ProductsController extends Controller {
     if (valProductResult.hasAnyError) {
       return res.status(400).json(valProductResult.error);
     }
+
+    //#endregion
+
+    //#region Check Duplicate
 
     // Lấy ra thông tin cũ
     const oldProduct = await this.dao.getProductByNo(prod_no);
@@ -177,6 +183,11 @@ module.exports = class ProductsController extends Controller {
     ) {
       return res.status(400).json(this.getDuplicateResult("prod_name"));
     }
+
+    //#endregion
+
+    // Cập nhật thông tin
+    await this.dao.updateProduct(prod_no, newProduct);
 
     return res.status(204).json({});
   };
