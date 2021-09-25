@@ -60,8 +60,8 @@ module.exports = class ProductsDAO_Ram {
         prod_design: {
           structural: "Nguyên khối",
           material: "Khung nhôm & Mặt lưng kính cường lực",
-          sizeAndWeigth:
-            "Dài 158.2 mm - Ngang 128.1 mm - Dày 6.4 mm - Nặng 271 g",
+          size: "Dài 158.2 mm - Ngang 128.1 mm - Dày 6.4 mm",
+          weight:"271 g"
         },
         //Review
         prod_feedbacks: [
