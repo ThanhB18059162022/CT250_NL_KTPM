@@ -1,21 +1,18 @@
-// Tham khảo https://joi.dev/api/?v=17.4.2
-//https://stackoverflow.com/questions/57993305/how-can-i-validate-number-of-digits-from-joi-using-nodejs
+const Validator = require("../Validator");
 
-const joi = require("joi");
-const { getValidationResult } = require("../validatorHelper");
-
-module.exports = class FeedbackValidator {
+module.exports = class FeedbackValidator extends Validator {
   constructor(productValidator) {
+    super();
     this.productValidator = productValidator;
   }
 
   // Kiểm tra mã phản hồi
   validateFeedbackNo = (fb_no) => {
-    const schema = joi.object({
-      fb_no: joi.number().integer().min(0).required(),
+    const schema = this.joi.object({
+      fb_no: this.joi.number().integer().min(0).required(),
     });
 
-    const result = getValidationResult(schema, { fb_no });
+    const result = this.getValidationResult(schema, { fb_no });
 
     return result;
   };

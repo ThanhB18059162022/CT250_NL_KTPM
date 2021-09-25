@@ -891,20 +891,3 @@ describe("Kiểm tra saveOrderId hợp lệ", () => {
     expect(actRs).toEqual(expRs);
   });
 });
-
-describe("Kiểm tra order tồn tại", () => {
-  test("Order undefiend", () => {
-    //Arrange
-    const order = undefined;
-    const validator = getValidator();
-    const failed = true;
-
-    //Act
-    const expRs = failed;
-    const actRs = !validator.existSaveOrder(order);
-
-    //Expect
-    expect(actRs).toEqual(expRs);
-  });
-});
-

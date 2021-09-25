@@ -1,32 +1,28 @@
-// Tham khảo https://joi.dev/api/?v=17.4.2
-const joi = require("joi");
-const { getValidationResult } = require("../validatorHelper");
+const Validator = require("../Validator");
 
-// Lớp xác thực dữ liệu truyền vào có hợp lệ hay không
-// Xài joi để xác thực
-module.exports = class AuthenticationValidator {
-  getResult = (schema, data) => getValidationResult(schema, data);
-
+module.exports = class AuthenticationValidator extends Validator {
+  // Kiểm tra mẫu đăng nhập
   validateLoginModel = (loginModel = {}) => {
-    const schema = joi.object({
-      username: joi.string().min(5).max(70).alphanum().required(),
-      password: joi.string().min(5).max(64).required(),
+    const schema = this.joi.object({
+      username: this.joi.string().min(5).max(70).alphanum().required(),
+      password: this.joi.string().min(5).max(64).required(),
     });
 
-    const result = this.getResult(schema, loginModel);
+    const result = this.getValidationResult(schema, loginModel);
 
     return result;
   };
 
+  // Kiểm tra jwt token
   validateToken(token) {
-    const schema = joi.object({
-      token: joi
+    const schema = this.joi.object({
+      token: this.joi
         .string()
         .pattern(/^Bearer\s/i)
         .required(),
     });
 
-    const result = this.getResult(schema, { token });
+    const result = this.getValidationResult(schema, { token });
 
     return result;
   }

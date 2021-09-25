@@ -17,6 +17,11 @@ module.exports = class CustomersOrdersDAO {
     return order.id;
   };
 
+  // Kiểm tra order rỗng
+  emptySaveOrder = (saveOrder) => {
+    return saveOrder === undefined;
+  };
+
   getSaveOrder = async (id) => {
     if (id === 1) {
       return {

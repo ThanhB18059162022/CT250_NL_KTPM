@@ -53,9 +53,9 @@ module.exports = class ProductsDAO_Ram {
         },
         // Tiện ích Xài Map
         prod_utilities: [
-          {"Bảo mật": "Mở khoá vân tay cạnh viền"},
-          {"Tính năng đặc biệt": "Samsung Pay Âm thanh AKG"},
-          {"Kháng nước, bụi": "IPX8"},
+          { "Bảo mật": "Mở khoá vân tay cạnh viền" },
+          { "Tính năng đặc biệt": "Samsung Pay Âm thanh AKG" },
+          { "Kháng nước, bụi": "IPX8" },
         ],
         prod_design: {
           structural: "Nguyên khối",
@@ -104,7 +104,7 @@ module.exports = class ProductsDAO_Ram {
           `${baseImgUri}/img/${1}/prod_img1.jpg`,
           `${baseImgUri}/img/${1}/prod_img2.jpg`,
           `${baseImgUri}/img/${1}/prod_img3.jpg`,
-          `${baseImgUri}/img/${1}/prod_img4.jpg`
+          `${baseImgUri}/img/${1}/prod_img4.jpg`,
         ],
         prod_details: [
           {
@@ -124,13 +124,13 @@ module.exports = class ProductsDAO_Ram {
             soldProducts: 5, // Đã bán
           },
           {
-            "ram": "12 GB",
-            "storage": "512 GB",
-            "storageAvailable": "480 GB",
-            "price": 44990000,
-            "totalProducts": 20,
-            "soldProducts": 5
-          }
+            ram: "12 GB",
+            storage: "512 GB",
+            storageAvailable: "480 GB",
+            price: 44990000,
+            totalProducts: 20,
+            soldProducts: 5,
+          },
         ],
       };
 
@@ -225,5 +225,10 @@ module.exports = class ProductsDAO_Ram {
     const product = products.filter((p) => p.prod_name === prod_name)[0];
 
     return product;
+  };
+
+  // Kiểm rỗng
+  emptyProduct = (product) => {
+    return product === undefined;
   };
 };

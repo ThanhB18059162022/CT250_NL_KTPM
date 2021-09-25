@@ -108,9 +108,7 @@ module.exports = class PaymentController {
     }
 
     const saveOrder = await this.dao.getSaveOrder(saveOrderId);
-
-    const exist = this.validator.existSaveOrder(saveOrder);
-    if (!exist) {
+    if (this.dao.emptySaveOrder(saveOrder)) {
       return res.status(404).json({});
     }
 

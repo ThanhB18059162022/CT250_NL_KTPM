@@ -79,13 +79,13 @@ class ProductsDAOMock {
   });
 
   updateProduct = jest.fn();
+
+  emptyProduct = jest.fn((product) => {
+    return product === undefined;
+  });
 }
 
 class ProductsValidatorMock {
-  existProduct = jest.fn((product) => {
-    return product !== undefined;
-  });
-
   validateProduct = jest.fn((product) => {
     return { hasAnyError: product === undefined };
   });
