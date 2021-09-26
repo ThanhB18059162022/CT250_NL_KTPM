@@ -23,7 +23,7 @@ module.exports = class PayPalPaymentController extends PaymentController {
   // Tạo order theo danh sách sản phẩm
   createOrder = async (req, res) => {
     const { body: cart } = req;
-
+  
     const result = this.validator.validateCart(cart);
     if (result.hasAnyError) {
       return res.status(400).json(result.error);

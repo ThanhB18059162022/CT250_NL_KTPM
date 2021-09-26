@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useHistory } from 'react-router-dom'
 import { useState, useEffect, useContext, useRef } from "react";
-import ReactDOM, { render } from "react-dom";
+import ReactDOM from "react-dom";
 
 import { CartContext } from "../../../providers/CartProviders";
 
@@ -92,13 +92,9 @@ const CartDetail = () => {
   }, [list]);
 
   const renderPaypalButtonFrame = (cart) =>{
-    console.log(cart)
-    const paypal = <PayPalPayment cartinfo={cart}/>
-    try{
-      ReactDOM.unmountComponentAtNode(paypal)
-    }
-    catch(e){}
-    ReactDOM.render(paypal,document.querySelector('#paypalwrapper'))
+    ReactDOM.unmountComponentAtNode(document.querySelector('#paypalwrapper'))
+    ReactDOM.render(<PayPalPayment cartinfo={cart}/>,document.querySelector('#paypalwrapper'))
+    
     document.querySelector('.paypalarea').classList.add('shower')
     window.scrollTo({
       top:0,

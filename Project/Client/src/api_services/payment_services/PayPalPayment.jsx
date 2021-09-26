@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import PayPalPaymentService from "./PayPalPaymentService";
 import ApiCaller from "../ApiCaller";
 
@@ -7,31 +7,29 @@ import ApiCaller from "../ApiCaller";
 const payService = new PayPalPaymentService(new ApiCaller());
 
 const PayPalPayment = (props) => {
-  const {cartinfo}  = props
+  const { cartinfo } = props
   const [paidFor, setPaidFor] = useState(false);
   const [clientId, setClientId] = useState("");
-  const [cart, setCart] =useState({})
+  const [cart, setCart] = useState({})
 
   // Chạy 1 lần
   useEffect(() => {
     getId();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     setCart(cartinfo)
-  },[cart])
+  }, [cartinfo])
 
   // Cái này phải chạy đầu
   async function getId() {
     const clientId = await payService.getClientId();
-
     setClientId(clientId);
   }
 
   // Chưa coi dispose
   useEffect(() => {
     // Use state khởi tạo cũng làm thay đổi clientId'
-    console.log(clientId)
     if (clientId?.length > 10) {
       //Load paypal script
       const payPalScript = document.createElement("script");
@@ -42,13 +40,10 @@ const PayPalPayment = (props) => {
 
       //Chờ cho load xong
       // Event load là event load trang html
-      payPalScript.addEventListener("load",displayButton)
-      return () => {
-          document.body.removeChild(payPalScript);
-        };
-      }
-    }, [clientId]);
-
+      payPalScript.addEventListener("load", displayButton)
+      return () => document.body.removeChild(payPalScript)
+    }
+  }, [clientId]);
   //Button tham chiếu bên ui dom
   let payPalRef = useRef();
   function displayButton() {
@@ -60,9 +55,10 @@ const PayPalPayment = (props) => {
       })
       .render(payPalRef);
   }
+
+
   // createOrder nhận vào id của order
   async function creatOrderForPayment() {
-    console.log(cart)
     const orderID = await payService.createOrder(cart);
 
     return orderID;

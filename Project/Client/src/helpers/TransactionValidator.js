@@ -6,10 +6,10 @@ const TransactionValidator = (()=>{
 
     //external
     const checkingCCID = (ccid) =>{
-        if(ccid.trim().length<9 || isNaN(Number(ccid))){
+        if(ccid.trim().length!==9 || isNaN(Number(ccid))){
             return {
                 result: false,
-                resson:'Số CMND/CCCD không hợp lệ!'
+                resson:'Số CMND/CCCD không hợp lệ! Yêu cầu có 9 ký tự số'
             }
         }
         return {result:true}
