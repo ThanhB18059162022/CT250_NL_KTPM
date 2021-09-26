@@ -34,15 +34,7 @@ module.exports = class FeedbackController extends Controller {
 
       return res.json(feedbackPage);
     } catch (error) {
-      if (error instanceof NotValidError) {
-        return this.badRequest(res, error);
-      }
-
-      if (error instanceof NotExistError) {
-        return this.notFound(res, error);
-      }
-
-      throw error;
+      return this.checkError(res, error);
     }
   };
 
@@ -61,15 +53,7 @@ module.exports = class FeedbackController extends Controller {
 
       return res.json(subFeedbackPage);
     } catch (error) {
-      if (error instanceof NotValidError) {
-        return this.badRequest(res, error);
-      }
-
-      if (error instanceof NotExistError) {
-        return this.notFound(res, error);
-      }
-
-      throw error;
+      return this.checkError(res, error);
     }
   };
 
@@ -102,17 +86,21 @@ module.exports = class FeedbackController extends Controller {
 
       return res.status(204).json({});
     } catch (error) {
-      if (error instanceof NotValidError) {
-        return this.badRequest(res, error);
-      }
-
-      if (error instanceof NotExistError) {
-        return this.notFound(res, error);
-      }
-
-      throw error;
+      return this.checkError(res, error);
     }
   };
 
   //#endregion
+
+  checkError = (res, error) => {
+    if (error instanceof NotValidError) {
+      return this.badRequest(res, error);
+    }
+
+    if (error instanceof NotExistError) {
+      return this.notFound(res, error);
+    }
+
+    throw error;
+  };
 };
