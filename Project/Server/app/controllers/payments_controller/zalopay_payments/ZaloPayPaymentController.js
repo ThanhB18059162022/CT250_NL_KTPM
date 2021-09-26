@@ -50,7 +50,6 @@ module.exports = class ZaloPayPaymentController extends PaymentController {
 
     const url = await this.zaloPayService.createOrder(
       id,
-      customer.cus_name,
       total,
       serverSuccessUrl
     );
