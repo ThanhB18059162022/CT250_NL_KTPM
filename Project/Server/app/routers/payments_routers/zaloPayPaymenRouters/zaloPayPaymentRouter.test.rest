@@ -11,7 +11,7 @@ Content-Type: application/json
 {
     // Thông tin khác hàng
     "customer": {
-    "cus_name": "vương thanh",
+    "cus_name": "Alexander",
     "cus_id": "555555555",
     "cus_email": "alex@gmail.com",
     "cus_sex": true,
