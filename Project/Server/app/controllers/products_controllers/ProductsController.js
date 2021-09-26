@@ -4,7 +4,6 @@ module.exports = class ProductsController extends Controller {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
   constructor(validator, dao) {
     super();
-
     this.validator = validator;
     this.dao = dao;
   }
