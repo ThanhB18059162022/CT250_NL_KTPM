@@ -6,17 +6,15 @@ const router = express.Router();
 // Bắt lỗi server
 const { errorCatch } = require("../routerErrorHandler");
 
-// Controller và lớp xác thực dữ liệu
+// Controller và lớp xác thực - truy cập dữ liệu
+const { ModeratorsValidator } = require("../../validators/validatorsContainer");
+const { ModeratorsDAO } = require("../../daos/daosContainer");
 const {
   ModeratorsController,
-  ModeratorsValidator,
 } = require("../../controllers/controllersContainer");
 
-// Lớp truy cập CSDL
-const { ModeratorsDAO } = require("../../daos/daosContainer");
-
-const dao = new ModeratorsDAO();
 const validator = new ModeratorsValidator();
+const dao = new ModeratorsDAO();
 const controller = new ModeratorsController(validator, dao);
 
 router

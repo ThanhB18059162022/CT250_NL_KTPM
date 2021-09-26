@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const {
+  AuthenticationValidator,
+} = require("../../validators/validatorsContainer");
+const { JwtService } = require("../../services/servicesContainer");
 
 const {
-  JwtService,
-  AuthenticationValidator,
   AuthenticationController,
 } = require("../../controllers/controllersContainer");
 

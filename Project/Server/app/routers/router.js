@@ -5,6 +5,7 @@ const payPalRouter = require("./payments_routers/payPalPaymentRouters/payPalPaym
 const stripeRouter = require("./payments_routers/stripePaymenRouters/stripePaymentRouter");
 const zaloRouter = require("./payments_routers/zaloPayPaymenRouters/zaloPayPaymentRouter");
 const moderatorsRouter = require("./moderators_routers/moderatorsRouter");
+const feedbackRouter = require("./feedback_routers/feedbackRouter");
 
 // Mỗi controller sẽ có mỗi router
 module.exports = (app) => {
@@ -15,4 +16,5 @@ module.exports = (app) => {
   app.use("/api/stripe", stripeRouter);
   app.use("/api/zalo", zaloRouter);
   app.use("/api/moderators", moderatorsRouter);
+  app.use("/api/feedback", feedbackRouter);
 };

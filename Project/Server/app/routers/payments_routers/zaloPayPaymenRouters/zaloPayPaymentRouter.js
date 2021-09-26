@@ -8,21 +8,24 @@ const { payment } = require("../../../config");
 const { errorCatch } = require("../../routerErrorHandler");
 
 const {
-  ZaloPayPaymentController,
-  ZaloPayService,
-  PaymentValidator,
-  CurrencyExchangeService,
+  PaymentsValidator,
+} = require("../../../validators/validatorsContainer");
+const {
   ApiCaller,
-} = require("../../../controllers/controllersContainer");
-
+  ZaloPayService,
+  CurrencyExchangeService,
+} = require("../../../services/servicesContainer");
 const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
+const {
+  ZaloPayPaymentController,
+} = require("../../../controllers/controllersContainer");
 
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
 const apiCaller = new ApiCaller();
 const service = new ZaloPayService(payment.zalo, apiCaller);
-const validator = new PaymentValidator();
+const validator = new PaymentsValidator();
 const exService = new CurrencyExchangeService(payment.currency);
 const controller = new ZaloPayPaymentController(
   validator,

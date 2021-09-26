@@ -12,6 +12,8 @@ const CustomersOrdersDAO_Ram = require("./customers_orders_daos/CustomersOrdersD
 
 const ModeratorsDAO_Ram = require("./moderators_daos/ModeratorsDAO_Ram");
 
+const FeedbackDAO_Ram = require("./feedback_daos/FeedbackDAO_Ram");
+
 module.exports = {
   DAO: MysqlDAO, // Xài mysql
 
@@ -22,4 +24,6 @@ module.exports = {
   CustomersOrdersDAO: CustomersOrdersDAO_Ram,
 
   ModeratorsDAO: ModeratorsDAO_Ram,
+
+  FeedbackDAO: FeedbackDAO_Ram,
 };

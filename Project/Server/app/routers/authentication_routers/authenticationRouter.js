@@ -11,17 +11,17 @@ const { errorCatch } = require("../routerErrorHandler");
 
 // Jwt tạo key, controller và lớp xác thực dữ liệu
 const {
-  JwtService,
-  AuthenticationController,
   AuthenticationValidator,
+} = require("../../validators/validatorsContainer");
+const { AuthenticationDAO } = require("../../daos/daosContainer");
+const { JwtService } = require("../../services/servicesContainer");
+const {
+  AuthenticationController,
 } = require("../../controllers/controllersContainer");
 
-// Lớp truy cập CSDL
-const { AuthenticationDAO } = require("../../daos/daosContainer");
-
-const dao = new AuthenticationDAO();
 const validator = new AuthenticationValidator();
 const jwt = new JwtService(secretKey);
+const dao = new AuthenticationDAO();
 
 const controller = new AuthenticationController(validator, jwt, dao);
 

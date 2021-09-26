@@ -8,13 +8,11 @@ const { baseImgUri } = require("../../config");
 const { errorCatch } = require("../routerErrorHandler");
 
 // Controller và lớp xác thực dữ liệu
+const { ProductsValidator } = require("../../validators/validatorsContainer");
+const { ProductsDAO } = require("../../daos/daosContainer");
 const {
   ProductsController,
-  ProductsValidator,
 } = require("../../controllers/controllersContainer");
-
-// Lớp truy cập CSDL
-const { ProductsDAO } = require("../../daos/daosContainer");
 
 const dao = new ProductsDAO(baseImgUri);
 const validator = new ProductsValidator();

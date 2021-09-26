@@ -8,19 +8,22 @@ const { payment } = require("../../../config");
 const { errorCatch } = require("../../routerErrorHandler");
 
 const {
-  PayPalPaymentController,
+  PaymentsValidator,
+} = require("../../../validators/validatorsContainer");
+const {
   PayPalService,
-  PaymentValidator,
   CurrencyExchangeService,
-} = require("../../../controllers/controllersContainer");
-
+} = require("../../../services/servicesContainer");
 const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
+const {
+  PayPalPaymentController,
+} = require("../../../controllers/controllersContainer");
 
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
 const service = new PayPalService(payment.paypal);
-const validator = new PaymentValidator();
+const validator = new PaymentsValidator();
 const exService = new CurrencyExchangeService(payment.currency);
 const controller = new PayPalPaymentController(
   validator,

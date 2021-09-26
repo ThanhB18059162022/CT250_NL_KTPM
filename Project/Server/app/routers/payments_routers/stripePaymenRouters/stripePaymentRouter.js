@@ -8,19 +8,22 @@ const { payment } = require("../../../config");
 const { errorCatch } = require("../../routerErrorHandler");
 
 const {
-  StripePaymentController,
+  PaymentsValidator,
+} = require("../../../validators/validatorsContainer");
+const {
   StripeService,
-  PaymentValidator,
   CurrencyExchangeService,
-} = require("../../../controllers/controllersContainer");
-
+} = require("../../../services/servicesContainer");
 const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
+const {
+  StripePaymentController,
+} = require("../../../controllers/controllersContainer");
 
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
 const service = new StripeService(payment.stripe);
-const validator = new PaymentValidator();
+const validator = new PaymentsValidator();
 const exService = new CurrencyExchangeService(payment.currency);
 const controller = new StripePaymentController(
   validator,

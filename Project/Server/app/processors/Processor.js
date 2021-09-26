@@ -1,13 +1,11 @@
 // Lưu các hàm xài chung của các controller
 
 //Abstract class
-module.exports = class Controller {
+module.exports = class Processor {
   constructor() {
-    if (this.constructor === Controller) {
+    if (this.constructor === Processor) {
       throw new Error("Abstract classes can't be instantiated.");
     }
-
-    this.isProduction = false;
   }
 
   //#region  Trả về giá trị phân trang
@@ -65,30 +63,5 @@ module.exports = class Controller {
       key: name,
       content: `${name} has already been taken.`,
     };
-  };
-
-  // 400
-  badRequest = (res, error) => {
-    const result = this.getResult(error);
-
-    return res.status(400).json(result);
-  };
-
-  // 404
-  notFound = (res, error) => {
-    const result = this.getResult(error);
-
-    return res.status(404).json(result);
-  };
-
-  getResult = (error) => {
-    const { name, message } = error;
-
-    const result = { name, message };
-    if (!this.isProduction) {
-      result.stack = error.stack;
-    }
-
-    return result;
   };
 };

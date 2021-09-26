@@ -1,102 +1,76 @@
+const {
+  NotValidError,
+  NotExistError,
+} = require("../../errors/errorsContainer");
 const Controller = require("../Controller");
 
 module.exports = class FeedbackController extends Controller {
-  constructor(validator, dao) {
+  constructor(processor) {
     super();
-    this.validator = validator;
-    this.dao = dao;
+    this.processor = processor;
   }
 
   //#region GET
 
   // Lấy phản hồi từ ngày đó trở về trước
   getFeedback = async (req, res) => {
-    const {
-      date = new Date(),
-      order = "DESC",
-      page = 1,
-      limit = 3,
-    } = req.query;
-
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
-
-    const feedback = await this.dao.getFeedback(
-      date,
-      order,
-      startIndex,
-      endIndex
-    );
-
-    const feedbackPage = this.getPaginatedResults(feedback, page, limit);
+    const feedbackPage = await this.processor.getFeedback(req.query);
 
     return res.json(feedbackPage);
   };
 
   // Lấy phản hồi theo mã sản phẩm
   getFeedbackByProductNo = async (req, res) => {
-    const { prod_no: prod_noParam } = req.params;
+    try {
+      const {
+        params: { prod_no },
+        query,
+      } = req;
 
-    const prod_no = Number(prod_noParam);
-    const result = this.validator.validateProductNo(prod_no);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
+      const feedbackPage = this.processor.getFeedbackByProductNo(
+        prod_no,
+        query
+      );
+
+      return res.json(feedbackPage);
+    } catch (error) {
+      if (error instanceof NotValidError) {
+        return this.badRequest(res, error);
+      }
+
+      if (error instanceof NotExistError) {
+        return this.notFound(res, error);
+      }
+
+      throw error;
     }
-
-    const exist = await this.dao.existProduct(prod_no);
-    if (!exist) {
-      return res.status(404).json({});
-    }
-
-    const {
-      date = new Date(),
-      order = "DESC",
-      page = 1,
-      limit = 3,
-    } = req.query;
-
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
-
-    const feedback = await this.dao.getFeedbackByProductNo(
-      prod_no,
-      date,
-      order,
-      startIndex,
-      endIndex
-    );
-
-    const feedbackPage = this.getPaginatedResults(feedback, page, limit);
-
-    return res.json(feedbackPage);
   };
 
   // Lấy danh sách trả lời phản hồi của phản hồi
   getSubFeedbackOfFeedback = async (req, res) => {
-    const { fb_no: fb_noParam } = req.params;
+    try {
+      const {
+        params: { fb_no },
+        query,
+      } = req;
 
-    const fb_no = Number(fb_noParam);
-    const result = this.validator.validateFeedbackNo(fb_no);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
+      const subFeedbackPage = this.processor.getSubFeedbackOfFeedback(
+        fb_no,
+        query
+      );
+
+      return res.json(subFeedbackPage);
+    } catch (error) {
+      if (error instanceof NotValidError) {
+        return this.badRequest(res, error);
+      }
+
+      if (error instanceof NotExistError) {
+        return this.notFound(res, error);
+      }
+
+      throw error;
     }
-
-    const exist = await this.dao.existFeedback(fb_no);
-    if (!exist) {
-      return res.status(404).json({});
-    }
-
-    const { page = 1, limit = 3 } = req.query;
-
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
-
-    const feedback = await this.dao.getSubFeedbackOfFeedback(
-      fb_no,
-      startIndex,
-      endIndex
-    );
-
-    const subFeedbackPage = this.getPaginatedResults(feedback, page, limit);
-
-    return res.json(subFeedbackPage);
   };
 
   //#endregion
@@ -104,17 +78,17 @@ module.exports = class FeedbackController extends Controller {
   //#region ADD
 
   addFeedback = async (req, res) => {
-    const { body: newFeedback } = req;
+    try {
+      const newFeedback = await this.processor.addFeedback(req.body);
 
-    const result = this.validator.validateFeedback(newFeedback);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
+      return res.status(201).json(newFeedback);
+    } catch (error) {
+      if (error instanceof NotValidError) {
+        return this.badRequest(res, error);
+      }
+
+      throw error;
     }
-
-    // Thêm vào CSDL trả về fb_no
-    const fb_no = await this.dao.addFeedback(newFeedback);
-
-    return res.status(201).json({ ...newFeedback, fb_no });
   };
 
   //#endregion
@@ -122,23 +96,22 @@ module.exports = class FeedbackController extends Controller {
   //#region DELETE
 
   deleteFeedback = async (req, res) => {
-    const { fb_no: fb_noParam } = req.params;
+    try {
+      // Xóa feedback trong CSDL
+      await this.processor.deleteFeedback(req.params.fb_no);
 
-    const fb_no = Number(fb_noParam);
-    const result = this.validator.validateFeedbackNo(fb_no);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
+      return res.status(204).json({});
+    } catch (error) {
+      if (error instanceof NotValidError) {
+        return this.badRequest(res, error);
+      }
+
+      if (error instanceof NotExistError) {
+        return this.notFound(res, error);
+      }
+
+      throw error;
     }
-
-    const exist = await this.dao.existFeedback(fb_no);
-    if (!exist) {
-      return res.status(404).json({});
-    }
-
-    // Xóa feedback trong CSDL
-    await this.dao.deleteFeedback(fb_no);
-
-    return res.status(204).json({});
   };
 
   //#endregion
