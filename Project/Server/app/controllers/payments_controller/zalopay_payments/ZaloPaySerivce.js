@@ -15,8 +15,8 @@ module.exports = class ZaloPaySerivce {
     this.apiCaller = apiCaller;
   }
 
-  createOrder = async (id, name, amount, url) => {
-    const orderBody = this.createOrderBody(id, name, amount, url);
+  createOrder = async (id, amount, url) => {
+    const orderBody = this.createOrderBody(id, amount, url);
 
     // Vì tạo order nhận orderBody là url query
     // Chuyển orderBody sang queryString
@@ -33,7 +33,7 @@ module.exports = class ZaloPaySerivce {
   };
 
   // Id tự tạo, tên khách hàng, tổng tiền và url gọi khi thành công
-  createOrderBody = (id, name, amount, url) => {
+  createOrderBody = (id, amount, url) => {
     const currentDate = new Date();
 
     // Định dạng YYMMDD - 210921
@@ -51,12 +51,12 @@ module.exports = class ZaloPaySerivce {
     const order = {
       app_id: this.app_id,
       app_trans_id: `${currentDateFormat}_${id.slice(33, 64)}`, // Max 40 ký tự
-      app_user: name,
+      app_user: "Customer",
       app_time: currentDate.getTime(), // miliseconds
       item: JSON.stringify(items),
       embed_data: JSON.stringify(embed_data),
       amount, // Tổng tiền
-      description: `${name}'s' order total: ${amount}`,
+      description: `Order total: ${amount}`,
     };
 
     order.mac = this.generateOrderHmac(order);
