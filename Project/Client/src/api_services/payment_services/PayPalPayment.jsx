@@ -6,14 +6,20 @@ import ApiCaller from "../ApiCaller";
 // Chú ý orderID chứ ko phải orderId vì api nó trả về là orderID
 const payService = new PayPalPaymentService(new ApiCaller());
 
-const PayPalPayment = () => {
+const PayPalPayment = (props) => {
+  const {cartinfo}  = props
   const [paidFor, setPaidFor] = useState(false);
   const [clientId, setClientId] = useState("");
+  const [cart, setCart] =useState({})
 
   // Chạy 1 lần
   useEffect(() => {
     getId();
   }, []);
+
+  useEffect(()=>{
+    setCart(cartinfo)
+  },[cart])
 
   // Cái này phải chạy đầu
   async function getId() {
@@ -24,7 +30,8 @@ const PayPalPayment = () => {
 
   // Chưa coi dispose
   useEffect(() => {
-    // Use state khởi tạo cũng làm thay đổi clientId
+    // Use state khởi tạo cũng làm thay đổi clientId'
+    console.log(clientId)
     if (clientId?.length > 10) {
       //Load paypal script
       const payPalScript = document.createElement("script");
@@ -35,15 +42,12 @@ const PayPalPayment = () => {
 
       //Chờ cho load xong
       // Event load là event load trang html
-      payPalScript.addEventListener("load", () => {
-        displayButton();
-      });
-
+      payPalScript.addEventListener("load",displayButton)
       return () => {
-        document.removeChild(payPalScript);
-      };
-    }
-  }, [clientId]);
+          document.body.removeChild(payPalScript);
+        };
+      }
+    }, [clientId]);
 
   //Button tham chiếu bên ui dom
   let payPalRef = useRef();
@@ -56,34 +60,9 @@ const PayPalPayment = () => {
       })
       .render(payPalRef);
   }
-
-  // Mảng sản phẩm phải có 2 trường là id và số lượng
-  const products = [
-    {
-      prod_no: 1,
-      prod_quantity: 1,
-    },
-    {
-      prod_no: 2,
-      prod_quantity: 1,
-    },
-  ];
   // createOrder nhận vào id của order
   async function creatOrderForPayment() {
-    // Thông tin khác hàng
-    const customer = {
-      cus_name: "Alexander PayPal",
-      cus_id: "555555555",
-      cus_email: "alex@gmail.com",
-      cus_sex: true,
-      cus_address: "3/2 Ninh Kiều Cần Thơ",
-      cus_phoneNumber: "0000000000",
-    };
-
-    const cart = {
-      customer,
-      products,
-    };
+    console.log(cart)
     const orderID = await payService.createOrder(cart);
 
     return orderID;
@@ -102,7 +81,7 @@ const PayPalPayment = () => {
 
   function renderProductInfo() {
     return (
-      <div style={{ maxWidth: "100px" }}>
+      <div>
         <div ref={(v) => (payPalRef = v)}></div>
       </div>
     );
