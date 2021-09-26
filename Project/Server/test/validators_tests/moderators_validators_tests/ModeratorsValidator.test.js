@@ -1,4 +1,4 @@
-const ModeratorsValidator = require("../../../app/controllers/moderators_controllers/ModeratorsValidator");
+const ModeratorsValidator = require("../../../app/validators/moderators_validators/ModeratorsValidator");
 
 // Kiểm tra hàm xác nhận dữ liệu của lớp quản trị viên ModeratorsController
 

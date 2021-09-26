@@ -1,4 +1,4 @@
-const CurrencyExchangeService = require("../../../app/controllers/payments_controller/CurrencyExchangeService");
+const CurrencyExchangeService = require("../../../app/services/payments_services/CurrencyExchangeService");
 
 const currency = {
   baseCurrencyCode: "VND",

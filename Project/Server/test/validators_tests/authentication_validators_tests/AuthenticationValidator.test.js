@@ -1,4 +1,4 @@
-const AuthenticationValidator = require("../../../app/controllers/authentication_controllers/AuthenticationValidator");
+const AuthenticationValidator = require("../../../app/validators/authentication_validators/AuthenticationValidator");
 // Test các hàm xác thực dữ liệu của lớp AuthenticationValidator
 
 function getValidator() {

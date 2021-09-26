@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const JwtService = require("../../../app/controllers/authentication_controllers/JwtService");
+const JwtService = require("../../../app/services/jwt_services/JwtService");
 
 // Test hàm tạo và xác nhận jwt token
 const secretKey = "Bí mật";

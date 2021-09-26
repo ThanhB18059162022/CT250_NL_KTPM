@@ -1,4 +1,4 @@
-const Validator = require("../../app/controllers/Validator");
+const Validator = require("../../app/validators/Validator");
 
 describe("Abstract", () => {
   test("Khởi tạo lớp trừu tượng", () => {

@@ -1,4 +1,4 @@
-const PaymentValidator = require("../../../app/controllers/payments_controller/PaymentValidator");
+const PaymentValidator = require("../../../app/validators/payments_validators/PaymentValidator");
 
 function getValidator() {
   return new PaymentValidator();

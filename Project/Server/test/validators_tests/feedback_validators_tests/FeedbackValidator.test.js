@@ -1,4 +1,4 @@
-const FeedbackValidator = require("../../../app/controllers/feedback_controllers/FeedbackValidator");
+const FeedbackValidator = require("../../../app/validators/feedback_validators/FeedbackValidator");
 
 //#region INIT
 

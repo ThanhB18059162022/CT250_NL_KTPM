@@ -1,4 +1,4 @@
-const ProductValidator = require("../../../app/controllers/products_controllers/ProductsValidator");
+const ProductValidator = require("../../../app/validators/products_validators/ProductsValidator");
 
 // Test các hàm xác thực dữ liệu của lớp ProductsValidator
 
