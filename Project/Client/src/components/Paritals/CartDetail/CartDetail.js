@@ -93,7 +93,7 @@ const CartDetail = () => {
 
   const renderPaypalButtonFrame = (cart) =>{
     ReactDOM.unmountComponentAtNode(document.querySelector('#paypalwrapper'))
-    ReactDOM.render(<PayPalPayment cartinfo={cart}/>,document.querySelector('#paypalwrapper'))
+    ReactDOM.render(<PayPalPayment cart={cart}/>,document.querySelector('#paypalwrapper'))
     
     document.querySelector('.paypalarea').classList.add('shower')
     window.scrollTo({
@@ -222,7 +222,7 @@ function CartTransaction(props) {
           cus_address: customerinfo.address,
           cus_phoneNumber: customerinfo.phone
         }
-        const products = getItemList().map(item =>({prod_no:item.id, prod_quantity:item.amount}));
+        const products = getItemList().map(item =>({prod_no:item.id, prod_quantity:item.amount*100}));
         if (customerinfo.transactionway !== 3) {
           checkout(customerinfo.transactionway,{customer,products})
         }

@@ -65,12 +65,31 @@ const TransactionValidator = (()=>{
         return {result:true}
     }
     
+    const checkingUsername = (text) =>{
+        if(isEmpty(text)){
+            return{
+                result:false,
+                message:'Bạn chưa nhập tài khoản!'
+            }
+        }
+        return {result:true}
+    }
+
+    const checkingPassword = (text) =>{
+        if(isEmpty(text)){
+            return{
+                result:false,
+                message:'Bạn chưa nhập mật khẩu!'
+            }
+        }
+        return {result:true}
+    }
 
     return{
         checkingCCID, checkingEmail,
         checkingName, checkingGender,
-        checkingPhone, checkingAddress
-
+        checkingPhone, checkingAddress,
+        checkingUsername, checkingPassword
     }
 })()
 

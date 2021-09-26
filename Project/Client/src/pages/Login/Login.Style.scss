@@ -1,0 +1,87 @@
+.Login{
+    .LoginContainer{
+        height: calc(100vh - 60px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &>p{
+            font-family: bladewords;
+            font-size: 500px;
+            position: absolute;
+            z-index: -1;
+            color: var(--backgroundBlur);
+            user-select: none;
+            animation: showers 10s 0s infinite alternate;
+        }
+        .loginwrapper{
+            box-shadow: 0 0 5px rgb(124, 124, 124);
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 400px;
+            user-select: none;
+            background: white;
+            .login_header{
+                padding-bottom: 10px;
+                border-bottom: 2px solid black;
+                margin-bottom: 40px;
+                h2{
+                    text-transform: uppercase;
+                }
+            }
+            .login_form{
+                position: relative;
+                margin-bottom: 35px;
+                font-size: 18px;
+                input{
+                    width: 100%;
+                    font-size: inherit;
+                    padding: 10px 20px;
+                    &:focus ~ label,
+                    &:valid ~ label{
+                        top:-10px;
+                        left: 10px;
+                        padding: 0 10px;
+                        font-size: 14px;
+                        background: white;
+                    }
+                    &:focus ~ label{
+                        font-weight: 600;
+                    }
+                }
+                label{
+                    position: absolute;
+                    top:10px;
+                    left: 20px;
+                    font-size: inherit;
+                    transition:  all ease .3s;
+                }
+                button{
+                    width: 100%;
+                    font-size: 20px;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    padding: 10px 0;
+                    background: var(--backgroundBlur);
+                    border:none;
+                    transition: all ease .2s;
+                    &:active{
+                        transform: scale(.95);
+                    }
+                    &:hover{
+                        background: var(--backgroundColor);
+                        color:white;
+                    }
+                }
+                &:last-child{
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+@keyframes showers {
+    to{
+        color:var(--backgroundColor)
+    }
+}

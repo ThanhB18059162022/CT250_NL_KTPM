@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect} from "react";
 import PayPalPaymentService from "./PayPalPaymentService";
 import ApiCaller from "../ApiCaller";
 
@@ -7,19 +7,14 @@ import ApiCaller from "../ApiCaller";
 const payService = new PayPalPaymentService(new ApiCaller());
 
 const PayPalPayment = (props) => {
-  const { cartinfo } = props
+  const { cart } = props
   const [paidFor, setPaidFor] = useState(false);
   const [clientId, setClientId] = useState("");
-  const [cart, setCart] = useState({})
 
   // Chạy 1 lần
   useEffect(() => {
     getId();
   }, []);
-
-  useEffect(() => {
-    setCart(cartinfo)
-  }, [cartinfo])
 
   // Cái này phải chạy đầu
   async function getId() {
