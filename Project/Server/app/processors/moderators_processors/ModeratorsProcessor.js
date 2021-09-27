@@ -28,7 +28,11 @@ module.exports = class ModeratorsProcessor extends Processor {
 
   // Lấy ra quản trị viên theo mã
   getModeratorByNo = async (mod_noParam) => {
-    const mod_no = this.checkMod_No(mod_noParam);
+    const mod_no = Number(mod_noParam);
+    const result = this.validator.validateNo(mod_no);
+    if (result.hasAnyError) {
+      throw new NotValidError();
+    }
 
     const moderator = await this.dao.getModeratorByNo(mod_no);
     if (this.dao.emptyModerator(moderator)) {
@@ -147,36 +151,15 @@ module.exports = class ModeratorsProcessor extends Processor {
   //#region LOCK
 
   // Khóa tài khoản quản trị viên
-  lockModerator = async (req, res) => {
-    const { mod_no: mod_noParam } = req.params;
-    const mod_no = Number(mod_noParam);
+  lockModerator = async (mod_noParam) => {
+    const moderator = await this.getModeratorByNo(mod_noParam);
 
-    const result = this.validator.validateNo(mod_no);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
-    }
-
-    const moderator = await this.dao.getModeratorByNo(mod_no);
-    if (this.dao.emptyModerator(moderator)) {
-      return res.status(404).json({});
-    }
-
-    await this.dao.lockModerator(mod_no);
-
-    return res.status(204).json({});
+    await this.dao.lockModerator(moderator.mod_no);
   };
 
   //#endregion
 
-  checkMod_No = (mod_noParam) => {
-    const mod_no = Number(mod_noParam);
-    const result = this.validator.validateNo(mod_no);
-    if (result.hasAnyError) {
-      throw new NotValidError();
-    }
-
-    return mod_no;
-  };
+  //#region  EX
 
   // Kiểm tra tồn tại SDT
   existPhoneNumber = async (phoneNumber) => {
@@ -245,4 +228,6 @@ module.exports = class ModeratorsProcessor extends Processor {
   oldModeratorInfo = (newId, oldId) => {
     return newId === oldId;
   };
+
+  //#endregion
 };

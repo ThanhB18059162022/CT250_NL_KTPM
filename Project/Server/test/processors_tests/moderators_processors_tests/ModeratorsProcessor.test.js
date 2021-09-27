@@ -88,17 +88,17 @@ class ModeratorDAOMock {
 //#endregion
 
 let daoMock;
-let validateMock;
+let validatorMock;
 
 function getProcessor() {
-  return new ModeratorsProcessor(validateMock, daoMock);
+  return new ModeratorsProcessor(validatorMock, daoMock);
 }
 
 //#region  GET
 
 describe("Lấy ra danh sách quản trị viên", () => {
   beforeEach(() => {
-    validateMock = new ModeratorValidatorMock();
+    validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
   });
 
@@ -118,7 +118,7 @@ describe("Lấy ra danh sách quản trị viên", () => {
 
 describe("Lấy chi tiết quản trị viên theo mã", () => {
   beforeEach(() => {
-    validateMock = new ModeratorValidatorMock();
+    validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
   });
 
@@ -138,7 +138,7 @@ describe("Lấy chi tiết quản trị viên theo mã", () => {
 
     //Assert
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateNo).toBeCalledTimes(1);
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
   });
 
   test("Mã không tồn tại - EX", async () => {
@@ -157,7 +157,7 @@ describe("Lấy chi tiết quản trị viên theo mã", () => {
 
     //Assert
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateNo).toBeCalledTimes(1);
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
   });
 
   test("Lấy ra quản trị viên theo mã ", async () => {
@@ -175,14 +175,14 @@ describe("Lấy chi tiết quản trị viên theo mã", () => {
 
     //Assert
     expect(actRs).toEqual(expRs);
-    expect(validateMock.validateNo).toBeCalledTimes(1);
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
   });
 });
 
 describe("Lấy quản trị viên theo số điện thoại", () => {
   beforeEach(() => {
-    validateMock = new ModeratorValidatorMock();
+    validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
   });
 
@@ -202,7 +202,7 @@ describe("Lấy quản trị viên theo số điện thoại", () => {
 
     //Assert
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validatePhoneNumber).toBeCalledTimes(1);
+    expect(validatorMock.validatePhoneNumber).toBeCalledTimes(1);
   });
 
   test("Không tồn tại - EX", async () => {
@@ -221,7 +221,7 @@ describe("Lấy quản trị viên theo số điện thoại", () => {
 
     //Assert
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validatePhoneNumber).toBeCalledTimes(1);
+    expect(validatorMock.validatePhoneNumber).toBeCalledTimes(1);
   });
 
   test("Lấy ra quản trị viên theo số điện thoại ", async () => {
@@ -236,14 +236,14 @@ describe("Lấy quản trị viên theo số điện thoại", () => {
 
     //Assert
     expect(actRs).toEqual(expRs);
-    expect(validateMock.validatePhoneNumber).toBeCalledTimes(1);
+    expect(validatorMock.validatePhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
   });
 });
 
 describe("Lấy quản trị viên theo CMND", () => {
   beforeEach(() => {
-    validateMock = new ModeratorValidatorMock();
+    validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
   });
 
@@ -263,7 +263,7 @@ describe("Lấy quản trị viên theo CMND", () => {
 
     //Assert
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateMod_Id).toBeCalledTimes(1);
+    expect(validatorMock.validateMod_Id).toBeCalledTimes(1);
   });
 
   test("Không tồn tại - EX", async () => {
@@ -282,7 +282,7 @@ describe("Lấy quản trị viên theo CMND", () => {
 
     //Assert
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateMod_Id).toBeCalledTimes(1);
+    expect(validatorMock.validateMod_Id).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
   });
 
@@ -298,14 +298,14 @@ describe("Lấy quản trị viên theo CMND", () => {
 
     //Assert
     expect(actRs).toEqual(expRs);
-    expect(validateMock.validateMod_Id).toBeCalledTimes(1);
+    expect(validatorMock.validateMod_Id).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
   });
 });
 
 describe("Lấy ra quản trị viên theo tài khoản", () => {
   beforeEach(() => {
-    validateMock = new ModeratorValidatorMock();
+    validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
   });
 
@@ -325,7 +325,7 @@ describe("Lấy ra quản trị viên theo tài khoản", () => {
 
     //Assert
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateUsername).toBeCalledTimes(1);
+    expect(validatorMock.validateUsername).toBeCalledTimes(1);
   });
 
   test("Không tồn tại - EX", async () => {
@@ -344,7 +344,7 @@ describe("Lấy ra quản trị viên theo tài khoản", () => {
 
     //Assert
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateUsername).toBeCalledTimes(1);
+    expect(validatorMock.validateUsername).toBeCalledTimes(1);
     expect(daoMock.getModeratorByUsername).toBeCalledTimes(1);
   });
 
@@ -360,7 +360,7 @@ describe("Lấy ra quản trị viên theo tài khoản", () => {
 
     //Assert
     expect(actRs).toEqual(expRs);
-    expect(validateMock.validateUsername).toBeCalledTimes(1);
+    expect(validatorMock.validateUsername).toBeCalledTimes(1);
     expect(daoMock.getModeratorByUsername).toBeCalledTimes(1);
   });
 });
@@ -369,7 +369,7 @@ describe("Lấy ra quản trị viên theo tài khoản", () => {
 
 describe("Thêm quản trị viên", () => {
   beforeEach(() => {
-    validateMock = new ModeratorValidatorMock();
+    validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
   });
 
@@ -390,7 +390,7 @@ describe("Thêm quản trị viên", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateAddModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
   });
 
   test("Trùng số điện thoại - EX", async () => {
@@ -410,7 +410,7 @@ describe("Thêm quản trị viên", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateAddModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
   });
 
@@ -431,7 +431,7 @@ describe("Thêm quản trị viên", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateAddModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
   });
@@ -457,7 +457,7 @@ describe("Thêm quản trị viên", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateAddModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
     expect(daoMock.getModeratorByUsername).toBeCalledTimes(1);
@@ -479,7 +479,7 @@ describe("Thêm quản trị viên", () => {
 
     //Expect
     expect(actRs).toEqual(expRs);
-    expect(validateMock.validateAddModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
     expect(daoMock.emptyModerator).toBeCalledTimes(3);
@@ -487,9 +487,9 @@ describe("Thêm quản trị viên", () => {
   });
 });
 
-describe("CUR Sửa thông tin quản trị viên", () => {
+describe("Sửa thông tin quản trị viên", () => {
   beforeEach(() => {
-    validateMock = new ModeratorValidatorMock();
+    validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
   });
 
@@ -512,7 +512,7 @@ describe("CUR Sửa thông tin quản trị viên", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateUpdateModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
   });
 
   test("Mã quản trị không hợp lệ - EX", async () => {
@@ -534,7 +534,7 @@ describe("CUR Sửa thông tin quản trị viên", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateNo).toBeCalledTimes(1);
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
   });
 
   test("Mã quản trị không tồn tại - EX", async () => {
@@ -556,8 +556,8 @@ describe("CUR Sửa thông tin quản trị viên", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateUpdateModerator).toBeCalledTimes(1);
-    expect(validateMock.validateNo).toBeCalledTimes(1);
+    expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
   });
 
@@ -580,8 +580,8 @@ describe("CUR Sửa thông tin quản trị viên", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateUpdateModerator).toBeCalledTimes(1);
-    expect(validateMock.validateNo).toBeCalledTimes(1);
+    expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
   });
@@ -605,8 +605,8 @@ describe("CUR Sửa thông tin quản trị viên", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validateMock.validateUpdateModerator).toBeCalledTimes(1);
-    expect(validateMock.validateNo).toBeCalledTimes(1);
+    expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
   });
@@ -624,8 +624,8 @@ describe("CUR Sửa thông tin quản trị viên", () => {
     await processor.updateModerator(mod_no, moderator);
 
     //Expect
-    expect(validateMock.validateNo).toBeCalledTimes(1);
-    expect(validateMock.validateUpdateModerator).toBeCalledTimes(1);
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
+    expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
@@ -635,42 +635,49 @@ describe("CUR Sửa thông tin quản trị viên", () => {
 
 // 204 - EX - EX
 describe("Khóa tài khoản quản trị viên theo mã", () => {
-  test("Mã quản trị không hợp lệ", async () => {
+  beforeEach(() => {
+    validatorMock = new ModeratorValidatorMock();
+    daoMock = new ModeratorDAOMock();
+  });
+
+  test("Mã quản trị không hợp lệ - EX", async () => {
     //Arrange
     const mod_no = -1;
 
     const processor = getProcessor();
 
-    const reqMock = {
-      params: { mod_no },
-    };
-
     //Act
-    const expRs = { statusCode: 400, body: undefined };
-    const actRs = await processor.lockModerator(reqMock, resMock);
+    const expRs = NotValidError;
+    let actRs;
+    try {
+      await processor.lockModerator(mod_no);
+    } catch (error) {
+      actRs = error;
+    }
 
     //Expect
-    expect(resMock.json).toBeCalledTimes(1);
-    expect(actRs).toEqual(expRs);
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
   });
 
-  test("Quản trị viên không tồn tại", async () => {
+  test("Quản trị viên không tồn tại - EX", async () => {
     //Arrange
     const mod_no = 666;
 
     const processor = getProcessor();
 
-    const reqMock = {
-      params: { mod_no },
-    };
-
     //Act
-    const expRs = { statusCode: 404, body: {} };
-    const actRs = await processor.lockModerator(reqMock, resMock);
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await processor.lockModerator(mod_no);
+    } catch (error) {
+      actRs = error;
+    }
 
     //Expect
-    expect(resMock.json).toBeCalledTimes(1);
-    expect(actRs).toEqual(expRs);
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
   });
 
   test("Khóa thành công", async () => {
@@ -679,17 +686,12 @@ describe("Khóa tài khoản quản trị viên theo mã", () => {
 
     const processor = getProcessor();
 
-    const reqMock = {
-      params: { mod_no },
-    };
-
     //Act
-    const expRs = { statusCode: 204, body: {} };
-    const actRs = await processor.lockModerator(reqMock, resMock);
+    await processor.lockModerator(mod_no);
 
     //Expect
-    expect(resMock.json).toBeCalledTimes(1);
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
+    expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
     expect(daoMock.lockModerator).toBeCalledTimes(1);
-    expect(actRs).toEqual(expRs);
   });
 });
