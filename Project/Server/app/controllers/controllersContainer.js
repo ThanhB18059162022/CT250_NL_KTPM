@@ -13,7 +13,7 @@ const PayPalPaymentController = require("./payments_controller/paypal_payments/P
 const StripePaymentController = require("./payments_controller/stripe_payments/StripePaymentController");
 const ZaloPayPaymentController = require("./payments_controller/zalopay_payments/ZaloPayPaymentController");
 
-const ModeratorsController = require("./moderators_controllers/ModeratorsControllers");
+const ModeratorsController = require("./moderators_controllers/ModeratorsController");
 
 const FeedbackController = require("./feedback_controllers/FeedbackController");
 

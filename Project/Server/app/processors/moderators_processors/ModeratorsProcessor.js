@@ -29,60 +29,50 @@ module.exports = class ModeratorsProcessor extends Processor {
   // Lấy ra quản trị viên theo mã
   getModeratorByNo = async (mod_noParam) => {
     const mod_no = Number(mod_noParam);
-    const result = this.validator.validateNo(mod_no);
-    if (result.hasAnyError) {
-      throw new NotValidError();
-    }
+    this.checkValidate(() => this.validator.validateNo(mod_no));
 
-    const moderator = await this.dao.getModeratorByNo(mod_no);
-    if (this.dao.emptyModerator(moderator)) {
-      throw new NotExistError();
-    }
+    const moderator = this.checkExist(
+      async () => await this.dao.getModeratorByNo(mod_no),
+      `mod_no: ${mod_no}`
+    );
 
     return moderator;
   };
 
   // Lấy quản trị viên theo số điện thoại
   getModeratorByPhoneNumber = async (mod_phoneNumber) => {
-    const result = this.validator.validatePhoneNumber(mod_phoneNumber);
-    if (result.hasAnyError) {
-      throw new NotValidError();
-    }
+    this.checkValidate(() =>
+      this.validator.validatePhoneNumber(mod_phoneNumber)
+    );
 
-    const moderator = await this.dao.getModeratorByPhoneNumber(mod_phoneNumber);
-    if (this.dao.emptyModerator(moderator)) {
-      throw new NotExistError();
-    }
+    const moderator = this.checkExist(
+      async () => await this.dao.getModeratorByPhoneNumber(mod_phoneNumber),
+      `mod_phoneNumber: ${mod_phoneNumber}`
+    );
 
     return moderator;
   };
 
   // Lấy quản trị viên theo CMND
   getModeratorByMod_Id = async (mod_id) => {
-    const result = this.validator.validateMod_Id(mod_id);
-    if (result.hasAnyError) {
-      throw new NotValidError();
-    }
+    this.checkValidate(() => this.validator.validateMod_Id(mod_id));
 
-    const moderator = await this.dao.getModeratorByMod_Id(mod_id);
-    if (this.dao.emptyModerator(moderator)) {
-      throw new NotExistError();
-    }
+    const moderator = await this.checkExist(
+      async () => await this.dao.getModeratorByMod_Id(mod_id),
+      `mod_id: ${mod_id}`
+    );
 
     return moderator;
   };
 
   // Lấy quản trị viên theo tài khoản
   getModeratorByUsername = async (mod_username) => {
-    const result = this.validator.validateUsername(mod_username);
-    if (result.hasAnyError) {
-      throw new NotValidError();
-    }
+    this.checkValidate(() => this.validator.validateUsername(mod_username));
 
-    const moderator = await this.dao.getModeratorByUsername(mod_username);
-    if (this.dao.emptyModerator(moderator)) {
-      throw new NotExistError();
-    }
+    const moderator = await this.checkExist(
+      async () => await this.dao.getModeratorByUsername(mod_username),
+      `mod_username: ${mod_username}`
+    );
 
     return moderator;
   };
@@ -93,10 +83,7 @@ module.exports = class ModeratorsProcessor extends Processor {
 
   // Thêm quản trị viên
   addModerator = async (newModerator) => {
-    const result = this.validator.validateAddModerator(newModerator);
-    if (result.hasAnyError) {
-      throw new NotValidError();
-    }
+    this.checkValidate(() => this.validator.validateAddModerator(newModerator));
 
     // Số điện thoại tồn tại
     await this.existPhoneNumber(newModerator.mod_phoneNumber);
@@ -119,11 +106,7 @@ module.exports = class ModeratorsProcessor extends Processor {
 
   // Cập nhật thông tin quản trị viên
   updateModerator = async (mod_noParam, newInfo) => {
-    // Thông tin sửa
-    const result = this.validator.validateUpdateModerator(newInfo);
-    if (result.hasAnyError) {
-      throw new NotValidError();
-    }
+    this.checkValidate(() => this.validator.validateUpdateModerator(newInfo));
 
     //Quản trị viên có tồn tại
     const oldInfo = await this.getModeratorByNo(mod_noParam);
@@ -160,6 +143,24 @@ module.exports = class ModeratorsProcessor extends Processor {
   //#endregion
 
   //#region  EX
+
+  // Xác thực dữ liệu
+  checkValidate = (validateFunc) => {
+    const result = validateFunc();
+    if (result.hasAnyError) {
+      throw new NotValidError(result.error);
+    }
+  };
+
+  // Kiểm tra tồn tại trong CSDL
+  checkExist = async (getFuncAsync, message) => {
+    const moderator = await getFuncAsync();
+    if (this.dao.emptyModerator(moderator)) {
+      throw new NotExistError(message);
+    }
+
+    return moderator;
+  };
 
   // Kiểm tra tồn tại SDT
   existPhoneNumber = async (phoneNumber) => {

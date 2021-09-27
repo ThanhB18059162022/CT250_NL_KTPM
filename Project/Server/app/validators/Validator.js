@@ -25,14 +25,12 @@ module.exports = class Validator {
 
     const hasAnyError = result.error !== undefined;
     if (hasAnyError) {
-      const {
-        message,
-        context: { key },
-      } = result.error.details[0];
+      const { message } = result.error.details[0];
 
-      const { value } = result;
-
-      return { hasAnyError, value, error: { key, message } };
+      return {
+        hasAnyError,
+        error: `Error: ${message}`,
+      };
     }
 
     return { hasAnyError };

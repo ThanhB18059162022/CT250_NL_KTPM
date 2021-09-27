@@ -2,10 +2,9 @@ const FeedbackController = require("../../../app/controllers/feedback_controller
 const {
   NotValidError,
   NotExistError,
+  UnKnownError,
 } = require("../../../app/errors/errorsContainer");
 const { ResponseMock } = require("../controllerTestHelper");
-
-class UnknownError extends Error {}
 
 // Kiểm tra các api end-point của phản hồi
 
@@ -23,7 +22,7 @@ class FeedBackProcessorMock {
       throw new NotValidError();
     }
     if (no == 666) {
-      throw new UnknownError();
+      throw new UnKnownError();
     }
     if (no != 1) {
       throw new NotExistError();
@@ -38,7 +37,7 @@ class FeedBackProcessorMock {
       throw new NotValidError();
     }
     if (fb == "unk") {
-      throw new UnknownError();
+      throw new UnKnownError();
     }
     return { fb_no: FEEDBACK.length + 1 };
   });
@@ -154,7 +153,7 @@ describe("Ctrlr Lấy danh sách phản hồi", () => {
     const resMock = new ResponseMock();
 
     //Act
-    const expRs = UnknownError;
+    const expRs = UnKnownError;
     let actRs;
     try {
       await controller.getFeedbackByProductNo(reqMock, resMock);
@@ -242,7 +241,7 @@ describe("Ctrlr Lấy danh sách phản hồi", () => {
     const resMock = new ResponseMock();
 
     //Act
-    const expRs = UnknownError;
+    const expRs = UnKnownError;
     let actRs;
     try {
       await controller.getSubFeedbackOfFeedback(reqMock, resMock);
@@ -318,7 +317,7 @@ describe("Thêm phản hồi", () => {
     const resMock = new ResponseMock();
 
     //Act
-    const expRs = UnknownError;
+    const expRs = UnKnownError;
     let actRs;
     try {
       await controller.addFeedback(reqMock, resMock);
@@ -413,7 +412,7 @@ describe("Xóa phản hồi", () => {
     const resMock = new ResponseMock();
 
     //Act
-    const expRs = UnknownError;
+    const expRs = UnKnownError;
     let actRs;
     try {
       await controller.deleteFeedback(reqMock, resMock);

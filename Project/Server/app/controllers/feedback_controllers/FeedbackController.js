@@ -67,11 +67,7 @@ module.exports = class FeedbackController extends Controller {
 
       return res.status(201).json(newFeedback);
     } catch (error) {
-      if (error instanceof NotValidError) {
-        return this.badRequest(res, error);
-      }
-
-      throw error;
+      return this.checkError(res, error);
     }
   };
 

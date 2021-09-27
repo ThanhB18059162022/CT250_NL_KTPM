@@ -9,13 +9,15 @@ const { errorCatch } = require("../routerErrorHandler");
 // Controller và lớp xác thực - truy cập dữ liệu
 const { ModeratorsValidator } = require("../../validators/validatorsContainer");
 const { ModeratorsDAO } = require("../../daos/daosContainer");
+const { ModeratorsProcessor } = require("../../processors/processorsContainer");
 const {
   ModeratorsController,
 } = require("../../controllers/controllersContainer");
 
 const validator = new ModeratorsValidator();
 const dao = new ModeratorsDAO();
-const controller = new ModeratorsController(validator, dao);
+const processor = new ModeratorsProcessor(validator, dao);
+const controller = new ModeratorsController(processor);
 
 router
   .route("/")

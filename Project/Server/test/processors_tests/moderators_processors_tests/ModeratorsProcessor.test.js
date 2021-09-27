@@ -96,7 +96,7 @@ function getProcessor() {
 
 //#region  GET
 
-describe("Lấy ra danh sách quản trị viên", () => {
+describe("Proc Lấy ra danh sách quản trị viên", () => {
   beforeEach(() => {
     validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
@@ -116,7 +116,7 @@ describe("Lấy ra danh sách quản trị viên", () => {
   });
 });
 
-describe("Lấy chi tiết quản trị viên theo mã", () => {
+describe("Proc Lấy chi tiết quản trị viên theo mã", () => {
   beforeEach(() => {
     validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
@@ -180,7 +180,7 @@ describe("Lấy chi tiết quản trị viên theo mã", () => {
   });
 });
 
-describe("Lấy quản trị viên theo số điện thoại", () => {
+describe("Proc Lấy quản trị viên theo số điện thoại", () => {
   beforeEach(() => {
     validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
@@ -241,7 +241,7 @@ describe("Lấy quản trị viên theo số điện thoại", () => {
   });
 });
 
-describe("Lấy quản trị viên theo CMND", () => {
+describe("Proc Lấy quản trị viên theo CMND", () => {
   beforeEach(() => {
     validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
@@ -303,7 +303,7 @@ describe("Lấy quản trị viên theo CMND", () => {
   });
 });
 
-describe("Lấy ra quản trị viên theo tài khoản", () => {
+describe("Proc Lấy ra quản trị viên theo tài khoản", () => {
   beforeEach(() => {
     validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
@@ -367,7 +367,7 @@ describe("Lấy ra quản trị viên theo tài khoản", () => {
 
 //#endregion
 
-describe("Thêm quản trị viên", () => {
+describe("Proc Thêm quản trị viên", () => {
   beforeEach(() => {
     validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
@@ -487,7 +487,7 @@ describe("Thêm quản trị viên", () => {
   });
 });
 
-describe("Sửa thông tin quản trị viên", () => {
+describe("Proc Sửa thông tin quản trị viên", () => {
   beforeEach(() => {
     validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
@@ -634,7 +634,7 @@ describe("Sửa thông tin quản trị viên", () => {
 });
 
 // 204 - EX - EX
-describe("Khóa tài khoản quản trị viên theo mã", () => {
+describe("Proc Khóa tài khoản quản trị viên theo mã", () => {
   beforeEach(() => {
     validatorMock = new ModeratorValidatorMock();
     daoMock = new ModeratorDAOMock();
