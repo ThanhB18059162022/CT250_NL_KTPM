@@ -1,4 +1,6 @@
-const FeedbackProcessor = require("../../../app/processors/feedback_processors/FeedbackProcessor");
+const {
+  FeedbackProcessor,
+} = require("../../../app/processors/processorsContainer");
 const {
   NotValidError,
   NotExistError,

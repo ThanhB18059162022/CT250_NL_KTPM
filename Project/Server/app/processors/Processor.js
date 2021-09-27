@@ -1,5 +1,10 @@
-// Lưu các hàm xài chung của các controller
+const {
+  NotValidError,
+  NotExistError,
+  ExistError,
+} = require("../errors/errorsContainer");
 
+// Lưu các hàm xài chung của các controller
 //Abstract class
 module.exports = class Processor {
   constructor() {
@@ -57,11 +62,57 @@ module.exports = class Processor {
 
   //#endregion
 
-  // JSON lỗi trùng dữ liệu cho thuộc tính
-  getDuplicateResult = (name) => {
-    return {
-      key: name,
-      content: `${name} has already been taken.`,
-    };
+  //#region  EX
+
+  // Xác thực dữ liệu
+  checkValidate = (validateFunc) => {
+    const result = validateFunc();
+    if (result.hasAnyError) {
+      throw new NotValidError(result.error);
+    }
   };
+
+  // Kiểm tra tồn tại trong CSDL
+  checkExist = async (getFuncAsync, message) => {
+    const moderator = await getFuncAsync();
+    if (this.dao.emptyData(moderator)) {
+      throw new NotExistError(message);
+    }
+
+    return moderator;
+  };
+
+  // Đã tồn tại quăng lỗi khi exist - notvalid
+  existData = async (asyncFunc, message) => {
+    try {
+      await asyncFunc();
+
+      throw new ExistError(message);
+    } catch (error) {
+      if (!(error instanceof NotExistError)) {
+        throw error;
+      }
+    }
+  };
+
+  // Kiểm tra thông tin tồn tại và không phải thông tin cũ
+  existDataNotOldData = async (existAsyncFunc, newId, oldId) => {
+    try {
+      await existAsyncFunc();
+    } catch (error) {
+      // Không phải thông tin cũ quăng lỗi
+      if (
+        !(error instanceof ExistError && this.oldModeratorInfo(newId, oldId))
+      ) {
+        throw error;
+      }
+    }
+  };
+
+  // Kiểm tra khi cập nhật lại thông tin cũ
+  oldModeratorInfo = (newId, oldId) => {
+    return newId === oldId;
+  };
+
+  //#endregion
 };

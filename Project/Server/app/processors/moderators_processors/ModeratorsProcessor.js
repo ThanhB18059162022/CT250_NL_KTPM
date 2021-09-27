@@ -1,9 +1,4 @@
 const Processor = require("../Processor");
-const {
-  NotValidError,
-  NotExistError,
-  ExistError,
-} = require("../../errors/errorsContainer");
 
 module.exports = class ModeratorsProcessor extends Processor {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
@@ -155,24 +150,6 @@ module.exports = class ModeratorsProcessor extends Processor {
 
   //#region  EX
 
-  // Xác thực dữ liệu
-  checkValidate = (validateFunc) => {
-    const result = validateFunc();
-    if (result.hasAnyError) {
-      throw new NotValidError(result.error);
-    }
-  };
-
-  // Kiểm tra tồn tại trong CSDL
-  checkExist = async (getFuncAsync, message) => {
-    const moderator = await getFuncAsync();
-    if (this.dao.emptyModerator(moderator)) {
-      throw new NotExistError(message);
-    }
-
-    return moderator;
-  };
-
   // Kiểm tra tồn tại SDT
   existPhoneNumber = async (phoneNumber, message) => {
     await this.existData(
@@ -212,38 +189,6 @@ module.exports = class ModeratorsProcessor extends Processor {
       async () => await this.getModeratorByUsername(mod_username),
       message
     );
-  };
-
-  // Quăng lỗi khi exist - notvalid
-  existData = async (asyncFunc, message) => {
-    try {
-      await asyncFunc();
-
-      throw new ExistError(message);
-    } catch (error) {
-      if (!(error instanceof NotExistError)) {
-        throw error;
-      }
-    }
-  };
-
-  // Kiểm tra thông tin tồn tại và không phải thông tin cũ
-  existDataNotOldData = async (existAsyncFunc, newId, oldId) => {
-    try {
-      await existAsyncFunc();
-    } catch (error) {
-      // Không phải thông tin cũ quăng lỗi
-      if (
-        !(error instanceof ExistError && this.oldModeratorInfo(newId, oldId))
-      ) {
-        throw error;
-      }
-    }
-  };
-
-  // Kiểm tra khi cập nhật lại thông tin cũ
-  oldModeratorInfo = (newId, oldId) => {
-    return newId === oldId;
   };
 
   //#endregion

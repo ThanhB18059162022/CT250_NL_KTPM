@@ -55,7 +55,7 @@ class ModeratorValidatorMock {
 }
 
 class ModeratorDAOMock {
-  emptyModerator = jest.fn((m) => {
+  emptyData = jest.fn((m) => {
     return m === undefined;
   });
 
@@ -482,7 +482,6 @@ describe("Proc Thêm quản trị viên", () => {
     expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
-    expect(daoMock.emptyModerator).toBeCalledTimes(3);
     expect(daoMock.addModerator).toBeCalledTimes(1);
   });
 });
