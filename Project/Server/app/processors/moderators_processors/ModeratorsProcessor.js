@@ -86,13 +86,22 @@ module.exports = class ModeratorsProcessor extends Processor {
     this.checkValidate(() => this.validator.validateAddModerator(newModerator));
 
     // Số điện thoại tồn tại
-    await this.existPhoneNumber(newModerator.mod_phoneNumber);
+    await this.existPhoneNumber(
+      newModerator.mod_phoneNumber,
+      `mod_phoneNumber: ${newModerator.mod_phoneNumber}`
+    );
 
     // Số CMND tồn tại
-    await this.existMod_Id(newModerator.mod_id);
+    await this.existMod_Id(
+      newModerator.mod_id,
+      `mod_id: ${newModerator.mod_id}`
+    );
 
     // Tài khoản tồn tại
-    await this.existUsername(newModerator.mod_username);
+    await this.existUsername(
+      newModerator.mod_username,
+      `mod_username: ${newModerator.mod_username}`
+    );
 
     // Thêm mod mới
     const moderator = await this.dao.addModerator(newModerator);
@@ -115,14 +124,16 @@ module.exports = class ModeratorsProcessor extends Processor {
     await this.existPhoneNumberNotOldData(
       newInfo.mod_phoneNumber,
       newInfo.mod_no,
-      oldInfo.mod_no
+      oldInfo.mod_no,
+      `mod_phoneNumber: ${newInfo.mod_phoneNumber}`
     );
 
     // Số CMND tồn tại
     await this.existMod_IdNotOldData(
       newInfo.mod_id,
       newInfo.mod_no,
-      oldInfo.mod_no
+      oldInfo.mod_no,
+      `mod_id: ${newInfo.mod_id}`
     );
 
     // Cập nhật
@@ -163,47 +174,52 @@ module.exports = class ModeratorsProcessor extends Processor {
   };
 
   // Kiểm tra tồn tại SDT
-  existPhoneNumber = async (phoneNumber) => {
+  existPhoneNumber = async (phoneNumber, message) => {
     await this.existData(
-      async () => await this.getModeratorByPhoneNumber(phoneNumber)
+      async () => await this.getModeratorByPhoneNumber(phoneNumber),
+      message
     );
   };
 
   // Tồn tại SDT nhưng không phải số cũ
-  existPhoneNumberNotOldData = async (phoneNumber, newId, oldId) => {
+  existPhoneNumberNotOldData = async (phoneNumber, newId, oldId, message) => {
     await this.existDataNotOldData(
-      async () => await this.existPhoneNumber(phoneNumber),
+      async () => await this.existPhoneNumber(phoneNumber, message),
       newId,
       oldId
     );
   };
 
   // Tồn tại CMND
-  existMod_Id = async (mod_id) => {
-    await this.existData(async () => await this.getModeratorByMod_Id(mod_id));
+  existMod_Id = async (mod_id, message) => {
+    await this.existData(
+      async () => await this.getModeratorByMod_Id(mod_id),
+      message
+    );
   };
 
   // Không phải CMND cũ
-  existMod_IdNotOldData = async (mod_id, newId, oldId) => {
+  existMod_IdNotOldData = async (mod_id, newId, oldId, message) => {
     await this.existDataNotOldData(
-      async () => await this.existMod_Id(mod_id),
+      async () => await this.existMod_Id(mod_id, message),
       newId,
       oldId
     );
   };
 
-  existUsername = async (mod_username) => {
+  existUsername = async (mod_username, message) => {
     await this.existData(
-      async () => await this.getModeratorByUsername(mod_username)
+      async () => await this.getModeratorByUsername(mod_username),
+      message
     );
   };
 
   // Quăng lỗi khi exist - notvalid
-  existData = async (asyncFunc) => {
+  existData = async (asyncFunc, message) => {
     try {
       await asyncFunc();
 
-      throw new ExistError();
+      throw new ExistError(message);
     } catch (error) {
       if (!(error instanceof NotExistError)) {
         throw error;
