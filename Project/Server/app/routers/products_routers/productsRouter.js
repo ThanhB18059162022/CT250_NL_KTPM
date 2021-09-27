@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { baseImgUri } = require("../../config");
+const config = require("../../config");
 
 // Router gán các endpoints vào ProductsController
 
@@ -10,13 +10,15 @@ const { errorCatch } = require("../routerErrorHandler");
 // Controller và lớp xác thực dữ liệu
 const { ProductsValidator } = require("../../validators/validatorsContainer");
 const { ProductsDAO } = require("../../daos/daosContainer");
+const { ProductsProcessor } = require("../../processors/processorsContainer");
 const {
   ProductsController,
 } = require("../../controllers/controllersContainer");
 
-const dao = new ProductsDAO(baseImgUri);
+const dao = new ProductsDAO(config.baseImgUri);
 const validator = new ProductsValidator();
-const controller = new ProductsController(validator, dao);
+const processor = new ProductsProcessor(validator, dao);
+const controller = new ProductsController(processor, config);
 
 router
   .route("/")

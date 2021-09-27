@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const config = require("../../config");
 
 // Router gán các endpoints vào ModeratorsController
 
@@ -17,7 +18,7 @@ const {
 const validator = new FeedbackValidator();
 const dao = new FeedbackDAO();
 const processor = new FeedbackProcessor(validator, dao);
-const controller = new FeedbackController(processor);
+const controller = new FeedbackController(processor, config);
 
 router
   .route("/")

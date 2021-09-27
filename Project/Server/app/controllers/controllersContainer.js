@@ -5,8 +5,6 @@
 
 const AuthenticationController = require("./authentication_controllers/AuthenticationController");
 
-const NotesController = require("./notes_controllers/NotesController");
-
 const ProductsController = require("./products_controllers/ProductsController");
 
 const PayPalPaymentController = require("./payments_controller/paypal_payments/PayPalPaymentController");
@@ -19,8 +17,6 @@ const FeedbackController = require("./feedback_controllers/FeedbackController");
 
 module.exports = {
   AuthenticationController,
-
-  NotesController,
 
   ProductsController,
 

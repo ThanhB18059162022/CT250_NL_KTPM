@@ -1,12 +1,8 @@
-const {
-  NotValidError,
-  NotExistError,
-} = require("../../errors/errorsContainer");
 const Controller = require("../Controller");
 
 module.exports = class FeedbackController extends Controller {
-  constructor(processor) {
-    super();
+  constructor(processor, config) {
+    super(config);
     this.processor = processor;
   }
 
@@ -87,16 +83,4 @@ module.exports = class FeedbackController extends Controller {
   };
 
   //#endregion
-
-  checkError = (res, error) => {
-    if (error instanceof NotValidError) {
-      return this.badRequest(res, error);
-    }
-
-    if (error instanceof NotExistError) {
-      return this.notFound(res, error);
-    }
-
-    throw error;
-  };
 };

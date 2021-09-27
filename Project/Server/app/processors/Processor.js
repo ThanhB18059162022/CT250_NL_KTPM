@@ -1,4 +1,5 @@
 const {
+  InstantiateAbstractClassError,
   NotValidError,
   NotExistError,
   ExistError,
@@ -9,7 +10,7 @@ const {
 module.exports = class Processor {
   constructor() {
     if (this.constructor === Processor) {
-      throw new Error("Abstract classes can't be instantiated.");
+      throw new InstantiateAbstractClassError();
     }
   }
 

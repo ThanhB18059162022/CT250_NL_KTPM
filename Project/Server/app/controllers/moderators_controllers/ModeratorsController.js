@@ -6,8 +6,8 @@ const {
 } = require("../../errors/errorsContainer");
 
 module.exports = class ModeratorsController extends Controller {
-  constructor(processor) {
-    super();
+  constructor(processor, config) {
+    super(config);
     this.processor = processor;
   }
 
@@ -120,17 +120,5 @@ module.exports = class ModeratorsController extends Controller {
     } catch (error) {
       return this.checkError(res, error);
     }
-  };
-
-  checkError = (res, error) => {
-    if (error instanceof NotValidError || error instanceof ExistError) {
-      return this.badRequest(res, error);
-    }
-
-    if (error instanceof NotExistError) {
-      return this.notFound(res, error);
-    }
-
-    throw error;
   };
 };

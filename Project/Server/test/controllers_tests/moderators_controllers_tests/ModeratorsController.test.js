@@ -5,9 +5,7 @@ const {
   NotExistError,
   NotValidError,
   ExistError,
-  UnKnownError,
 } = require("../../../app/errors/errorsContainer");
-const UnknownError = require("../../../app/errors/UnKnownError");
 const { ResponseMock } = require("../controllerTestHelper");
 
 // Kiểm tra các api end-points của quản trị viên
@@ -38,9 +36,6 @@ class ModeratorsProcessorMock {
     if (mod_no == undefined) {
       throw new NotValidError();
     }
-    if (mod_no == 666) {
-      throw new UnKnownError();
-    }
     if (mod_no != 1) {
       throw new NotExistError();
     }
@@ -51,9 +46,6 @@ class ModeratorsProcessorMock {
   getModeratorByPhoneNumber = jest.fn(async (mod_phoneNumber) => {
     if (mod_phoneNumber == undefined) {
       throw new NotValidError();
-    }
-    if (mod_phoneNumber == 666) {
-      throw new UnKnownError();
     }
     if (mod_phoneNumber != "0000000000") {
       throw new NotExistError();
@@ -66,9 +58,6 @@ class ModeratorsProcessorMock {
     if (mod_id == undefined) {
       throw new NotValidError();
     }
-    if (mod_id == 666) {
-      throw new UnKnownError();
-    }
     if (mod_id != moderators[0].mod_id) {
       throw new NotExistError();
     }
@@ -78,9 +67,6 @@ class ModeratorsProcessorMock {
     if (mod_username == undefined) {
       throw new NotValidError();
     }
-    if (mod_username == 666) {
-      throw new UnKnownError();
-    }
     if (mod_username != moderators[0].mod_username) {
       throw new NotExistError();
     }
@@ -89,9 +75,6 @@ class ModeratorsProcessorMock {
   });
 
   addModerator = jest.fn(async (mod) => {
-    if (mod == 666) {
-      throw new UnKnownError();
-    }
     const { mod_phoneNumber, mod_id, mod_username } = moderators[0];
     if (
       mod == undefined ||
@@ -106,9 +89,6 @@ class ModeratorsProcessorMock {
   });
 
   updateModerator = jest.fn(async (m_no, mod) => {
-    if (m_no == 666) {
-      throw new UnknownError();
-    }
     const { mod_phoneNumber, mod_id, mod_username } = moderators[0];
     if (m_no == -1 || mod == undefined) {
       throw new NotValidError();
@@ -220,27 +200,6 @@ describe("Ctrlr Lấy ra quản trị viên theo mã", () => {
     expect(resMock.json).toBeCalledTimes(1);
     expect(processorMock.getModeratorByNo).toBeCalledTimes(1);
   });
-
-  test("Lỗi server - 500", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_no = 666;
-    const reqMock = { params: { mod_no } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRs = UnKnownError;
-    let actRs;
-    try {
-      await controller.getModeratorByNo(reqMock, resMock);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Assert
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(processorMock.getModeratorByNo).toBeCalledTimes(1);
-  });
 });
 
 // 200 - 400 - 404
@@ -298,27 +257,6 @@ describe("Ctrlr Lấy ra quản trị viên theo số điện thoại", () => {
     expect(actRes).toEqual(expRes);
     expect(processorMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Lỗi server - 500", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_phoneNumber = 666;
-    const reqMock = { params: { mod_phoneNumber } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRs = UnKnownError;
-    let actRs;
-    try {
-      await controller.getModeratorByPhoneNumber(reqMock, resMock);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Assert
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(processorMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
   });
 });
 
@@ -379,27 +317,6 @@ describe("Ctrlr Lấy ra quản trị viên theo CMND", () => {
     expect(processorMock.getModeratorByMod_Id).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
   });
-
-  test("Lỗi server - 500", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_id = 666;
-    const reqMock = { params: { mod_id } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRs = UnknownError;
-    let actRs;
-    try {
-      await controller.getModeratorByMod_Id(reqMock, resMock);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Assert
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(processorMock.getModeratorByMod_Id).toBeCalledTimes(1);
-  });
 });
 
 // 200 - 400 - 404
@@ -458,27 +375,6 @@ describe("Ctrlr Lấy ra quản trị viên theo tài khoản", () => {
     expect(actRes).toEqual(expRes);
     expect(processorMock.getModeratorByUsername).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Lỗi server - 500", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_username = 666;
-    const reqMock = { params: { mod_username } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRs = UnKnownError;
-    let actRs;
-    try {
-      await controller.getModeratorByUsername(reqMock, resMock);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Assert
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(processorMock.getModeratorByUsername).toBeCalledTimes(1);
   });
 });
 
@@ -593,28 +489,6 @@ describe("Thêm quản trị viên", () => {
     expect(actRes).toEqual(expRes);
     expect(processorMock.addModerator).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Lỗi server - 500", async () => {
-    //Arrange
-    const mod = 666;
-    const controller = getController();
-
-    const reqMock = { body: mod };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRs = UnknownError;
-    let actRs;
-    try {
-      await controller.addModerator(reqMock, resMock);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Expect
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(processorMock.addModerator).toBeCalledTimes(1);
   });
 });
 
@@ -737,28 +611,6 @@ describe("Sửa thông tin quản trị viên", () => {
     expect(processorMock.updateModerator).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
   });
-
-  test("Lỗi server - 500", async () => {
-    //Arrange
-    const mod_no = 666;
-    const controller = getController();
-
-    const reqMock = { params: { mod_no }, body: {} };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRs = UnknownError;
-    let actRs;
-    try {
-      await controller.updateModerator(reqMock, resMock);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Expect
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(processorMock.updateModerator).toBeCalledTimes(1);
-  });
 });
 
 // 204 - 400 - 404
@@ -829,30 +681,5 @@ describe("Khóa tài khoản quản trị viên theo mã", () => {
     expect(processorMock.getModeratorByNo).toBeCalledTimes(1);
     expect(processorMock.lockModerator).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Lỗi server - 500", async () => {
-    //Arrange
-    const mod_no = 666;
-
-    const controller = getController();
-
-    const reqMock = {
-      params: { mod_no },
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRs = UnKnownError;
-    let actRs;
-    try {
-      await controller.lockModerator(reqMock, resMock);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Expect
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(processorMock.getModeratorByNo).toBeCalledTimes(1);
   });
 });
