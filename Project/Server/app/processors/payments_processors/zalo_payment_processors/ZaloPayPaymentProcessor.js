@@ -7,19 +7,27 @@ module.exports = class ZaloPayPaymentProcessor extends SessionPaymentProcessor {
     this.zaloPayService = zaloPaySerivce;
   }
 
-  createOrder = async (cart, url) => {
+  createOrder = async (cart, url = {}) => {
     // Kiểm tra giỏ hàng
     this.checkValidateCart(cart);
 
-    // Kiểm tra url
-    this.checkValidateUrl(url);
+    const { successUrl, cancelUrl, baseUrl } = url;
+    // Kiểm tra success url
+    this.checkValidateUrl(successUrl);
+
+    // Kiểm tra cancel url
+    this.checkValidateUrl(cancelUrl);
 
     const order = await this.createOrderFromCartAsync(cart);
+
+    // Về server xử lý trước
+    const serverSuccessUrl =
+      baseUrl + `/${order.id}?url=${successUrl}-${cancelUrl}`;
 
     const zaloPayUrl = await this.zaloPayService.createOrder(
       order.id,
       order.total,
-      url
+      serverSuccessUrl
     );
 
     // Lưu tạm oder

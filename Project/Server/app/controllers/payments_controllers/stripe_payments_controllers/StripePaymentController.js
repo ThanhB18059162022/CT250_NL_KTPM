@@ -8,8 +8,6 @@ module.exports = class StripePaymentController extends Controller {
   }
 
   // Tạo đơn hàng
-  // Nhận vào giỏ hàng là body
-  // 2 query để điều hướng thành công và hủy
   createOrder = async (req, res) => {
     try {
       const { successUrl, cancelUrl } = req.query;
