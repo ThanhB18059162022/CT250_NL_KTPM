@@ -1,9 +1,4 @@
 const Controller = require("../Controller");
-const {
-  NotValidError,
-  NotExistError,
-  ExistError,
-} = require("../../errors/errorsContainer");
 
 module.exports = class ModeratorsController extends Controller {
   constructor(processor, config) {
@@ -17,7 +12,7 @@ module.exports = class ModeratorsController extends Controller {
   getModerators = async (req, res) => {
     const moderatorsPage = await this.processor.getModerators(req.query);
 
-    return res.json(moderatorsPage);
+    return this.ok(res, moderatorsPage);
   };
 
   // Lấy ra quản trị viên theo mã
@@ -27,7 +22,7 @@ module.exports = class ModeratorsController extends Controller {
 
       const moderator = await this.processor.getModeratorByNo(mod_no);
 
-      return res.json(moderator);
+      return this.ok(res, moderator);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -42,7 +37,7 @@ module.exports = class ModeratorsController extends Controller {
         mod_phoneNumber
       );
 
-      return res.json(moderator);
+      return this.ok(res, moderator);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -55,7 +50,7 @@ module.exports = class ModeratorsController extends Controller {
 
       const moderator = await this.processor.getModeratorByMod_Id(mod_id);
 
-      return res.json(moderator);
+      return this.ok(res, moderator);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -70,7 +65,7 @@ module.exports = class ModeratorsController extends Controller {
         mod_username
       );
 
-      return res.json(moderator);
+      return this.ok(res, moderator);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -85,7 +80,7 @@ module.exports = class ModeratorsController extends Controller {
 
       const moderator = await this.processor.addModerator(newModerator);
 
-      return res.status(201).json(moderator);
+      return this.created(res, moderator);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -101,7 +96,7 @@ module.exports = class ModeratorsController extends Controller {
 
       await this.processor.updateModerator(mod_no, newModerator);
 
-      return res.status(204).json({});
+      return this.noContent(res);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -116,7 +111,7 @@ module.exports = class ModeratorsController extends Controller {
 
       await this.processor.lockModerator(moderator.mod_no);
 
-      return res.status(204).json({});
+      return this.noContent(res);
     } catch (error) {
       return this.checkError(res, error);
     }

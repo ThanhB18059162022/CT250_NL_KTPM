@@ -9,10 +9,10 @@ module.exports = class ZaloPayPaymentProcessor extends SessionPaymentProcessor {
 
   createOrder = async (cart, url) => {
     // Kiểm tra giỏ hàng
-    this.checkValidate(() => this.validator.validateCart(cart));
+    this.checkValidateCart(cart);
 
     // Kiểm tra url
-    this.checkValidate(() => this.validator.validateUrl(url));
+    this.checkValidateUrl(url);
 
     const order = await this.createOrderFromCartAsync(cart);
 
@@ -34,8 +34,8 @@ module.exports = class ZaloPayPaymentProcessor extends SessionPaymentProcessor {
     this.checkValidate(() => this.validator.validateId(id));
 
     const { successUrl, cancelUrl } = query.url || {};
-    this.checkValidate(() => this.validator.validateUrl(successUrl));
-    this.checkValidate(() => this.validator.validateUrl(cancelUrl));
+    this.checkValidateUrl(successUrl);
+    this.checkValidateUrl(cancelUrl);
 
     // Kiểm tra thông tin thanh toán không bị thay đổi
     const valid = this.zaloPayService.validRedirectQuery(query);

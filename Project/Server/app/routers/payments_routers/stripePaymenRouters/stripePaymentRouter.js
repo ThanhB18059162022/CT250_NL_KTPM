@@ -16,6 +16,9 @@ const {
 } = require("../../../services/servicesContainer");
 const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 const {
+  StripePaymentProcessor,
+} = require("../../../processors/processorsContainer");
+const {
   StripePaymentController,
 } = require("../../../controllers/controllersContainer");
 
@@ -25,12 +28,13 @@ const dao = new CustomersOrdersDAO();
 const service = new StripeService(payment.stripe);
 const validator = new PaymentsValidator();
 const exService = new CurrencyExchangeService(payment.currency);
-const controller = new StripePaymentController(
+const processor = new StripePaymentProcessor(
   validator,
   dao,
   exService,
   service
 );
+const controller = new StripePaymentController(processor);
 
 //#endregion
 

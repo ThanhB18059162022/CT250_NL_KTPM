@@ -118,7 +118,7 @@ module.exports = class PaymentsProcessor extends Processor {
     await this.checkExistAsync(
       async () => order,
       (order) => order === undefined,
-      `order: ${id} not exist`
+      `order: ${id}`
     );
 
     // Lưu vào CSDL
@@ -157,5 +157,13 @@ module.exports = class PaymentsProcessor extends Processor {
     );
 
     return saveOrder;
+  };
+
+  checkValidateCart = (cart) => {
+    this.checkValidate(() => this.validator.validateCart(cart));
+  };
+
+  checkValidateUrl = (url) => {
+    this.checkValidate(() => this.validator.validateUrl(url));
   };
 };

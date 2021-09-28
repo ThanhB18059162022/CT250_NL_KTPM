@@ -34,6 +34,26 @@ module.exports = class Controller {
 
   //#region Res
 
+  // 200
+  ok = (res, data) => {
+    return res.json(data);
+  };
+
+  // 201
+  created = (res, data) => {
+    return res.status(201).json(data);
+  };
+
+  // 204
+  noContent = (res) => {
+    return res.status(204).json({});
+  };
+
+  // 301
+  redirect = (res, url) => {
+    return res.status(301).redirect(url);
+  };
+
   // 400
   badRequest = (res, error) => {
     const result = this.getResult(error);

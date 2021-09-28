@@ -12,7 +12,7 @@ module.exports = class FeedbackController extends Controller {
   getFeedback = async (req, res) => {
     const feedbackPage = await this.processor.getFeedback(req.query);
 
-    return res.json(feedbackPage);
+    return this.ok(res, feedbackPage);
   };
 
   // Lấy phản hồi theo mã sản phẩm
@@ -28,7 +28,7 @@ module.exports = class FeedbackController extends Controller {
         query
       );
 
-      return res.json(feedbackPage);
+      return this.ok(res, feedbackPage);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -47,7 +47,7 @@ module.exports = class FeedbackController extends Controller {
         query
       );
 
-      return res.json(subFeedbackPage);
+      return this.ok(res, subFeedbackPage);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -61,7 +61,7 @@ module.exports = class FeedbackController extends Controller {
     try {
       const newFeedback = await this.processor.addFeedback(req.body);
 
-      return res.status(201).json(newFeedback);
+      return this.created(res, newFeedback);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -76,7 +76,7 @@ module.exports = class FeedbackController extends Controller {
       // Xóa feedback trong CSDL
       await this.processor.deleteFeedback(req.params.fb_no);
 
-      return res.status(204).json({});
+      return this.noContent(res);
     } catch (error) {
       return this.checkError(res, error);
     }

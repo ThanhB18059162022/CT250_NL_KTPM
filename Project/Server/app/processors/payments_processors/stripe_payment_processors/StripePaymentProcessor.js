@@ -9,23 +9,25 @@ module.exports = class StripePaymentProcessor extends SessionPaymentProcessor {
   // Tạo đơn hàng
   createOrder = async (cart, url = {}) => {
     // Kiểm tra giỏ hàng
-    this.checkValidate(() => this.validator.validateCart(cart));
+    this.checkValidateCart(cart);
 
-    const { successUrl, cancelUrl } = url;
+    const { successUrl, cancelUrl, baseUrl } = url;
     // Kiểm tra success url
-    this.checkValidate(() => this.validator.validateUrl(successUrl));
+    this.checkValidateUrl(successUrl);
 
     // Kiểm tra cancel url
-    this.checkValidate(() => this.validator.validateUrl(cancelUrl));
+    this.checkValidateUrl(cancelUrl);
 
     const order = await this.createOrderFromCartAsync(cart);
 
     // Chuyển sang USD
     const usdOrderProducts = await this.convertToUSD(order.orderProducts);
 
+    // Về server xử lý trước
+    const serverSuccessUrl = baseUrl + `/${order.id}?successUrl=${successUrl}`;
     const stripeUrl = await this.stripeService.createOrder(
       usdOrderProducts,
-      successUrl,
+      serverSuccessUrl,
       cancelUrl
     );
 
@@ -57,7 +59,7 @@ module.exports = class StripePaymentProcessor extends SessionPaymentProcessor {
   // Lưu đơn hàng đã thanh toán
   checkoutOrder = async (id, url) => {
     this.checkValidate(() => this.validator.validateId(id));
-    this.checkValidate(() => this.validator.validateUrl(url));
+    this.checkValidateUrl(url);
 
     const saveOrderId = await this.checkout(id);
 

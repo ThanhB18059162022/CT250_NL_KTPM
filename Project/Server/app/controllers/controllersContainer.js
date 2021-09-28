@@ -8,7 +8,7 @@ const AuthenticationController = require("./authentication_controllers/Authentic
 const ProductsController = require("./products_controllers/ProductsController");
 
 const PayPalPaymentController = require("./payments_controller/paypal_payments/PayPalPaymentController");
-const StripePaymentController = require("./payments_controller/stripe_payments/StripePaymentController");
+const StripePaymentController = require("./payments_controller/stripe_payments_controllers/StripePaymentController");
 const ZaloPayPaymentController = require("./payments_controller/zalopay_payments/ZaloPayPaymentController");
 
 const ModeratorsController = require("./moderators_controllers/ModeratorsController");

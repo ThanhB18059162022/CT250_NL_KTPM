@@ -13,14 +13,14 @@ module.exports = class ProductsController extends Controller {
   getProducts = async (req, res) => {
     const productsPage = await this.processor.getProducts(req.query);
 
-    return res.json(productsPage);
+    return this.ok(res, productsPage);
   };
 
   // Lấy danh sách theo mức giá trở xuống
   getProductsByPrice = async (req, res) => {
     const productsPage = await this.processor.getProductsByPrice(req.query);
 
-    return res.json(productsPage);
+    return this.ok(res, productsPage);
   };
 
   // Lấy theo mã sản phẩm
@@ -29,7 +29,7 @@ module.exports = class ProductsController extends Controller {
       const { prod_no } = req.params;
       const product = await this.processor.getProductByNo(prod_no);
 
-      return res.json(product);
+      return this.ok(res, product);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -41,7 +41,7 @@ module.exports = class ProductsController extends Controller {
       const { prod_name } = req.params;
       const product = await this.processor.getProductByName(prod_name);
 
-      return res.json(product);
+      return this.ok(res, product);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -56,7 +56,7 @@ module.exports = class ProductsController extends Controller {
 
       const product = await this.processor.addProduct(newProduct);
 
-      return res.status(201).json(product);
+      return this.created(res, product);
     } catch (error) {
       return this.checkError(res, error);
     }
@@ -73,7 +73,7 @@ module.exports = class ProductsController extends Controller {
       // Cập nhật thông tin
       await this.processor.updateProduct(prod_no, newProduct);
 
-      return res.status(204).json({});
+      return this.noContent(res);
     } catch (error) {
       return this.checkError(res, error);
     }
