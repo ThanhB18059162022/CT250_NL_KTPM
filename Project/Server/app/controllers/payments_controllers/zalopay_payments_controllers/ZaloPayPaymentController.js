@@ -1,13 +1,10 @@
 const Controller = require("../../Controller");
-const PaymentController = require("../PaymentController");
 
 module.exports = class ZaloPayPaymentController extends Controller {
   constructor(processor) {
     super();
     this.processor = processor;
   }
-
-  //#region CREATE ORDER
 
   createOrder = async (req, res) => {
     try {
@@ -30,10 +27,6 @@ module.exports = class ZaloPayPaymentController extends Controller {
     }
   };
 
-  //#endregion
-
-  //#region CHECKOUT ORDER
-
   // Lưu đơn hàng đã thanh toán
   checkoutOrder = async (req, res) => {
     try {
@@ -50,6 +43,4 @@ module.exports = class ZaloPayPaymentController extends Controller {
       return this.checkError(res, error);
     }
   };
-
-  //#endregion
 };

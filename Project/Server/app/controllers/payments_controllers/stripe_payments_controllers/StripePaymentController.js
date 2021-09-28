@@ -1,5 +1,4 @@
 const Controller = require("../../Controller");
-const PaymentController = require("../PaymentController");
 
 module.exports = class StripePaymentController extends Controller {
   constructor(processor) {

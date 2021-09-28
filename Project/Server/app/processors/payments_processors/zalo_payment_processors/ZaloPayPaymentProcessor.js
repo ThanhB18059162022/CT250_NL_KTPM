@@ -41,7 +41,8 @@ module.exports = class ZaloPayPaymentProcessor extends SessionPaymentProcessor {
   checkoutOrder = async (id, query) => {
     this.checkValidate(() => this.validator.validateId(id));
 
-    const { successUrl, cancelUrl } = query.url || {};
+    const { url = "" } = query;
+    const [successUrl, cancelUrl] = url.split("-");
     this.checkValidateUrl(successUrl);
     this.checkValidateUrl(cancelUrl);
 

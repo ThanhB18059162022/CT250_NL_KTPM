@@ -73,10 +73,10 @@ describe("Tạo đơn hàng", () => {
     expect(validatorMock.validateCart).toBeCalledTimes(1);
   });
 
-  test("Thiếu url - EX", async () => {
+  test("Thiếu successUrl - EX", async () => {
     //Arrange
     const cart = { products: [] };
-    const url = "//";
+    const successUrl = "//";
 
     const processor = getProcessor();
 
@@ -84,7 +84,7 @@ describe("Tạo đơn hàng", () => {
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.createOrder(cart, url);
+      await processor.createOrder(cart, { successUrl });
     } catch (error) {
       actRs = error;
     }
@@ -93,6 +93,29 @@ describe("Tạo đơn hàng", () => {
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateCart).toBeCalledTimes(1);
     expect(validatorMock.validateUrl).toBeCalledTimes(1);
+  });
+
+  test("Thiếu cancelUrl - 400", async () => {
+    //Arrange
+    const cart = { products: [] };
+    const successUrl = "";
+    const cancelUrl = "//";
+
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotValidError;
+    let actRs;
+    try {
+      await processor.createOrder(cart, { successUrl, cancelUrl });
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateCart).toBeCalledTimes(1);
+    expect(validatorMock.validateUrl).toBeCalledTimes(2);
   });
 
   test("Lấy id", async () => {
@@ -197,7 +220,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     const id = "id";
     const successUrl = "//";
     const processor = getProcessor();
-    const query = { url: { successUrl } };
+    const query = { url: `${successUrl}` };
 
     //Act
     const expRs = NotValidError;
@@ -220,7 +243,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     const successUrl = " ";
     const cancelUrl = "//";
     const processor = getProcessor();
-    const query = { url: { successUrl, cancelUrl } };
+    const query = { url: successUrl + "-" + cancelUrl };
 
     //Act
     const expRs = NotValidError;
@@ -243,7 +266,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     const successUrl = "suc";
     const cancelUrl = "cancel";
     const processor = getProcessor();
-    const query = { url: { successUrl, cancelUrl } };
+    const query = { url: successUrl + "-" + cancelUrl };
 
     //Act
     const expRs = NotValidError;
@@ -267,7 +290,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     const successUrl = "suc";
     const cancelUrl = "cancel";
     const processor = getProcessor();
-    const query = { url: { successUrl, cancelUrl }, data: {} };
+    const query = { url: successUrl + "-" + cancelUrl, data: {} };
 
     //Act
     const expRs = cancelUrl;
@@ -286,7 +309,7 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     const successUrl = "suc";
     const cancelUrl = "cancel";
     const processor = getProcessor();
-    const query = { url: { successUrl, cancelUrl }, data: {}, status: 1 };
+    const query = { url: successUrl + "-" + cancelUrl, data: {}, status: 1 };
 
     const { storedOrders } = ZaloPayPaymentProcessor;
     storedOrders.set(id, {});
