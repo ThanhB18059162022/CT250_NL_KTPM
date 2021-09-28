@@ -26,8 +26,9 @@ module.exports = class ModeratorsProcessor extends Processor {
     const mod_no = Number(mod_noParam);
     this.checkValidate(() => this.validator.validateNo(mod_no));
 
-    const moderator = this.checkExist(
+    const moderator = this.checkExistAsync(
       async () => await this.dao.getModeratorByNo(mod_no),
+      this.dao.emptyData,
       `mod_no: ${mod_no}`
     );
 
@@ -40,8 +41,9 @@ module.exports = class ModeratorsProcessor extends Processor {
       this.validator.validatePhoneNumber(mod_phoneNumber)
     );
 
-    const moderator = this.checkExist(
+    const moderator = this.checkExistAsync(
       async () => await this.dao.getModeratorByPhoneNumber(mod_phoneNumber),
+      this.dao.emptyData,
       `mod_phoneNumber: ${mod_phoneNumber}`
     );
 
@@ -52,8 +54,9 @@ module.exports = class ModeratorsProcessor extends Processor {
   getModeratorByMod_Id = async (mod_id) => {
     this.checkValidate(() => this.validator.validateMod_Id(mod_id));
 
-    const moderator = await this.checkExist(
+    const moderator = await this.checkExistAsync(
       async () => await this.dao.getModeratorByMod_Id(mod_id),
+      this.dao.emptyData,
       `mod_id: ${mod_id}`
     );
 
@@ -64,8 +67,9 @@ module.exports = class ModeratorsProcessor extends Processor {
   getModeratorByUsername = async (mod_username) => {
     this.checkValidate(() => this.validator.validateUsername(mod_username));
 
-    const moderator = await this.checkExist(
+    const moderator = await this.checkExistAsync(
       async () => await this.dao.getModeratorByUsername(mod_username),
+      this.dao.emptyData,
       `mod_username: ${mod_username}`
     );
 

@@ -74,13 +74,13 @@ module.exports = class Processor {
   };
 
   // Kiểm tra tồn tại trong CSDL
-  checkExist = async (getFuncAsync, message) => {
-    const moderator = await getFuncAsync();
-    if (this.dao.emptyData(moderator)) {
+  checkExistAsync = async (getFuncAsync, emptyData, message) => {
+    const data = await getFuncAsync();
+    if (emptyData(data)) {
       throw new NotExistError(message);
     }
 
-    return moderator;
+    return data;
   };
 
   // Đã tồn tại quăng lỗi khi exist - notvalid
@@ -102,16 +102,14 @@ module.exports = class Processor {
       await existAsyncFunc();
     } catch (error) {
       // Không phải thông tin cũ quăng lỗi
-      if (
-        !(error instanceof ExistError && this.oldModeratorInfo(newId, oldId))
-      ) {
+      if (!(error instanceof ExistError && this.notOldData(newId, oldId))) {
         throw error;
       }
     }
   };
 
   // Kiểm tra khi cập nhật lại thông tin cũ
-  oldModeratorInfo = (newId, oldId) => {
+  notOldData = (newId, oldId) => {
     return newId === oldId;
   };
 

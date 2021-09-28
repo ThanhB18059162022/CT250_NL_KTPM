@@ -64,8 +64,9 @@ module.exports = class ProductsProcessor extends Processor {
     const prod_no = Number(prod_noParam);
     this.checkValidate(() => this.validator.validateNo(prod_no));
 
-    const product = await this.checkExist(
+    const product = await this.checkExistAsync(
       async () => await this.dao.getProductByNo(prod_no),
+      this.dao.emptyData,
       `prod_no: ${prod_no}`
     );
 
@@ -76,8 +77,9 @@ module.exports = class ProductsProcessor extends Processor {
   getProductByName = async (prod_name) => {
     this.checkValidate(() => this.validator.validateName(prod_name));
 
-    const product = await this.checkExist(
+    const product = await this.checkExistAsync(
       async () => await this.dao.getProductByName(prod_name),
+      this.dao.emptyData,
       `prod_name: ${prod_name}`
     );
 
@@ -107,8 +109,10 @@ module.exports = class ProductsProcessor extends Processor {
   updateProduct = async (prod_no, newInfo) => {
     this.checkValidate(() => this.validator.validateProduct(newInfo));
 
-    const oldInfo = await this.checkExist(
-      async () => await this.getProductByNo(prod_no)
+    const oldInfo = await this.checkExistAsync(
+      async () => await this.getProductByNo(prod_no),
+      this.dao.emptyData,
+      `prod_no: ${prod_no} not exist`
     );
 
     // Kiểm tra trùng tên sản phẩm khác
