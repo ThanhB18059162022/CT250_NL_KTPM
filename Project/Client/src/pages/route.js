@@ -3,6 +3,8 @@ import Admin from "./Admin"
 import SearchProduct from "./SearchProduct"
 import ProductDetail from "./ProductDetail"
 import Cart from "./Cart"
+import SuccessDirect from "./SuccessDirect"
+import Login from "./Login"
 
 /*  Route định tuyến cho tất cả các trang, khi tạo ra 1 trang,
     cần import bên trên và khai báo vào mảng bên dưới./
@@ -30,6 +32,18 @@ const route = [
         path:'/cart',
         public:true,
         component:Cart
+    },
+
+    {
+        path:'/login',
+        public:true,
+        component:Login
+    },
+
+    {
+        path:'/success/:type/:id',
+        public:true,
+        component:SuccessDirect
     },
     {
         path: '/',

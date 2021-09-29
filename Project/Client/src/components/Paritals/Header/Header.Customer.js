@@ -21,6 +21,8 @@ const Header = ({children,...rest}) => {
     )
 }
 
+export default Header
+
 export const SearchHeader =({...rest})=>{
     const [state, setstate] = useState(false)
     const history  = useHistory()

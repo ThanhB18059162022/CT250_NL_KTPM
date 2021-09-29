@@ -6,10 +6,10 @@ const TransactionValidator = (()=>{
 
     //external
     const checkingCCID = (ccid) =>{
-        if(ccid.trim().length<9 || isNaN(Number(ccid))){
+        if(ccid.trim().length!==9 || isNaN(Number(ccid))){
             return {
                 result: false,
-                resson:'Số CMND/CCCD không hợp lệ!'
+                resson:'Số CMND/CCCD không hợp lệ! Yêu cầu có 9 ký tự số'
             }
         }
         return {result:true}
@@ -65,12 +65,31 @@ const TransactionValidator = (()=>{
         return {result:true}
     }
     
+    const checkingUsername = (text) =>{
+        if(isEmpty(text)){
+            return{
+                result:false,
+                message:'Bạn chưa nhập tài khoản!'
+            }
+        }
+        return {result:true}
+    }
+
+    const checkingPassword = (text) =>{
+        if(isEmpty(text)){
+            return{
+                result:false,
+                message:'Bạn chưa nhập mật khẩu!'
+            }
+        }
+        return {result:true}
+    }
 
     return{
         checkingCCID, checkingEmail,
         checkingName, checkingGender,
-        checkingPhone, checkingAddress
-
+        checkingPhone, checkingAddress,
+        checkingUsername, checkingPassword
     }
 })()
 

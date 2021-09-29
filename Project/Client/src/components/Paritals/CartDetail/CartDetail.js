@@ -1,29 +1,29 @@
+import "./CartDetail.Style.scss";
+
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useEffect, useContext } from "react";
+
 import { useHistory } from 'react-router-dom'
-import Helper from "../../../helpers";
-import Notifications from "../../../common/Notifications";
-import "./CartDetail.Style.scss";
-import { caller } from "../../../api_services/servicesContainer";
-// import PayPalPayment from "../../../api_services/payment_services/PayPalPayment";
-import ZaloPaymentService from "../../../api_services/payment_services/ZaloPaymentService";
-import { StripePaymentService } from "../../../api_services/servicesContainer";
+import { useState, useEffect, useContext, useRef } from "react";
+import ReactDOM from "react-dom";
+
 import { CartContext } from "../../../providers/CartProviders";
 
+import Helper from "../../../helpers";
+import { caller } from "../../../api_services/servicesContainer";
+
+import Notifications from "../../../common/Notifications";
+
+import { ZaloPaymentService, StripePaymentService } from "../../../api_services/servicesContainer";
+import PayPalPayment from "../../../api_services/payment_services/PayPalPayment";
+
 //==================To the Getway payment ===================
-const goToGetway = (url) => {
-  window.location.href = url;
-};
 
-const checkout = async (services, cartContent) => {
-  goToGetway(await services.createOrder(cartContent));
-};
+const services = [new ZaloPaymentService(caller), new StripePaymentService(caller)]
 
-const paymentServices = [
-  new ZaloPaymentService(caller),
-  new StripePaymentService(caller),
-];
+const toGetway = url => window.location.href = url
+
+const checkout = async (type, cart) => toGetway(await services[type - 1].createOrder(cart))
 //===========================================================
 
 const CartDetail = () => {
@@ -91,6 +91,16 @@ const CartDetail = () => {
     setTotal(count);
   }, [list]);
 
+  const renderPaypalButtonFrame = (cart) =>{
+    ReactDOM.unmountComponentAtNode(document.querySelector('#paypalwrapper'))
+    ReactDOM.render(<PayPalPayment cart={cart}/>,document.querySelector('#paypalwrapper'))
+    
+    document.querySelector('.paypalarea').classList.add('shower')
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    })
+  }
   return (
     <div className="CartDetail">
       <h3>Giỏ hàng của bạn</h3>
@@ -139,17 +149,18 @@ const CartDetail = () => {
         setDisplay={setDisplay}
         listPay={list}
         total={total}
+        paypalHandle = {renderPaypalButtonFrame}
       />
-      {/* <PayPalPayment/> */}
       <Notifications {...notify} isShow={show} onHideRequest={setShow} />
     </div>
+    
   );
 };
 
 export default CartDetail;
 
 function CartTransaction(props) {
-  const { display, setDisplay, total, listPay } = props;
+  const { display, setDisplay, total, paypalHandle } = props;
 
   const { getItemList } = useContext(CartContext)
 
@@ -203,12 +214,22 @@ function CartTransaction(props) {
         });
         setShow(true);
       } else {
-        checkout(paymentServices[customerinfo.transactionway - 1], {
-          customer: customerinfo,
-          products: listPay,
-        });
+        const customer = {
+          cus_name: customerinfo.name,
+          cus_id: customerinfo.ccid,
+          cus_email: customerinfo.email,
+          cus_sex: true,
+          cus_address: customerinfo.address,
+          cus_phoneNumber: customerinfo.phone
+        }
+        const products = getItemList().map(item =>({prod_no:item.id, prod_quantity:item.amount*100}));
+        if (customerinfo.transactionway !== 3) {
+          checkout(customerinfo.transactionway,{customer,products})
+        }
+        else{
+          paypalHandle({customer,products})
+        }
       }
-      /*TODO*/
     }
   };
 
@@ -266,6 +287,7 @@ function CartTransaction(props) {
   return (
     <>
       <div className={`carttransaction ${display ? "show" : ""}`}>
+    
         <div className="transaction-wrapper">
           <div className="transaction-info">
             <h3>Thông tin đơn hàng của bạn</h3>
@@ -436,6 +458,7 @@ function CartTransaction(props) {
           setDisplay={setLocation}
           setAddress={setAddress}
         />
+       
       </div>
       <Notifications {...notify} isShow={show} onHideRequest={setShow} />
     </>
