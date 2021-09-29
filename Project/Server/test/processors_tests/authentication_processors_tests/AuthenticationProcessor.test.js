@@ -4,6 +4,7 @@ const {
 const {
   NotValidError,
   LoginNotSuccessError,
+  JwtTokenError,
 } = require("../../../app/errors/errorsContainer");
 
 // Test xác thực người dùng
@@ -41,7 +42,7 @@ class JwtMock {
   });
 
   getData = jest.fn((token) => {
-    if (token === "Hết-hạn") throw new Error();
+    if (token === "Hết-hạn") throw new JwtTokenError();
     return { user: "Data đây " + token };
   });
 }

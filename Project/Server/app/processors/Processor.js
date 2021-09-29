@@ -76,7 +76,6 @@ module.exports = class Processor {
   // Kiểm tra tồn tại trong CSDL
   checkExistAsync = async (getFuncAsync, emptyData, dataName) => {
     const data = await getFuncAsync();
-    console.log(data);
     if (emptyData(data)) {
       throw new NotExistError(dataName);
     }

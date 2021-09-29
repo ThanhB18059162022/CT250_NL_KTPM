@@ -5,6 +5,7 @@ const AuthenticationProcessor = require("./authentication_processors/Authenticat
 
 const ProductsProcessor = require("./products_processors/ProductsProcessor");
 
+// Payments
 const PayPalPaymentProcessor = require("./payments_processors/paypal_payment_processors/PayPalPaymentProcessor");
 const StripePaymentProcessor = require("./payments_processors/stripe_payment_processors/StripePaymentProcessor");
 const ZaloPayPaymentProcessor = require("./payments_processors/zalo_payment_processors/ZaloPayPaymentProcessor");

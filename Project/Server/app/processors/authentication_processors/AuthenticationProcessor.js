@@ -1,5 +1,8 @@
 const Processor = require("../Processor");
-const { LoginNotSuccessError } = require("../../errors/errorsContainer");
+const {
+  LoginNotSuccessError,
+  JwtTokenError,
+} = require("../../errors/errorsContainer");
 
 // Xử lý xác thực người dùng
 class AuthenticationProcessor extends Processor {
@@ -11,7 +14,7 @@ class AuthenticationProcessor extends Processor {
   }
 
   // Đăng nhập
-  // Model có tk - mk
+  // Model có tài khoản và mật khẩu
   login = async (loginModel) => {
     this.checkValidate(() => this.validator.validateLoginModel(loginModel));
 
@@ -35,10 +38,14 @@ class AuthenticationProcessor extends Processor {
     //Tách jwtToken ra khỏi Bearer
     const jwtToken = token.split(" ")[1];
 
-    const { user } = this.jwt.getData(jwtToken);
+    try {
+      const { user } = this.jwt.getData(jwtToken);
 
-    //Trả về người dùng hiện tại
-    return user;
+      //Trả về người dùng hiện tại
+      return user;
+    } catch (error) {
+      throw new JwtTokenError();
+    }
   };
 }
 
