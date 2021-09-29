@@ -5,7 +5,7 @@ function getValidator() {
   return new AuthenticationValidator();
 }
 
-describe("Xác thực model đăng nhập", () => {
+describe("Val Xác thực model đăng nhập", () => {
   test("Model hợp lệ", () => {
     //Arrange
     const loginModel = {
@@ -74,7 +74,7 @@ describe("Xác thực model đăng nhập", () => {
   });
 });
 
-describe("Xác thực model đăng nhập - tài khoản", () => {
+describe("Val Xác thực model đăng nhập - tài khoản", () => {
   test("Tài khoản undefined", () => {
     //Arrange
     const loginModel = {
@@ -172,7 +172,7 @@ describe("Xác thực model đăng nhập - tài khoản", () => {
   });
 });
 
-describe("Xác thực model đăng nhập - mật khẩu", () => {
+describe("Val Xác thực model đăng nhập - mật khẩu", () => {
   test("Mật khẩu undefined", () => {
     //Arrange
     const loginModel = {
@@ -251,7 +251,7 @@ describe("Xác thực model đăng nhập - mật khẩu", () => {
   });
 });
 
-describe("Xác thực token", () => {
+describe("Val Xác thực token", () => {
   test("Token undefined", () => {
     //Arrange
     const token = undefined;

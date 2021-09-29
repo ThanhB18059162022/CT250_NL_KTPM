@@ -53,7 +53,7 @@ function getController() {
 }
 
 // 200 - 404 - 400
-describe("Ctrlr Lấy danh sách phản hồi", () => {
+describe("Ctrlr Ctrlr Lấy danh sách phản hồi", () => {
   beforeEach(() => {
     processorMock = new FeedBackProcessorMock();
   });
@@ -258,7 +258,7 @@ describe("Ctrlr Lấy danh sách phản hồi", () => {
 });
 
 // 201 - 400
-describe("Thêm phản hồi", () => {
+describe("Ctrlr Thêm phản hồi", () => {
   beforeEach(() => {
     processorMock = new FeedBackProcessorMock();
   });
@@ -332,7 +332,7 @@ describe("Thêm phản hồi", () => {
 });
 
 // 204 - 400 - 404
-describe("Xóa phản hồi", () => {
+describe("Ctrlr Xóa phản hồi", () => {
   beforeEach(() => {
     processorMock = new FeedBackProcessorMock();
   });

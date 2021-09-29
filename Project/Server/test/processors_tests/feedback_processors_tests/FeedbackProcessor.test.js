@@ -67,7 +67,7 @@ function getProcessor() {
   return new FeedbackProcessor(validatorMock, daoMock);
 }
 
-describe("Pro Lấy danh sách phản hồi", () => {
+describe("Proc Lấy danh sách phản hồi", () => {
   beforeEach(() => {
     validatorMock = new FeedBackValidatorMock();
     daoMock = new FeedbackDAOMock();
@@ -205,7 +205,7 @@ describe("Pro Lấy danh sách phản hồi", () => {
   //#endregion
 });
 
-describe("Thêm phản hồi", () => {
+describe("Proc Thêm phản hồi", () => {
   beforeEach(() => {
     validatorMock = new FeedBackValidatorMock();
     daoMock = new FeedbackDAOMock();
@@ -246,7 +246,7 @@ describe("Thêm phản hồi", () => {
   });
 });
 
-describe("Pro Xóa phản hồi", () => {
+describe("Proc Xóa phản hồi", () => {
   beforeEach(() => {
     validatorMock = new FeedBackValidatorMock();
     daoMock = new FeedbackDAOMock();

@@ -16,7 +16,7 @@ function getDataFromToken(token) {
 }
 
 // Vẫn tạo nếu có rỗng hay undefined
-describe("Kiểm tra hàm tạo jwt", () => {
+describe("Ser Kiểm tra hàm tạo jwt", () => {
   test("User undefined", () => {
     //Arrange
     const user = undefined;
@@ -48,7 +48,7 @@ describe("Kiểm tra hàm tạo jwt", () => {
   });
 });
 
-describe("Kiểm tra hàm xác nhận jwt token", () => {
+describe("Ser Kiểm tra hàm xác nhận jwt token", () => {
   test("Token hợp lệ", () => {
     //Arrange
     const user = {};

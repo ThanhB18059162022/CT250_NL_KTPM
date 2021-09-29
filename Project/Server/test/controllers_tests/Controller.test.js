@@ -6,7 +6,7 @@ function getController(config) {
   return new ControllerImp(config);
 }
 
-describe("Abstract class", () => {
+describe("Ctrlr Abstract class", () => {
   test("Khởi tạo lớp trừu tượng", () => {
     expect(() => new Controller()).toThrowError();
   });

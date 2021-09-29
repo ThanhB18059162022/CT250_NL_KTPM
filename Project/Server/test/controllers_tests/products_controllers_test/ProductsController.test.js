@@ -114,7 +114,7 @@ function getController() {
   return new ProductsController(processorMock);
 }
 // 200
-describe("List Lấy danh sách sản phẩm", () => {
+describe("Ctrlr List Lấy danh sách sản phẩm", () => {
   beforeEach(() => {
     processorMock = new ProductsProcessorMock();
   });
@@ -174,7 +174,7 @@ describe("List Lấy danh sách sản phẩm", () => {
 });
 
 // 200 - 400 - 404
-describe("Lấy sản phẩm theo mã", () => {
+describe("Ctrlr Lấy sản phẩm theo mã", () => {
   beforeEach(() => {
     processorMock = new ProductsProcessorMock();
   });
@@ -260,7 +260,7 @@ describe("Lấy sản phẩm theo mã", () => {
 });
 
 // 200 - 400 - 404
-describe("Lấy sản phẩm theo tên", () => {
+describe("Ctrlr Lấy sản phẩm theo tên", () => {
   beforeEach(() => {
     processorMock = new ProductsProcessorMock();
   });
@@ -346,7 +346,7 @@ describe("Lấy sản phẩm theo tên", () => {
 });
 
 // 201 - 400
-describe("Thêm sản phẩm", () => {
+describe("Ctrlr Thêm sản phẩm", () => {
   beforeEach(() => {
     processorMock = new ProductsProcessorMock();
   });
@@ -428,7 +428,7 @@ describe("Thêm sản phẩm", () => {
 });
 
 // 204 - 400 - 404
-describe("Sửa sản phẩm", () => {
+describe("Ctrlr Sửa sản phẩm", () => {
   beforeEach(() => {
     processorMock = new ProductsProcessorMock();
   });

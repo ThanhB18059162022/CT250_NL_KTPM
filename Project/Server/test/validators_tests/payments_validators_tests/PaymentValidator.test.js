@@ -4,7 +4,7 @@ function getValidator() {
   return new PaymentValidator();
 }
 
-describe("Kiểm tra sản phẩm có đúng định dạng mã - số lượng", () => {
+describe("Val Kiểm tra sản phẩm có đúng định dạng mã - số lượng", () => {
   test("Mảng undefined", () => {
     //Arrange
     const products = undefined;
@@ -143,7 +143,7 @@ const validCustomer = {
   cus_address: "3/2 Ninh Kiều Cần Thơ",
   cus_phoneNumber: "0000000000",
 };
-describe("Kiểm tra thông tin khách hàng", () => {
+describe("Val Kiểm tra thông tin khách hàng", () => {
   test("Hợp lệ", () => {
     //Arrange
     const customer = validCustomer;
@@ -559,7 +559,7 @@ const validCart = {
   customer: validCustomer,
   products: [{ prod_no: 1, prod_quantity: 1 }],
 };
-describe("Kiểm tra giỏ hàng đúng định dạng", () => {
+describe("Val Kiểm tra giỏ hàng đúng định dạng", () => {
   test("Giỏ hàng undefined", () => {
     //Arrange
     const cart = undefined;
@@ -630,7 +630,7 @@ describe("Kiểm tra giỏ hàng đúng định dạng", () => {
   });
 });
 
-describe("Kiểm url hợp lệ", () => {
+describe("Val Kiểm url hợp lệ", () => {
   test("Url Undefined", () => {
     //Arrange
     const url = undefined;
@@ -702,7 +702,7 @@ describe("Kiểm url hợp lệ", () => {
   });
 });
 
-describe("Kiểm tra PayPal OrderID hợp lệ", () => {
+describe("Val Kiểm tra PayPal OrderID hợp lệ", () => {
   test("OrderID Undefined", () => {
     //Arrange
     const orderID = undefined;
@@ -760,7 +760,7 @@ describe("Kiểm tra PayPal OrderID hợp lệ", () => {
   });
 });
 
-describe("Kiểm tra OrderId hợp lệ", () => {
+describe("Val Kiểm tra OrderId hợp lệ", () => {
   test("Không có orderId", () => {
     //Arrange
     const orderId = undefined;
@@ -820,7 +820,7 @@ describe("Kiểm tra OrderId hợp lệ", () => {
   });
 });
 
-describe("Kiểm tra saveOrderId hợp lệ", () => {
+describe("Val Kiểm tra saveOrderId hợp lệ", () => {
   test("Id undefined", () => {
     //Arrange
     const id = undefined;

@@ -44,7 +44,7 @@ function getController() {
 }
 
 // 200
-describe("Lấy ra paypal id client để gửi cho client", () => {
+describe("Ctrlr Lấy ra paypal id client để gửi cho client", () => {
   beforeEach(() => {
     processorMock = new PayPalPaymentProcessorMock();
   });
@@ -65,7 +65,7 @@ describe("Lấy ra paypal id client để gửi cho client", () => {
 });
 
 // 201 - 400
-describe("Tạo đơn hàng", () => {
+describe("Ctrlr Tạo đơn hàng", () => {
   beforeEach(() => {
     processorMock = new PayPalPaymentProcessorMock();
   });
@@ -113,7 +113,7 @@ describe("Tạo đơn hàng", () => {
 });
 
 // 200 - 404 - 400
-describe("Lưu đơn hàng đã thanh toán", () => {
+describe("Ctrlr Lưu đơn hàng đã thanh toán", () => {
   beforeEach(() => {
     processorMock = new PayPalPaymentProcessorMock();
   });

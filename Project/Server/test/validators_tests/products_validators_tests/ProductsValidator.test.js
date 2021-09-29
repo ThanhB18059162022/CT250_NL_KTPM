@@ -6,7 +6,7 @@ function getValidator() {
   return new ProductValidator();
 }
 
-describe("Kiểm tra mã sản phẩm hợp lệ", () => {
+describe("Val Kiểm tra mã sản phẩm hợp lệ", () => {
   test("Mã sản phẩm hợp lệ", () => {
     //Arrange
     const prod_no = 1;
@@ -68,7 +68,7 @@ describe("Kiểm tra mã sản phẩm hợp lệ", () => {
   });
 });
 
-describe("Kiểm tra tên sản phẩm hợp lệ", () => {
+describe("Val Kiểm tra tên sản phẩm hợp lệ", () => {
   test("Tên sản phẩm hợp lệ", () => {
     //Arrange
     const prod_name = "Xiaomi";
@@ -146,7 +146,7 @@ describe("Kiểm tra tên sản phẩm hợp lệ", () => {
   });
 });
 
-describe("Kiểm tra sản phẩm hợp lệ", () => {
+describe("Val Kiểm tra sản phẩm hợp lệ", () => {
   test("Sản phẩm undefiend", () => {
     //Arrange
     const product = undefined;

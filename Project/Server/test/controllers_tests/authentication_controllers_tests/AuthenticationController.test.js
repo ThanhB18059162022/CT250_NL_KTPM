@@ -52,7 +52,7 @@ function getController() {
 }
 
 // 201 - 400 - 401
-describe("Kiểm tra đăng nhập bằng jwt", () => {
+describe("Ctrlr Kiểm tra đăng nhập bằng jwt", () => {
   beforeEach(() => {
     daoMock = new LoginDaoMock();
     validatorMock = new AuthenticationValidatorMock();
@@ -186,7 +186,7 @@ describe("Kiểm tra đăng nhập bằng jwt", () => {
 });
 
 // 400 - 401
-describe("Kiểm tra bearer jwt có trong req", () => {
+describe("Ctrlr Kiểm tra bearer jwt có trong req", () => {
   beforeEach(() => {
     validatorMock = new AuthenticationValidatorMock();
     jwtMock = new JwtMock();
@@ -263,7 +263,7 @@ describe("Kiểm tra bearer jwt có trong req", () => {
 });
 
 // 200 - Phải có jwt
-describe("Lấy ra người dùng đăng nhập trong jwt", () => {
+describe("Ctrlr Lấy ra người dùng đăng nhập trong jwt", () => {
   test("Trả về người dùng", async () => {
     //Arrange
     const user = {
@@ -290,7 +290,7 @@ describe("Lấy ra người dùng đăng nhập trong jwt", () => {
 });
 
 // 403
-describe("Chuyển hướng người dùng theo quyền - role", () => {
+describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
   test("Người dùng hợp lệ", async () => {
     //Arrange
     const role = "admin";
