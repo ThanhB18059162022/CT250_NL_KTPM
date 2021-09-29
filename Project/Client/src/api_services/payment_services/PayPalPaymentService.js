@@ -18,8 +18,10 @@ export default class PayPalPaymentService {
 
   // Thanh toán đơn hàng
   captureOrder = async (orderID) => {
-    const order = await this.apiCaller.get(`paypal/captureOrder/${orderID}`);
+    const { saveOrderId } = await this.apiCaller.get(
+      `paypal/captureOrder/${orderID}`
+    );
 
-    return order;
+    return saveOrderId;
   };
 }

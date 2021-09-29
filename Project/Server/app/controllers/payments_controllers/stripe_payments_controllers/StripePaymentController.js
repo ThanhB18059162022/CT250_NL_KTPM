@@ -31,8 +31,10 @@ module.exports = class StripePaymentController extends Controller {
   // Lưu đơn hàng đã thanh toán
   checkoutOrder = async (req, res) => {
     try {
-      const { id } = req.params;
-      const { successUrl } = req.query;
+      const {
+        params: { id },
+        query: { successUrl },
+      } = req;
 
       const redirectUrl = await this.processor.checkoutOrder(id, successUrl);
 

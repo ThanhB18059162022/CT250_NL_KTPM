@@ -34,14 +34,14 @@ module.exports = class PayPalPaymentProcessor extends PaymentsProcessor {
   };
 
   // Lưu đơn hàng đã thanh toán
-  captureOrder = async (OrderID) => {
-    this.checkValidate(() => this.validator.validatePayPalOrderID(OrderID));
+  captureOrder = async (orderID) => {
+    this.checkValidate(() => this.validator.validatePayPalOrderID(orderID));
 
     // Thanh toán order
-    await this.payPalService.captureOrder(OrderID);
+    await this.payPalService.captureOrder(orderID);
 
     // Trả về id trong CSDL
-    const saveOrderId = await this.checkout(OrderID);
+    const saveOrderId = await this.checkout(orderID);
 
     return saveOrderId;
   };

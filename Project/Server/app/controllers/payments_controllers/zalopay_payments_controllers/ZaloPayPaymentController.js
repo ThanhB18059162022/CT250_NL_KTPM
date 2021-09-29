@@ -37,9 +37,8 @@ module.exports = class ZaloPayPaymentController extends Controller {
 
       const redirectUrl = await this.processor.checkoutOrder(id, query);
 
-      console.log("CC", redirectUrl);
       // Về trang khi thanh toán
-      return res.redirect(redirectUrl);
+      return this.redirect(res, redirectUrl);
     } catch (error) {
       return this.checkError(res, error);
     }

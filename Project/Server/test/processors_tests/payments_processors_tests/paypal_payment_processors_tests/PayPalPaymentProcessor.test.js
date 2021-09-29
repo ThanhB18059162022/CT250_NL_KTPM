@@ -14,6 +14,10 @@ const {
 //#region  INIT
 
 class PayPalServiceMock {
+  constructor() {
+    this.clientId = 1;
+  }
+
   createOrder = jest.fn(() => "pp1");
 
   captureOrder = jest.fn();
@@ -37,6 +41,24 @@ function getProcessor() {
   );
 }
 
+describe("Lấy ra client Id", () => {
+  beforeEach(() => {
+    serviceMock = new PayPalServiceMock();
+  });
+
+  test("Ok", async () => {
+    //Arrange
+    const processor = getProcessor();
+
+    //Act
+    const expRs = 1;
+    const actRs = await processor.getClientId();
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+
 // Tạo một đơn hàng cần
 // Danh sách đối tượng gồm số lượng sản phẩm  + mã sản phẩm
 // Url của client khi thành công
@@ -54,7 +76,7 @@ describe("Tạo đơn hàng", () => {
 
   test("Không hợp lệ - EX", async () => {
     //Arrange
-    const cart = {};
+    const cart = undefined;
     const processor = getProcessor();
 
     //Act

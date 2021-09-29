@@ -56,7 +56,7 @@ describe("Tạo đơn hàng", () => {
 
   test("Không hợp lệ - EX", async () => {
     //Arrange
-    const cart = {};
+    const cart = undefined;
     const processor = getProcessor();
 
     //Act

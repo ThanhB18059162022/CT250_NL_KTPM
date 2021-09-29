@@ -1,7 +1,7 @@
 class PaymentValidatorMock {
   validateCart = jest.fn((cart) => {
     return {
-      hasAnyError: cart?.products === undefined ?? true,
+      hasAnyError: cart === undefined,
     };
   });
 

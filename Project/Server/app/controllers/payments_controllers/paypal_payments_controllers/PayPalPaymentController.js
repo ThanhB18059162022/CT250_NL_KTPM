@@ -18,9 +18,9 @@ module.exports = class PayPalPaymentController extends Controller {
     try {
       const { body: cart } = req;
 
-      const OrderID = await this.processor.createOrder(cart);
+      const orderID = await this.processor.createOrder(cart);
 
-      return this.created(res, { OrderID });
+      return this.created(res, { orderID });
     } catch (error) {
       return this.checkError(res, error);
     }

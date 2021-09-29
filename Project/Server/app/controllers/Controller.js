@@ -51,7 +51,7 @@ module.exports = class Controller {
 
   // 301
   redirect = (res, url) => {
-    return res.status(301).redirect(url);
+    return res.redirect(301, url);
   };
 
   // 400

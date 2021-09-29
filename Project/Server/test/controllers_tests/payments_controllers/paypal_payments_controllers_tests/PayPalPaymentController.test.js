@@ -93,7 +93,7 @@ describe("Tạo đơn hàng", () => {
   test("Tạo thành công - 201", async () => {
     //Arrange
     const cart = {};
-    const OrderID = 1;
+    const orderID = 1;
     const controller = getController();
 
     const reqMock = {
@@ -102,7 +102,7 @@ describe("Tạo đơn hàng", () => {
     const resMock = new ResponseMock();
 
     //Act
-    const expRes = { statusCode: 201, body: { OrderID } };
+    const expRes = { statusCode: 201, body: { orderID } };
     const actRes = await controller.createOrder(reqMock, resMock);
 
     //Expect
