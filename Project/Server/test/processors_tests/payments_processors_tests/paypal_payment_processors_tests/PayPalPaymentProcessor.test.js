@@ -1,5 +1,5 @@
 const {
-  StripePaymentProcessor,
+  PayPalPaymentProcessor,
 } = require("../../../../app/processors/processorsContainer");
 const {
   PaymentValidatorMock,
@@ -13,15 +13,15 @@ const {
 
 //#region  INIT
 
-class StripeServiceMock {
-  createOrder = jest.fn(() => {
-    return "wtf";
-  });
+class PayPalServiceMock {
+  createOrder = jest.fn(() => "pp1");
 
-  saveOrder = jest.fn();
+  captureOrder = jest.fn();
 }
 
 //#endregion
+
+// Test cái api end-point của Thanh toán Zalo
 
 let validatorMock;
 let serviceMock;
@@ -29,7 +29,7 @@ let daoMock;
 let exServiceMock;
 
 function getProcessor() {
-  return new StripePaymentProcessor(
+  return new PayPalPaymentProcessor(
     validatorMock,
     daoMock,
     exServiceMock,
@@ -41,10 +41,11 @@ function getProcessor() {
 // Danh sách đối tượng gồm số lượng sản phẩm  + mã sản phẩm
 // Url của client khi thành công
 // Url khi thất bại
+// 201 - 400
 describe("Tạo đơn hàng", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
-    serviceMock = new StripeServiceMock();
+    serviceMock = new PayPalServiceMock();
     daoMock = new PaymentDAOMock();
     exServiceMock = new CurrencyExchangeServiceMock();
   });
@@ -70,80 +71,30 @@ describe("Tạo đơn hàng", () => {
     expect(validatorMock.validateCart).toBeCalledTimes(1);
   });
 
-  test("Thiếu successUrl - EX", async () => {
-    //Arrange
-    const cart = { products: [] };
-    const successUrl = "//";
-
-    const processor = getProcessor();
-
-    //Act
-    const expRs = NotValidError;
-    let actRs;
-    try {
-      await processor.createOrder(cart, { successUrl });
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Expect
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(validatorMock.validateCart).toBeCalledTimes(1);
-    expect(validatorMock.validateUrl).toBeCalledTimes(1);
-  });
-
-  test("Thiếu cancelUrl - 400", async () => {
-    //Arrange
-    const cart = { products: [] };
-    const successUrl = "";
-    const cancelUrl = "//";
-
-    const processor = getProcessor();
-
-    //Act
-    const expRs = NotValidError;
-    let actRs;
-    try {
-      await processor.createOrder(cart, { successUrl, cancelUrl });
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Expect
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(validatorMock.validateCart).toBeCalledTimes(1);
-    expect(validatorMock.validateUrl).toBeCalledTimes(2);
-  });
-
-  test("Tạo thành công trả về url", async () => {
+  test("Tạo thành công trả về paypal id", async () => {
     //Arrange
     const cart = { products: [{ prod_pice: 2000 }] };
-    const successUrl = "yes";
-    const cancelUrl = "wtf";
     const processor = getProcessor();
 
     //Act
-    const expRs = "wtf";
-    const actRs = await processor.createOrder(cart, successUrl, cancelUrl);
+    const expRs = "pp1";
+    const actRs = await processor.createOrder(cart);
 
     //Expect
     expect(actRs).toEqual(expRs);
     expect(validatorMock.validateCart).toBeCalledTimes(1);
     expect(serviceMock.createOrder).toBeCalledTimes(1);
     expect(daoMock.getOrderProduct).toBeCalledTimes(1);
-    expect(exServiceMock.convert).toBeCalledTimes(1);
   });
 
   test("Tạo thành công order hết hạng sau 1 ngày", async () => {
     //Arrange
     const cart = { products: [{ prod_pice: 2000 }] };
-    const successUrl = "yes";
-    const cancelUrl = "wtf";
     const processor = getProcessor();
 
     //Act
-    const expRs = "wtf";
-    const actRs = await processor.createOrder(cart, successUrl, cancelUrl);
+    const expRs = "pp1";
+    const actRs = await processor.createOrder(cart);
 
     // Gia tốc bỏ qua 1 ngày
     jest.advanceTimersByTime(86400000);
@@ -153,14 +104,14 @@ describe("Tạo đơn hàng", () => {
     expect(validatorMock.validateCart).toBeCalledTimes(1);
     expect(serviceMock.createOrder).toBeCalledTimes(1);
     expect(daoMock.getOrderProduct).toBeCalledTimes(1);
-    expect(exServiceMock.convert).toBeCalledTimes(1);
   });
 });
 
+// 301 - 400 - 404
 describe("Lưu đơn hàng đã thanh toán", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
-    serviceMock = new StripeServiceMock();
+    serviceMock = new PayPalServiceMock();
     daoMock = new PaymentDAOMock();
   });
 
@@ -173,75 +124,52 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.checkoutOrder(id);
+      await processor.captureOrder(id);
     } catch (error) {
       actRs = error;
     }
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validatorMock.validateId).toBeCalledTimes(1);
-  });
-
-  test("Thiếu url - EX", async () => {
-    //Arrange
-    const id = "id";
-    const url = "//";
-    const processor = getProcessor();
-
-    //Act
-    const expRs = NotValidError;
-    let actRs;
-    try {
-      await processor.checkoutOrder(id, url);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Expect
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(validatorMock.validateId).toBeCalledTimes(1);
-    expect(validatorMock.validateUrl).toBeCalledTimes(1);
+    expect(validatorMock.validatePayPalOrderID).toBeCalledTimes(1);
   });
 
   test("Order không tồn tại - EX", async () => {
     //Arrange
     const id = "";
-    const url = " ";
     const processor = getProcessor();
 
     //Act
     const expRs = NotExistError;
     let actRs;
     try {
-      await processor.checkoutOrder(id, url);
+      await processor.captureOrder(id);
     } catch (error) {
       actRs = error;
     }
 
     //Expect
+    console.log(actRs);
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validatorMock.validateId).toBeCalledTimes(1);
-    expect(validatorMock.validateUrl).toBeCalledTimes(1);
+    expect(validatorMock.validatePayPalOrderID).toBeCalledTimes(1);
   });
 
-  test("Thành công trả về url/id", async () => {
+  test("Thành công trả về save id", async () => {
     //Arrange
     const id = "";
-    const url = " ";
     const processor = getProcessor();
 
-    const { storedOrders } = StripePaymentProcessor;
+    const { storedOrders } = PayPalPaymentProcessor;
     storedOrders.set(id, {});
 
     //Act
-    const expRs = `${url}/1`;
-    const actRs = await processor.checkoutOrder(id, url);
+    const expRs = 1;
+    const actRs = await processor.captureOrder(id);
 
     //Expect
     expect(actRs).toEqual(expRs);
-    expect(validatorMock.validateId).toBeCalledTimes(1);
-    expect(validatorMock.validateUrl).toBeCalledTimes(1);
+    expect(validatorMock.validatePayPalOrderID).toBeCalledTimes(1);
     expect(daoMock.saveOrder).toBeCalledTimes(1);
+    expect(serviceMock.captureOrder).toBeCalledTimes(1);
   });
 });

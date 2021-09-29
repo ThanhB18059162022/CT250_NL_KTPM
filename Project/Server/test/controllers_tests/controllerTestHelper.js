@@ -17,62 +17,6 @@ class ResponseMock {
 
   redirect = jest.fn();
 }
-
-class PaymentValidatorMock {
-  validateCart = jest.fn((cart) => {
-    return {
-      hasAnyError: cart.products === undefined,
-    };
-  });
-
-  validatePayPalOrderID = jest.fn((id) => {
-    return { hasAnyError: id === undefined };
-  });
-
-  validateId = jest.fn((id) => {
-    return { hasAnyError: id === undefined };
-  });
-
-  validateSaveOrderId = jest.fn((id) => {
-    return { hasAnyError: isNaN(id) };
-  });
-
-  validateUrl = jest.fn((url) => {
-    return { hasAnyError: url === "//" };
-  });
-}
-
-class PaymentDAOMock {
-  emptySaveOrder = jest.fn((order) => {
-    return order === undefined;
-  });
-
-  getOrderProduct = jest.fn((prod_no) => {
-    return { prod_no };
-  });
-
-  saveOrder = jest.fn((order) => {
-    return { ...order, paid: true };
-  });
-
-  getSaveOrder = jest.fn((id) => {
-    return id > 0 ? {} : undefined;
-  });
-}
-
-class CurrencyExchangeServiceMock {
-  convert = jest.fn(() => {
-    return this;
-  });
-
-  to = jest.fn();
-
-  roundTakeTwo = jest.fn((total) => total);
-}
-
 module.exports = {
   ResponseMock,
-  PaymentValidatorMock,
-  PaymentDAOMock,
-  CurrencyExchangeServiceMock,
 };

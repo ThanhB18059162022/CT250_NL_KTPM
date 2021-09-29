@@ -1,7 +1,7 @@
-const SessionPaymentProcessor = require("../SessionPaymentProcessor");
+const PaymentsProcessor = require("../PaymentsProcessor");
 const { NotValidError } = require("../../../errors/errorsContainer");
 
-module.exports = class ZaloPayPaymentProcessor extends SessionPaymentProcessor {
+module.exports = class ZaloPayPaymentProcessor extends PaymentsProcessor {
   constructor(validator, dao, currencyService, zaloPaySerivce) {
     super(validator, dao, currencyService);
     this.zaloPayService = zaloPaySerivce;

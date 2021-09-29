@@ -303,6 +303,29 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     expect(validatorMock.validateUrl).toBeCalledTimes(2);
   });
 
+  test("Order không tồn tại - EX", async () => {
+    //Arrange
+    const id = "";
+    const successUrl = "suc";
+    const cancelUrl = "cancel";
+    const processor = getProcessor();
+    const query = { url: successUrl + "-" + cancelUrl, data: {}, status: 1 };
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await processor.checkoutOrder(id, query);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateId).toBeCalledTimes(1);
+    expect(validatorMock.validateUrl).toBeCalledTimes(2);
+  });
+
   test("Thành công trả về successUrl/id", async () => {
     //Arrange
     const id = "";

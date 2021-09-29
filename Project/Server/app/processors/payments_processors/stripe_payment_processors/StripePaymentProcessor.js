@@ -1,6 +1,6 @@
-const SessionPaymentProcessor = require("../SessionPaymentProcessor");
+const PaymentsProcessor = require("../PaymentsProcessor");
 
-module.exports = class StripePaymentProcessor extends SessionPaymentProcessor {
+module.exports = class StripePaymentProcessor extends PaymentsProcessor {
   constructor(validator, dao, exchangeService, stripeSerivce) {
     super(validator, dao, exchangeService);
     this.stripeService = stripeSerivce;
