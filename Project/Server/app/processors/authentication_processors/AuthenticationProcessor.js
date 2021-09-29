@@ -35,7 +35,7 @@ class AuthenticationProcessor extends Processor {
     //Tách jwtToken ra khỏi Bearer
     const jwtToken = token.split(" ")[1];
 
-    const user = this.jwt.getData(jwtToken);
+    const { user } = this.jwt.getData(jwtToken);
 
     //Trả về người dùng hiện tại
     return user;

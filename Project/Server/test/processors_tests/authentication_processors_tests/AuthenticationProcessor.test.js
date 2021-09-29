@@ -42,7 +42,7 @@ class JwtMock {
 
   getData = jest.fn((token) => {
     if (token === "Hết-hạn") throw new Error();
-    return "Data đây " + token;
+    return { user: "Data đây " + token };
   });
 }
 //#endregion
