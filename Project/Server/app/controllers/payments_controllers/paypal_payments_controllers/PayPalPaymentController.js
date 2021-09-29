@@ -26,8 +26,6 @@ module.exports = class PayPalPaymentController extends Controller {
     }
   };
 
-  //#region CAPTURE
-
   // Thanh toán order
   captureOrder = async (req, res) => {
     try {
@@ -41,6 +39,4 @@ module.exports = class PayPalPaymentController extends Controller {
       return this.checkError(res, error);
     }
   };
-
-  //#endregion
 };

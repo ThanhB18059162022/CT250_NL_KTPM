@@ -1,8 +1,8 @@
 const Controller = require("../../Controller");
 
 module.exports = class StripePaymentController extends Controller {
-  constructor(processor) {
-    super();
+  constructor(processor, config) {
+    super(config);
     this.processor = processor;
   }
 

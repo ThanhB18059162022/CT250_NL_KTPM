@@ -149,7 +149,6 @@ describe("Lưu đơn hàng đã thanh toán", () => {
     }
 
     //Expect
-    console.log(actRs);
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validatePayPalOrderID).toBeCalledTimes(1);
   });

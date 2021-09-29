@@ -1,8 +1,8 @@
 const Controller = require("../../Controller");
 
 module.exports = class ZaloPayPaymentController extends Controller {
-  constructor(processor) {
-    super();
+  constructor(processor, config) {
+    super(config);
     this.processor = processor;
   }
 
@@ -37,8 +37,9 @@ module.exports = class ZaloPayPaymentController extends Controller {
 
       const redirectUrl = await this.processor.checkoutOrder(id, query);
 
+      console.log("CC", redirectUrl);
       // Về trang khi thanh toán
-      return this.redirect(res, redirectUrl);
+      return res.redirect(redirectUrl);
     } catch (error) {
       return this.checkError(res, error);
     }

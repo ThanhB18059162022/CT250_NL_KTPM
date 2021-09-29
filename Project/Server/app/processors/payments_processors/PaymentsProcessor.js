@@ -115,11 +115,14 @@ module.exports = class PaymentsProcessor extends Processor {
     // Kiểm tra còn order trước khi thanh toán
     const { storedOrders } = PaymentsProcessor;
     const order = storedOrders.get(id);
-    await this.checkExistAsync(
-      async () => order,
-      (order) => order === undefined,
-      `order: ${id}`
-    );
+    // console.log("Order", storedOrders);
+    // await this.checkExistAsync(
+    //   async () => order,
+    //   (order) => order === undefined,
+    //   `order: ${id}`
+    // );
+
+    console.log("Log?", order);
 
     // Lưu vào CSDL
     const saveOrderId = await this.saveOrder(order);

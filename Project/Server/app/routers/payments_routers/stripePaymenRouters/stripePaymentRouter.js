@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { payment } = require("../../../config");
+const config = require("../../../config");
 
 // Router gắn endpoints vào controller
 
@@ -25,6 +25,7 @@ const {
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
+const { payment } = config;
 const service = new StripeService(payment.stripe);
 const validator = new PaymentsValidator();
 const exService = new CurrencyExchangeService(payment.currency);
@@ -34,7 +35,7 @@ const processor = new StripePaymentProcessor(
   exService,
   service
 );
-const controller = new StripePaymentController(processor);
+const controller = new StripePaymentController(processor, config);
 
 //#endregion
 
