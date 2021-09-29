@@ -1,9 +1,10 @@
 // Tham khảo https://stackoverflow.com/questions/51391080/handling-errors-in-express-async-middleware
 
+const { isProduction } = require("../config");
+
 // Middleware này dùng để bắt các lỗi bên phía server, như kết nối không được database, undefine
 
 // Có 2 hàm hiển thị lỗi - dev sẽ hiện thêm stack trace
-const isProduction = process.env.NODE_ENV === "production";
 
 // Dùng khi lập trình hiện stacktrace
 function devErrorHandler(err, req, res, next) {

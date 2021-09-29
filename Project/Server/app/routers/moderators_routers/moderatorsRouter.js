@@ -1,23 +1,24 @@
 const express = require("express");
 const router = express.Router();
+const config = require("../../config");
 
 // Router gán các endpoints vào ModeratorsController
 
 // Bắt lỗi server
 const { errorCatch } = require("../routerErrorHandler");
 
-// Controller và lớp xác thực dữ liệu
+// Controller và lớp xác thực - truy cập dữ liệu
+const { ModeratorsValidator } = require("../../validators/validatorsContainer");
+const { ModeratorsDAO } = require("../../daos/daosContainer");
+const { ModeratorsProcessor } = require("../../processors/processorsContainer");
 const {
   ModeratorsController,
-  ModeratorsValidator,
 } = require("../../controllers/controllersContainer");
 
-// Lớp truy cập CSDL
-const { ModeratorsDAO } = require("../../daos/daosContainer");
-
-const dao = new ModeratorsDAO();
 const validator = new ModeratorsValidator();
-const controller = new ModeratorsController(validator, dao);
+const dao = new ModeratorsDAO();
+const processor = new ModeratorsProcessor(validator, dao);
+const controller = new ModeratorsController(processor, config);
 
 router
   .route("/")

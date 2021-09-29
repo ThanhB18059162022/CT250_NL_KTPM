@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { payment } = require("../../../config");
+const config = require("../../../config");
 
 // Router gắn endpoints vào controller
 
@@ -8,28 +8,36 @@ const { payment } = require("../../../config");
 const { errorCatch } = require("../../routerErrorHandler");
 
 const {
-  ZaloPayPaymentController,
-  ZaloPayService,
-  PaymentValidator,
-  CurrencyExchangeService,
+  PaymentsValidator,
+} = require("../../../validators/validatorsContainer");
+const {
   ApiCaller,
-} = require("../../../controllers/controllersContainer");
-
+  ZaloPayService,
+  CurrencyExchangeService,
+} = require("../../../services/servicesContainer");
 const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
+const {
+  ZaloPayPaymentProcessor,
+} = require("../../../processors/processorsContainer");
+const {
+  ZaloPayPaymentController,
+} = require("../../../controllers/controllersContainer");
 
 //#region  INIT
 
 const dao = new CustomersOrdersDAO();
 const apiCaller = new ApiCaller();
+const { payment } = config;
 const service = new ZaloPayService(payment.zalo, apiCaller);
-const validator = new PaymentValidator();
+const validator = new PaymentsValidator();
 const exService = new CurrencyExchangeService(payment.currency);
-const controller = new ZaloPayPaymentController(
+const processor = new ZaloPayPaymentProcessor(
   validator,
   dao,
   exService,
   service
 );
+const controller = new ZaloPayPaymentController(processor, config);
 
 //#endregion
 

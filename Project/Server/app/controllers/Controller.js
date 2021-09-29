@@ -1,67 +1,84 @@
-// Lưu các hàm xài chung của các controller
+const {
+  InstantiateAbstractClassError,
+  NotValidError,
+  NotExistError,
+  ExistError,
+} = require("../errors/errorsContainer");
 
+// Lưu các hàm xài chung của các controller
 //Abstract class
 module.exports = class Controller {
-  constructor() {
+  constructor(config) {
     if (this.constructor === Controller) {
-      throw new Error("Abstract classes can't be instantiated.");
+      throw new InstantiateAbstractClassError();
     }
+
+    this.isProduction = config?.isProduction ?? false;
   }
 
-  //#region  Trả về giá trị phân trang
+  //#region Error
 
-  // Tham khảo https://www.youtube.com/watch?v=ZX3qt0UWifc&list=PLYgHz24Rupn93bdW1uJszXkUh2h52dzn1
-  getStartEndIndex = (page, limit) => {
-    page = parseInt(page);
-    if (isNaN(page)) {
-      page = 1;
+  checkError = (res, error) => {
+    if (error instanceof NotValidError || error instanceof ExistError) {
+      return this.badRequest(res, error);
     }
 
-    limit = parseInt(limit);
-    if (isNaN(limit)) {
-      limit = 1;
+    if (error instanceof NotExistError) {
+      return this.notFound(res, error);
     }
 
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-
-    return { startIndex, endIndex };
-  };
-
-  // Giá trị phân trang
-  getPaginatedResults = (items, page, limit) => {
-    const pageResult = {
-      items,
-    };
-
-    // Thêm trang phía sau
-    // Kiểm tra nếu còn phần tử
-    if (items.length >= limit) {
-      pageResult.next = {
-        page: page + 1,
-        limit,
-      };
-    }
-
-    // Thêm trang phía trước
-    // Trang đầu không có trang trước
-    if (page > 1) {
-      pageResult.previous = {
-        page: page - 1,
-        limit,
-      };
-    }
-
-    return pageResult;
+    throw error;
   };
 
   //#endregion
 
-  // JSON lỗi trùng dữ liệu cho thuộc tính
-  getDuplicateResult = (name) => {
-    return {
-      key: name,
-      content: `${name} has already been taken.`,
-    };
+  //#region Res
+
+  // 200
+  ok = (res, data) => {
+    return res.json(data);
   };
+
+  // 201
+  created = (res, data) => {
+    return res.status(201).json(data);
+  };
+
+  // 204
+  noContent = (res) => {
+    return res.status(204).json({});
+  };
+
+  // 301
+  redirect = (res, url) => {
+    return res.redirect(301, url);
+  };
+
+  // 400
+  badRequest = (res, error) => {
+    const result = this.getResult(error);
+
+    return res.status(400).json(result);
+  };
+
+  // 404
+  notFound = (res, error) => {
+    const result = this.getResult(error);
+
+    return res.status(404).json(result);
+  };
+
+  getResult = (error) => {
+    const { name, message } = error;
+
+    const result = { name, message };
+
+    if (!this.isProduction) {
+      result.stack = error.stack;
+    }
+
+    return result;
+  };
+
+  //#endregion
 };
