@@ -1,3 +1,4 @@
+import { AuthenticationService, caller } from "../servicesContainer";
 import React, { useEffect } from "react";
 import "./style.css";
 
@@ -84,10 +85,28 @@ function BarChart() {
       .attr("transform", `translate(0, ${CHART_HEIGHT})`);
   }
 
+  const service = new AuthenticationService(caller);
+  async function login() {
+    const token = await service.login({
+      username: "valid",
+      password: "valid",
+    });
+
+    console.log(token);
+  }
+
+  async function getUser() {
+    const u = await service.getUser();
+
+    console.log(u);
+  }
+
   return (
     <>
       <h1>Thống kê</h1>
       <button onClick={draw}>Draw</button>
+      <button onClick={login}>Login</button>
+      <button onClick={getUser}>Get</button>
       <hr></hr>
       <svg></svg>
     </>

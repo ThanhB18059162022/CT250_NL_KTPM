@@ -1,16 +1,18 @@
-import ApiHelper from "./api-helper";
+import ApiHelper from "../ApiHelper";
 
-export class AuthenticationService {
+export default class AuthenticationService {
   JwtKey = ApiHelper.JwkToken;
 
-  constructor(apiCaller) {}
+  constructor(apiCaller) {
+    this.apiCaller = apiCaller;
+  }
 
   login = async (user) => {
     try {
-      const tokenBearer =
-        (await this.apiCaller.post) <
-        TokenPlaceHolder >
-        ("jwtauthentication/gettoken", user);
+      const tokenBearer = await this.apiCaller.post(
+        "authentication/login",
+        user
+      );
 
       this.storeToStorage(tokenBearer);
 
@@ -22,7 +24,7 @@ export class AuthenticationService {
 
   getUser = async () => {
     try {
-      return await this.apiCaller.get("jwtauthentication/getuser");
+      return await this.apiCaller.get("authentication/getuser");
     } catch {
       return null;
     }
