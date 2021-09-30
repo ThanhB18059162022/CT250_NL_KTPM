@@ -8,13 +8,13 @@ function getProcessor() {
   return new ProcessorImp();
 }
 
-describe("Khởi tạo lớp trừu tượng", () => {
+describe("Proc Khởi tạo lớp trừu tượng", () => {
   test("Lỗi khi khởi tạo lớp trừu tượng", () => {
     expect(() => new Processor()).toThrowError();
   });
 });
 
-describe("Lấy ra start index end index", () => {
+describe("Proc Lấy ra start index end index", () => {
   test("page không hợp lệ", () => {
     //Arrange
 
@@ -70,7 +70,7 @@ describe("Lấy ra start index end index", () => {
   });
 });
 
-describe("Tạo giá trị phân trang", () => {
+describe("Proc Tạo giá trị phân trang", () => {
   const Arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const getArr = (s, e) => Arr.slice(s, e);

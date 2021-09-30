@@ -61,6 +61,13 @@ module.exports = class Controller {
     return res.status(400).json(result);
   };
 
+  // 401
+  unauthorized = (res, error) => {
+    const result = this.getResult(error);
+
+    return res.status(401).json(result);
+  };
+
   // 404
   notFound = (res, error) => {
     const result = this.getResult(error);

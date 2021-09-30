@@ -41,7 +41,7 @@ function getProcessor() {
 // Danh sách đối tượng gồm số lượng sản phẩm  + mã sản phẩm
 // Url của client khi thành công
 // Url khi thất bại
-describe("Tạo đơn hàng", () => {
+describe("Proc Tạo đơn hàng", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
     serviceMock = new StripeServiceMock();
@@ -157,7 +157,7 @@ describe("Tạo đơn hàng", () => {
   });
 });
 
-describe("Lưu đơn hàng đã thanh toán", () => {
+describe("Proc Lưu đơn hàng đã thanh toán", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
     serviceMock = new StripeServiceMock();

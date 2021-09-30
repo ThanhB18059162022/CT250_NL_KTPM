@@ -1,79 +1,75 @@
+const {
+  LoginNotSuccessError,
+  JwtTokenError,
+} = require("../../errors/errorsContainer");
+const Controller = require("../Controller");
+
 // Xử lý xác thực người dùng
-class AuthenticationController {
-  constructor(validator, jwt, dao) {
-    this.validator = validator;
-    this.jwt = jwt;
-    this.dao = dao;
+class AuthenticationController extends Controller {
+  constructor(processor, config) {
+    super(config);
+    this.processor = processor;
   }
 
-  //#region Login
+  // Đăng nhập
   login = async (req, res) => {
-    const loginModel = req.body;
+    try {
+      const { body: loginModel } = req;
 
-    const result = this.validateModel(loginModel);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
+      const token = await this.processor.login(loginModel);
+
+      return this.created(res, { token });
+    } catch (error) {
+      return this.checkLoginFailedError(res, error);
     }
-
-    const success = await this.loginSuccess(loginModel);
-    if (!success) {
-      return res.status(401).json({});
-    }
-
-    const user = await this.getUserByUsername(loginModel.username);
-
-    const token = this.getToken(user);
-
-    return res.status(201).json({ token });
   };
 
-  validateModel = (loginModel) => this.validator.validateLoginModel(loginModel);
-
-  loginSuccess = async (loginModel) => await this.dao.login(loginModel);
-
-  getUserByUsername = async (username) =>
-    await this.dao.getByUsername(username);
-
-  getToken = (user) => this.jwt.getToken(user);
-
-  //#endregion
-
-  //#region Authenticate
-
-  //Middleware xác thực đăng nhập bằng bearer jwt
-  authenticate = async (req, res, next) => {
-    // Token = Bearer + jwtToken (ex: Bearer ecadawdwa...)
-    const token = req.headers?.authorization;
-
-    const result = this.validateToken(token);
-    if (result.hasAnyError) {
-      return res.status(400).json(result.error);
-    }
-
+  checkLoginFailedError = (res, error) => {
     try {
-      //Tách jwtToken ra khỏi Bearer
-      const jwtToken = token.split(" ")[1];
+      return this.checkError(res, error);
+    } catch (error) {
+      if (error instanceof LoginNotSuccessError) {
+        return this.unauthorized(res, error);
+      }
 
-      const { user } = this.jwt.getData(jwtToken);
+      throw error;
+    }
+  };
+
+  // Authenticate
+  // Middleware xác thực đăng nhập bằng bearer jwt
+  authenticate = async (req, res, next) => {
+    try {
+      // Token = Bearer + jwtToken (ex: Bearer ecadawdwa...)
+      const token = req.headers?.authorization;
+
+      const user = await this.processor.authenticate(token);
 
       //Thêm người dùng hiện tại
       req.user = user;
 
       return next();
     } catch (error) {
-      return res.status(401).json(error);
+      return this.checkExpiredToken(res, error);
     }
   };
 
-  validateToken = (token) => this.validator.validateToken(token);
+  checkExpiredToken = (res, error) => {
+    try {
+      return this.checkError(res, error);
+    } catch (error) {
+      if (error instanceof JwtTokenError) {
+        return this.unauthorized(res, error);
+      }
 
-  //#endregion
+      throw error;
+    }
+  };
 
-  //#region Authorize phải đăng nhập trước mới xài cái này
-
+  // Authorize phải đăng nhập trước mới xài cái này
   // Closure function
   authorize = (roles) => async (req, res, next) => {
-    const role = req.user?.role;
+    const { role = "" } = req.user;
 
     const exist = this.roleInRoles(role, roles);
     if (exist) {
@@ -84,20 +80,17 @@ class AuthenticationController {
   };
 
   roleInRoles = (role, roles) => {
-    return roles.filter((r) => r.toLowerCase() === role.toLowerCase())[0];
+    return (
+      roles.find((r) => r.toLowerCase() === role.toLowerCase()) !== undefined
+    );
   };
 
-  //#endregion
-
-  //#region GetLoginUser
-
+  // Lấy ra người dùng gửi req
   getLoginUser = async (req, res) => {
     const { user } = req;
 
     return res.json({ user });
   };
-
-  //#endregion
 }
 
 module.exports = AuthenticationController;

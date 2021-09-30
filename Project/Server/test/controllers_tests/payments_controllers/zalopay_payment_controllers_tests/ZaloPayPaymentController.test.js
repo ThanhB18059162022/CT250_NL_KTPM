@@ -54,7 +54,7 @@ function getController() {
 // Url khi thất bại
 // 201 - 400
 
-describe("Tạo đơn hàng", () => {
+describe("Ctrlr Tạo đơn hàng", () => {
   beforeEach(() => {
     processorMock = new ZaloPaymentProcessorMock();
   });
@@ -149,7 +149,7 @@ describe("Tạo đơn hàng", () => {
 });
 
 // 301 - 400 - 404
-describe("Lưu đơn hàng đã thanh toán", () => {
+describe("Ctrlr Lưu đơn hàng đã thanh toán", () => {
   beforeEach(() => {
     processorMock = new ZaloPaymentProcessorMock();
   });

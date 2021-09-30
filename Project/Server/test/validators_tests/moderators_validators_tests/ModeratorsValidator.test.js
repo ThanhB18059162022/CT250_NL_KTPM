@@ -6,7 +6,7 @@ function getModeratorsValidator() {
   return new ModeratorsValidator();
 }
 
-describe("Kiểm tra mã quản trị mod_no", () => {
+describe("Val Kiểm tra mã quản trị mod_no", () => {
   test("Mã quản trị undefined", () => {
     //Arrange
     const mod_no = undefined;
@@ -78,7 +78,7 @@ describe("Kiểm tra mã quản trị mod_no", () => {
   });
 });
 
-describe("Kiểm tra số điện thoại quản trị mod_phoneNumber", () => {
+describe("Val Kiểm tra số điện thoại quản trị mod_phoneNumber", () => {
   test("Số điện thoại undefined", () => {
     //Arrange
     const mod_phoneNumber = undefined;
@@ -150,7 +150,7 @@ describe("Kiểm tra số điện thoại quản trị mod_phoneNumber", () => {
   });
 });
 
-describe("Kiểm tra CMND quản trị mod_phoneNumber", () => {
+describe("Val Kiểm tra CMND quản trị mod_phoneNumber", () => {
   test("CMND undefined", () => {
     //Arrange
     const mod_id = undefined;
@@ -222,7 +222,7 @@ describe("Kiểm tra CMND quản trị mod_phoneNumber", () => {
   });
 });
 
-describe("Username Kiểm tra hợp lệ tài khoản", () => {
+describe("Val Username Kiểm tra hợp lệ tài khoản", () => {
   test("Tài khoản undefined", () => {
     //Arrange
     const mod_username = undefined;
@@ -307,7 +307,7 @@ const validAddModeratorModel = {
   mod_password: "123456",
 };
 
-describe("Thêm quản trị viên kiểm tra thông tin quản trị viên hợp lệ", () => {
+describe("Val Thêm quản trị viên kiểm tra thông tin quản trị viên hợp lệ", () => {
   test("Quản trị viên undefined", () => {
     // Arrange
     const moderator = undefined;
@@ -906,7 +906,7 @@ const validUpdateModeratorModel = {
   mod_password: "123456",
 };
 
-describe("Cập nhật quản trị viên kiểm tra thông tin quản trị viên hợp lệ", () => {
+describe("Val Cập nhật quản trị viên kiểm tra thông tin quản trị viên hợp lệ", () => {
   test("Quản trị viên undefined", () => {
     // Arrange
     const moderator = undefined;

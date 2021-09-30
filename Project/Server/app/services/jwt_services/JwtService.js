@@ -14,7 +14,5 @@ module.exports = class JwtService {
 
   // Lấy ra thông tin decoded từ token
   // Throw error nếu token không hợp lệ - hết hạn
-  getData = (token) => {
-    return jwt.verify(token, this.secretKey);
-  };
+  getData = (token) => jwt.verify(token, this.secretKey);
 };

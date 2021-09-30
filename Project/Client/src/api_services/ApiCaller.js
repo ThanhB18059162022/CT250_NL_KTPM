@@ -3,7 +3,7 @@ import ApiHelper from "./ApiHelper";
 
 //Lớp adapter dành cho axios
 // Bổ sung thêm header cho jwt
-class ApiCaller {
+export default class ApiCaller {
   constructor(baseUri = "http://localhost:8000/api") {
     this.baseUri = baseUri;
 
@@ -45,5 +45,3 @@ class ApiCaller {
     return res.data;
   };
 }
-
-export default ApiCaller;

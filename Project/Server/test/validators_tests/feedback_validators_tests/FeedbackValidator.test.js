@@ -13,7 +13,7 @@ function getValidator() {
   return new FeedbackValidator(prodValidator);
 }
 
-describe("Kiểm tra mã phản hồi", () => {
+describe("Val Kiểm tra mã phản hồi", () => {
   test("Mã phản hồi undefined", () => {
     // Arrange
     const fb_no = undefined;
@@ -71,7 +71,7 @@ describe("Kiểm tra mã phản hồi", () => {
   });
 });
 
-describe("Kiểm tra phản hồi model", () => {
+describe("Val Kiểm tra phản hồi model", () => {
   test("OK - mẫu", () => {
     // Arrange
     const fb = undefined;
@@ -87,7 +87,7 @@ describe("Kiểm tra phản hồi model", () => {
   });
 });
 
-describe("Kiểm tra mã sản phẩm", () => {
+describe("Val Kiểm tra mã sản phẩm", () => {
   beforeEach(() => {
     prodValidator = new ProductValidatorMock();
   });

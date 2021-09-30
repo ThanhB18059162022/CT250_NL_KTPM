@@ -122,7 +122,7 @@ function getController() {
 //#region  GET
 
 // 200 - 400 - 404
-describe("Ctrl Lấy ra danh sách quản trị viên", () => {
+describe("Ctrlr Lấy ra danh sách quản trị viên", () => {
   beforeEach(() => {
     processorMock = new ModeratorsProcessorMock();
   });
@@ -381,7 +381,7 @@ describe("Ctrlr Lấy ra quản trị viên theo tài khoản", () => {
 //#endregion
 
 // 201 - 400
-describe("Thêm quản trị viên", () => {
+describe("Ctrlr Thêm quản trị viên", () => {
   beforeEach(() => {
     processorMock = new ModeratorsProcessorMock();
   });
@@ -493,7 +493,7 @@ describe("Thêm quản trị viên", () => {
 });
 
 // 204 - 400 - 404
-describe("Sửa thông tin quản trị viên", () => {
+describe("Ctrlr Sửa thông tin quản trị viên", () => {
   beforeEach(() => {
     processorMock = new ModeratorsProcessorMock();
   });
@@ -614,7 +614,7 @@ describe("Sửa thông tin quản trị viên", () => {
 });
 
 // 204 - 400 - 404
-describe("Khóa tài khoản quản trị viên theo mã", () => {
+describe("Ctrlr Khóa tài khoản quản trị viên theo mã", () => {
   beforeEach(() => {
     processorMock = new ModeratorsProcessorMock();
   });

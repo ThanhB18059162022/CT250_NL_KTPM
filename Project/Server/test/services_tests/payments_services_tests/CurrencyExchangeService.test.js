@@ -16,7 +16,7 @@ function getSerivce() {
   return new CurrencyExchangeService(currency);
 }
 
-describe("Các trường hợp đặc biệt", () => {
+describe("Ser Các trường hợp đặc biệt", () => {
   test("Mặc định VND", async () => {
     //Arrange
     const oneVND = 1;
@@ -88,7 +88,7 @@ describe("Các trường hợp đặc biệt", () => {
   });
 });
 
-describe("Kiểm tra chuyển đổi tiền VND => USD 1 Đô => 23k", () => {
+describe("Ser Kiểm tra chuyển đổi tiền VND => USD 1 Đô => 23k", () => {
   test("Sửa giá trị mặc định", async () => {
     //Arrange
     const oneUSD = 1;
@@ -146,7 +146,7 @@ describe("Kiểm tra chuyển đổi tiền VND => USD 1 Đô => 23k", () => {
   });
 });
 
-describe("Kiểm tra chuyển đổi tiền USD => VND 23k => 1 Đô", () => {
+describe("Ser Kiểm tra chuyển đổi tiền USD => VND 23k => 1 Đô", () => {
   test("1000 vnd to usd", async () => {
     //Arrange
     const oneThousandVND = 1000;
@@ -196,7 +196,7 @@ describe("Kiểm tra chuyển đổi tiền USD => VND 23k => 1 Đô", () => {
   });
 });
 
-describe("Làm tròn 2 số sau dấu chấm", () => {
+describe("Ser Làm tròn 2 số sau dấu chấm", () => {
   test("undefined to NaN", () => {
     //Arrange
     const amount = undefined;

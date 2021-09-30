@@ -48,7 +48,7 @@ function getController() {
 // Url của client khi thành công
 // Url khi thất bại
 // 201 - 400
-describe("Tạo đơn hàng", () => {
+describe("Ctrlr Tạo đơn hàng", () => {
   beforeEach(() => {
     processorMock = new StripePaymentProcessorMock();
   });
@@ -143,7 +143,7 @@ describe("Tạo đơn hàng", () => {
 });
 
 // 301 - 400 - 404
-describe("Lưu đơn hàng đã thanh toán", () => {
+describe("Ctrlr Lưu đơn hàng đã thanh toán", () => {
   beforeEach(() => {
     processorMock = new StripePaymentProcessorMock();
   });

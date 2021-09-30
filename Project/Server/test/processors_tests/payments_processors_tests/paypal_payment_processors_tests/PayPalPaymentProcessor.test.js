@@ -41,7 +41,7 @@ function getProcessor() {
   );
 }
 
-describe("Lấy ra client Id", () => {
+describe("Proc Lấy ra client Id", () => {
   beforeEach(() => {
     serviceMock = new PayPalServiceMock();
   });
@@ -64,7 +64,7 @@ describe("Lấy ra client Id", () => {
 // Url của client khi thành công
 // Url khi thất bại
 // 201 - 400
-describe("Tạo đơn hàng", () => {
+describe("Proc Tạo đơn hàng", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
     serviceMock = new PayPalServiceMock();
@@ -130,7 +130,7 @@ describe("Tạo đơn hàng", () => {
 });
 
 // 301 - 400 - 404
-describe("Lưu đơn hàng đã thanh toán", () => {
+describe("Proc Lưu đơn hàng đã thanh toán", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
     serviceMock = new PayPalServiceMock();

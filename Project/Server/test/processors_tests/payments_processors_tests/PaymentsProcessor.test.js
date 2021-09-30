@@ -20,7 +20,7 @@ function getController() {
   return new PaymentsProcessorImp(validatorMock, daoMock, serviceMock);
 }
 
-describe("Abstract Test", () => {
+describe("Proc Abstract Test", () => {
   beforeEach(() => {
     daoMock = new PaymentDAOMock();
     serviceMock = new CurrencyExchangeServiceMock();
@@ -72,7 +72,7 @@ describe("Abstract Test", () => {
   });
 });
 
-describe("Lấy ra order đã thanh toán trong CSDL", () => {
+describe("Proc Lấy ra order đã thanh toán trong CSDL", () => {
   beforeEach(() => {
     validatorMock = new PaymentValidatorMock();
     daoMock = new PaymentDAOMock();

@@ -1,108 +1,65 @@
-const AuthenticationController = require("../../../app/controllers/authentication_controllers/AuthenticationController");
+const {
+  AuthenticationController,
+} = require("../../../app/controllers/controllersContainer");
 const { ResponseMock } = require("../controllerTestHelper");
+const {
+  NotValidError,
+  LoginNotSuccessError,
+  JwtTokenError,
+  UnKnownError,
+} = require("../../../app/errors/errorsContainer");
 
 // Test xác thực người dùng
 
 //#region Init
 
-class LoginDaoMock {
-  static user = { username: "valid", password: "valid" };
+class AuthenticationProcessorMock {
+  login = jest.fn(async (loginModel) => {
+    if (loginModel == undefined) {
+      throw new NotValidError();
+    }
 
-  login = jest.fn(async (loginModel) => loginModel === LoginDaoMock.user);
+    if (loginModel == "wtf") {
+      throw new UnKnownError();
+    }
 
-  getByUsername = jest.fn(async (username) => {
-    return { id: 1, name: "alex", username };
+    if (loginModel.username != "ad" || loginModel.password != "ad") {
+      throw new LoginNotSuccessError();
+    }
+
+    return "token";
+  });
+
+  authenticate = jest.fn(async (token) => {
+    if (token == undefined) {
+      throw new NotValidError();
+    }
+    if (token == "wtf") {
+      throw new UnKnownError();
+    }
+    if (token == "Hết-hạn") {
+      throw new JwtTokenError();
+    }
   });
 }
 
-class AuthenticationValidatorMock {
-  validateLoginModel = jest.fn((loginModel) => {
-    return {
-      hasAnyError:
-        loginModel.username === undefined || loginModel.password === undefined,
-    };
-  });
-
-  validateToken = jest.fn((token) => {
-    const tokenRegex = /^Bearer\s/i;
-    return {
-      hasAnyError: !tokenRegex.test(token),
-    };
-  });
-}
-
-class JwtMock {
-  getToken = jest.fn((user) => {
-    return user.username + " token đây";
-  });
-
-  getData = jest.fn((token) => {
-    if (token === "Hết-hạn") throw new Error();
-    return "Data đây " + token;
-  });
-}
 //#endregion
 
-let daoMock;
-let validatorMock;
-let jwtMock;
+let processorMock;
 
 function getController() {
-  return new AuthenticationController(validatorMock, jwtMock, daoMock);
+  return new AuthenticationController(processorMock);
 }
 
 // 201 - 400 - 401
-describe("Kiểm tra đăng nhập bằng jwt", () => {
+describe("Ctrlr Kiểm tra đăng nhập bằng jwt", () => {
   beforeEach(() => {
-    daoMock = new LoginDaoMock();
-    validatorMock = new AuthenticationValidatorMock();
-    jwtMock = new JwtMock();
+    processorMock = new AuthenticationProcessorMock();
   });
 
-  test("Đăng nhập thành công trả về token - 201", async () => {
+  test("Không hợp lệ - 400", async () => {
     //Arrange
-    const loginModel = LoginDaoMock.user;
-    const secretKey = "Key nè";
-
-    const user = await daoMock.getByUsername(loginModel.username);
-    const token = jwtMock.getToken(user);
-    // Cái này mock nên gọi 1 lần thành 2 lần
-    jwtMock.getToken.mockClear();
-
-    const response = { statusCode: 201, body: { token } };
-
-    const controller = getController();
-    controller.secretKey = secretKey;
-
-    const reqMock = {
-      body: loginModel,
-    };
-
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.login(reqMock, resMock);
-
-    //Expect
-    expect(actRes).toEqual(expRes);
-
-    expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
-    expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
-
-    expect(daoMock.login).toBeCalledTimes(1);
-    expect(daoMock.login).toBeCalledWith(loginModel);
-
-    expect(jwtMock.getToken).toBeCalledTimes(1);
-    expect(jwtMock.getToken).toBeCalledWith(user);
-  });
-
-  test("Đăng nhập tài khoản không hợp lệ 400", async () => {
-    //Arrange
-    const loginModel = {
-      username: undefined,
-      password: "awda",
-    };
+    const loginModel = undefined;
 
     const response = { statusCode: 400 };
 
@@ -119,20 +76,38 @@ describe("Kiểm tra đăng nhập bằng jwt", () => {
     const actRes = await controller.login(reqMock, resMock);
 
     //Expect
-    expect(actRes).toEqual(expRes);
-
-    expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
-    expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.login).toBeCalledTimes(1);
   });
 
-  test("Đăng nhập mật khẩu không hợp lệ 400", async () => {
+  test("Sai tài khoản hay mật khẩu - 401", async () => {
     //Arrange
-    const loginModel = {
-      username: "awdaw",
-      password: undefined,
+    const loginModel = {};
+
+    const response = { statusCode: 401 };
+
+    const controller = getController();
+
+    const reqMock = {
+      body: loginModel,
     };
 
-    const response = { statusCode: 400 };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.login(reqMock, resMock);
+
+    //Expect
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.login).toBeCalledTimes(1);
+  });
+
+  test("Trả về token - 201", async () => {
+    //Arrange
+    const loginModel = { username: "ad", password: "ad" };
+
+    const response = { statusCode: 201, body: { token: "token" } };
 
     const controller = getController();
 
@@ -148,19 +123,12 @@ describe("Kiểm tra đăng nhập bằng jwt", () => {
 
     //Expect
     expect(actRes).toEqual(expRes);
-
-    expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
-    expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
+    expect(processorMock.login).toBeCalledTimes(1);
   });
 
-  test("Đăng nhập thất bại 401", async () => {
+  test("Lỗi server", async () => {
     //Arrange
-    const loginModel = {
-      username: "awdaw",
-      password: "awdaw",
-    };
-
-    const response = { statusCode: 401, body: {} };
+    const loginModel = "wtf";
 
     const controller = getController();
 
@@ -168,28 +136,63 @@ describe("Kiểm tra đăng nhập bằng jwt", () => {
       body: loginModel,
     };
 
-    const resMock = new ResponseMock();
-
     //Act
-    const expRes = response;
-    const actRes = await controller.login(reqMock, resMock);
+    const expRs = UnKnownError;
+    let actRs;
+    try {
+      await controller.login(reqMock);
+    } catch (error) {
+      actRs = error;
+    }
 
     //Expect
-    expect(actRes).toEqual(expRes);
-
-    expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
-    expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
-
-    expect(daoMock.login).toBeCalledTimes(1);
-    expect(daoMock.login).toBeCalledWith(loginModel);
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(processorMock.login).toBeCalledTimes(1);
   });
 });
 
 // 400 - 401
-describe("Kiểm tra bearer jwt có trong req", () => {
+describe("Ctrlr Kiểm tra bearer jwt có trong req", () => {
   beforeEach(() => {
-    validatorMock = new AuthenticationValidatorMock();
-    jwtMock = new JwtMock();
+    processorMock = new AuthenticationProcessorMock();
+  });
+
+  test("Không có token - 400", async () => {
+    //Arrange
+    const reqMock = {};
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = { statusCode: 400, body: undefined };
+    const actRes = await controller.authenticate(reqMock, resMock);
+
+    //Expect
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.authenticate).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Token hết hạn - 401", async () => {
+    //Arrange
+    const token = "Hết-hạn";
+
+    const controller = getController();
+    const response = {
+      statusCode: 401,
+    };
+    const reqMock = { headers: { authorization: token } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.authenticate(reqMock, resMock);
+
+    //Expect
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.authenticate).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
   });
 
   test("Token hợp lệ - sang middleware tiếp theo", async () => {
@@ -207,63 +210,36 @@ describe("Kiểm tra bearer jwt có trong req", () => {
 
     //Expect
     expect(nextMock).toBeCalledTimes(1);
+    expect(processorMock.authenticate).toBeCalledTimes(1);
   });
 
-  test("Không có token - 400", async () => {
+  test("Lỗi server", async () => {
     //Arrange
-    const reqMock = {};
-    const resMock = new ResponseMock();
+    const token = "wtf";
 
     const controller = getController();
 
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.authenticate(reqMock, resMock);
-
-    //Expect
-    expect(actRes).toEqual(expRes);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Token không hợp lệ thiếu Bearer - 400", async () => {
-    //Arrange
-    const reqMock = { headers: { authorization: "abc" } };
+    const reqMock = { headers: { authorization: token } };
     const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.authenticate(reqMock, resMock);
-
-    //Expect
-    expect(actRes).toEqual(expRes);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Token hết hạn - 401", async () => {
-    //Arrange
-    const token = "Hết-hạn";
-
-    const controller = getController();
-    const response = {
-      statusCode: 401,
-    };
-    const reqMock = { headers: { authorization: "Bearer " + token } };
-    const resMock = new ResponseMock();
+    const nextMock = jest.fn();
 
     //Act
-    const expRes = response;
-    const actRes = await controller.authenticate(reqMock, resMock);
+    const expRs = UnKnownError;
+    let actRs;
+    try {
+      await controller.authenticate(reqMock, resMock, nextMock);
+    } catch (error) {
+      actRs = error;
+    }
 
     //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(resMock.json).toBeCalledTimes(1);
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(processorMock.authenticate).toBeCalledTimes(1);
   });
 });
 
 // 200 - Phải có jwt
-describe("Lấy ra người dùng đăng nhập trong jwt", () => {
+describe("Ctrlr Lấy ra người dùng đăng nhập trong jwt", () => {
   test("Trả về người dùng", async () => {
     //Arrange
     const user = {
@@ -290,7 +266,7 @@ describe("Lấy ra người dùng đăng nhập trong jwt", () => {
 });
 
 // 403
-describe("Chuyển hướng người dùng theo quyền - role", () => {
+describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
   test("Người dùng hợp lệ", async () => {
     //Arrange
     const role = "admin";
@@ -347,12 +323,45 @@ describe("Chuyển hướng người dùng theo quyền - role", () => {
 
   test("Người dùng không có thẩm quyền - 403", async () => {
     //Arrange
-    role = "admin";
+    const role = "admin";
     const user = {
       id: 1,
       username: "valid",
       name: "valid",
       role: "nv",
+    };
+    const controller = getController();
+
+    const reqMock = {
+      user,
+    };
+    const resMock = new ResponseMock();
+    const nextMock = jest.fn();
+
+    //Act
+    const expRes = { statusCode: 403, body: undefined };
+
+    const actRes = await controller.authorize([role])(
+      reqMock,
+      resMock,
+      nextMock
+    );
+
+    //Expect
+    expect(nextMock).toBeCalledTimes(0);
+    expect(actRes).toEqual(expRes);
+
+    expect(resMock.status).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Người dùng không có role - 403", async () => {
+    //Arrange
+    const role = "user";
+    const user = {
+      id: 1,
+      username: "valid",
+      name: "valid",
     };
     const controller = getController();
 

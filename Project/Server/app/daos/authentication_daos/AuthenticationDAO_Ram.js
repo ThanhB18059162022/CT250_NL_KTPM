@@ -4,6 +4,12 @@ module.exports = class AuthenticationDAO_Ram {
   };
 
   getByUsername = async (username) => {
-    return username;
+    const user = { username, role: "emp" };
+
+    if (username == "admin") {
+      user.role = "admin";
+    }
+
+    return user;
   };
 };
