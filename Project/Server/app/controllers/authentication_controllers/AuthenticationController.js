@@ -69,7 +69,7 @@ class AuthenticationController extends Controller {
   // Authorize phải đăng nhập trước mới xài cái này
   // Closure function
   authorize = (roles) => async (req, res, next) => {
-    const role = req.user?.role;
+    const { role = "" } = req.user;
 
     const exist = this.roleInRoles(role, roles);
     if (exist) {
@@ -80,7 +80,9 @@ class AuthenticationController extends Controller {
   };
 
   roleInRoles = (role, roles) => {
-    return roles.filter((r) => r.toLowerCase() === role.toLowerCase())[0];
+    return (
+      roles.find((r) => r.toLowerCase() === role.toLowerCase()) !== undefined
+    );
   };
 
   // Lấy ra người dùng gửi req

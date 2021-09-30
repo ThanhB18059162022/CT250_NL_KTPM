@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {
-  jwt: { secretKey },
-} = require("../../config");
+const config = require("../../config");
 
 // Router gắn endpoints vào controller
 
@@ -16,14 +14,20 @@ const {
 const { AuthenticationDAO } = require("../../daos/daosContainer");
 const { JwtService } = require("../../services/servicesContainer");
 const {
+  AuthenticationProcessor,
+} = require("../../processors/processorsContainer");
+const {
   AuthenticationController,
 } = require("../../controllers/controllersContainer");
 
 const validator = new AuthenticationValidator();
+const {
+  jwt: { secretKey },
+} = config;
 const jwt = new JwtService(secretKey);
 const dao = new AuthenticationDAO();
-
-const controller = new AuthenticationController(validator, jwt, dao);
+const processor = new AuthenticationProcessor(validator, jwt, dao);
+const controller = new AuthenticationController(processor, config);
 
 // Bắc buộc đăng nhập
 router

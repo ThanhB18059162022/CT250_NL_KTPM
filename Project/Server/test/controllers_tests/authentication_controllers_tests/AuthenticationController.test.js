@@ -323,12 +323,45 @@ describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
 
   test("Người dùng không có thẩm quyền - 403", async () => {
     //Arrange
-    role = "admin";
+    const role = "admin";
     const user = {
       id: 1,
       username: "valid",
       name: "valid",
       role: "nv",
+    };
+    const controller = getController();
+
+    const reqMock = {
+      user,
+    };
+    const resMock = new ResponseMock();
+    const nextMock = jest.fn();
+
+    //Act
+    const expRes = { statusCode: 403, body: undefined };
+
+    const actRes = await controller.authorize([role])(
+      reqMock,
+      resMock,
+      nextMock
+    );
+
+    //Expect
+    expect(nextMock).toBeCalledTimes(0);
+    expect(actRes).toEqual(expRes);
+
+    expect(resMock.status).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Người dùng không có role - 403", async () => {
+    //Arrange
+    const role = "user";
+    const user = {
+      id: 1,
+      username: "valid",
+      name: "valid",
     };
     const controller = getController();
 
