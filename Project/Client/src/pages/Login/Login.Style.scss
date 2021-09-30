@@ -36,6 +36,7 @@
                     width: 100%;
                     font-size: inherit;
                     padding: 10px 20px;
+                    outline-color: var(--backgroundColor);
                     &:focus ~ label,
                     &:valid ~ label{
                         top:-10px;
