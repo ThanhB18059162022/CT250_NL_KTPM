@@ -34,7 +34,7 @@ Content-Type: application/json
 
 # Thanh toán
 
-### 1 Đã thanh toán rồi - 500
+### 1 Đã thanh toán rồi - 404
 
 GET http://localhost:8000/api/stripe/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?successUrl=http://localhost
 

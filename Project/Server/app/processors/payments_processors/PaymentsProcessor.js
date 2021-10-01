@@ -2,7 +2,6 @@ const Processor = require("../Processor");
 const crypto = require("crypto");
 const {
   InstantiateAbstractClassError,
-  NotExistError,
 } = require("../../errors/errorsContainer");
 
 // Abstract class
@@ -119,18 +118,18 @@ module.exports = class PaymentsProcessor extends Processor {
   // Thanh toán
   checkout = async (id) => {
     // Kiểm tra còn order trước khi thanh toán
-    const { storedOrders } = PaymentsProcessor;
-
-    const order = storedOrders.get(id);
-    if (order === undefined) {
-      throw new NotExistError(`Order ${id} has been paid or`);
-    }
+    const getStoreOrder = async () => PaymentsProcessor.storedOrders.get(id);
+    const order = await this.checkExistAsync(
+      async () => await getStoreOrder(),
+      (order) => order === undefined,
+      `Order ${id} has been paid or`
+    );
 
     // Lưu vào CSDL
     const saveOrderId = await this.saveOrder(order);
 
     // Xóa order lưu tạm
-    storedOrders.delete(order.id);
+    PaymentsProcessor.storedOrders.delete(order.id);
 
     return saveOrderId;
   };

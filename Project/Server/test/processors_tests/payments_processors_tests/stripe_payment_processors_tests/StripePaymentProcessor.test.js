@@ -183,17 +183,17 @@ describe("Proc Lưu đơn hàng đã thanh toán", () => {
     expect(validatorMock.validateId).toBeCalledTimes(1);
   });
 
-  test("Thiếu url - EX", async () => {
+  test("Thiếu successUrl - EX", async () => {
     //Arrange
     const id = "id";
-    const url = "//";
+    const successUrl = "//";
     const processor = getProcessor();
 
     //Act
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.checkoutOrder(id, { url });
+      await processor.checkoutOrder(id, { successUrl });
     } catch (error) {
       actRs = error;
     }
@@ -207,14 +207,14 @@ describe("Proc Lưu đơn hàng đã thanh toán", () => {
   test("Order không tồn tại - EX", async () => {
     //Arrange
     const id = "";
-    const url = " ";
+    const successUrl = " ";
     const processor = getProcessor();
 
     //Act
     const expRs = NotExistError;
     let actRs;
     try {
-      await processor.checkoutOrder(id, { url });
+      await processor.checkoutOrder(id, { successUrl });
     } catch (error) {
       actRs = error;
     }
@@ -225,18 +225,18 @@ describe("Proc Lưu đơn hàng đã thanh toán", () => {
     expect(validatorMock.validateUrl).toBeCalledTimes(1);
   });
 
-  test("Thành công trả về url/id", async () => {
+  test("Thành công trả về successUrl/id", async () => {
     //Arrange
     const id = "";
-    const url = " ";
+    const successUrl = " ";
     const processor = getProcessor();
 
     const { storedOrders } = StripePaymentProcessor;
     storedOrders.set(id, {});
 
     //Act
-    const expRs = `${url}/1`;
-    const actRs = await processor.checkoutOrder(id, { url });
+    const expRs = `${successUrl}/1`;
+    const actRs = await processor.checkoutOrder(id, { successUrl });
 
     //Expect
     expect(actRs).toEqual(expRs);
