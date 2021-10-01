@@ -173,7 +173,7 @@ describe("Proc Lưu đơn hàng đã thanh toán", () => {
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.checkoutOrder(id);
+      await processor.checkoutOrder(id, {});
     } catch (error) {
       actRs = error;
     }
@@ -193,7 +193,7 @@ describe("Proc Lưu đơn hàng đã thanh toán", () => {
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.checkoutOrder(id, url);
+      await processor.checkoutOrder(id, { url });
     } catch (error) {
       actRs = error;
     }
@@ -214,7 +214,7 @@ describe("Proc Lưu đơn hàng đã thanh toán", () => {
     const expRs = NotExistError;
     let actRs;
     try {
-      await processor.checkoutOrder(id, url);
+      await processor.checkoutOrder(id, { url });
     } catch (error) {
       actRs = error;
     }
@@ -236,7 +236,7 @@ describe("Proc Lưu đơn hàng đã thanh toán", () => {
 
     //Act
     const expRs = `${url}/1`;
-    const actRs = await processor.checkoutOrder(id, url);
+    const actRs = await processor.checkoutOrder(id, { url });
 
     //Expect
     expect(actRs).toEqual(expRs);

@@ -89,16 +89,12 @@ module.exports = class PatmentValidator extends Validator {
   };
 
   // Xài cho id tự tạo
-  validateSaveOrderId = (saveOrderId) => {
+  validateSaveOrderId = (id) => {
     const schema = this.joi.object({
-      saveOrderId: this.joi
-        .number()
-        .min(0)
-        .max(Number.MAX_SAFE_INTEGER)
-        .required(),
+      id: this.joi.number().min(0).max(Number.MAX_SAFE_INTEGER).required(),
     });
 
-    const result = this.getValidationResult(schema, { saveOrderId });
+    const result = this.getValidationResult(schema, { id });
 
     return result;
   };

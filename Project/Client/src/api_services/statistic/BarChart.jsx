@@ -72,7 +72,8 @@ function BarChart() {
       .attr("width", x.bandwidth()) // Bandwidth chiều dài 1 cột = max/tổng phần tử
       .attr("height", (data) => CHART_HEIGHT - y(data.value)) // Chiều cao bằng max value
       .attr("x", (d) => x(d.region))
-      .attr("y", (d) => y(d.value));
+      .attr("y", (d) => y(d.value))
+      .attr("draggable", "true");
 
     // width - height là chung cho tất các cột
     // x - y là riêng từng cột

@@ -47,8 +47,6 @@ router.route("/createOrder").post(errorCatch(controller.createOrder));
 router.route("/checkoutOrder/:id").get(errorCatch(controller.checkoutOrder));
 
 // Lấy đơn hàng đã lưu
-router
-  .route("/getSaveOrder/:saveOrderId")
-  .get(errorCatch(controller.getSaveOrder));
+router.route("/getSaveOrder/:id").get(errorCatch(controller.getSaveOrder));
 
 module.exports = router;

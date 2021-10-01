@@ -1,9 +1,8 @@
-const Controller = require("../../Controller");
+const PaymentsController = require("../PaymentsController");
 
-module.exports = class StripePaymentController extends Controller {
+module.exports = class StripePaymentController extends PaymentsController {
   constructor(processor, config) {
-    super(config);
-    this.processor = processor;
+    super(processor, config);
   }
 
   // Tạo đơn hàng
@@ -23,23 +22,6 @@ module.exports = class StripePaymentController extends Controller {
       });
 
       return this.created(res, { url });
-    } catch (error) {
-      return this.checkError(res, error);
-    }
-  };
-
-  // Lưu đơn hàng đã thanh toán
-  checkoutOrder = async (req, res) => {
-    try {
-      const {
-        params: { id },
-        query: { successUrl },
-      } = req;
-
-      const redirectUrl = await this.processor.checkoutOrder(id, successUrl);
-
-      // Về trang khi thanh toán
-      return this.redirect(res, redirectUrl);
     } catch (error) {
       return this.checkError(res, error);
     }
