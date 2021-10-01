@@ -66,6 +66,9 @@ module.exports = class PaymentsProcessor extends Processor {
       const { prod_no, prod_quantity } = products[i];
       // Lấy giá theo mã
       const prod = await this.dao.getOrderProduct(prod_no);
+      if (this.dao.emptyData(prod)) {
+        throw new NotExistError(`prod_no: ${prod_no}`);
+      }
 
       orderProducts.push({
         ...prod,
@@ -147,13 +150,12 @@ module.exports = class PaymentsProcessor extends Processor {
   //Lấy ra đơn hàng đã lưu trong CSDL
   getSaveOrder = async (id) => {
     const saveOrderId = Number(id);
-
     this.checkValidate(() => this.validator.validateSaveOrderId(saveOrderId));
 
     const saveOrder = await this.checkExistAsync(
       async () => await this.dao.getSaveOrder(saveOrderId),
       this.dao.emptyData,
-      `Save order id: ${id} not exist`
+      `id: ${id}`
     );
 
     return saveOrder;

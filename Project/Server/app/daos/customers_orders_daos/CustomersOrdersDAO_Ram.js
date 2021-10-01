@@ -5,6 +5,10 @@ const PRODUCTS = [
 ];
 
 module.exports = class CustomersOrdersDAO {
+  emptyData = (data) => {
+    return data === undefined;
+  };
+
   getOrderProduct = async (prod_no) => {
     const prod = PRODUCTS.filter((p) => p.prod_no === prod_no)[0];
 
@@ -15,11 +19,6 @@ module.exports = class CustomersOrdersDAO {
     console.log("Đã save", order);
 
     return order.id;
-  };
-
-  // Kiểm tra order rỗng
-  emptySaveOrder = (saveOrder) => {
-    return saveOrder === undefined;
   };
 
   getSaveOrder = async (id) => {

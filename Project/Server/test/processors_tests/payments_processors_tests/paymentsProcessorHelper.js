@@ -28,6 +28,7 @@ class PaymentDAOMock {
   });
 
   getOrderProduct = jest.fn((prod_no) => {
+    if (prod_no == 666) return undefined;
     return { prod_no };
   });
 

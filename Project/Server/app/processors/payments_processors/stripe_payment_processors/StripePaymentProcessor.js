@@ -57,7 +57,7 @@ module.exports = class StripePaymentProcessor extends PaymentsProcessor {
   };
 
   // Lưu đơn hàng đã thanh toán
-  checkoutOrder = async (id, url) => {
+  checkoutOrder = async (id, { url }) => {
     this.checkValidate(() => this.validator.validateId(id));
     this.checkValidateUrl(url);
 

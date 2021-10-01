@@ -24,8 +24,8 @@ class StripePaymentProcessorMock {
     }
   });
 
-  checkoutOrder = jest.fn((id, suc) => {
-    if (id == undefined || suc == undefined) {
+  checkoutOrder = jest.fn((id, { successUrl }) => {
+    if (id == undefined || successUrl == undefined) {
       throw new NotValidError();
     }
 

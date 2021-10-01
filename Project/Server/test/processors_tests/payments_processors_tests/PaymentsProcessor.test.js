@@ -16,7 +16,7 @@ let validatorMock;
 let daoMock;
 let serviceMock;
 
-function getController() {
+function getProcessor() {
   return new PaymentsProcessorImp(validatorMock, daoMock, serviceMock);
 }
 
@@ -33,7 +33,7 @@ describe("Proc Abstract Test", () => {
   test("Lấy danh sách sản phẩm", async () => {
     //Arrange
     const products = [{ prod_no: 1, prod_quantity: 1 }];
-    const controller = getController();
+    const controller = getProcessor();
 
     //Act
     const expRs = products;
@@ -47,7 +47,7 @@ describe("Proc Abstract Test", () => {
   test("Tính tổng tiền", () => {
     //Arrange
     const products = [{ prod_no: 1, prod_quantity: 1, prod_price: 12 }];
-    const controller = getController();
+    const controller = getProcessor();
 
     //Act
     const expRs = 12;
@@ -60,7 +60,7 @@ describe("Proc Abstract Test", () => {
   test("Lưu order", async () => {
     //Arrange
     const order = {};
-    const controller = getController();
+    const controller = getProcessor();
 
     //Act
     const expRs = 1;
@@ -69,6 +69,49 @@ describe("Proc Abstract Test", () => {
     //Expect
     expect(actRs).toEqual(expRs);
     expect(daoMock.saveOrder).toBeCalledTimes(1);
+  });
+});
+
+describe("Proc Lấy ra danh sách sản phẩm có giá", () => {
+  beforeEach(() => {
+    daoMock = new PaymentDAOMock();
+  });
+
+  test("Sản phẩm không tồn tại - EX", async () => {
+    //Arrange
+    const prod_no = 666;
+    const products = [{ prod_no }];
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+
+    try {
+      await processor.getOrderProducts(products);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+  });
+
+  test("Lấy ra thành công", async () => {
+    //Arrange
+    const prod_no = 1;
+    const products = [{ prod_no }, { prod_no: 3 }];
+    const processor = getProcessor();
+
+    //Act
+    const expRs = [
+      { prod_no: 1, prod_quantity: undefined },
+      { prod_no: 3, prod_quantity: undefined },
+    ];
+    const actRs = await processor.getOrderProducts(products);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
   });
 });
 
@@ -82,7 +125,7 @@ describe("Proc Lấy ra order đã thanh toán trong CSDL", () => {
   test("Id không hợp lệ - EX", async () => {
     //Arrange
     const saveOrderId = undefined;
-    const controller = getController();
+    const controller = getProcessor();
 
     //Act
     const expRs = NotValidError;
@@ -101,7 +144,7 @@ describe("Proc Lấy ra order đã thanh toán trong CSDL", () => {
   test("Id không tồn tại - EX", async () => {
     //Arrange
     const saveOrderId = -1;
-    const controller = getController();
+    const controller = getProcessor();
 
     //Act
     const expRs = NotExistError;
@@ -121,7 +164,7 @@ describe("Proc Lấy ra order đã thanh toán trong CSDL", () => {
   test("Lấy ra order hợp lệ", async () => {
     //Arrange
     const saveOrderId = 1;
-    const controller = getController();
+    const controller = getProcessor();
 
     //Act
     const expRs = {};

@@ -1,11 +1,11 @@
-const Controller = require("../../Controller");
+const PaymentsController = require("../PaymentsController");
 
-module.exports = class ZaloPayPaymentController extends Controller {
+module.exports = class ZaloPayPaymentController extends PaymentsController {
   constructor(processor, config) {
-    super(config);
-    this.processor = processor;
+    super(processor, config);
   }
 
+  // Tạo đơn hàng
   createOrder = async (req, res) => {
     try {
       const { successUrl, cancelUrl } = req.query;
@@ -22,23 +22,6 @@ module.exports = class ZaloPayPaymentController extends Controller {
       });
 
       return this.created(res, { url });
-    } catch (error) {
-      return this.checkError(res, error);
-    }
-  };
-
-  // Lưu đơn hàng đã thanh toán
-  checkoutOrder = async (req, res) => {
-    try {
-      const {
-        params: { id },
-        query,
-      } = req;
-
-      const redirectUrl = await this.processor.checkoutOrder(id, query);
-
-      // Về trang khi thanh toán
-      return this.redirect(res, redirectUrl);
     } catch (error) {
       return this.checkError(res, error);
     }

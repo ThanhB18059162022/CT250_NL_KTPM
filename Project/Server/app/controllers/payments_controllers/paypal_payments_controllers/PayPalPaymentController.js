@@ -1,9 +1,8 @@
-const Controller = require("../../Controller");
+const PaymentsController = require("../PaymentsController");
 
-module.exports = class PayPalPaymentController extends Controller {
+module.exports = class PayPalPaymentController extends PaymentsController {
   constructor(processor, config) {
-    super(config);
-    this.processor = processor;
+    super(processor, config);
   }
 
   // Lấy client id để chèn vào script bên font-end
