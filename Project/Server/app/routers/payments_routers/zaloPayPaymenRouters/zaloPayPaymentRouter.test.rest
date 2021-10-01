@@ -11,17 +11,17 @@ Content-Type: application/json
 {
     // Thông tin khác hàng
     "customer": {
-    "cus_name": "Alexander",
-    "cus_id": "555555555",
-    "cus_email": "alex@gmail.com",
-    "cus_sex": true,
-    "cus_address": "3/2 Ninh Kiều Cần Thơ",
-    "cus_phoneNumber": "0000000000"
+    "cus_name": "Le Thanh Phong",
+    "cus_id": "987563256",
+    "cus_email": "giaob1805686@student.ctu.edu.vn",
+    "cus_sex": false,
+    "cus_address": "123, Quảng Đại, Sầm Sơn, Thanh Hóa, Vietnam",
+    "cus_phoneNumber": "0987654321"
     },
 
     // Mảng nhận id và số lượng
     "products":[
-        {"prod_no": 1, "prod_quantity": 10},
+        {"prod_no": 1, "prod_quantity": 1},
         {"prod_no": 2, "prod_quantity": 2}
     ]
 }

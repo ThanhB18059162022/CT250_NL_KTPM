@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { AuthenticationService, caller } from "../../api_services/servicesContainer"
 import Notifications from "../../common/Notifications"
 import Helper from "../../helpers"
 
@@ -49,12 +50,12 @@ const LoginContainer = () => {
     }
 
     // on login handle
-    const loginHandle = () => {
+    const loginHandle = async() => {
         if (!_validation()) return;
 
-        // add your handle code here............
-
-
+        let auth =  new AuthenticationService(caller)
+        let result = await auth.login(loginInfo)
+        console.log(result)
     }
 
     return (

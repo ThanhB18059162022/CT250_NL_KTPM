@@ -21,7 +21,10 @@ import PayPalPayment from "../../../api_services/payment_services/PayPalPayment"
 
 const services = [new ZaloPaymentService(caller), new StripePaymentService(caller)]
 
-const toGetway = url => window.location.href = url
+const toGetway = url => {
+ window.location.href = url
+//  console.log(url)
+}
 
 const checkout = async (type, cart) => toGetway(await services[type - 1].createOrder(cart))
 //===========================================================
@@ -222,7 +225,7 @@ function CartTransaction(props) {
           cus_address: customerinfo.address,
           cus_phoneNumber: customerinfo.phone
         }
-        const products = getItemList().map(item =>({prod_no:item.id, prod_quantity:item.amount*100}));
+        const products = getItemList().map(item =>({prod_no:item.id, prod_quantity:item.amount*50}));
         if (customerinfo.transactionway !== 3) {
           checkout(customerinfo.transactionway,{customer,products})
         }

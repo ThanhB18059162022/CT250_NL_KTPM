@@ -22,6 +22,9 @@ const PayPalPayment = (props) => {
     setClientId(clientId);
   }
 
+  // create callback
+
+
   // Chưa coi dispose
   useEffect(() => {
     // Use state khởi tạo cũng làm thay đổi clientId'
@@ -36,9 +39,11 @@ const PayPalPayment = (props) => {
       //Chờ cho load xong
       // Event load là event load trang html
       payPalScript.addEventListener("load", displayButton)
+      
       return () => document.body.removeChild(payPalScript)
     }
   }, [clientId]);
+  
   //Button tham chiếu bên ui dom
   let payPalRef = useRef();
   function displayButton() {
