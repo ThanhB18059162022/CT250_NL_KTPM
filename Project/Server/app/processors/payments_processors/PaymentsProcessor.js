@@ -64,14 +64,16 @@ module.exports = class PaymentsProcessor extends Processor {
 
     for (let i = 0; i < products.length; i++) {
       const { prod_no, prod_quantity } = products[i];
+
       // Lấy giá theo mã
-      const prod = await this.dao.getOrderProduct(prod_no);
-      if (this.dao.emptyData(prod)) {
-        throw new NotExistError(`prod_no: ${prod_no}`);
-      }
+      const orderProduct = await this.checkExistAsync(
+        async () => await this.dao.getOrderProduct(prod_no),
+        this.dao.emptyData,
+        `prod_no: ${prod_no}`
+      );
 
       orderProducts.push({
-        ...prod,
+        ...orderProduct,
         prod_quantity,
       });
     }
