@@ -1,116 +1,177 @@
-import { AuthenticationService, caller } from "../servicesContainer";
-import React, { useEffect } from "react";
-import "./style.css";
+// Tham khảo https://www.npmjs.com/package/react-chartjs-2
+// https://www.youtube.com/watch?v=Ly-9VTXJlnA
 
-// Thống kê xài
+import React, { useState, useRef, useEffect } from "react";
+import { Bar, defaults } from "react-chartjs-2";
+import "./BarChart.jsx.css";
+import StatisticService from "./StatisticService";
+
+const service = new StatisticService();
+
 function BarChart() {
+  const [options, setOptions] = useState({});
+  const [dataSets, setDataSets] = useState([]);
+  const [data, setData] = useState({});
+  const [years, setYears] = useState([]);
+
   useEffect(() => {
-    addScript();
+    initValues();
+
+    setOptions(opts);
   }, []);
 
-  function addScript() {
-    // Dùng d3js để vẽ biểu đồ thống kê
-    const src = "https://d3js.org/d3.v7.min.js";
-
-    const d3Script = document.createElement("script");
-    d3Script.src = src;
-    d3Script.defer = true;
-
-    document.body.appendChild(d3Script);
-  }
-
-  const DUMMY_DATA = [
-    { id: 1, value: 10, region: "USA" },
-    { id: 2, value: 15, region: "India" },
-    { id: 3, value: 13, region: "Germany" },
-    { id: 4, value: 130, region: "China" },
-  ];
-
-  function draw() {
-    const { d3 } = window;
-
-    const MARGINS = { top: 20, bottom: 10 };
-    const CHART_WIDTH = 600;
-    const CHART_HEIGHT = 400 - MARGINS.top - MARGINS.bottom;
-
-    const x = d3.scaleBand().rangeRound([0, CHART_WIDTH]).padding(0.1);
-
-    const y = d3.scaleLinear().range([CHART_HEIGHT, 0]);
-
-    const chartContainer = d3
-      .select("svg")
-      .attr("width", CHART_WIDTH)
-      .attr("height", CHART_HEIGHT + MARGINS.top + MARGINS.bottom)
-      .classed("container", true);
-
-    const regions = DUMMY_DATA.map((d) => d.region);
-    x.domain(regions);
-
-    const maxVal = d3.max(DUMMY_DATA, (d) => d.value);
-    y.domain([0, maxVal * 1.2]);
-
-    const chart = chartContainer.append("g");
-
-    // Giá trị
-    chart
-      .selectAll(".value")
-      .data(DUMMY_DATA)
-      .enter()
-      .append("text")
-      .text((d) => d.value)
-      .attr("x", (d) => x(d.region) + x.bandwidth() / 2)
-      .attr("y", (d) => y(d.value) - 10)
-      .attr("text-anchor", " middle")
-      .classed("value", true);
-
-    chart
-      .selectAll(".bar")
-      .data(DUMMY_DATA)
-      .enter()
-      .append("rect")
-      .classed("bar", true)
-      .attr("width", x.bandwidth()) // Bandwidth chiều dài 1 cột = max/tổng phần tử
-      .attr("height", (data) => CHART_HEIGHT - y(data.value)) // Chiều cao bằng max value
-      .attr("x", (d) => x(d.region))
-      .attr("y", (d) => y(d.value))
-      .attr("draggable", "true");
-
-    // width - height là chung cho tất các cột
-    // x - y là riêng từng cột
-
-    chart
-      .append("g")
-      // Bottom là quay xuống dưới - Top quay lên
-      .call(d3.axisBottom(x).tickSizeOuter(0))
-      .attr("color", "hsl(270, 100%, 31%)")
-      .attr("transform", `translate(0, ${CHART_HEIGHT})`);
-  }
-
-  const service = new AuthenticationService(caller);
-  async function login() {
-    const token = await service.login({
-      username: "valid",
-      password: "valid",
+  useEffect(() => {
+    setData({
+      labels: ["Quý I", "Quý II", "Quý III", "Quý IV"],
+      datasets: dataSets,
     });
+  }, [dataSets]);
 
-    console.log(token);
+  async function insert(year) {
+    const dt = await service.getTotalSellInYear(year);
+    const dts = getDataSet(year, dt);
+
+    setDataSets((old) => {
+      const newVal = [...old];
+      newVal.push(dts);
+
+      return newVal;
+    });
   }
 
-  async function getUser() {
-    const u = await service.getUser();
+  const chartRef = useRef({});
 
-    console.log(u);
+  function removeBar(label) {
+    setDataSets((old) => [...old.filter((o) => o.label != label)]);
+  }
+
+  function getNotDisplayYears() {
+    // Lấy chưa display
+    const dyrs = dataSets.map((m) => m.label);
+
+    const ndyrs = years.filter((y) => !dyrs.some((dy) => dy == y));
+
+    return ndyrs;
+  }
+
+  function updateValue(year) {
+    setDataSets((old) => {
+      const newVal = [...old];
+
+      const value = newVal.find((v) => v.label == year);
+
+      const { data } = value;
+      value.data = [...data.slice(0, 3), value.data[data.length - 1] + 1000000];
+
+      return newVal;
+    });
+  }
+
+  async function initValues() {
+    setYears(await service.getYears());
+    setDataSets(await getDataSets());
+  }
+
+  function showYearsSelect() {
+    const ndyrs = getNotDisplayYears();
+
+    return (
+      <select
+        name="year"
+        id="year"
+        onChange={(e) => insert(e.target.value)}
+        className="chart-panel-select"
+      >
+        <option value="default">-- Năm --</option>
+        {ndyrs.map((y) => (
+          <option key={y} value={y}>
+            {y}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+  function showYearsInChart() {
+    const dyrs = dataSets.map((ds) => ds.label);
+
+    return dyrs.map((y) => (
+      <div key={y} className="chart-panel-item">
+        {y} <span onClick={() => removeBar(y)}>x</span>
+      </div>
+    ));
   }
 
   return (
     <>
-      <h1>Thống kê</h1>
-      <button onClick={draw}>Draw</button>
-      <button onClick={login}>Login</button>
-      <button onClick={getUser}>Get</button>
-      <hr></hr>
-      <svg></svg>
+      <h1 draggable="true">Lấy báo cáo thống kê</h1>
+      <div className="chart-panel">
+        <label>Năm:</label>
+        <div className="chart-panel-content">
+          {showYearsSelect()}
+          {showYearsInChart()}
+        </div>
+      </div>
+      <button onClick={() => updateValue(2021)}>Update</button>
+      <Bar ref={chartRef} data={data} options={options} />
     </>
   );
 }
+
+async function getDataSets() {
+  const dataSet = [];
+  for (let i = 2020; i <= 2021; i++) {
+    const data = await service.getTotalSellInYear(i);
+    const set = getDataSet(i, data);
+
+    dataSet.push(set);
+  }
+
+  return dataSet;
+}
+
+function getDataSet(year, data) {
+  return {
+    label: year.toString(),
+    data,
+    backgroundColor: bg[Math.floor(Math.random() * 3)],
+    borderWidth: 1,
+    borderColor: "#777",
+    hoverBorderColor: "black",
+    borderRadius: 3,
+  };
+}
+
+const bg = [
+  "rgba(54, 162, 235, 0.6)",
+  "rgba(255, 99, 132, 0.6)",
+  "rgba(255, 206, 86, 0.6)",
+  "rgba(75, 192, 192, 0.6)",
+];
+
+const opts = {
+  plugins: {
+    title: {
+      display: true,
+      text: "Tổng tiền bán trong 4 quý",
+      fullSize: false,
+      font: {
+        size: "40em",
+      },
+      // color: "green",
+      padding: {
+        // top: 100,
+        bottom: 20,
+      },
+    },
+    legend: {
+      position: "right",
+      labels: {
+        color: "black",
+        weight: "900",
+      },
+    },
+  },
+};
+
 export default BarChart;

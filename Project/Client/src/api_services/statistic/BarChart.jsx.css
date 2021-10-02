@@ -1,0 +1,35 @@
+.chart-panel > label {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.chart-panel-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chart-panel-select {
+  border-radius: 0.5em;
+  padding: 0 0.5em 0 0.5em;
+  font-weight: 700;
+}
+
+.chart-panel-item {
+  margin-left: 1em;
+  border-radius: 0.5em;
+  padding: 0 0.5em 0 0.5em;
+}
+
+.chart-panel-item {
+  background-color: hsl(0, 0%, 80%);
+}
+
+.chart-panel-item > span {
+  padding-left: 0.4em;
+  font-size: 1.5em;
+}
+
+.chart-panel-item > span:hover {
+  background-color: hsl(0, 0%, 50%);
+  cursor: pointer;
+}
