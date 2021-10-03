@@ -1,34 +1,50 @@
 // Tham khảo https://www.npmjs.com/package/react-chartjs-2
 // https://www.youtube.com/watch?v=Ly-9VTXJlnA
 
-import React, { useState, useRef, useEffect } from "react";
-import { Bar, defaults } from "react-chartjs-2";
-import "./BarChart.jsx.css";
+import React, { useState, useEffect } from "react";
+import { Line, defaults } from "react-chartjs-2";
+import "./TotalSellSeasonsBarChart.jsx.css";
 import StatisticService from "./StatisticService";
 
 const service = new StatisticService();
 
-function BarChart() {
-  const [options, setOptions] = useState({});
+function TotalSellYearsBarChart() {
   const [dataSets, setDataSets] = useState([]);
   const [data, setData] = useState({});
   const [years, setYears] = useState([]);
 
+  //#region Init
+
+  async function initValues() {
+    const yrs = await service.getYears();
+    setYears(yrs);
+    setDataSets(await getDataSets(yrs[0], yrs[1]));
+  }
+
+  function initDefaults() {
+    defaults.color = "black";
+    // defaults.font.size = 20;
+    console.log(defaults);
+  }
+
   useEffect(() => {
     initValues();
-
-    setOptions(opts);
+    initDefaults();
   }, []);
 
   useEffect(() => {
     setData({
-      labels: ["Quý I", "Quý II", "Quý III", "Quý IV"],
+      labels: ["2010", "2012", "2012", "2013", "2013", "2013"],
       datasets: dataSets,
     });
   }, [dataSets]);
 
+  //#endregion
+
+  //#region Inter
+
   async function insert(year) {
-    const dt = await service.getTotalSellInYear(year);
+    const dt = await service.getDataOfSeasons(year);
     const dts = getDataSet(year, dt);
 
     setDataSets((old) => {
@@ -38,8 +54,6 @@ function BarChart() {
       return newVal;
     });
   }
-
-  const chartRef = useRef({});
 
   function removeBar(label) {
     setDataSets((old) => [...old.filter((o) => o.label != label)]);
@@ -54,6 +68,7 @@ function BarChart() {
     return ndyrs;
   }
 
+  // real time?
   function updateValue(year) {
     setDataSets((old) => {
       const newVal = [...old];
@@ -67,21 +82,13 @@ function BarChart() {
     });
   }
 
-  async function initValues() {
-    setYears(await service.getYears());
-    setDataSets(await getDataSets());
-  }
+  //#endregion
 
   function showYearsSelect() {
     const ndyrs = getNotDisplayYears();
 
     return (
-      <select
-        name="year"
-        id="year"
-        onChange={(e) => insert(e.target.value)}
-        className="chart-panel-select"
-      >
+      <select name="year" id="year" onChange={(e) => insert(e.target.value)}>
         <option value="default">-- Năm --</option>
         {ndyrs.map((y) => (
           <option key={y} value={y}>
@@ -96,8 +103,11 @@ function BarChart() {
     const dyrs = dataSets.map((ds) => ds.label);
 
     return dyrs.map((y) => (
-      <div key={y} className="chart-panel-item">
-        {y} <span onClick={() => removeBar(y)}>x</span>
+      <div key={y} className="item">
+        <span>{y}</span>
+        <span onClick={() => removeBar(y)} className="btn-del">
+          X
+        </span>
       </div>
     ));
   }
@@ -107,22 +117,22 @@ function BarChart() {
       <h1 draggable="true">Lấy báo cáo thống kê</h1>
       <div className="chart-panel">
         <label>Năm:</label>
-        <div className="chart-panel-content">
+        <div className="content">
           {showYearsSelect()}
           {showYearsInChart()}
         </div>
       </div>
-      <button onClick={() => updateValue(2021)}>Update</button>
-      <Bar ref={chartRef} data={data} options={options} />
+      <button onClick={() => updateValue(2017)}>Update</button>
+      <Line data={data} options={options} />
     </>
   );
 }
 
-async function getDataSets() {
+async function getDataSets(from, to) {
   const dataSet = [];
-  for (let i = 2020; i <= 2021; i++) {
-    const data = await service.getTotalSellInYear(i);
-    const set = getDataSet(i, data);
+  for (let y = from; y <= to; y++) {
+    const data = await service.getDataOfSeasons(y);
+    const set = getDataSet(y, data);
 
     dataSet.push(set);
   }
@@ -134,33 +144,34 @@ function getDataSet(year, data) {
   return {
     label: year.toString(),
     data,
-    backgroundColor: bg[Math.floor(Math.random() * 3)],
+    backgroundColor: backgroundColors[year % backgroundColors.length],
     borderWidth: 1,
-    borderColor: "#777",
-    hoverBorderColor: "black",
+    borderColor: "hsl(0, 0%, 47%)",
+    hoverBorderColor: "hsl(0, 0%, 0%)",
     borderRadius: 3,
   };
 }
 
-const bg = [
-  "rgba(54, 162, 235, 0.6)",
+const backgroundColors = [
   "rgba(255, 99, 132, 0.6)",
+  "rgba(54, 162, 235, 0.6)",
   "rgba(255, 206, 86, 0.6)",
   "rgba(75, 192, 192, 0.6)",
+  "rgba(153, 102, 255, 0.6)",
+  "rgba(255, 159, 64, 0.6)",
+  "rgba(255, 99, 132, 0.6)",
 ];
 
-const opts = {
+const options = {
   plugins: {
     title: {
       display: true,
-      text: "Tổng tiền bán trong 4 quý",
-      fullSize: false,
+      text: "Tổng tiền trong năm theo quý",
       font: {
-        size: "40em",
+        size: 20,
       },
       // color: "green",
       padding: {
-        // top: 100,
         bottom: 20,
       },
     },
@@ -174,4 +185,4 @@ const opts = {
   },
 };
 
-export default BarChart;
+export default TotalSellYearsBarChart;

@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import BarChart from "./api_services/statistic/BarChart";
 import reportWebVitals from "./reportWebVitals";
+import Charts from "./api_services/statistic/Charts";
 
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
-    <BarChart />
+    <Charts />
   </React.StrictMode>,
   document.getElementById("root")
 );
