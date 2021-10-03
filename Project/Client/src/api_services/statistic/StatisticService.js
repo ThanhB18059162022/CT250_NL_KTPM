@@ -28,7 +28,17 @@ export default class StatisticService {
     return yrs;
   };
 
-  getTotalSellOfYear = async (year) => {
-    return year * 1000000;
+  getTotalSellOfYears = async () => {
+    const total = [];
+    const years = await this.getYears();
+    years.forEach((year) => {
+      total.push({
+        year,
+        totalSell: year * 10000 * Math.floor(Math.random() * 1000),
+        totalPay: year * 10000 * Math.floor(Math.random() * 1000),
+      });
+    });
+
+    return total;
   };
 }

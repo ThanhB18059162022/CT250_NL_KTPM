@@ -3,22 +3,20 @@
 
 import React, { useState, useEffect } from "react";
 import { Line, defaults } from "react-chartjs-2";
-import "./TotalSellSeasonsBarChart.jsx.css";
 import StatisticService from "./StatisticService";
 
 const service = new StatisticService();
 
 function TotalSellYearsBarChart() {
-  const [dataSets, setDataSets] = useState([]);
+  const [total, setTotal] = useState([]);
   const [data, setData] = useState({});
-  const [years, setYears] = useState([]);
 
   //#region Init
 
   async function initValues() {
-    const yrs = await service.getYears();
-    setYears(yrs);
-    setDataSets(await getDataSets(yrs[0], yrs[1]));
+    const total = await service.getTotalSellOfYears();
+
+    setTotal(total);
   }
 
   function initDefaults() {
@@ -33,136 +31,52 @@ function TotalSellYearsBarChart() {
   }, []);
 
   useEffect(() => {
+    const datasets = getDataSets(total);
+
     setData({
-      labels: ["2010", "2012", "2012", "2013", "2013", "2013"],
-      datasets: dataSets,
+      labels: total.map((t) => t.year),
+      datasets,
     });
-  }, [dataSets]);
+  }, [total]);
 
   //#endregion
-
-  //#region Inter
-
-  async function insert(year) {
-    const dt = await service.getDataOfSeasons(year);
-    const dts = getDataSet(year, dt);
-
-    setDataSets((old) => {
-      const newVal = [...old];
-      newVal.push(dts);
-
-      return newVal;
-    });
-  }
-
-  function removeBar(label) {
-    setDataSets((old) => [...old.filter((o) => o.label != label)]);
-  }
-
-  function getNotDisplayYears() {
-    // Lấy chưa display
-    const dyrs = dataSets.map((m) => m.label);
-
-    const ndyrs = years.filter((y) => !dyrs.some((dy) => dy == y));
-
-    return ndyrs;
-  }
-
-  // real time?
-  function updateValue(year) {
-    setDataSets((old) => {
-      const newVal = [...old];
-
-      const value = newVal.find((v) => v.label == year);
-
-      const { data } = value;
-      value.data = [...data.slice(0, 3), value.data[data.length - 1] + 1000000];
-
-      return newVal;
-    });
-  }
-
-  //#endregion
-
-  function showYearsSelect() {
-    const ndyrs = getNotDisplayYears();
-
-    return (
-      <select name="year" id="year" onChange={(e) => insert(e.target.value)}>
-        <option value="default">-- Năm --</option>
-        {ndyrs.map((y) => (
-          <option key={y} value={y}>
-            {y}
-          </option>
-        ))}
-      </select>
-    );
-  }
-
-  function showYearsInChart() {
-    const dyrs = dataSets.map((ds) => ds.label);
-
-    return dyrs.map((y) => (
-      <div key={y} className="item">
-        <span>{y}</span>
-        <span onClick={() => removeBar(y)} className="btn-del">
-          X
-        </span>
-      </div>
-    ));
-  }
 
   return (
     <>
       <h1 draggable="true">Lấy báo cáo thống kê</h1>
-      <div className="chart-panel">
-        <label>Năm:</label>
-        <div className="content">
-          {showYearsSelect()}
-          {showYearsInChart()}
-        </div>
-      </div>
-      <button onClick={() => updateValue(2017)}>Update</button>
       <Line data={data} options={options} />
     </>
   );
 }
 
-async function getDataSets(from, to) {
-  const dataSet = [];
-  for (let y = from; y <= to; y++) {
-    const data = await service.getDataOfSeasons(y);
-    const set = getDataSet(y, data);
+// 2 data set
+// tiền mua vs tiền bán
+function getDataSets(total) {
+  const sellData = total.map((t) => t.totalSell);
+  const payData = total.map((t) => t.totalPay);
 
-    dataSet.push(set);
-  }
+  const sellSet = getDataSet("Total Sell", sellData, "rgba(255, 159, 64, 0.6)");
+  const paySet = getDataSet("Total Pay", payData, "rgba(153, 102, 255, 0.6)");
 
-  return dataSet;
+  return [sellSet, paySet];
 }
 
-function getDataSet(year, data) {
+function getDataSet(type, data, color) {
   return {
-    label: year.toString(),
+    label: type,
     data,
-    backgroundColor: backgroundColors[year % backgroundColors.length],
     borderWidth: 1,
-    borderColor: "hsl(0, 0%, 47%)",
-    hoverBorderColor: "hsl(0, 0%, 0%)",
+    backgroundColor: color,
+    borderColor: color,
+    hoverBorderColor: "black",
     borderRadius: 3,
   };
 }
 
-const backgroundColors = [
-  "rgba(255, 99, 132, 0.6)",
-  "rgba(54, 162, 235, 0.6)",
-  "rgba(255, 206, 86, 0.6)",
-  "rgba(75, 192, 192, 0.6)",
-  "rgba(153, 102, 255, 0.6)",
-  "rgba(255, 159, 64, 0.6)",
-  "rgba(255, 99, 132, 0.6)",
-];
-
 const options = {
+  scales: {
+    y: { beginAtZero: true },
+  },
   plugins: {
     title: {
       display: true,
