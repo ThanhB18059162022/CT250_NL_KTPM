@@ -75,7 +75,24 @@ function getDataSet(type, data, color) {
 
 const options = {
   scales: {
-    y: { beginAtZero: true },
+    y: {
+      title: {
+        display: true,
+        text: "VND",
+      },
+    },
+    x: {
+      title: {
+        display: true,
+        text: "Năm",
+      },
+      ticks: {
+        major: {
+          enabled: true,
+        },
+        color: "blue",
+      },
+    },
   },
   plugins: {
     title: {
@@ -90,7 +107,6 @@ const options = {
       },
     },
     legend: {
-      position: "right",
       labels: {
         color: "black",
         weight: "900",
