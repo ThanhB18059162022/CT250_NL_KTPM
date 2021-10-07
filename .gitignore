@@ -110,3 +110,6 @@ Project/Server/app/config.js
 Project/Client/package-lock.json
 Project/Server/app/serversettings.dev.json
 Project/Server/app/serversettings.json
+Project/Server/.dockerignore
+*.yml
+Project/Server/Dockerfile

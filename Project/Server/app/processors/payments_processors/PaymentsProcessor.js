@@ -6,10 +6,7 @@ const {
 
 // Abstract class
 module.exports = class PaymentsProcessor extends Processor {
-  // Lưu các order đã đặt mà chưa thanh toán sẽ xóa sau 1 ngày
-  static storedOrders = new Map();
-
-  constructor(validator, dao, exchangeService) {
+  constructor(validator, dao, exchangeService, storageService) {
     super();
     if (this.constructor === PaymentsProcessor) {
       throw new InstantiateAbstractClassError();
@@ -17,6 +14,7 @@ module.exports = class PaymentsProcessor extends Processor {
     this.validator = validator;
     this.dao = dao;
     this.exchangeService = exchangeService;
+    this.storageService = storageService;
   }
 
   // Tạo giỏ hàng
@@ -45,12 +43,10 @@ module.exports = class PaymentsProcessor extends Processor {
 
   // Tạo id dài 64 ký tự cho đơn hàng
   getOrderId = () => {
-    const { storedOrders } = PaymentsProcessor;
-
     // Tạo id cho order theo số lượng order trong danh sách + thời gian
     const id = crypto
       .createHash("sha256")
-      .update(storedOrders.size + new Date())
+      .update(this.storageService.getSize() + new Date())
       .digest("hex");
 
     return id;
@@ -93,35 +89,27 @@ module.exports = class PaymentsProcessor extends Processor {
     return this.exchangeService.roundTakeTwo(total);
   };
 
-  // Lưu tạm thông tin order vào ram sẽ xóa sau 1 ngày
-  storeOrder = (tempOrder) => {
+  // Lưu tạm thông tin order và sẽ xóa sau 1 ngày
+  storeOrder = async (tempOrder) => {
     const order = {
       ...tempOrder,
       paid: false, // Chưa trả tiền
       createTime: new Date(), // Thời gian tạo đơn
     };
 
-    const { storedOrders } = PaymentsProcessor;
+    // Số giây 1 ngày
+    const secInDay = 86400;
 
-    // Save bằng paypal id
-    storedOrders.set(order.id, order);
-
-    // Số mili giây 1 ngày
-    const miliSecInDay = 86400000;
-
-    // Xóa order
-    setTimeout(() => {
-      storedOrders.delete(order.id);
-    }, miliSecInDay);
+    // Save bằng order id
+    await this.storageService.setex(order.id, secInDay, order);
   };
 
   // Thanh toán
   checkout = async (id) => {
     // Kiểm tra còn order trước khi thanh toán
-    const getStoreOrder = async () => PaymentsProcessor.storedOrders.get(id);
     const order = await this.checkExistAsync(
-      async () => await getStoreOrder(),
-      (order) => order === undefined,
+      async () => await this.storageService.get(id),
+      this.storageService.emptyData,
       `Order ${id} has been paid or`
     );
 
@@ -129,7 +117,7 @@ module.exports = class PaymentsProcessor extends Processor {
     const saveOrderId = await this.saveOrder(order);
 
     // Xóa order lưu tạm
-    PaymentsProcessor.storedOrders.delete(order.id);
+    await this.storageService.delete(order.id);
 
     return saveOrderId;
   };

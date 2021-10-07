@@ -1,8 +1,8 @@
 const PaymentsProcessor = require("../PaymentsProcessor");
 
 module.exports = class PayPalPaymentProcessor extends PaymentsProcessor {
-  constructor(validator, dao, currencyService, payPalService) {
-    super(validator, dao, currencyService);
+  constructor(validator, dao, currencyService, payPalService, storageSerice) {
+    super(validator, dao, currencyService, storageSerice);
     this.payPalService = payPalService;
   }
 
@@ -28,7 +28,7 @@ module.exports = class PayPalPaymentProcessor extends PaymentsProcessor {
     // Xài luôn id của paypay cho dễ
     order.id = payPalOrderID;
     order.payment = "paypal";
-    this.storeOrder(order);
+    await this.storeOrder(order);
 
     return payPalOrderID;
   };

@@ -4,26 +4,26 @@
   "description": "e-commerece server provide api for font end selling phone project of ct250 ",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon app/server.js",
+    "start": "nodemon -L app/server.js",
     "test": "jest --verbose --coverage --watchAll",
     "test-ci": "jest --verbose --coverage "
   },
   "author": "Group5: Vuong Cam Thanh, Thach Chi Tam, Phan Phu Cuong",
   "license": "ISC",
   "dependencies": {
-    "@paypal/checkout-server-sdk": "^1.0.2",
-    "axios": "^0.21.4",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "cors": "^2.8.5",
+    "axios": "^0.21.4",
+    "dotenv": "^10.0.0",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
+    "@paypal/checkout-server-sdk": "^1.0.2",
     "stripe": "^8.176.0"
   },
   "devDependencies": {
+    "nodemon": "^2.0.12",
     "@types/jest": "^27.0.1",
-    "jest": "^27.1.0",
-    "nodemon": "^2.0.12"
+    "jest": "^27.1.0"
   }
 }

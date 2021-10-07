@@ -5,6 +5,7 @@ const {
   PaymentValidatorMock,
   PaymentDAOMock,
   CurrencyExchangeServiceMock,
+  StorageServiceMock,
 } = require("../paymentsProcessorHelper");
 const {
   NotValidError,
@@ -27,13 +28,15 @@ let validatorMock;
 let serviceMock;
 let daoMock;
 let exServiceMock;
+let strgServiceMock;
 
 function getProcessor() {
   return new StripePaymentProcessor(
     validatorMock,
     daoMock,
     exServiceMock,
-    serviceMock
+    serviceMock,
+    strgServiceMock
   );
 }
 
@@ -47,6 +50,7 @@ describe("Proc Tạo đơn hàng", () => {
     serviceMock = new StripeServiceMock();
     daoMock = new PaymentDAOMock();
     exServiceMock = new CurrencyExchangeServiceMock();
+    strgServiceMock = new StorageServiceMock();
   });
 
   jest.useFakeTimers();
@@ -162,6 +166,7 @@ describe("Proc Lưu đơn hàng đã thanh toán", () => {
     validatorMock = new PaymentValidatorMock();
     serviceMock = new StripeServiceMock();
     daoMock = new PaymentDAOMock();
+    strgServiceMock = new StorageServiceMock();
   });
 
   test("Id đơn hàng không hợp lệ - EX", async () => {
@@ -227,12 +232,9 @@ describe("Proc Lưu đơn hàng đã thanh toán", () => {
 
   test("Thành công trả về successUrl/id", async () => {
     //Arrange
-    const id = "";
+    const id = "1";
     const successUrl = " ";
     const processor = getProcessor();
-
-    const { storedOrders } = StripePaymentProcessor;
-    storedOrders.set(id, {});
 
     //Act
     const expRs = `${successUrl}/1`;

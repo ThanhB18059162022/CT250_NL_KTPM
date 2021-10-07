@@ -1,8 +1,8 @@
 const PaymentsProcessor = require("../PaymentsProcessor");
 
 module.exports = class StripePaymentProcessor extends PaymentsProcessor {
-  constructor(validator, dao, exchangeService, stripeSerivce) {
-    super(validator, dao, exchangeService);
+  constructor(validator, dao, exchangeService, stripeSerivce, storageService) {
+    super(validator, dao, exchangeService, storageService);
     this.stripeService = stripeSerivce;
   }
 
@@ -33,7 +33,7 @@ module.exports = class StripePaymentProcessor extends PaymentsProcessor {
 
     //Lưu tạm order
     order.payment = "stripe";
-    this.storeOrder(order);
+    await this.storeOrder(order);
 
     return stripeUrl;
   };

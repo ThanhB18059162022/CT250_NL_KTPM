@@ -51,8 +51,27 @@ class CurrencyExchangeServiceMock {
   roundTakeTwo = jest.fn((total) => total);
 }
 
+class StorageServiceMock {
+  getSize = jest.fn();
+
+  set = jest.fn();
+
+  setex = jest.fn();
+
+  get = jest.fn(async (id) => {
+    if (id != 1) return undefined;
+
+    return { id };
+  });
+
+  delete = jest.fn();
+
+  emptyData = jest.fn((data) => data == undefined);
+}
+
 module.exports = {
   PaymentValidatorMock,
   PaymentDAOMock,
   CurrencyExchangeServiceMock,
+  StorageServiceMock,
 };
