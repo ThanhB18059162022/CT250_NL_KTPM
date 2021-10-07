@@ -2,8 +2,8 @@ const PaymentsProcessor = require("../PaymentsProcessor");
 const { NotValidError } = require("../../../errors/errorsContainer");
 
 module.exports = class ZaloPayPaymentProcessor extends PaymentsProcessor {
-  constructor(validator, dao, currencyService, zaloPaySerivce) {
-    super(validator, dao, currencyService);
+  constructor(validator, dao, currencyService, zaloPaySerivce, storageService) {
+    super(validator, dao, currencyService, storageService);
     this.zaloPayService = zaloPaySerivce;
   }
 
@@ -32,7 +32,7 @@ module.exports = class ZaloPayPaymentProcessor extends PaymentsProcessor {
 
     // Lưu tạm oder
     order.payment = "zalopay";
-    this.storeOrder(order);
+    await this.storeOrder(order);
 
     return zaloPayUrl;
   };

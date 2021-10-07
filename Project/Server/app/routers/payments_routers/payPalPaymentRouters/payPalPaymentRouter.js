@@ -13,6 +13,7 @@ const {
 const {
   PayPalService,
   CurrencyExchangeService,
+  StorageService,
 } = require("../../../services/servicesContainer");
 const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 const {
@@ -29,11 +30,13 @@ const { payment } = config;
 const service = new PayPalService(payment.paypal);
 const validator = new PaymentsValidator();
 const exService = new CurrencyExchangeService(payment.currency);
+const storeService = new StorageService();
 const processor = new PayPalPaymentProcessor(
   validator,
   dao,
   exService,
-  service
+  service,
+  storeService
 );
 const controller = new PayPalPaymentController(processor, config);
 

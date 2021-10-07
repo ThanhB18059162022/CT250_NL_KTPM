@@ -6,8 +6,8 @@ import Charts from "./api_services/statistic/Charts";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <Charts />
+    <App />
+    {/* <Charts /> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

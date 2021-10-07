@@ -14,6 +14,7 @@ const {
   ApiCaller,
   ZaloPayService,
   CurrencyExchangeService,
+  StorageService,
 } = require("../../../services/servicesContainer");
 const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
 const {
@@ -31,11 +32,13 @@ const { payment } = config;
 const service = new ZaloPayService(payment.zalo, apiCaller);
 const validator = new PaymentsValidator();
 const exService = new CurrencyExchangeService(payment.currency);
+const storeService = new StorageService();
 const processor = new ZaloPayPaymentProcessor(
   validator,
   dao,
   exService,
-  service
+  service,
+  storeService
 );
 const controller = new ZaloPayPaymentController(processor, config);
 
