@@ -4,9 +4,14 @@ const products = [];
 
 // https://www.thegioididong.com/dtdd/samsung-galaxy-z-fold-3
 module.exports = class ProductsDAO_Ram {
-  constructor(baseImgUri) {
+  constructor(imageSerivce) {
+    this.imageSerivce = imageSerivce;
+    this.initValues();
+  }
+  initValues = async () => {
     for (let i = 1; i <= 100; i++) {
       const product = {
+        //#region Info
         prod_no: i,
         prod_name: "Galaxy Z Fold3 | Z Flip3 5G",
         //nhà sản xuất
@@ -99,13 +104,8 @@ module.exports = class ProductsDAO_Ram {
           },
         ],
         prod_status: "",
-        prod_imgs: [
-          `${baseImgUri}/img/${1}/prod_img.jpg`,
-          `${baseImgUri}/img/${1}/prod_img1.jpg`,
-          `${baseImgUri}/img/${1}/prod_img2.jpg`,
-          `${baseImgUri}/img/${1}/prod_img3.jpg`,
-          `${baseImgUri}/img/${1}/prod_img4.jpg`,
-        ],
+        //#endregion
+        prod_imgs: await this.imageSerivce.getProductImages(1),
         prod_details: [
           {
             ram: "12 GB",
@@ -136,7 +136,8 @@ module.exports = class ProductsDAO_Ram {
 
       products.push(product);
     }
-  }
+  };
+
   //
   getProducts = async (startIndex, endIndex) => {
     let prods = products.slice(startIndex, endIndex).map((p) => {
@@ -225,6 +226,14 @@ module.exports = class ProductsDAO_Ram {
     const product = products.filter((p) => p.prod_name === prod_name)[0];
 
     return product;
+  };
+
+  addProduct = async (newProduct) => {
+    return { prod_no: 1, ...newProduct };
+  };
+
+  updateProduct = async (prod_no, product) => {
+    console.log(`Update Product: ${prod_no}`, product);
   };
 
   // Kiểm rỗng
