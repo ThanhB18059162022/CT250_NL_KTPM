@@ -25,6 +25,10 @@ module.exports = class CustomersOrdersDAO {
     if (id === 1) {
       return {
         id,
+        product: PRODUCTS.map((m) => ({
+          ...m,
+          prod_quantity: 3,
+        })),
         customer: "alexander",
         time: Date.now(),
         payment: "Paypal",
