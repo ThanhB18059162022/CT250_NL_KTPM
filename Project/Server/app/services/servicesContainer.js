@@ -14,6 +14,8 @@ const PayPalService = require("./payments_services/paypal_services/PayPalService
 const StripeService = require("./payments_services/stripe_services/StripeService");
 const ZaloPayService = require("./payments_services/zalopay_services/ZaloPaySerivce");
 
+const ImageService = require("./file_services/ImageService");
+
 module.exports = {
   ApiCaller,
 
@@ -25,4 +27,6 @@ module.exports = {
   PayPalService,
   StripeService,
   ZaloPayService,
+
+  ImageService,
 };

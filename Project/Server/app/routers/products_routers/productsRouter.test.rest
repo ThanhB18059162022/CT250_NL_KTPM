@@ -76,3 +76,36 @@ GET http://localhost:8000/api/products/name/Xiaomi
 
 ###
 GET  http://localhost:8000/api/products/price?min=0&max=60000000&page=1&limit=24
+
+
+
+# ---------------------------------------------------------------------
+
+
+
+
+# Thêm sản phẩm
+
+### Hợp lệ
+POST http://localhost:8000/api/products/
+Content-Type: application/json
+
+{
+    "prod_name": "Sản phẩm 1"
+}
+
+
+
+
+# ---------------------------------------------------------------------
+
+# Sửa sản phẩm
+
+### Hợp lệ
+PUT http://localhost:8000/api/products/1
+Content-Type: application/json
+
+{
+    "prod_name": "Sản phẩm 1"
+}
+
