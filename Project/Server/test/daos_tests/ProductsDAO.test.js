@@ -1,129 +1,131 @@
-const ProductsDAO = require("../../app/daos/products_daos/ProductsDAO");
+test("OK", () => {});
 
-// Test query cho Mysql
+// const ProductsDAO = require("../../app/daos/products_daos/ProductsDAO");
 
-const getMockProducts = () => {
-  return [
-    {
-      pro_no: 1,
-      pro_name: "Xiaomi mi-10",
-      pro_mfg: "2021",
-      pro_releaseDate: new Date(),
-      pro_screen: "blank",
-      pro_camera: "32mp",
-    },
-    {
-      pro_no: 2,
-      pro_name: "Xiaomi mi-15",
-      pro_mfg: "2021",
-      pro_releaseDate: "2021",
-      pro_screen: "blank",
-      pro_camera: "64mp",
-    },
-  ];
-};
+// // Test query cho Mysql
 
-const getProductsDAO = (sqldao) => {
-  return new ProductsDAO(sqldao);
-};
+// const getMockProducts = () => {
+//   return [
+//     {
+//       pro_no: 1,
+//       pro_name: "Xiaomi mi-10",
+//       pro_mfg: "2021",
+//       pro_releaseDate: new Date(),
+//       pro_screen: "blank",
+//       pro_camera: "32mp",
+//     },
+//     {
+//       pro_no: 2,
+//       pro_name: "Xiaomi mi-15",
+//       pro_mfg: "2021",
+//       pro_releaseDate: "2021",
+//       pro_screen: "blank",
+//       pro_camera: "64mp",
+//     },
+//   ];
+// };
 
-describe("Kiểm tra các hàm trong Product DAO Mysql có đúng query, param, số lần gọi hay không", () => {
-  test("Lấy danh sách sản phẩm", async () => {
-    //Arrange
-    const mockProducts = getMockProducts();
-    const sqldaoMock = {
-      query: jest.fn(() => Promise.resolve(mockProducts)),
-    };
-    let dao = getProductsDAO(sqldaoMock);
+// const getProductsDAO = (sqldao) => {
+//   return new ProductsDAO(sqldao);
+// };
 
-    //Act
-    const expProducts = mockProducts;
-    const actProducts = await dao.getProducts();
+// describe("Kiểm tra các hàm trong Product DAO Mysql có đúng query, param, số lần gọi hay không", () => {
+//   test("Lấy danh sách sản phẩm", async () => {
+//     //Arrange
+//     const mockProducts = getMockProducts();
+//     const sqldaoMock = {
+//       query: jest.fn(() => Promise.resolve(mockProducts)),
+//     };
+//     let dao = getProductsDAO(sqldaoMock);
 
-    //Expect
-    expect(actProducts).toBeDefined();
-    expect(expProducts.length).toEqual(actProducts.length);
-    expect(expProducts).toEqual(actProducts);
+//     //Act
+//     const expProducts = mockProducts;
+//     const actProducts = await dao.getProducts();
 
-    expect(sqldaoMock.query).toHaveBeenCalledTimes(1);
-    expect(sqldaoMock.query).toHaveBeenCalledWith("SELECT * FROM Products;");
-  });
+//     //Expect
+//     expect(actProducts).toBeDefined();
+//     expect(expProducts.length).toEqual(actProducts.length);
+//     expect(expProducts).toEqual(actProducts);
 
-  test("Lấy ra một sản phẩm theo mã", async () => {
-    //Arrange
-    const pro_no = 1;
-    const product = getMockProducts().filter((p) => p.pro_no === pro_no)[0];
+//     expect(sqldaoMock.query).toHaveBeenCalledTimes(1);
+//     expect(sqldaoMock.query).toHaveBeenCalledWith("SELECT * FROM Products;");
+//   });
 
-    const sqldaoMock = {
-      query: jest.fn(() => Promise.resolve(product)),
-    };
+//   test("Lấy ra một sản phẩm theo mã", async () => {
+//     //Arrange
+//     const pro_no = 1;
+//     const product = getMockProducts().filter((p) => p.pro_no === pro_no)[0];
 
-    let dao = getProductsDAO(sqldaoMock);
+//     const sqldaoMock = {
+//       query: jest.fn(() => Promise.resolve(product)),
+//     };
 
-    //Act
-    const expProduct = product;
-    const actProduct = await dao.getProductByNo(pro_no);
+//     let dao = getProductsDAO(sqldaoMock);
 
-    //Expect
-    expect(actProduct).toBeDefined();
-    expect(expProduct).toEqual(actProduct);
+//     //Act
+//     const expProduct = product;
+//     const actProduct = await dao.getProductByNo(pro_no);
 
-    expect(sqldaoMock.query).toHaveBeenCalledTimes(1);
-    expect(sqldaoMock.query).toHaveBeenCalledWith(
-      "SELECT * FROM Products WHERE pro_no = ?;",
-      [pro_no]
-    );
-  });
+//     //Expect
+//     expect(actProduct).toBeDefined();
+//     expect(expProduct).toEqual(actProduct);
 
-  test("Lấy ra một sản phẩm theo tên", async () => {
-    //Arrange
-    const pro_name = "Xiaomi mi-10";
-    const product = getMockProducts().filter((p) => p.pro_name === pro_name)[0];
+//     expect(sqldaoMock.query).toHaveBeenCalledTimes(1);
+//     expect(sqldaoMock.query).toHaveBeenCalledWith(
+//       "SELECT * FROM Products WHERE pro_no = ?;",
+//       [pro_no]
+//     );
+//   });
 
-    const sqldaoMock = {
-      query: jest.fn(() => Promise.resolve(product)),
-    };
+//   test("Lấy ra một sản phẩm theo tên", async () => {
+//     //Arrange
+//     const pro_name = "Xiaomi mi-10";
+//     const product = getMockProducts().filter((p) => p.pro_name === pro_name)[0];
 
-    let dao = getProductsDAO(sqldaoMock);
+//     const sqldaoMock = {
+//       query: jest.fn(() => Promise.resolve(product)),
+//     };
 
-    //Act
-    const expProduct = product;
-    const actProduct = await dao.getProductByName(pro_name);
+//     let dao = getProductsDAO(sqldaoMock);
 
-    //Expect
-    expect(actProduct).toBeDefined();
-    expect(expProduct).toEqual(actProduct);
+//     //Act
+//     const expProduct = product;
+//     const actProduct = await dao.getProductByName(pro_name);
 
-    expect(sqldaoMock.query).toHaveBeenCalledTimes(1);
-    expect(sqldaoMock.query).toHaveBeenCalledWith(
-      "SELECT * FROM Products WHERE pro_name = ?;",
-      [pro_name]
-    );
-  });
+//     //Expect
+//     expect(actProduct).toBeDefined();
+//     expect(expProduct).toEqual(actProduct);
 
-  test("Thêm một sản phẩm", async () => {
-    //Arrange
-    const product = getMockProducts()[0];
-    const addSuccess = true;
+//     expect(sqldaoMock.query).toHaveBeenCalledTimes(1);
+//     expect(sqldaoMock.query).toHaveBeenCalledWith(
+//       "SELECT * FROM Products WHERE pro_name = ?;",
+//       [pro_name]
+//     );
+//   });
 
-    const sqldaoMock = {
-      execute: jest.fn(() => Promise.resolve(addSuccess)),
-    };
+//   test("Thêm một sản phẩm", async () => {
+//     //Arrange
+//     const product = getMockProducts()[0];
+//     const addSuccess = true;
 
-    let dao = getProductsDAO(sqldaoMock);
+//     const sqldaoMock = {
+//       execute: jest.fn(() => Promise.resolve(addSuccess)),
+//     };
 
-    //Act
-    const expProduct = addSuccess;
-    const actProduct = await dao.addProduct(product);
+//     let dao = getProductsDAO(sqldaoMock);
 
-    //Expect
-    expect(actProduct).toBeDefined();
-    expect(expProduct).toEqual(actProduct);
+//     //Act
+//     const expProduct = addSuccess;
+//     const actProduct = await dao.addProduct(product);
 
-    expect(sqldaoMock.execute).toHaveBeenCalledTimes(1);
-    expect(sqldaoMock.execute).toHaveBeenCalledWith(
-      "INSERT INTO Products() VALUES()",
-      [product.pro_name]
-    );
-  });
-});
+//     //Expect
+//     expect(actProduct).toBeDefined();
+//     expect(expProduct).toEqual(actProduct);
+
+//     expect(sqldaoMock.execute).toHaveBeenCalledTimes(1);
+//     expect(sqldaoMock.execute).toHaveBeenCalledWith(
+//       "INSERT INTO Products() VALUES()",
+//       [product.pro_name]
+//     );
+//   });
+// });

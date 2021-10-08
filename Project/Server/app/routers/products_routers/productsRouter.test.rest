@@ -4,7 +4,7 @@
 
 # Mặc định page=1, limit=24
 # Trang đầu không có previous, trang cuối không có next
-GET http://localhost:8000/api/products
+GET http://localhost:8000/api/products?page=0&limit=1
 
 
 # Truyền không hợp lệ trả về mặc định của số không hợp lệ
@@ -86,13 +86,191 @@ GET  http://localhost:8000/api/products/price?min=0&max=60000000&page=1&limit=24
 
 # Thêm sản phẩm
 
-### Hợp lệ
+### Samsung Galaxy Z Fold 3
 POST http://localhost:8000/api/products/
 Content-Type: application/json
 
 {
-    "prod_name": "Sản phẩm 1"
+  "prod_name": "Galaxy Z Fold3 | Z Flip3 5G",
+  "prod_manufacturer": {
+    "brand_name": "Samsung",
+    "releaseDate": "2021-8-1",
+    "madeIn": "Trung Quốc"
+  },
+  "prod_screen": {
+    "type": "Dynamic AMOLED 2X",
+    "resolution": "Full HD+ (1768 x 2208 Pixels)",
+    "size": "Chính 7.6' & Phụ 6.2' - Tần số quét 120 Hz",
+    "glass": "Kính cường lực Corning Gorilla Glass Victus"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "3 camera 12 MP",
+      "videoQuality":
+        "4K 2160p@60fps, FullHD 1080p@240fps, FullHD 1080p@60fps, HD 720p@960fps"
+    },
+    "font": "10 MP & 4 MP 8 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "Android 11",
+    "cpu": "Snapdragon 888 8 nhân",
+    "cpuSpec": "1 nhân 2.84 GHz, 3 nhân 2.42 GHz & 4 nhân 1.8 GHz",
+    "gpu": "Adreno 660"
+  },
+  "prod_network": {
+    "telecom": "5G",
+    "SIM": "2 Nano Sim",
+    "Wifi": "Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac/ax, Wi-Fi Direct, Wi-Fi hotspot",
+    "GPS": "A-GPS, BDS, GALILEO, GLONASS",
+    "Bluetooth": "A2DP, LEv, 5.2",
+    "connector": "Type-C",
+    "others": "NFC, OTG"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "4400 mAh",
+    "batteryType": "Li-ion",
+    "chargeType": "25W"
+  },
+  "prod_utilities": [
+    { "Bảo mật": "Mở khoá vân tay cạnh viền" },
+    { "Tính năng đặc biệt": "Samsung Pay Âm thanh AKG" },
+    { "Kháng nước, bụi": "IPX8" }
+  ],
+  "prod_design": {
+    "structural": "Nguyên khối",
+    "material": "Khung nhôm & Mặt lưng kính cường lực",
+    "size": "Dài 158.2 mm - Ngang 128.1 mm - Dày 6.4 mm",
+    "weight": "271 g"
+  },
+  "prod_status": "",
+  "brand_no": 1
 }
+
+### iPhone 12 Pro Max
+POST http://localhost:8000/api/products/
+Content-Type: application/json
+
+{
+  "prod_name": "iPhone 12 Pro Max",
+  "prod_manufacturer": {
+    "brand_name": "Apple",
+    "releaseDate": "2020-10",
+    "madeIn": "Trung Quốc"
+  },
+  "prod_screen": {
+    "type": "OLED",
+    "resolution": "1284 x 2778 Pixels",
+    "size": "6.7' - Tần số quét 60 Hz",
+    "glass": "Kính cường lực Ceramic Shield"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "3 camera 12 MP",
+      "videoQuality":"4K 2160p@30fps, 4K 2160p@60fps, FullHD 1080p@30fps, HD 720p@30fps, FullHD 1080p@60fps, 4K 2160p@24fps"
+    },
+    "font": "12 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "iOS 14",
+    "cpu": "Apple A14 Bionic 6 nhân",
+    "cpuSpec": "2 nhân 3.1 GHz & 4 nhân 1.8 GHz",
+    "gpu": "Apple GPU 4 nhân"
+  },
+  "prod_network": {
+    "telecom": "Hỗ trợ 5G",
+    "SIM": "1 Nano SIM & 1 eSIM",
+    "Wifi": "Wi-Fi 802.11 a/b/g/n/ac/ax, Wi-Fi hotspot, Dual-band (2.4 GHz/5 GHz)",
+    "GPS": "BDS ,GLONASS, A-GPS",
+    "Bluetooth": "A2DP, 5.0",
+    "connector": "Lightning",
+    "others": "Lightning"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "3687 mAh",
+    "batteryType": "Li-ion",
+    "chargeType": "20W"
+  },
+  "prod_utilities": [
+    { "Bảo mật": "Mở khoá khuôn mặt Face ID" },
+    { "Kháng nước, bụi": "IP68" },
+    { "Ghi âm":"Có (microphone chuyên dụng chống ồn)"},
+    { "Xem phim":"H.264(MPEG4-AVC)"},
+    { "Nghe nhạc":"Lossless, AAC, MP3, FLAC"}
+  ],
+  "prod_design": {
+    "structural": "Nguyên khối",
+    "material": "Khung thép không gỉ & Mặt lưng kính cường lực",
+    "size": "Dài 160.8 mm - Ngang 78.1 mm - Dày 7.4 mm",
+    "weight": "228 g"
+  },
+  "prod_status": "",
+  "brand_no": 2
+}
+
+### OPPO Reno6 Z 5G
+POST http://localhost:8000/api/products/
+Content-Type: application/json
+
+{
+  "prod_name": "OPPO Reno6 Z 5G",
+  "prod_manufacturer": {
+    "brand_name": "Oppo",
+    "releaseDate": "2021-7",
+    "madeIn": "Trung Quốc"
+  },
+  "prod_screen": {
+    "type": "AMOLED",
+    "resolution": "Full HD+ (1080 x 2400 Pixels)",
+    "size": "6.43' - Tần số quét 60 Hz",
+    "glass": "Kính cường lực Corning Gorilla Glass 5"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "Chính 64 MP & Phụ 8 MP, 2 MP",
+      "videoQuality":"4K 2160p@30fps, FullHD 1080p@30fps, HD 720p@30fps"
+    },
+    "font": "32 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "Android 11",
+    "cpu": "MediaTek Dimensity 800U 5G 8 nhân",
+    "cpuSpec": "2 nhân 2.4 GHz & 6 nhân 2 GHz",
+    "gpu": "Mali-G57 MC3"
+  },
+  "prod_network": {
+    "telecom": "Hỗ trợ 5G",
+    "SIM": "2 Nano SIM",
+    "Wifi": "Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac, Wi-Fi Direct, Wi-Fi hotspot",
+    "GPS":"A-GPS ,BDS, GALILEO, GLONASS",
+    "Bluetooth": "A2DP, LE, v5.1",
+    "connector": "Type-C",
+    "others": "OTG"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "4310 mAh",
+    "batteryType": "Li-Po",
+    "chargeType": "30W"
+  },
+  "prod_utilities": [
+    { "Bảo mật nâng cao": "Mở khoá khuôn mặt, Mở khoá vân tay dưới màn hình" },
+    { "Tính năng đặt biệt" :"Chạm 2 lần sáng màn hình, Ứng dụng kép (Nhân bản ứng dụng)" },
+    { "Kháng nước, bụi": "Không có" },
+    { "Ghi âm":"Có"},
+    { "Raido": "Có" },
+    { "Xem phim":"3GP, AVI, MP4, WMV"},
+    { "Nghe nhạc":"AAC, AMR, MP3, WAV, WMA"}
+  ],
+  "prod_design": {
+    "structural": "Nguyên khối",
+    "material": "Khung hợp kim & Mặt lưng thuỷ tinh hữu cơ",
+    "size": "Dài 160.2 mm - Ngang 73.38 mm - Dày 7.97 mm",
+    "weight": "Nặng 173 g"
+  },
+  "prod_status": "",
+  "brand_no": 2
+}
+
+
 
 
 

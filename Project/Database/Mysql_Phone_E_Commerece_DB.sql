@@ -6,10 +6,10 @@ CREATE OR REPLACE DATABASE Phone_E_Commerece_DB;
 
 CREATE TABLE Customers(
   cus_no INT AUTO_INCREMENT, -- Mã khách hàng tự tăng
-  cus_name NVARCHAR(70) NOT NULL, -- Họ tên khách hàng
-  cus_id CHAR(12) NOT NULL UNIQUE, -- Chứng minh nhân dân
-  cus_email VARCHAR(128) NOT NULL UNIQUE, -- Email của khách
-  cus_sex BOOL NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
+  cus_name VARCHAR(70) , -- Họ tên khách hàng
+  cus_id CHAR(12) , -- Chứng minh nhân dân
+  cus_email VARCHAR(128) , -- Email của khách
+  cus_sex TINYINT(1) NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
  
  -- Khóa chính
   CONSTRAINT Customers_PK PRIMARY KEY (cus_no)
@@ -18,12 +18,12 @@ CREATE TABLE Customers(
 -- Bảng quản trị viên
 CREATE TABLE Moderators(
   mod_no INT AUTO_INCREMENT, -- Mã quản trị viên tự tăng
-  mod_name NVARCHAR(70) NOT NULL, -- Họ tên quản trị viên
+  mod_name VARCHAR(70) NOT NULL, -- Họ tên quản trị viên
   mod_id CHAR(12) NOT NULL UNIQUE, -- Chứng minh nhân dân
   mod_phoneNumber VARCHAR(12) NOT NULL UNIQUE, -- Số điện thoại
-  mod_sex BOOL NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
-  mod_address NVARCHAR(128) NOT NULL, -- Địa chỉ
-  mod_role BOOL NOT NULL DEFAULT '0', -- Vai trò 0 là nhân viên 1 là quản lý
+  mod_sex TINYINT(1) NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
+  mod_address VARCHAR(128) NOT NULL, -- Địa chỉ
+  mod_role TINYINT(1) NOT NULL DEFAULT '0', -- Vai trò 0 là nhân viên 1 là quản lý
 
  -- Khóa chính
   CONSTRAINT Moderators_PK PRIMARY KEY (mod_no)
@@ -46,8 +46,8 @@ CREATE TABLE Accounts(
 -- Bảng địa chỉ
 CREATE TABLE Addresses(
   addr_no INT AUTO_INCREMENT, -- Mã địa chỉ tự tăng
-  addr_location NVARCHAR(100) NOT NULL UNIQUE, -- Địa chỉ phải độc nhất
-  addr_phoneNumber NVARCHAR(12) NOT NULL UNIQUE, -- Số điện thoại phải độc nhất
+  addr_location VARCHAR(100) , -- Địa chỉ
+  addr_phoneNumber VARCHAR(12) , -- Số điện thoại
   cus_no INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng 
  
  -- Khóa chính
@@ -61,7 +61,7 @@ CREATE TABLE Addresses(
 -- Bảng thương hiệu
 CREATE TABLE Brands(
   brand_no INT AUTO_INCREMENT, -- Mã thương hiệu tự tăng
-  brand_name NVARCHAR(128) NOT NULL UNIQUE, -- Tên thương hiệu phải độc nhất
+  brand_name VARCHAR(128) NOT NULL UNIQUE, -- Tên thương hiệu phải độc nhất
 
  -- Khóa chính
   CONSTRAINT Brands_PK PRIMARY KEY (brand_no)
@@ -70,16 +70,16 @@ CREATE TABLE Brands(
 -- Bảng sản phẩm
 CREATE TABLE Products(
   prod_no INT AUTO_INCREMENT, -- Mã sản phẩm tự tăng
-  prod_name NVARCHAR(50) NOT NULL UNIQUE, -- Tên sản phẩm phải độc nhất
-  prod_mfg DATETIME NOT NULL DEFAULT NOW(), -- Ngày sản xuất
-  prod_releaseDate DATETIME NOT NULL DEFAULT NOW(), -- Ngày bán
-  prod_screen NVARCHAR(128) NOT NULL, -- Màn hình
-  prod_camera NVARCHAR(128) NOT NULL, -- Camera
-  prod_size NVARCHAR(128) NOT NULL, -- Kích thước
-  prod_battery NVARCHAR(128) NOT NULL, -- Pin và sạc
-  prod_os NVARCHAR(128) NOT NULL, -- Hệ điều hành
-  prod_hardware NVARCHAR(128) NOT NULL, -- Phần cứng
-  prod_status INT NOT NULL DEFAULT '0', -- Trạng thái sản phẩm
+  prod_name VARCHAR(50) NOT NULL UNIQUE, -- Tên sản phẩm phải độc nhất
+  prod_manufacturer VARCHAR(1000) NOT NULL , -- Nhà sản xuất
+  prod_screen VARCHAR(1000) NOT NULL, -- Màn hình
+  prod_camera VARCHAR(1000) NOT NULL, -- Camera
+  prod_hardwareAndOS VARCHAR(1000) NOT NULL, -- Phần cứng và hệ điều hành
+  prod_network VARCHAR(1000) NOT NULL, -- Mạng kết nối
+  prod_batteryAndCharger VARCHAR(1000) NOT NULL, -- Pin và sạc
+  prod_utilities VARCHAR(1000) NOT NULL, -- Tiện ích
+  prod_design VARCHAR(1000) NOT NULL, -- Thiết kế
+  prod_status TINYINT(1) NOT NULL DEFAULT '0', -- Trạng thái sản phẩm
   brand_no INT NOT NULL, -- Thương hiệu khóa ngoại tham chiếu bảng thương hiệu
 
  -- Khóa chính
@@ -105,7 +105,7 @@ CREATE TABLE Images(
 -- Bảng đánh giá
 CREATE TABLE Feedbacks(
   fb_no INT AUTO_INCREMENT, -- Mã đánh giá tự tăng
-  fb_content NVARCHAR(500) NOT NULL, -- Nội dung đánh giá
+  fb_content VARCHAR(500) NOT NULL, -- Nội dung đánh giá
   fb_time DATETIME NOT NULL DEFAULT NOW() , -- Thời gian đánh giá
   prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
   cus_no INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng
@@ -121,7 +121,7 @@ CREATE TABLE Feedbacks(
 -- Bảng trả lời
 CREATE TABLE Replies(
   rep_no INT AUTO_INCREMENT, -- Mã trả lời tự tăng
-  rep_content NVARCHAR(500) NOT NULL, -- Nội dung trả lời
+  rep_content VARCHAR(500) NOT NULL, -- Nội dung trả lời
   rep_time DATETIME NOT NULL DEFAULT NOW() , -- Thời gian trả lời
   mod_no INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên
   fb_no INT NOT NULL, -- Mã đánh giá khóa ngoại tham chiếu bảng đánh giá
@@ -152,7 +152,7 @@ CREATE TABLE Bills(
   bill_no INT AUTO_INCREMENT, -- Mã hóa đơn tự tăng
   bill_time DATETIME NOT NULL DEFAULT NOW(), -- Thời gian ra hóa đơn
   bill_total DECIMAL(15, 2) NOT NULL DEFAULT '0', -- Số tiền cho hóa đơn
-  bill_status INT NOT NULL DEFAULT '0', -- Trạng thái hóa đơn
+  bill_status TINYINT(1) NOT NULL DEFAULT '0', -- Trạng thái hóa đơn
   mod_no INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên 
   order_no INT NOT NULL, -- Mã giỏ hàng tham chiếu bảng giỏ hàng
   addr_no INT NOT NULL, -- Mã địa chỉ tham chiếu bảng địa chỉ
@@ -170,7 +170,9 @@ CREATE TABLE Bills(
 -- Bảng chi tiết sản phẩm
 CREATE TABLE Products_Details(
   pd_no INT AUTO_INCREMENT, -- Mã chi tiết sản phẩm tự tăng
-  pd_memory VARCHAR(10) NOT NULL, -- BỘ NHỚ
+  pd_ram VARCHAR(10) NOT NULL, -- RAM
+  pd_storage VARCHAR(10) NOT NULL, -- Bộ nhớ
+  pd_storageAvailable VARCHAR(10) NOT NULL, -- Bộ nhớ khả dụng
   pd_price DECIMAL(15, 2) NOT NULL, -- Giá
   pd_amount INT NOT NULL, -- Số lượng
   pd_sold INT NOT NULL, -- Số lượng đã bán

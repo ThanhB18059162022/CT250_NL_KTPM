@@ -19,12 +19,12 @@ module.exports = class Processor {
   // Tham khảo https://www.youtube.com/watch?v=ZX3qt0UWifc&list=PLYgHz24Rupn93bdW1uJszXkUh2h52dzn1
   getStartEndIndex = (page, limit) => {
     page = parseInt(page);
-    if (isNaN(page)) {
+    if (isNaN(page) || page < 1) {
       page = 1;
     }
 
     limit = parseInt(limit);
-    if (isNaN(limit)) {
+    if (isNaN(limit) || limit < 0) {
       limit = 1;
     }
 

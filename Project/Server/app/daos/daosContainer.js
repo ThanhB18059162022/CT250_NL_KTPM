@@ -1,11 +1,11 @@
 // Facade Lớp lưu export
 // Sẽ require thông qua lớp này
 
-const MysqlDAOFake = require("./MysqlDAOFake");
 const MysqlDAO = require("./MysqlDAO");
 
 const AuthenticationDAO_Ram = require("./authentication_daos/AuthenticationDAO_Ram");
 
+const ProductsDAO = require("./products_daos/ProductsDAO");
 const ProductDAO_Ram = require("./products_daos/ProductsDAO_Ram");
 
 const CustomersOrdersDAO_Ram = require("./customers_orders_daos/CustomersOrdersDAO_Ram");
@@ -19,7 +19,7 @@ module.exports = {
 
   AuthenticationDAO: AuthenticationDAO_Ram,
 
-  ProductsDAO: ProductDAO_Ram,
+  ProductsDAO,
 
   CustomersOrdersDAO: CustomersOrdersDAO_Ram,
 
