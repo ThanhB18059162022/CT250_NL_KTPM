@@ -76,9 +76,7 @@ const FeedbackList = () => {
         <>
             <div className="ListLayout">
                 <AdminSearchInput/>
-                <div className="AdminListClass BorderFormat">
-                    <p className="Title">Danh sách đánh giá</p>
-                    <li className="FeedbackList">
+                <li className="FeedbackListHeader">
                         <p>Mã đánh giá</p>
                         <p>Người đánh giá</p>
                         <p>Nội dung</p>
@@ -87,7 +85,7 @@ const FeedbackList = () => {
                         <p>Số phản hồi</p>
                         <p>Hành động</p>
                     </li>
-                    <hr/>
+                <div className="AdminListClass">
                     {obj2.map((item,index)=><Feedback key={index} info={item} cusStyle={cusStyle} setFbNo={setFbNo} setFbInfo={setFbInfo} show={show} setShow={setShow} notify={notify} notifyDeleteProduct={notifyDeleteProduct}/>)}
                 </div>
                 {displayFbInfoForm()}
@@ -110,7 +108,6 @@ const Feedback = (props) => {
                 <p>...</p>
                 <p><AdminButton IconName={faEye} style={cusStyle} ClickEvent={()=>{setFbInfo(1); setFbNo(info.fb_no)}}/> <AdminButton IconName={faTrashAlt} style={cusStyle} ClickEvent={notifyDeleteProduct}/></p>
             </li>
-            <hr/>
             <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
         </>
     )

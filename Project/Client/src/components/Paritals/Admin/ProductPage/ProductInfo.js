@@ -3,6 +3,67 @@ import "../Admin.Style.scss"
 const ProductInfo = (props) => {
     const {productFullInfo, setProductFullInfo, newProductFullInfo, setNewProductFullInfo} = props
 
+    //test
+    // const imgUpload = document.getElementById("imageUpload")
+    // if(imgUpload){
+    //     imgUpload.addEventListener("change", (e) => {
+    //         // Lấy thông tin tập tin được đăng tải
+    //         const files  = e.target.files;
+    //         // Đọc thông tin tập tin đã được đăng tải
+    //         let reader
+    //         for(let i=0; i<files.length; i++)
+    //         {
+    //             reader = new FileReader()
+    //             reader.readAsDataURL(files[i])
+    //             // Quá trình đọc tập tin hoàn thành
+    //             if(reader) 
+    //                 reader.addEventListener("load", (e) => {
+    //                 // Lấy chuỗi Binary thông tin hình ảnh
+    //                     const img = e.target.result;
+    //                     setProductFullInfo({...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, img]})
+    //                 })
+    //         }
+    //     })
+    // }
+
+    const uploadImage = async(e) => {
+        // console.log(productFullInfo)
+        const files  = e.target.files;
+            // Đọc thông tin tập tin đã được đăng tải
+            // let reader
+        let imgs = []
+        for(let i=0; i<files.length; i++)
+        {
+            // let reader = new FileReader()
+            // reader.readAsDataURL(files[i])
+            // // Quá trình đọc tập tin hoàn thành
+            // if(reader) 
+            //     reader.addEventListener("load", (e) => {
+            //     // Lấy chuỗi Binary thông tin hình ảnh
+            //         const img = e.target.result;
+            //         setProductFullInfo({...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, img]})
+            //     })
+            let img = await getBase64(files[i])
+            imgs.push(img)
+            // console.log(tmp)
+            
+        }
+        setProductFullInfo({...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, ...imgs]})
+    }
+    
+    const getBase64 = (file) =>{
+        return new Promise(resolve=>{
+            let reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = resolve
+        })
+        .then(resolve=>{
+            return resolve.srcElement.result
+            // return new Promise(resolve=>img.onload = resolve)
+        })
+
+    }
+
     return(
         <>
         {productFullInfo?( 
@@ -112,7 +173,7 @@ const ProductInfo = (props) => {
                         </div>
                         <div>
                             <p>Tiện ích:</p>
-                            <input name="txtUtilities" type="text" value={"đang cập nhật"}/> <br/>
+                            <input name="txtUtilities" type="text" defaultValue={"đang cập nhật"}/> <br/>
                         </div>
                         <div>
                             <p>Thiết kế:</p>
@@ -123,12 +184,19 @@ const ProductInfo = (props) => {
                             <input name="txtMaterial" type="text" value={productFullInfo.prod_design.material} onChange={e=>setProductFullInfo({...productFullInfo, prod_design: {...productFullInfo.prod_design, material: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Kích thước, khối lượng:</p>
-                            <input name="txtSizeAndWeight" type="text" value={productFullInfo.prod_design.sizeAndWeigth} onChange={e=>setProductFullInfo({...productFullInfo, prod_design: {...productFullInfo.prod_design, sizeAndWeigth: e.target.value}})}/> <br/>
+                            <p>Kích thước:</p>
+                            <input name="txtSizeAndWeight" type="text" value={productFullInfo.prod_design.size} onChange={e=>setProductFullInfo({...productFullInfo, prod_design: {...productFullInfo.prod_design, size: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Khối lượng:</p>
+                            <input name="txtSizeAndWeight" type="text" value={productFullInfo.prod_design.weight} onChange={e=>setProductFullInfo({...productFullInfo, prod_design: {...productFullInfo.prod_design, weight: e.target.value}})}/> <br/>
                         </div>
                         <div>
                             <p>Hình ảnh:</p>
-                            <input type="file" id="myFile" name="imgUpload" multiple />
+                            <input type="file" onChange={uploadImage} accept='image/*' id="imageUpload" multiple/>
+                        </div>
+                        <div className="ImageContainer">
+                            {showProductImage(productFullInfo)}
                         </div>
                     </form>
                 </div>
@@ -251,17 +319,34 @@ const ProductInfo = (props) => {
                             <input name="txtMaterial" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_design: {...newProductFullInfo.prod_design, material: e.target.value}})}/> <br/>
                         </div>
                         <div>
-                            <p>Kích thước, khối lượng:</p>
-                            <input name="txtSizeAndWeight" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_design: {...newProductFullInfo.prod_design, sizeAndWeigth: e.target.value}})}/> <br/>
+                            <p>Kích thước</p>
+                            <input name="txtSizeAndWeight" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_design: {...newProductFullInfo.prod_design, size: e.target.value}})}/> <br/>
+                        </div>
+                        <div>
+                            <p>Khối lượng:</p>
+                            <input name="txtSizeAndWeight" type="text" onChange={e=>setNewProductFullInfo({...newProductFullInfo, prod_design: {...newProductFullInfo.prod_design, weight: e.target.value}})}/> <br/>
                         </div>
                         <div>
                             <p>Hình ảnh:</p>
-                            <input type="file" id="myFile" name="imgUpload" multiple />
+                            <input type="file" onChange={uploadImage} accept='image/*' id="myFile" name="imgUpload"  multiple />
                         </div>
                     </form>
                 </div>
             </>
         )}
+        </>
+    )
+}
+
+//hiển thị ảnh sản phẩm
+const showProductImage = (props) => {
+    return(
+        <>
+            {props?(
+                props.prod_imgs.map((item, index)=> <><img key={index} alt="test" src={item} className="ProductImg" onClick={()=>alert("xoa anh " + index)}></img></>)
+            ):(
+                <></>
+            )}
         </>
     )
 }

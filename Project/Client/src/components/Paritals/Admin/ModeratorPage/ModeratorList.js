@@ -59,7 +59,7 @@ const MorderatorList = (props) => {
     },[])
     //gán id cho mod thêm mới
     useEffect(()=>{
-       setNewModNo(mods.length+1)
+        setNewModNo(mods.length+1)
     },[mods])
     //thêm mod mới vào mảng
     useEffect(()=>{
@@ -74,9 +74,7 @@ const MorderatorList = (props) => {
     return(
         <div className="ListLayout">
             <AdminSearchInput filterModerator={filterModerator}/>
-            <div className="AdminListClass BorderFormat">
-                <p className="Title">Danh sách quản trị viên</p>
-                <li className="ModeratorList">
+            <li className="ModeratorListHeader">
                     <p>Mã quản trị</p>
                     <p>Họ tên</p>
                     <p>CMND</p>
@@ -85,7 +83,7 @@ const MorderatorList = (props) => {
                     <p>Địa chỉ</p>
                     <p>Hành động</p>
                 </li>
-                <hr/>
+            <div className="AdminListClass">
                 {filter.length===0?(
                     mods.map((item, index)=><Moderator key={index} info={item} cusStyle={cusStyle} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin}/>)
                 ):(
@@ -110,7 +108,6 @@ const Moderator = (props) => {
                 <p>{info.mod_address}</p>
                 <p><AdminButton style={cusStyle} IconName={faEdit} ClickEvent={()=>{setEditMod(1); setModInfo(info)}}/> <AdminButton style={cusStyle} IconName={faTrashAlt} ClickEvent={()=>notifyDeleteAdmin(info.mod_no)}/></p>
             </li>
-            <hr/>
             <Notifications {...notify} isShow={show} onHideRequest={setShow} />
         </>
     )
