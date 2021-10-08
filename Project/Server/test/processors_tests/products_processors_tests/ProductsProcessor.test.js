@@ -72,6 +72,8 @@ class ProductsDAOMock {
     return product;
   });
 
+  getProductDetails = jest.fn();
+
   // Trả về prod_no
   addProduct = jest.fn(async (newProduct) => {
     return newProduct;
@@ -99,15 +101,31 @@ class ProductsValidatorMock {
   });
 }
 
+class ProductConverterServiceMock {
+  toProduct = jest.fn((p) => p);
+  toProducts = jest.fn((p) => p);
+  toDbProduct = jest.fn();
+}
+
+class ImageServiceMock {
+  getProductImages = jest.fn();
+}
 //#endregion
 
 // Test các api endpoints của products processor
 
 let daoMock;
 let validatorMock;
+let converterMock;
+let imgServiceMock;
 
 function getProcessor() {
-  return new ProductsProcessor(validatorMock, daoMock);
+  return new ProductsProcessor(
+    validatorMock,
+    daoMock,
+    converterMock,
+    imgServiceMock
+  );
 }
 
 //#region GET
@@ -116,6 +134,8 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
   beforeEach(() => {
     daoMock = new ProductsDAOMock();
     validatorMock = new ProductsValidatorMock();
+    converterMock = new ProductConverterServiceMock();
+    imgServiceMock = new ImageServiceMock();
   });
 
   test("Lấy danh sách sản phẩm ", async () => {
@@ -135,8 +155,6 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
-    expect(actRs).toEqual(expRs);
-
     expect(daoMock.getProducts).toBeCalledTimes(1);
     expect(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
   });

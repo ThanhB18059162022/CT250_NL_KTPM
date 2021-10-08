@@ -7,7 +7,7 @@ INSERT INTO Brands(brand_name) VALUES(N'Xiaomi');
 INSERT INTO Brands(brand_name) VALUES(N'NOKIA');
 INSERT INTO Brands(brand_name) VALUES(N'Vsmart');
 
--- Samsung Galaxy Z Fold3 | Z Flip3 5aG
+-- Samsung Galaxy Z Fold3 | Z Flip3 5G
 
 INSERT INTO Products( 
     prod_name,
@@ -22,7 +22,7 @@ INSERT INTO Products(
     brand_no) 
 VALUES    
     (
-        'Galaxy Z Fold3 | Z Flip3 5aG',
+        'Galaxy Z Fold3 | Z Flip3 5G',
         '{"brand_name":"Samsung","releaseDate":"2021-8-1","madeIn":"Trung Quốc"}',
         '{"type":"Dynamic AMOLED 2X","resolution":"Full HD+ (1768 x 2208 Pixels)","size":"Chính 7.6\' & Phụ 6.2\' - Tần số quét 120 Hz","glass":"Kính cường lực Corning Gorilla Glass Victus"}',
         '{"rear":{"spec":"3 camera 12 MP","videoQuality":"4K 2160p@60fps, FullHD 1080p@240fps, FullHD 1080p@60fps, HD 720p@960fps"},"font":"10 MP & 4 MP 8 MP"}',
