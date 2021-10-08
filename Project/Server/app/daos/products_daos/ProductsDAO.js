@@ -53,27 +53,27 @@ module.exports = class ProductsDAO {
 
   addProduct = async (product) => {
     const dbParams = Object.entries(product).map((en) => en[1]);
-    console.log(dbParams);
-    // await this.sqldao.execute(
-    //   `INSERT INTO Products(
-    //     prod_name,
-    //     prod_manufacturer,
-    //     prod_screen,
-    //     prod_camera,
-    //     prod_hardwareAndOS,
-    //     prod_network,
-    //     prod_batteryAndCharger,
-    //     prod_utilities,
-    //     prod_design,
-    //     brand_no
-    //     )
-    //     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    //   dbParams
-    // );
 
-    // const { prod_no } = await this.getProductByName(product.prod_name);
+    await this.sqldao.execute(
+      `INSERT INTO Products(
+        prod_name,
+        prod_manufacturer,
+        prod_screen,
+        prod_camera,
+        prod_hardwareAndOS,
+        prod_network,
+        prod_batteryAndCharger,
+        prod_utilities,
+        prod_design,
+        brand_no
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      dbParams
+    );
 
-    // return prod_no;
+    const { prod_no } = await this.getProductByName(product.prod_name);
+
+    return prod_no;
   };
 
   updateProduct = async (prod_no, product) => {

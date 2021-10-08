@@ -1,4 +1,5 @@
 const Processor = require("../Processor");
+const { ExistError } = require("../../errors/errorsContainer");
 
 module.exports = class ProductsProcessor extends Processor {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
@@ -171,7 +172,7 @@ module.exports = class ProductsProcessor extends Processor {
 
     // Kiểm tra trùng tên sản phẩm khác
     const { prod_name } = newProduct;
-    await this.existName(prod_name, `prod_name: ${prod_name}`);
+    await this.checkDuplicateName(prod_name, `prod_name: ${prod_name}`);
 
     // Thêm vào CSDL trả về prod_no mới thêm
     const dbProduct = this.converterService.toDbProduct(newProduct);
@@ -181,39 +182,42 @@ module.exports = class ProductsProcessor extends Processor {
   };
 
   // Cập nhật sản phẩm
-  updateProduct = async (prod_noParam, newInfo) => {
-    const prod_no = Number(prod_noParam);
+  updateProduct = async (prod_no, newInfo) => {
     this.checkValidate(() => this.validator.validateProduct(newInfo));
 
-    const oldInfo = await this.checkExistAsync(
-      async () => await this.getProductByNo(prod_no),
-      this.dao.emptyData,
-      `prod_no: ${prod_no} not exist`
-    );
+    const oldInfo = await this.getProductByNo(prod_no);
 
     // Kiểm tra trùng tên sản phẩm khác
-    await this.existNameNotOldName(newInfo.prod_name, prod_no, oldInfo.prod_no);
+    await this.checkDuplicateNameNotOldName(
+      newInfo.prod_name,
+      oldInfo.prod_no,
+      `prod_name: ${newInfo.prod_name}`
+    );
 
     // Cập nhật thông tin
     const dbProduct = this.converterService.toDbProduct(newInfo);
-    await this.dao.updateProduct(prod_no, dbProduct);
+    await this.dao.updateProduct(oldInfo.prod_no, dbProduct);
   };
 
   //#region EX
 
-  existName = async (prod_name, message) => {
-    await this.existData(
+  checkDuplicateName = async (prod_name, message) => {
+    await this.checkExistData(
       async () => await this.getProductByName(prod_name),
       message
     );
   };
 
-  existNameNotOldName = async (prod_name, newId, oldId, message) => {
-    await this.existDataNotOldData(
-      async () => await this.existName(prod_name, message),
-      newId,
-      oldId
-    );
+  checkDuplicateNameNotOldName = async (prod_name, prod_no, message) => {
+    try {
+      const prodWithName = await this.getProductByName(prod_name);
+
+      if (this.notOldData(prod_no, prodWithName.prod_no)) {
+        throw new ExistError(message);
+      }
+    } catch (error) {
+      throw error;
+    }
   };
 
   //#endregion

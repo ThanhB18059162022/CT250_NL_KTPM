@@ -72,7 +72,7 @@ class ModeratorDAOMock {
   });
 
   getModeratorByMod_Id = jest.fn(async (mod_id) => {
-    return moderators.filter((m) => m.mod_id === mod_id)[0];
+    return moderators.filter((m) => m.mod_id == mod_id)[0];
   });
 
   getModeratorByUsername = jest.fn(async (mod_username) => {
@@ -588,8 +588,8 @@ describe("Proc Sửa thông tin quản trị viên", () => {
   test("Số CMND đã tồn tại - EX", async () => {
     //Arrange
     const mod_no = 2;
-    const moderator = { ...moderators[0], mod_phoneNumber: "11" };
-
+    const { mod_phoneNumber } = moderators[1];
+    const newInfo = { ...moderators[0], mod_phoneNumber };
     const processor = getProcessor();
 
     //Act
@@ -597,7 +597,7 @@ describe("Proc Sửa thông tin quản trị viên", () => {
 
     let actRs;
     try {
-      await processor.updateModerator(mod_no, moderator);
+      await processor.updateModerator(mod_no, newInfo);
     } catch (error) {
       actRs = error;
     }
