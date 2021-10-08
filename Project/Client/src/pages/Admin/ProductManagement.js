@@ -29,7 +29,7 @@ const ProductManagement = () => {
         setNewProductNo(productsList.length+1)
     },[productsList])
 
-    if(Object.keys(newProduct).length != 0){
+    if(Object.keys(newProduct).length !== 0){
         setProductsList([...productsList, newProduct])
         setNewProduct({})
     }

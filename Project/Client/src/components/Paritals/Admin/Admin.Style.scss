@@ -96,18 +96,119 @@
 
 .ListLayout{
     margin-top: 3%;
+    .ProductListHeader{
+        display: flex;
+        width: 80%;
+        background-color: rgba(165, 165, 165, 0.466);
+        margin: auto;
+        padding: 10px 0;
+        border: 1px solid black;
+        font-weight: bold;
+        p{
+            text-align: center;
+            padding: 2px 0;
+            &:nth-child(1){
+                width: 8%;
+            }
+            &:nth-child(2){
+                width: 30%;
+            }
+            &:nth-child(3){
+                width: 8%;
+            }
+            &:nth-child(4){
+                width: 40%;
+            }
+            &:nth-child(5){
+                width: 6%;
+            }
+            &:nth-child(6){
+                width: 8%;
+            }
+        }
+    }
+    .ModeratorListHeader{
+        display: flex;
+        width: 80%;
+        background-color: rgba(165, 165, 165, 0.466);
+        margin: auto;
+        padding: 10px 0;
+        border: 1px solid black;
+        font-weight: bold;
+        p{
+            text-align: center;
+            padding: 2px 0;
+            &:nth-child(1){
+                width: 8%;
+            }
+            &:nth-child(2){
+                width: 20%;
+            }
+            &:nth-child(3){
+                width: 12%;
+            }
+            &:nth-child(4){
+                width: 10%;
+            }
+            &:nth-child(5){
+                width: 7%;
+            }
+            &:nth-child(6){
+                width: 35%;
+            }
+            &:nth-child(7){
+                width: 8%;
+            }
+        }
+    }
+    .FeedbackListHeader{
+        display: flex;
+        width: 80%;
+        background-color: rgba(165, 165, 165, 0.466);
+        margin: auto;
+        padding: 10px 0;
+        border: 1px solid black;
+        font-weight: bold;
+        p{
+            text-align: center;
+            padding: 2px 0;
+            &:nth-child(1){
+                width: 8%;
+            }
+            &:nth-child(2){
+                width: 15%;
+            }
+            &:nth-child(3){
+                width: 32%;
+            }
+            &:nth-child(4){
+                width: 20%;
+            }
+            &:nth-child(5){
+                width: 10%;
+            }
+            &:nth-child(6){
+                width: 7%;
+            }
+            &:nth-child(7){
+                width: 8%;
+            }
+        }
+    }                
     .AdminListClass{
         height: 700px;
         overflow-y: auto;
+        width: 80%;
+        margin: auto;
         .ProductList{
             display: flex;
             width: 100%;
+            background-color: rgba(165, 165, 165, 0.466);
+            margin: 10px 0;
+            padding: 10px 0;
             p{
                 text-align: center;
                 padding: 2px 0;
-                &:not(:last-child){
-                    border-right: 2px solid black;
-                }
                 &:nth-child(1){
                     width: 8%;
                 }
@@ -128,22 +229,15 @@
                 }
             }
         }
-        hr{
-            width: 99%;
-            margin: 3px auto;
-            &:last-child{
-                display: none;
-            }
-        }
         .FeedbackList{
             display: flex;
             width: 100%;
+            background-color: rgba(165, 165, 165, 0.466);
+            margin: 10px 0;
+            padding: 10px 0;
             p{
                 text-align: center;
                 padding: 2px 0;
-                &:not(:last-child){
-                    border-right: 2px solid black;
-                }
                 &:nth-child(1){
                     width: 8%;
                 }
@@ -170,12 +264,12 @@
         .ModeratorList{
             display: flex;
             width: 100%;
+            background-color: rgba(165, 165, 165, 0.466);
+            margin: 10px 0;
+            padding: 10px 0;
             p{
                 text-align: center;
                 padding: 2px 0;
-                &:not(:last-child){
-                    border-right: 2px solid black;
-                }
                 &:nth-child(1){
                     width: 8%;
                 }
@@ -219,6 +313,19 @@
                 margin-left: 2%;
                 padding: 2px;
                 font-size: 16px;
+            }
+        }
+        .ImageContainer{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            margin: auto;
+            height: auto;
+            .ProductImg{
+                border: 1px solid black;
+                margin: 5px;
+                width: 10%;
             }
         }
     }

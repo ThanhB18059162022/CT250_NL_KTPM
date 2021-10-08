@@ -1,4 +1,4 @@
-import { faEdit, faSave, faTrashAlt, faWindowClose } from "@fortawesome/free-solid-svg-icons";
+import { faSave, faTrashAlt, faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { AdminButton } from "../../../Controls"
 import { useState } from "react";
 import Notifications from "../../../../common/Notifications";
@@ -34,7 +34,7 @@ const ProductDetail = (props) => {
         setShow(true)
     }
 
-    const [detail, setDetail] = useState({ram: "", storage: "", storageAvailable: "", price: 0, amount: 0})
+    const [detail, setDetail] = useState({ram: "", storage: "", storageAvailable: "", price: 0, totalProducts: 0})
 
     const getDetail = () => {
         setProductDetails([...productDetails, detail])
@@ -74,7 +74,7 @@ const ProductDetail = (props) => {
                         </div>
                         <div>
                             <p>Số lượng:</p>
-                            <input name="txtPDAmount" type="text" onChange={e=>setDetail({...detail,amount: Number(e.target.value)})} /> <br/>
+                            <input name="txtPDAmount" type="text" onChange={e=>setDetail({...detail,totalProducts: Number(e.target.value)})} /> <br/>
                         </div>
                     </form>
                 </div>
@@ -89,23 +89,27 @@ const ProductDetail = (props) => {
                     <form className="ProductDetailForm">
                         <div>
                             <p>Ram:</p>
-                            <input name="txtPDRam" type="text" onChange={e=>setDetail({...detail,ram: e.target.value})} defaultValue={productDetail.ram}/> <br/>
+                            <input name="txtPDRam" type="text" onChange={e=>setDetail({...detail,ram: e.target.value})} value={productDetail.ram}/> <br/>
                         </div>
                         <div>
                             <p>Bộ nhớ:</p>
-                            <input name="txtPDStorage" type="text" onChange={e=>setDetail({...detail,storage: e.target.value})} defaultValue={productDetail.storage}/> <br/>
+                            <input name="txtPDStorage" type="text" onChange={e=>setDetail({...detail,storage: e.target.value})} value={productDetail.storage}/> <br/>
                         </div>
                         <div>
                             <p>Bộ nhớ khả dụng:</p>
-                            <input name="txtPDStorageAvailable" type="text" onChange={e=>setDetail({...detail,storageAvailable: e.target.value})} defaultValue={productDetail.storageAvailable}/> <br/>
+                            <input name="txtPDStorageAvailable" type="text" onChange={e=>setDetail({...detail,storageAvailable: e.target.value})} value={productDetail.storageAvailable}/> <br/>
                         </div>
                         <div>
                             <p>Giá:</p>
-                            <input name="txtPDPrice" type="text" onChange={e=>setDetail({...detail,price: Number(e.target.value)})} defaultValue={productDetail.price}/> <br/>
+                            <input name="txtPDPrice" type="text" onChange={e=>setDetail({...detail,price: Number(e.target.value)})} value={productDetail.price}/> <br/>
                         </div>
                         <div>
                             <p>Số lượng:</p>
-                            <input name="txtPDAmount" type="text" onChange={e=>setDetail({...detail,amount: Number(e.target.value)})} defaultValue={productDetail.amount}/> <br/>
+                            <input name="txtPDAmount" type="text" onChange={e=>setDetail({...detail,totalProducts: Number(e.target.value)})} value={productDetail.totalProducts}/> <br/>
+                        </div>
+                        <div>
+                            <p>Đã bán:</p>
+                            <input name="txtPDAmount" type="text" value={productDetail.soldProducts} readOnly/> <br/>
                         </div>
                     </form>
                 </div>

@@ -103,13 +103,12 @@ const ProductFullInfo = (props) => {
             prod_design: {
             structural: "",
             material: "",
-            sizeAndWeigth: ""
+            size: "",
+            weight: ""
             },
             prod_feedbacks: [],
             prod_status: "",
-            prod_imgs: [
-            "undefined/img/1/prod_img.png"
-            ],
+            prod_imgs: [],
             prod_details: []
         }
     )
@@ -138,7 +137,7 @@ const ProductFullInfo = (props) => {
         }
         else
         {
-            console.log("Thông tin sản phẩm đã chỉnh sửa: " + productFullInfo)
+            console.log(productFullInfo)
             notifySaveProduct()
             setTimeout(() => {
                 setDisplayEditProduct(0)
