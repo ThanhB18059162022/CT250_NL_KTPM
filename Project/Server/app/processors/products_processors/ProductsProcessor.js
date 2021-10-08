@@ -181,7 +181,8 @@ module.exports = class ProductsProcessor extends Processor {
   };
 
   // Cập nhật sản phẩm
-  updateProduct = async (prod_no, newInfo) => {
+  updateProduct = async (prod_noParam, newInfo) => {
+    const prod_no = Number(prod_noParam);
     this.checkValidate(() => this.validator.validateProduct(newInfo));
 
     const oldInfo = await this.checkExistAsync(
@@ -191,11 +192,7 @@ module.exports = class ProductsProcessor extends Processor {
     );
 
     // Kiểm tra trùng tên sản phẩm khác
-    await this.existNameNotOldName(
-      newInfo.prod_name,
-      newInfo.prod_no,
-      oldInfo.prod_no
-    );
+    await this.existNameNotOldName(newInfo.prod_name, prod_no, oldInfo.prod_no);
 
     // Cập nhật thông tin
     const dbProduct = this.converterService.toDbProduct(newInfo);
