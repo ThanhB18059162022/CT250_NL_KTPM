@@ -15,11 +15,18 @@ module.exports = class ProductsProcessor extends Processor {
   // Lấy danh sách
   // Số trang và số lượng
   getProducts = async ({ page = 1, limit = 24 }) => {
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+    const { startIndex, endIndex, pageIndex, limitIndex } = this.getIndexes(
+      page,
+      limit
+    );
 
     const products = await this.dao.getProducts(startIndex, endIndex);
 
-    const productsPage = this.getPaginatedResults(products, page, limit);
+    const productsPage = this.getPaginatedResults(
+      products,
+      pageIndex,
+      limitIndex
+    );
 
     return productsPage;
   };
@@ -41,7 +48,7 @@ module.exports = class ProductsProcessor extends Processor {
       max = 0;
     }
 
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+    const { startIndex, endIndex } = this.getIndexes(page, limit);
 
     const products = await this.dao.getProductsByPrice(
       min,

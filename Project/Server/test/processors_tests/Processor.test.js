@@ -26,8 +26,8 @@ describe("Proc Lấy ra start index end index", () => {
     const controller = getProcessor();
 
     //Act
-    const expRs = { startIndex, endIndex };
-    const actRs = controller.getStartEndIndex("wtf", limit);
+    const expRs = { startIndex, endIndex, pageIndex: page, limitIndex: limit };
+    const actRs = controller.getIndexes("wtf", limit);
 
     //Expect
     expect(actRs).toEqual(expRs);
@@ -44,8 +44,8 @@ describe("Proc Lấy ra start index end index", () => {
     const controller = getProcessor();
 
     //Act
-    const expRs = { startIndex, endIndex };
-    const actRs = controller.getStartEndIndex(page, "cc");
+    const expRs = { startIndex, endIndex, pageIndex: page, limitIndex: limit };
+    const actRs = controller.getIndexes(page, "cc");
 
     //Expect
     expect(actRs).toEqual(expRs);
@@ -62,8 +62,8 @@ describe("Proc Lấy ra start index end index", () => {
     const controller = getProcessor();
 
     //Act
-    const expRs = { startIndex, endIndex };
-    const actRs = controller.getStartEndIndex(page, limit);
+    const expRs = { startIndex, endIndex, pageIndex: page, limitIndex: limit };
+    const actRs = controller.getIndexes(page, limit);
 
     //Expect
     expect(actRs).toEqual(expRs);

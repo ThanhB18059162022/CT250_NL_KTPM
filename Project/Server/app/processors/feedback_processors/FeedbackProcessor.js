@@ -17,7 +17,7 @@ module.exports = class FeedbackProcessor extends Processor {
   getFeedback = async (query) => {
     const { date = new Date(), order = "DESC", page = 1, limit = 3 } = query;
 
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+    const { startIndex, endIndex } = this.getIndexes(page, limit);
 
     const feedback = await this.dao.getFeedback(
       date,
@@ -46,7 +46,7 @@ module.exports = class FeedbackProcessor extends Processor {
 
     const { date = new Date(), order = "DESC", page = 1, limit = 3 } = query;
 
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+    const { startIndex, endIndex } = this.getIndexes(page, limit);
 
     const feedback = await this.dao.getFeedbackByProductNo(
       prod_no,
@@ -68,13 +68,20 @@ module.exports = class FeedbackProcessor extends Processor {
     await this.checkFeedbackNo(fb_no);
 
     const { page = 1, limit = 3 } = query;
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+    const { startIndex, endIndex, pageIndex, limitIndex } = this.getIndexes(
+      page,
+      limit
+    );
     const feedback = await this.dao.getSubFeedbackOfFeedback(
       fb_no,
       startIndex,
       endIndex
     );
-    const subFeedbackPage = this.getPaginatedResults(feedback, page, limit);
+    const subFeedbackPage = this.getPaginatedResults(
+      feedback,
+      pageIndex,
+      limitIndex
+    );
 
     return subFeedbackPage;
   };

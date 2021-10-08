@@ -8,10 +8,10 @@ module.exports = class ImageService extends FileService {
   }
 
   getProductImages = async (prod_no) => {
-    const files = await this.readDirAsync(`${this.path}/${prod_no}`);
+    const files = await this.readDirAsync(`${this.path}/product${prod_no}`);
 
     const filesPath = files.map(
-      (f) => `${this.baseImgUri}/images/${prod_no}/${f}`
+      (f) => `${this.baseImgUri}/images/product${prod_no}/${f}`
     );
 
     return filesPath;

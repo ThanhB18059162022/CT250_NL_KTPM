@@ -12,11 +12,18 @@ module.exports = class ModeratorsProcessor extends Processor {
 
   // Lấy ra danh sách quản trị viên
   getModerators = async ({ page = 1, limit = 10 }) => {
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+    const { startIndex, endIndex, pageIndex, limitIndex } = this.getIndexes(
+      page,
+      limit
+    );
 
     const moderators = await this.dao.getModerators(startIndex, endIndex);
 
-    const moderatorsPage = this.getPaginatedResults(moderators, page, limit);
+    const moderatorsPage = this.getPaginatedResults(
+      moderators,
+      pageIndex,
+      limitIndex
+    );
 
     return moderatorsPage;
   };

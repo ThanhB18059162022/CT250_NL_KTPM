@@ -17,7 +17,7 @@ module.exports = class Processor {
   //#region  Trả về giá trị phân trang
 
   // Tham khảo https://www.youtube.com/watch?v=ZX3qt0UWifc&list=PLYgHz24Rupn93bdW1uJszXkUh2h52dzn1
-  getStartEndIndex = (page, limit) => {
+  getIndexes = (page, limit) => {
     page = parseInt(page);
     if (isNaN(page) || page < 1) {
       page = 1;
@@ -31,7 +31,7 @@ module.exports = class Processor {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    return { startIndex, endIndex };
+    return { startIndex, endIndex, pageIndex: page, limitIndex: limit };
   };
 
   // Giá trị phân trang

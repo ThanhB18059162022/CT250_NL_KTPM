@@ -4,7 +4,7 @@
 
 # Mặc định page=1, limit=24
 # Trang đầu không có previous, trang cuối không có next
-GET http://localhost:8000/api/products?page=0&limit=1
+GET http://localhost:8000/api/products?page=2&limit=3
 
 
 # Truyền không hợp lệ trả về mặc định của số không hợp lệ
@@ -267,11 +267,319 @@ Content-Type: application/json
     "weight": "Nặng 173 g"
   },
   "prod_status": "",
-  "brand_no": 2
+  "brand_no": 3
 }
 
 
+### Xiaomi POCO X3 Pro NFC 8GB-256GB
+POST http://localhost:8000/api/products/
+Content-Type: application/json
 
+{
+  "prod_name": "Xiaomi POCO X3 Pro NFC 8GB-256GB",
+  "prod_manufacturer": {
+    "brand_name": "Xiaomi",
+    "releaseDate": "2021-4",
+    "madeIn": "Trung Quốc"
+  },
+  "prod_screen": {
+    "type": "IPS LCD",
+    "resolution": "Full HD+ (1080 x 2400 Pixels)",
+    "size": "6.67'",
+    "glass": "Kính cường lực Corning Gorilla Glass 6"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "Chính 48 MP & Phụ 8 MP, 2 MP, 2 MP",
+      "videoQuality":"4K 2160p@30fps, FullHD 1080p@30fps, FullHD 1080p@60fps"
+    },
+    "font": "20 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "Android 11",
+    "cpu": "Snapdragon 860 8 nhân",
+    "cpuSpec": "1 nhân 2.96 GHz, 3 nhân 2.42 GHz & 4 nhân 1.8 GHz",
+    "gpu": "Adreno 640"
+  },
+  "prod_network": {
+    "telecom": "Hỗ trợ 4G",
+    "SIM": "2 Nano SIM",
+    "Wifi": "Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac, Wi-Fi Direct, Wi-Fi hotspot",
+    "GPS":"A-GPS ,BDS, GALILEO, GLONASS",
+    "Bluetooth": "A2DP, LE, v5.0",
+    "connector": "Type-C",
+    "others": "NFC, OTG"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "5160 mAh",
+    "batteryType": "Li-Po",
+    "chargeType": "33W"
+  },
+  "prod_utilities": [
+    { "Bảo mật nâng cao": "Mở khoá vân tay" },
+    { "Tính năng đặt biệt" :"Chạm 2 lần sáng màn hình, Ứng dụng kép (Nhân bản ứng dụng)" },
+    { "Kháng nước, bụi": "Không có" },
+    { "Ghi âm":"Có"},
+    { "Raido": "Có" },
+    { "Xem phim":"Có"},
+    { "Nghe nhạc":"Có"}
+  ],
+  "prod_design": {
+    "structural": "Nguyên khối",
+    "material": "Đang cập nhật",
+    "size": "Dài 165.3 mm - Ngang 76.8 mm - Dày 9.4 mm",
+    "weight": "Nặng 215 g"
+  },
+  "prod_status": "",
+  "brand_no": 4
+}
+
+### Xiaomi Redmi 10
+POST http://localhost:8000/api/products/
+Content-Type: application/json
+
+{
+  "prod_name": "Xiaomi Redmi 10",
+  "prod_manufacturer": {
+    "brand_name": "Xiaomi",
+    "releaseDate": "2021-8",
+    "madeIn": "Trung Quốc"
+  },
+  "prod_screen": {
+    "type": "IPS LCD",
+    "resolution": "Full HD+ (1080 x 2400 Pixels)",
+    "size": "6.5' - Tần số quét 90 Hz",
+    "glass": "Kính cường lực Corning Gorilla Glass 3"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "Chính 50 MP & Phụ 8 MP, 2 MP, 2 MP",
+      "videoQuality":"FullHD 1080p@30fps, HD 720p@30fps"
+    },
+    "font": "8 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "Android 11",
+    "cpu": "MediaTek Helio G88 8 nhân",
+    "cpuSpec": "2 nhân 2.0 GHz & 6 nhân 1.8 GHz",
+    "gpu": "Mali-G52 MC2"
+  },
+  "prod_network": {
+    "telecom": "Hỗ trợ 4G",
+    "SIM": "2 Nano SIM",
+    "Wifi": "Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac, Wi-Fi Direct, Wi-Fi hotspot",
+    "GPS":"A-GPS, BDS, GLONASS",
+    "Bluetooth": "v5.1",
+    "connector": "Type-C",
+    "others": "Hồng ngoại, OTG"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "5000 mAh",
+    "batteryType": "Li-Po",
+    "chargeType": "20W"
+  },
+  "prod_utilities": [
+    { "Bảo mật nâng cao": "Mở khoá khuôn mặt, Mở khoá vân tay cạnh viền" },
+    {"Tính năng đặc biệt":"Loa kép"},
+    { "Kháng nước, bụi": "Không có" },
+    { "Xem phim":"AVI, MP4"},
+    { "Nghe nhạc":"FLAC, Midi, MP3, OGG"}
+  ],
+  "prod_design": {
+    "structural": "Nguyên khối",
+    "material": "Khung & Mặt lưng nhựa",
+    "size": "Dài 161 mm - Ngang 75.53 mm - Dày 8.92 mm",
+    "weight": "Nặng 181 g"
+  },
+  "prod_status": "",
+  "brand_no": 4
+}
+
+### Nokia C30 3GB-32GB 
+POST http://localhost:8000/api/products/
+Content-Type: application/json
+
+{
+  "prod_name": "Nokia C30 3GB-32GB",
+  "prod_manufacturer": {
+    "brand_name": "Nokia",
+    "releaseDate": "2021-8",
+    "madeIn": "Trung Quốc"
+  },
+  "prod_screen": {
+    "type": "IPS LCD",
+    "resolution": "HD+ (720 x 1600 Pixels)",
+    "size": "6.82' - Tần số quét 60 Hz",
+    "glass": "Mặt kính cong 2.5D"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "Chính 13 MP & Phụ 2 MP",
+      "videoQuality":"FullHD 1080p@30fpsHD, 720p@30fps"
+    },
+    "font": "5 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "Android 11 (Go Edition)",
+    "cpu": "Spreadtrum SC9863A 8 nhân",
+    "cpuSpec": "4 nhân 1.6 GHz & 4 nhân 1.2 GHz",
+    "gpu": "IMG PowerVR GE8322"
+  },
+  "prod_network": {
+    "telecom": "Hỗ trợ 4G",
+    "SIM": "2 Nano SIM",
+    "Wifi": "Wi-Fi 802.11 a/b/g/n, Wi-Fi hotspot",
+    "GPS":"A-GPS",
+    "Bluetooth": "A2DP, v4.2",
+    "connector": "Micro USB",
+    "others": "Jack 3.5mm"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "6000 mAh",
+    "batteryType": "Li-Po",
+    "chargeType": "10W"
+  },
+  "prod_utilities": [
+    { "Bảo mật nâng cao": "Mở khoá khuôn mặt, Mở khóa bằng vân tay" },
+    { "Kháng nước, bụi": "Không có" },
+    { "Ghi âm":"Có"},
+    { "Raido": "Có" },
+    { "Xem phim":"MP4"},
+    { "Nghe nhạc":"MP3, WAV"}
+  ],
+  "prod_design": {
+    "structural": "Pin liền",
+    "material": "Khung & Mặt lưng nhựa Polycarbonate",
+    "size": "Dài 177.7 mm - Ngang 79.1 mm - Dày 9.9 mm",
+    "weight": "Nặng 237 g"
+  },
+  "prod_status": "",
+  "brand_no": 5
+}
+
+### Samsung Galaxy Note 20 Ultra
+POST http://localhost:8000/api/products/
+Content-Type: application/json
+
+{
+  "prod_name": "Samsung Galaxy Note 20 Ultra",
+  "prod_manufacturer": {
+    "brand_name": "Samsung",
+    "releaseDate": "2020-8",
+    "madeIn": "Việt Nam"
+  },
+  "prod_screen": {
+    "type": "Dynamic AMOLED 2X",
+    "resolution": "2K+ (1440 x 3088 Pixels)",
+    "size": "6.9' - Tần số quét 120 Hz",
+    "glass": "Kính cường lực Corning Gorilla Glass Victus"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "Chính 108 MP & Phụ 12 MP, 12 MP, cảm biến Laser AF",
+      "videoQuality":"8K 4320p@24fps"
+    },
+    "font": "10 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "Android 10",
+    "cpu": "Exynos 990 8 nhân",
+    "cpuSpec": "2 nhân 2.73 GHz, 2 nhân 2.5 GHz & 4 nhân 2.0 Ghz",
+    "gpu": "Mali-G77 MP11"
+  },
+  "prod_network": {
+    "telecom": "Hỗ trợ 5G",
+    "SIM": "2 Nano SIM hoặc 1 Nano SIM + 1 eSIM",
+    "Wifi": "Dual-band (2.4 GHz/5 GHz), Wi-Fi Direct, Wi-Fi hotspot",
+    "GPS": "A-GPS, BDS, GALILEO, GLONASS",
+    "Bluetooth": "A2DP, LEv, 5.2",
+    "connector": "2 đầu Type-C",
+    "others": "NFC, OTG"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "4500 mAh",
+    "batteryType": "Li-ion",
+    "chargeType": "25W"
+  },
+  "prod_utilities": [
+    { "Bảo mật": "Mở khoá khuôn mặt, Mở khoá vân tay dưới màn hình" },
+    { "Tính năng đặc biệt": "Chặn cuộc gọi, Chặn tin nhắn ,Màn hình luôn hiển thị AOD, Samsung DeX (Kết nối màn hình sử dụng giao diện tương tự PC) ,Samsung Pay,Trợ lý ảo Samsung Bixby, Âm thanh AKG, Âm thanh Dolby Audio" },
+    { "Kháng nước, bụi": "IP68" },
+    {"Ghi âm": "Có (microphone chuyên dụng chống ồn)"},
+    {"Xem phim":"3GP, AVI, DivX, H.263, H.264(MPEG4-AVC), H.265, MP4, Xvid"},
+    {"Nghe nhạc": "AAC++, AMR, FLAC, MP3, Midi, WAV, eAAC+"}
+  ],
+  "prod_design": {
+    "structural": "Nguyên khối",
+    "material": "Khung nhôm & Mặt lưng kính cường lực",
+    "size": "Dài 164.8 mm - Ngang 77.2 mm - Dày 8.1 mm",
+    "weight": "208 g"
+  },
+  "prod_status": "",
+  "brand_no": 1
+}
+
+### Vsmart Aris
+POST http://localhost:8000/api/products/
+Content-Type: application/json
+
+{
+  "prod_name": "Vsmart Aris",
+  "prod_manufacturer": {
+    "brand_name": "Vsmart",
+    "releaseDate": "2018-1",
+    "madeIn": "Việt Nam"
+  },
+  "prod_screen": {
+    "type": "AMOLED",
+    "resolution": "Full HD+ (1080 x 2340 Pixels)",
+    "size": "6.39' - Tần số quét 60 Hz",
+    "glass": "Kính cường lực Corning Gorilla Glass 5"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "Chính 64 MP & Phụ 8 MP, 8 MP, 2 MP",
+      "videoQuality":"4K 2160p@30fps, HD 720p@240fps"
+    },
+    "font": "20 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "Android 10",
+    "cpu": "Snapdragon 730 8 nhân",
+    "cpuSpec": "2 nhân 2.2 GHz & 6 nhân 1.8 GHz",
+    "gpu": "Adreno 618"
+  },
+  "prod_network": {
+    "telecom": "Hỗ trợ 4G",
+    "SIM": "2 Nano SIM",
+    "Wifi": "Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac",
+    "GPS": "A-GPS",
+    "Bluetooth": "v5.0",
+    "connector": "Type-C",
+    "others": "OTG"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "4000 mAh",
+    "batteryType": "Li-Po",
+    "chargeType": "18W"
+  },
+  "prod_utilities": [
+    { "Bảo mật": "Mở khoá khuôn mặt, Mở khoá vân tay cạnh viền" },
+    { "Tính năng đặc biệt": "Chặn cuộc gọi, Chặn tin nhắn, Trợ lý ảo Google Assistant, Ghi âm cuộc gọi, Ứng dụng kép (Nhân bản ứng dụng), Tối ưu game (Chế độ trò chơi), Ứng dụng kép, Không gian thứ hai (Không gian riêng tư)" },
+    { "Kháng nước, bụi": "IP52" },
+    {"Ghi âm": "Có"},
+    {"Xem phim":"AVI, MP4"},
+    {"Nghe nhạc": "AAC, AMR, FLAC, MP3, Midi, WAV"}
+  ],
+  "prod_design": {
+    "structural": "Nguyên khối",
+    "material": "Khung kim loại & Mặt lưng kính",
+    "size": "Dài 156.2 mm - Ngang 75.04 mm - Dày 8.55 mm ",
+    "weight": "178 g"
+  },
+  "prod_status": "",
+  "brand_no": 6
+}
 
 
 
