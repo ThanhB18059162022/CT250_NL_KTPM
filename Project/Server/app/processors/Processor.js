@@ -17,21 +17,21 @@ module.exports = class Processor {
   //#region  Trả về giá trị phân trang
 
   // Tham khảo https://www.youtube.com/watch?v=ZX3qt0UWifc&list=PLYgHz24Rupn93bdW1uJszXkUh2h52dzn1
-  getStartEndIndex = (page, limit) => {
+  getIndexes = (page, limit) => {
     page = parseInt(page);
-    if (isNaN(page)) {
+    if (isNaN(page) || page < 1) {
       page = 1;
     }
 
     limit = parseInt(limit);
-    if (isNaN(limit)) {
+    if (isNaN(limit) || limit < 0) {
       limit = 1;
     }
 
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    return { startIndex, endIndex };
+    return { startIndex, endIndex, pageIndex: page, limitIndex: limit };
   };
 
   // Giá trị phân trang
@@ -84,7 +84,7 @@ module.exports = class Processor {
   };
 
   // Đã tồn tại quăng lỗi khi exist - notvalid
-  existData = async (asyncFunc, message) => {
+  checkExistData = async (asyncFunc, message) => {
     try {
       await asyncFunc();
 
@@ -96,22 +96,8 @@ module.exports = class Processor {
     }
   };
 
-  // Kiểm tra thông tin tồn tại và không phải thông tin cũ
-  existDataNotOldData = async (existAsyncFunc, newId, oldId) => {
-    try {
-      await existAsyncFunc();
-    } catch (error) {
-      // Không phải thông tin cũ quăng lỗi
-      if (!(error instanceof ExistError && this.notOldData(newId, oldId))) {
-        throw error;
-      }
-    }
-  };
-
-  // Kiểm tra khi cập nhật lại thông tin cũ
-  notOldData = (newId, oldId) => {
-    return newId === oldId;
-  };
+  // Kiểm tra khi cập nhật lại thông tin so sánh no
+  notOldData = (newNo, oldNo) => newNo !== oldNo;
 
   //#endregion
 };

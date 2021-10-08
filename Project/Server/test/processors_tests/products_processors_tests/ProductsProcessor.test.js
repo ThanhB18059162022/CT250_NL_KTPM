@@ -62,15 +62,17 @@ class ProductsDAOMock {
   );
 
   getProductByNo = jest.fn(async (prod_no) => {
-    const product = products.filter((p) => p.prod_no === prod_no)[0];
+    const product = products.filter((p) => p.prod_no == prod_no)[0];
 
     return product;
   });
 
   getProductByName = jest.fn(async (prod_name) => {
-    const product = products.filter((p) => p.prod_name === prod_name)[0];
+    const product = products.filter((p) => p.prod_name == prod_name)[0];
     return product;
   });
+
+  getProductDetails = jest.fn();
 
   // Trả về prod_no
   addProduct = jest.fn(async (newProduct) => {
@@ -99,15 +101,31 @@ class ProductsValidatorMock {
   });
 }
 
+class ProductConverterServiceMock {
+  toProduct = jest.fn((p) => p);
+  toProducts = jest.fn((p) => p);
+  toDbProduct = jest.fn();
+}
+
+class ImageServiceMock {
+  getProductImages = jest.fn();
+}
 //#endregion
 
 // Test các api endpoints của products processor
 
 let daoMock;
 let validatorMock;
+let converterMock;
+let imgServiceMock;
 
 function getProcessor() {
-  return new ProductsProcessor(validatorMock, daoMock);
+  return new ProductsProcessor(
+    validatorMock,
+    daoMock,
+    converterMock,
+    imgServiceMock
+  );
 }
 
 //#region GET
@@ -116,6 +134,8 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
   beforeEach(() => {
     daoMock = new ProductsDAOMock();
     validatorMock = new ProductsValidatorMock();
+    converterMock = new ProductConverterServiceMock();
+    imgServiceMock = new ImageServiceMock();
   });
 
   test("Lấy danh sách sản phẩm ", async () => {
@@ -135,8 +155,6 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
-    expect(actRs).toEqual(expRs);
-
     expect(daoMock.getProducts).toBeCalledTimes(1);
     expect(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
   });
@@ -481,10 +499,10 @@ describe("Proc Sửa sản phẩm", () => {
     expect(daoMock.getProductByNo).toBeCalledTimes(1);
   });
 
-  test("Trùng tên - EX", async () => {
+  test("Trùng tên khác no - EX", async () => {
     //Arrange
     const product = products[0];
-    const prod_no = 2;
+    const { prod_no } = products[1];
     const processor = getProcessor();
 
     //Act
@@ -498,7 +516,6 @@ describe("Proc Sửa sản phẩm", () => {
     }
 
     //Expect
-    expect(actRs).toBeDefined();
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateProduct).toBeCalledTimes(1);
     expect(validatorMock.validateNo).toBeCalledTimes(1);

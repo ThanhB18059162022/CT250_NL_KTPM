@@ -1,11 +1,12 @@
 const mysql = require("mysql");
-const config = require("../config");
 const { promisify } = require("util");
 
 module.exports = class MysqlDAO {
-  constructor() {
-    this.connection = mysql.createConnection(config.dbConnection);
+  constructor(config) {
+    this.connection = mysql.createConnection(config);
   }
+
+  emptyData = (data) => data == undefined;
 
   //Trả về các dòng
   query = async (sql, params = []) => {

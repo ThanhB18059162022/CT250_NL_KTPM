@@ -138,7 +138,6 @@ module.exports = class ProductsDAO_Ram {
     }
   };
 
-  //
   getProducts = async (startIndex, endIndex) => {
     let prods = products.slice(startIndex, endIndex).map((p) => {
       const {

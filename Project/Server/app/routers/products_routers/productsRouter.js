@@ -9,17 +9,22 @@ const { errorCatch } = require("../routerErrorHandler");
 
 // Controller và lớp xác thực dữ liệu
 const { ProductsValidator } = require("../../validators/validatorsContainer");
-const { ImageService } = require("../../services/servicesContainer");
-const { ProductsDAO } = require("../../daos/daosContainer");
+const {
+  ImageService,
+  ProductConverterService,
+} = require("../../services/servicesContainer");
+const { DAO, ProductsDAO } = require("../../daos/daosContainer");
 const { ProductsProcessor } = require("../../processors/processorsContainer");
 const {
   ProductsController,
 } = require("../../controllers/controllersContainer");
 
-const imgService = new ImageService(config.baseImgUri);
-const dao = new ProductsDAO(imgService);
+const sqldao = new DAO(config.dbConnection.mysql);
+const dao = new ProductsDAO(sqldao);
 const validator = new ProductsValidator();
-const processor = new ProductsProcessor(validator, dao);
+const imgService = new ImageService(config.baseImgUri);
+const converter = new ProductConverterService();
+const processor = new ProductsProcessor(validator, dao, converter, imgService);
 const controller = new ProductsController(processor, config);
 
 router

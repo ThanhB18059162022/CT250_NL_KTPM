@@ -1,3 +1,4 @@
+const { ExistError } = require("../../errors/errorsContainer");
 const Processor = require("../Processor");
 
 module.exports = class ModeratorsProcessor extends Processor {
@@ -12,11 +13,18 @@ module.exports = class ModeratorsProcessor extends Processor {
 
   // Lấy ra danh sách quản trị viên
   getModerators = async ({ page = 1, limit = 10 }) => {
-    const { startIndex, endIndex } = this.getStartEndIndex(page, limit);
+    const { startIndex, endIndex, pageIndex, limitIndex } = this.getIndexes(
+      page,
+      limit
+    );
 
     const moderators = await this.dao.getModerators(startIndex, endIndex);
 
-    const moderatorsPage = this.getPaginatedResults(moderators, page, limit);
+    const moderatorsPage = this.getPaginatedResults(
+      moderators,
+      pageIndex,
+      limitIndex
+    );
 
     return moderatorsPage;
   };
@@ -85,19 +93,19 @@ module.exports = class ModeratorsProcessor extends Processor {
     this.checkValidate(() => this.validator.validateAddModerator(newModerator));
 
     // Số điện thoại tồn tại
-    await this.existPhoneNumber(
+    await this.checkDuplicatePhoneNumber(
       newModerator.mod_phoneNumber,
       `mod_phoneNumber: ${newModerator.mod_phoneNumber}`
     );
 
     // Số CMND tồn tại
-    await this.existMod_Id(
+    await this.checkDuplicateMod_Id(
       newModerator.mod_id,
       `mod_id: ${newModerator.mod_id}`
     );
 
     // Tài khoản tồn tại
-    await this.existUsername(
+    await this.checkDuplicateUsername(
       newModerator.mod_username,
       `mod_username: ${newModerator.mod_username}`
     );
@@ -113,24 +121,22 @@ module.exports = class ModeratorsProcessor extends Processor {
   //#region UPDATE
 
   // Cập nhật thông tin quản trị viên
-  updateModerator = async (mod_noParam, newInfo) => {
+  updateModerator = async (mod_no, newInfo) => {
     this.checkValidate(() => this.validator.validateUpdateModerator(newInfo));
 
     //Quản trị viên có tồn tại
-    const oldInfo = await this.getModeratorByNo(mod_noParam);
+    const oldInfo = await this.getModeratorByNo(mod_no);
 
     // Số điện thoại tồn tại
-    await this.existPhoneNumberNotOldData(
+    await this.checkDuplicatePhoneNumberNotOldData(
       newInfo.mod_phoneNumber,
-      newInfo.mod_no,
       oldInfo.mod_no,
       `mod_phoneNumber: ${newInfo.mod_phoneNumber}`
     );
 
     // Số CMND tồn tại
-    await this.existMod_IdNotOldData(
+    await this.checkDuplicateMod_IdNotOldData(
       newInfo.mod_id,
-      newInfo.mod_no,
       oldInfo.mod_no,
       `mod_id: ${newInfo.mod_id}`
     );
@@ -155,41 +161,53 @@ module.exports = class ModeratorsProcessor extends Processor {
   //#region  EX
 
   // Kiểm tra tồn tại SDT
-  existPhoneNumber = async (phoneNumber, message) => {
-    await this.existData(
+  checkDuplicatePhoneNumber = async (phoneNumber, message) => {
+    await this.checkExistData(
       async () => await this.getModeratorByPhoneNumber(phoneNumber),
       message
     );
   };
 
   // Tồn tại SDT nhưng không phải số cũ
-  existPhoneNumberNotOldData = async (phoneNumber, newId, oldId, message) => {
-    await this.existDataNotOldData(
-      async () => await this.existPhoneNumber(phoneNumber, message),
-      newId,
-      oldId
-    );
+  checkDuplicatePhoneNumberNotOldData = async (
+    phoneNumber,
+    mod_no,
+    message
+  ) => {
+    try {
+      const modHasPhone = await this.getModeratorByPhoneNumber(phoneNumber);
+
+      if (this.notOldData(mod_no, modHasPhone.mod_no)) {
+        throw new ExistError(message);
+      }
+    } catch (error) {
+      throw error;
+    }
   };
 
   // Tồn tại CMND
-  existMod_Id = async (mod_id, message) => {
-    await this.existData(
+  checkDuplicateMod_Id = async (mod_id, message) => {
+    await this.checkExistData(
       async () => await this.getModeratorByMod_Id(mod_id),
       message
     );
   };
 
   // Không phải CMND cũ
-  existMod_IdNotOldData = async (mod_id, newId, oldId, message) => {
-    await this.existDataNotOldData(
-      async () => await this.existMod_Id(mod_id, message),
-      newId,
-      oldId
-    );
+  checkDuplicateMod_IdNotOldData = async (mod_id, mod_no, message) => {
+    try {
+      const modHasModId = await this.getModeratorByMod_Id(mod_id);
+
+      if (this.notOldData(mod_no, modHasModId.mod_no)) {
+        throw new ExistError(message);
+      }
+    } catch (error) {
+      throw error;
+    }
   };
 
-  existUsername = async (mod_username, message) => {
-    await this.existData(
+  checkDuplicateUsername = async (mod_username, message) => {
+    await this.checkExistData(
       async () => await this.getModeratorByUsername(mod_username),
       message
     );
