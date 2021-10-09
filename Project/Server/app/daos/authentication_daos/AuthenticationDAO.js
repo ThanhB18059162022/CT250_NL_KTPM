@@ -1,6 +1,12 @@
-module.exports = class AuthenticationDAO_Ram {
+const ModelDAO = require("../ModelDAO");
+
+module.exports = class AuthenticationDAO extends ModelDAO {
+  constructor(sqldao) {
+    super(sqldao);
+  }
+
   login = async (loginModel) => {
-    return loginModel.username === "valid" && loginModel.password === "valid";
+    //  const modHasUsername = await this.sqldao.
   };
 
   getUserToken = async (username) => {

@@ -27,12 +27,12 @@ class PaymentDAOMock {
     return order === undefined;
   });
 
-  getOrderProduct = jest.fn((prod_no) => {
-    if (prod_no == 666) return undefined;
-    return { prod_no };
+  getOrderProduct = jest.fn((prod) => {
+    if (prod.prod_no == 666) return undefined;
+    return { ...prod };
   });
 
-  saveOrder = jest.fn((order) => {
+  saveOrder = jest.fn(() => {
     return 1;
   });
 

@@ -1,7 +1,9 @@
+const ModelDAO = require("../ModelDAO");
+
 // Chỉ tương tác với db product
-module.exports = class ProductsDAO {
+module.exports = class ProductsDAO extends ModelDAO {
   constructor(sqldao, imageService) {
-    this.sqldao = sqldao;
+    super(sqldao);
     this.imageService = imageService;
   }
 
@@ -52,10 +54,9 @@ module.exports = class ProductsDAO {
   };
 
   addProduct = async (product) => {
-    const dbParams = Object.entries(product).map((en) => en[1]);
+    const dbParams = this.extractParams(product);
 
-    await this.sqldao.execute(
-      `INSERT INTO Products(
+    const sql = `INSERT INTO Products(
         prod_name,
         prod_manufacturer,
         prod_screen,
@@ -67,9 +68,9 @@ module.exports = class ProductsDAO {
         prod_design,
         brand_no
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      dbParams
-    );
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    await this.sqldao.execute(sql, dbParams);
 
     const { prod_no } = await this.getProductByName(product.prod_name);
 
@@ -77,11 +78,10 @@ module.exports = class ProductsDAO {
   };
 
   updateProduct = async (prod_no, product) => {
-    const dbParams = Object.entries(product).map((en) => en[1]);
+    const dbParams = this.extractParams(product);
     dbParams.push(prod_no);
 
-    await this.sqldao.execute(
-      `UPDATE Products
+    const sql = `UPDATE Products
         SET prod_name = ?, 
         prod_manufacturer = ?, 
         prod_screen = ?, 
@@ -92,10 +92,8 @@ module.exports = class ProductsDAO {
         prod_utilities = ?, 
         prod_design = ?, 
         brand_no = ? 
-        WHERE prod_no = ?`,
-      dbParams
-    );
-  };
+        WHERE prod_no = ?`;
 
-  emptyData = (data) => this.sqldao.emptyData(data);
+    await this.sqldao.execute(sql, dbParams);
+  };
 };

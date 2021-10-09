@@ -40,18 +40,22 @@ module.exports = class StripePaymentProcessor extends PaymentsProcessor {
 
   // Chuyển giá tiền trong danh sách đặt hàng sang USD
   convertToUSD = async (orderProducts) => {
-    const usdOrderProductsPromise = orderProducts.map(async (op) => {
+    const usdOrderProducts = [];
+
+    for (let i = 0; i < orderProducts.length; i++) {
+      const op = orderProducts[i];
+
       const usdPrice = await this.exchangeService
         .convert(op.prod_price)
         .to("USD");
 
-      return {
+      const usdOp = {
         ...op,
         prod_price: usdPrice,
       };
-    });
 
-    const usdOrderProducts = await Promise.all(usdOrderProductsPromise);
+      usdOrderProducts.push(usdOp);
+    }
 
     return usdOrderProducts;
   };

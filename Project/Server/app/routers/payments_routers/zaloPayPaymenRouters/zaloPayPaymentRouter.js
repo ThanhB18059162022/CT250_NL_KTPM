@@ -16,7 +16,7 @@ const {
   CurrencyExchangeService,
   StorageService,
 } = require("../../../services/servicesContainer");
-const { CustomersOrdersDAO } = require("../../../daos/daosContainer");
+const { DAO, CustomersOrdersDAO } = require("../../../daos/daosContainer");
 const {
   ZaloPayPaymentProcessor,
 } = require("../../../processors/processorsContainer");
@@ -26,7 +26,8 @@ const {
 
 //#region  INIT
 
-const dao = new CustomersOrdersDAO();
+const sqldao = new DAO(config.dbConnection.mysql);
+const dao = new CustomersOrdersDAO(sqldao);
 const apiCaller = new ApiCaller();
 const { payment } = config;
 const service = new ZaloPayService(payment.zalo, apiCaller);

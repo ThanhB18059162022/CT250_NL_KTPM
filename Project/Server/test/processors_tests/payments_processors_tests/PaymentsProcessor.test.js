@@ -100,7 +100,10 @@ describe("Proc Lấy ra danh sách sản phẩm có giá", () => {
   test("Lấy ra thành công", async () => {
     //Arrange
     const prod_no = 1;
-    const products = [{ prod_no }, { prod_no: 3 }];
+    const products = [
+      { prod_no, prod_quantity: undefined },
+      { prod_no: 3, prod_quantity: undefined },
+    ];
     const processor = getProcessor();
 
     //Act
@@ -111,6 +114,7 @@ describe("Proc Lấy ra danh sách sản phẩm có giá", () => {
     const actRs = await processor.getOrderProducts(products);
 
     //Expect
+    console.log(actRs);
     expect(actRs).toEqual(expRs);
   });
 });

@@ -58,7 +58,7 @@ INSERT INTO Products(
 )
 VALUES
 (
-    'iPhone 12 Pro Ma`1x',
+    'iPhone 12 Pro Max',
     '{"brand_name":"Apple","releaseDate":"2020-10","madeIn":"Trung Quốc"}',
     '{"type":"OLED","resolution":"1284 x 2778 Pixels","size":"6.7\' - Tần số quét 60 Hz","glass":"Kính cường lực Ceramic Shield"}',
     '{"rear":{"spec":"3 camera 12 MP","videoQuality":"4K 2160p@30fps, 4K 2160p@60fps, FullHD 1080p@30fps, HD 720p@30fps, FullHD 1080p@60fps, 4K 2160p@24fps"},"font":"12 MP"}',
@@ -758,3 +758,14 @@ VALUES
 );
 INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("12 GB", "256 GB", "245 GB", 21990000, 25, 15, 25);
+
+
+-- ------------------------------ Quản trị viên -----------------------------------------------------
+
+INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role) 
+VALUES ('Administrator', '000000000', '0000000000', '1', N'3/2 Ninh Kiều Cẩn Thơ', '1');
+INSERT INTO Accounts(acc_username, acc_password, mod_no) VALUES("admin", "123456", 1);
+
+INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role) 
+VALUES ('Staff-lee', '111111111', '1111111111', '0', N'3/2 Ninh Kiều Cẩn Thơ', '0');
+INSERT INTO Accounts(acc_username, acc_password, mod_no) VALUES("staff", "123456", 2);

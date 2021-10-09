@@ -23,7 +23,7 @@ class AuthenticationProcessor extends Processor {
       throw new LoginNotSuccessError();
     }
 
-    const user = await this.dao.getByUsername(loginModel.username);
+    const user = await this.dao.getUserToken(loginModel.username);
 
     const token = this.jwt.getToken(user);
 

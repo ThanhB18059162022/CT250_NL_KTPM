@@ -24,8 +24,8 @@ Content-Type: application/json
     
     // Mảng nhận id và số lượng
     "products":[
-        {"prod_no": 1, "prod_quantity": 1},
-        {"prod_no": 2, "prod_quantity": 2}
+        {"prod_no": 1, "prod_quantity": 1, "pd_no": 1},
+        {"prod_no": 2, "prod_quantity": 3, "pd_no": 3}
     ]
 }
 
