@@ -98,10 +98,10 @@ module.exports = class ProductsProcessor extends Processor {
       prod_name,
       prod_screen: this.getScreenSize(prod_screen),
       prod_cpu,
-      prod_ram: prod_details?.[0].pd_ram ?? "",
+      prod_ram: prod_details?.[0]?.pd_ram ?? "",
       prod_battery,
       prod_img: imgs?.[0],
-      prod_price: prod_details?.[0].pd_price ?? "",
+      prod_price: prod_details?.[0]?.pd_price ?? "",
       prod_os,
       prod_detailsLength: prod_details?.length ?? 0,
     };

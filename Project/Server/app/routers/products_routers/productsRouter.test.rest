@@ -4,7 +4,7 @@
 
 # Mặc định page=1, limit=24
 # Trang đầu không có previous, trang cuối không có next
-GET http://localhost:8000/api/products?page=3&limit=3
+GET http://localhost:8000/api/products?page=26&limit=1
 
 
 # Truyền không hợp lệ trả về mặc định của số không hợp lệ
