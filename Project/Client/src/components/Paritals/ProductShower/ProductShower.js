@@ -6,21 +6,27 @@ import { useState, useEffect } from "react";
 const ProductShower = () =>{
     const [list, setList] = useState([])
     const [nextPage,setNextPage] = useState(1)
-    
+    const [isNextPage, setIsNextPage] = useState(true)
     const toNextPage = ()=>{
-        setNextPage(nextPage+1)
+
+        isNextPage && setNextPage(nextPage+1)
     }
+
+    useEffect(()=>{
+        console.log(nextPage)
+    },[nextPage])
     
     useEffect(() => {
         (async()=>{
             let data = await caller.get(`products?page=${nextPage}`)
+            !data.next && setIsNextPage(false)
             setList(list=>[...list,...data.items])
         })()
     }, [nextPage])
     return (
         <div className="ProductShower">
             <ProductNavigation/>
-            <ProductList list={list} toNextPage={toNextPage}/>
+            <ProductList list={list} toNextPage={toNextPage} isNextPage={isNextPage}/>
         </div>
     )
 }

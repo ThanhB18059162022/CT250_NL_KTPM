@@ -109,6 +109,9 @@
                 background: var(--backgroundColor);
             }
         }
+        &>p{
+            text-align: center;
+        }
     }
     .list-is-empty {
         min-height: 50vh;

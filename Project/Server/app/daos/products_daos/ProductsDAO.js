@@ -96,4 +96,6 @@ module.exports = class ProductsDAO extends ModelDAO {
 
     await this.sqldao.execute(sql, dbParams);
   };
+
+  emptyData = (data) => this.sqldao.emptyData(data);
 };

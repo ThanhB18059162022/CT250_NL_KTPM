@@ -6,14 +6,15 @@ import Helper from "../../../helpers"
 import { useContext } from "react"
 import { CartContext } from "../../../providers/CartProviders"
 const ProductList = (props) => {
-    const { list, toNextPage } = props
+    const { list, toNextPage, isNextPage } = props
     return (
         <div className="ProductList">
             {
                 list.length > 0 ? <> <ul>
                     {list.map((item, index) => <ProductItem key={index} info={item} currentId={item.prod_no} />)}
                 </ul>
-                    <button className="product-more" onClick={toNextPage}>Xem thêm</button>
+                    {isNextPage ? <button className="product-more" onClick={toNextPage}>Xem thêm</button>:
+                    <p>Bạn đã xem hết sản phẩm</p>}
                 </> :
                     <div className="list-is-empty">
                         <p>Không có sản phẩm nào</p>
