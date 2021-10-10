@@ -171,12 +171,12 @@ module.exports = class ProductsProcessor extends Processor {
     this.checkValidate(() => this.validator.validateProduct(newProduct));
 
     // Kiểm tra trùng tên sản phẩm khác
-    const { prod_name } = newProduct;
+    // const { prod_name } = newProduct;
     // await this.checkDuplicateName(prod_name, `prod_name: ${prod_name}`);
 
     // Thêm vào CSDL trả về prod_no mới thêm
-    const dbProduct = this.converterService.toDbProduct(newProduct);
-    const prod_no = await this.dao.addProduct(dbProduct);
+    // const dbProduct = this.converterService.toDbProduct(newProduct);
+    const prod_no = await this.dao.addProduct(product);
 
     return { prod_no, ...newProduct };
   };
