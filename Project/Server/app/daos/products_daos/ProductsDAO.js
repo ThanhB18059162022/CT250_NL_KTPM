@@ -1,16 +1,21 @@
 const ModelDAO = require("../ModelDAO");
+const { NotExistError, ExistError } = require("../../errors/errorsContainer");
 
 // Chỉ tương tác với db product
 module.exports = class ProductsDAO extends ModelDAO {
-  constructor(sqldao, imageService) {
+  constructor(sqldao, converter) {
     super(sqldao);
-    this.imageService = imageService;
+    this.converter = converter;
   }
 
+  //#region  GET
+
   getProducts = async (startIndex, endIndex) => {
-    const products = await this.sqldao.query(
+    const dbProducts = await this.sqldao.query(
       `SELECT * FROM Products LIMIT ${startIndex}, ${endIndex - startIndex}`
     );
+
+    const products = this.converter.toProducts(dbProducts);
 
     return products;
   };
@@ -34,27 +39,47 @@ module.exports = class ProductsDAO extends ModelDAO {
   };
 
   getProductByNo = async (prod_no) => {
-    const product = (
+    const dbProduct = (
       await this.sqldao.query("SELECT * FROM Products WHERE prod_no = ?;", [
         prod_no,
       ])
     )[0];
 
+    if (this.emptyData(dbProduct)) {
+      throw new NotExistError(`prod_no: ${prod_no}`);
+    }
+
+    const product = this.converter.toProduct(dbProduct);
+
     return product;
   };
 
   getProductByName = async (prod_name) => {
-    const product = (
+    const dbProduct = (
       await this.sqldao.query("SELECT * FROM Products WHERE prod_name = ?;", [
         prod_name,
       ])
     )[0];
 
+    if (this.emptyData(dbProduct)) {
+      throw new NotExistError(`prod_name: ${prod_name}`);
+    }
+
+    const product = this.converter.toProduct(dbProduct);
+
     return product;
   };
 
-  addProduct = async (product) => {
-    const dbParams = this.extractParams(product);
+  //#endregion
+
+  //#region  ADD
+
+  addProduct = async (newProduct) => {
+    await this.checkExistName(newProduct.prod_name);
+
+    const dbNewProduct = this.toDbProduct(newProduct);
+
+    const dbParams = this.extractParams(dbNewProduct);
 
     const sql = `INSERT INTO Products(
         prod_name,
@@ -72,31 +97,62 @@ module.exports = class ProductsDAO extends ModelDAO {
 
     await this.sqldao.execute(sql, dbParams);
 
-    const { prod_no } = await this.getProductByName(product.prod_name);
+    const product = await this.getProductByName(newProduct.prod_name);
 
-    return prod_no;
+    return product;
   };
 
-  addProductDetails = async (prod_no, details) => {
-    console.log(details);
-    const dbParams = this.extractParams(details);
-    console.log(dbParams);
-    const sql = `INSERT INTO Products(
-        prod_name,
-        prod_manufacturer,
-        prod_screen,
-        prod_camera,
-        prod_hardwareAndOS,
-        prod_network,
-        prod_batteryAndCharger,
-        prod_utilities,
-        prod_design,
-        brand_no
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  addProductDetails = async (prod_no, details = []) => {
+    const product = await this.getProductByNo(prod_no);
 
-    // await this.sqldao.execute(sql, dbParams);
+    for (let i = 0; i < details.length; i++) {
+      const dbDetail = this.toDbDetail(details[i]);
+
+      const dbParams = this.extractParams(dbDetail);
+      dbParams.push(product.prod_no);
+
+      const sql = `INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+                  VALUES(?, ?, ?, ?, ?, ?, ?);`;
+
+      await this.sqldao.execute(sql, dbParams);
+    }
   };
+
+  toDbDetail = (detail) => {
+    const {
+      pd_ram,
+      pd_storage,
+      pd_storageAvailable,
+      pd_price,
+      pd_amount,
+      pd_sold,
+    } = detail;
+
+    return {
+      pd_ram,
+      pd_storage,
+      pd_storageAvailable,
+      pd_price,
+      pd_amount,
+      pd_sold,
+    };
+  };
+
+  // Kiểm tra trùng tên
+  checkExistName = async (prod_name) => {
+    try {
+      const prodHasName = await this.getProductByName(prod_name);
+      if (!this.emptyData(prodHasName)) {
+        throw new ExistError(`prod_name: ${prodHasName.prod_name}`);
+      }
+    } catch (error) {
+      if (error instanceof ExistError) {
+        throw error;
+      }
+    }
+  };
+
+  //#endregion
 
   updateProduct = async (prod_no, product) => {
     const dbParams = this.extractParams(product);
@@ -118,7 +174,36 @@ module.exports = class ProductsDAO extends ModelDAO {
     await this.sqldao.execute(sql, dbParams);
   };
 
-  emptyData = (data) => this.sqldao.emptyData(data);
+  // Không convert prod_no
+  toDbProduct = (product) => {
+    const {
+      prod_name,
+      prod_manufacturer,
+      prod_screen,
+      prod_camera,
+      prod_hardwareAndOS,
+      prod_network,
+      prod_batteryAndCharger,
+      prod_utilities,
+      prod_design,
+      brand_no,
+    } = product;
+
+    const dbProduct = {
+      prod_name,
+      prod_manufacturer: JSON.stringify(prod_manufacturer),
+      prod_screen: JSON.stringify(prod_screen),
+      prod_camera: JSON.stringify(prod_camera),
+      prod_hardwareAndOS: JSON.stringify(prod_hardwareAndOS),
+      prod_network: JSON.stringify(prod_network),
+      prod_batteryAndCharger: JSON.stringify(prod_batteryAndCharger),
+      prod_utilities: JSON.stringify(prod_utilities),
+      prod_design: JSON.stringify(prod_design),
+      brand_no,
+    };
+
+    return dbProduct;
+  };
 };
 
 /*
@@ -132,40 +217,4 @@ module.exports = class ProductsDAO extends ModelDAO {
     return items;
   };
 
-  getProductItemInfo = async (product) => {
-    const {
-      prod_no,
-      prod_name,
-      prod_screen,
-      prod_hardwareAndOS,
-      prod_batteryAndCharger,
-    } = product;
-
-    const { cpu: prod_cpu, os: prod_os } = prod_hardwareAndOS | {};
-    const { battery: prod_battery } = prod_batteryAndCharger | {};
-
-    const prod_details = await this.dao.getProductDetails(prod_no);
-
-    const imgs = await this.imageService.getProductImages(prod_no);
-
-    return {
-      prod_no,
-      prod_name,
-      prod_screen: this.getScreenSize(prod_screen),
-      prod_cpu,
-      prod_ram: prod_details?.[0]?.pd_ram ?? "",
-      prod_battery,
-      prod_img: imgs?.[0],
-      prod_price: prod_details?.[0]?.pd_price ?? "",
-      prod_os,
-      prod_detailsLength: prod_details?.length ?? 0,
-    };
-  };
-
-  getScreenSize = (prod_screen) => {
-    // Kích thước màn hình dạng 7.6'
-    const rgx_screen = /\d\.(\d||\d{2})+'/;
-    const size = rgx_screen.exec(prod_screen.size);
-
-    return size?.[0] ?? "not found";
-  }; */
+   */

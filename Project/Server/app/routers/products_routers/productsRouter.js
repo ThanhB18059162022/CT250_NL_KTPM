@@ -20,10 +20,10 @@ const {
 } = require("../../controllers/controllersContainer");
 
 const sqldao = new DAO(config.dbConnection.mysql);
-const dao = new ProductsDAO(sqldao);
+const converter = new ProductConverterService();
+const dao = new ProductsDAO(sqldao, converter);
 const validator = new ProductsValidator();
 const imgService = new ImageService(config.baseImgUri);
-const converter = new ProductConverterService();
 const processor = new ProductsProcessor(validator, dao, imgService);
 const controller = new ProductsController(processor, config);
 

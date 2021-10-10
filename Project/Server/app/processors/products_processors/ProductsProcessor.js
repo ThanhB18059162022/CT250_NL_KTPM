@@ -21,7 +21,7 @@ module.exports = class ProductsProcessor extends Processor {
       limit
     );
 
-    const products = await this.dao.getProducts(startIndex, endIndex);
+    const products = await this.getList(startIndex, endIndex);
 
     const productsPage = this.getPaginatedResults(
       products,
@@ -70,6 +70,57 @@ module.exports = class ProductsProcessor extends Processor {
     return productsPage;
   };
 
+  getList = async (startIndex, endIndex) => {
+    const products = await this.dao.getProducts(startIndex, endIndex);
+    const prodPromises = [];
+    for (let i = 0; i < products.length; i++) {
+      const prodProm = this.getItem(products[i]);
+
+      prodPromises.push(prodProm);
+    }
+    const productsInfo = await Promise.all(prodPromises);
+
+    return productsInfo;
+  };
+
+  getItem = async (product) => {
+    const {
+      prod_no,
+      prod_name,
+      prod_screen,
+      prod_hardwareAndOS,
+      prod_batteryAndCharger,
+    } = product;
+
+    const { cpu: prod_cpu, os: prod_os } = prod_hardwareAndOS | {};
+    const { battery: prod_battery } = prod_batteryAndCharger | {};
+
+    const prod_details = await this.dao.getProductDetails(prod_no);
+
+    const imgs = await this.imageService.getProductImages(prod_no);
+
+    return {
+      prod_no,
+      prod_name,
+      prod_screen: this.getScreenSize(prod_screen),
+      prod_cpu,
+      prod_ram: prod_details?.[0]?.pd_ram ?? "",
+      prod_battery,
+      prod_img: imgs?.[0],
+      prod_price: prod_details?.[0]?.pd_price ?? "",
+      prod_os,
+      prod_detailsLength: prod_details?.length ?? 0,
+    };
+  };
+
+  getScreenSize = (prod_screen) => {
+    // Kích thước màn hình dạng 7.6'
+    const rgx_screen = /\d\.(\d||\d{2})+'/;
+    const size = rgx_screen.exec(prod_screen.size);
+
+    return size?.[0] ?? "not found";
+  };
+
   //#endregion
 
   //#region  Chi tiết
@@ -97,6 +148,8 @@ module.exports = class ProductsProcessor extends Processor {
     return productInfo;
   };
 
+  //#endregion
+
   getProductInfo = async (product) => {
     const { prod_no } = product;
 
@@ -106,8 +159,6 @@ module.exports = class ProductsProcessor extends Processor {
 
     return { ...product, prod_details, prod_imgs };
   };
-
-  //#endregion
 
   //#endregion
 
