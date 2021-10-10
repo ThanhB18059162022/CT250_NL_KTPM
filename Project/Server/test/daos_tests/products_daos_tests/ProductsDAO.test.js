@@ -1,4 +1,4 @@
-const { ProductsDAO } = require("../../../app/daos/daosContainer");
+const ProductsDAO = require("../../../app/daos/products_daos/ProductsDAO");
 const {
   NotExistError,
   ExistError,
@@ -14,14 +14,20 @@ const PRODUCTS = [
     prod_camera: "32mp",
     prod_no: 1,
   },
+  {
+    prod_name: "Sam sung",
+    prod_mfg: "2021",
+    prod_releaseDate: new Date(),
+    prod_screen: "blank",
+    prod_camera: "32mp",
+    prod_no: 2,
+  },
 ];
 
 class MySQLDAOMock {
   query = jest.fn(async (sql, params) => {
     if (sql.includes("SELECT * FROM Products WHERE prod_no = ?;")) {
-      if (params[0] == 1) {
-        return [PRODUCTS[0]];
-      }
+      return PRODUCTS.filter((p) => p.prod_no == params[0]);
     }
 
     if (sql.includes("SELECT * FROM Products WHERE prod_name = ?;")) {
@@ -202,7 +208,7 @@ describe("Thêm chi tiết sản phẩm", () => {
     converter = new ProductConverterServiceMock();
   });
 
-  test("Không tồn tại", async () => {
+  test("Không tồn tại - EX", async () => {
     //Arrange
     const prod_no = 404;
     const dao = getDAO();
@@ -233,5 +239,64 @@ describe("Thêm chi tiết sản phẩm", () => {
     //Assert
     expect(sqldao.query).toBeCalledTimes(1);
     expect(sqldao.execute).toHaveBeenCalled();
+  });
+});
+
+describe("Sửa sản phẩm", () => {
+  beforeEach(() => {
+    sqldao = new MySQLDAOMock();
+    converter = new ProductConverterServiceMock();
+  });
+
+  test("Không tồn tại - EX", async () => {
+    //Arrange
+    const prod_no = 404;
+    const dao = getDAO();
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await dao.updateProduct(prod_no);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Assert
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+
+  test("Trùng tên - EX", async () => {
+    //Arrange
+    const prod_no = 2;
+    const product = PRODUCTS[0];
+    const dao = getDAO();
+
+    //Act
+    const expRs = ExistError;
+    let actRs;
+    try {
+      await dao.updateProduct(prod_no, product);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Assert
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(sqldao.query).toHaveBeenCalled();
+  });
+
+  test("Thành công", async () => {
+    //Arrange
+    const prod_no = 1;
+    const dao = getDAO();
+
+    //Act
+    await dao.updateProduct(prod_no, {});
+
+    //Assert
+    expect(sqldao.query).toHaveBeenCalled();
+    expect(sqldao.execute).toBeCalledTimes(1);
   });
 });

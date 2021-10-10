@@ -154,9 +154,16 @@ module.exports = class ProductsDAO extends ModelDAO {
 
   //#endregion
 
+  //#region  UPDATE
+
   updateProduct = async (prod_no, product) => {
-    const dbParams = this.extractParams(product);
-    dbParams.push(prod_no);
+    const prod = await this.getProductByNo(prod_no);
+
+    await this.checkDuplicateName(product.prod_name, prod.prod_no);
+
+    const dbProduct = this.toDbProduct(product);
+    const dbParams = this.extractParams(dbProduct);
+    dbParams.push(prod.prod_no);
 
     const sql = `UPDATE Products
         SET prod_name = ?, 
@@ -173,6 +180,22 @@ module.exports = class ProductsDAO extends ModelDAO {
 
     await this.sqldao.execute(sql, dbParams);
   };
+
+  // Kiểm tra trùng tên không phải tên cũ
+  checkDuplicateName = async (prod_name, prod_no) => {
+    try {
+      const prodHasName = await this.getProductByName(prod_name);
+      if (!this.emptyData(prodHasName) && prodHasName.prod_no != prod_no) {
+        throw new ExistError(`prod_name: ${prodHasName.prod_name}`);
+      }
+    } catch (error) {
+      if (error instanceof ExistError) {
+        throw error;
+      }
+    }
+  };
+
+  //#endregion
 
   // Không convert prod_no
   toDbProduct = (product) => {
@@ -205,16 +228,3 @@ module.exports = class ProductsDAO extends ModelDAO {
     return dbProduct;
   };
 };
-
-/*
- toProducts = async (dbProducts) => {
-    const products = this.converterService.toProducts(dbProducts);
-
-    const items = await Promise.all(
-      products.map((p) => this.getProductItemInfo(p))
-    );
-
-    return items;
-  };
-
-   */

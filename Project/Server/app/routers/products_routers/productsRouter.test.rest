@@ -1706,71 +1706,6 @@ Content-Type: application/json
   "brand_no": 8
 }
 
-# ---------------------------------------------------------------------
-
-# Sửa sản phẩm
-
-### Hợp lệ
-PUT http://localhost:8000/api/products/8
-Content-Type: application/json
-
-{
-  "prod_name": "Vsmart Aris",
-  "prod_manufacturer": {
-    "brand_name": "Vsmart",
-    "releaseDate": "2018-1",
-    "madeIn": "Việt Nam"
-  },
-  "prod_screen": {
-    "type": "AMOLED",
-    "resolution": "Full HD+ (1080 x 2340 Pixels)",
-    "size": "6.39' - Tần số quét 60 Hz",
-    "glass": "Kính cường lực Corning Gorilla Glass 5"
-  },
-  "prod_camera": {
-    "rear": {
-      "spec": "Chính 64 MP & Phụ 8 MP, 8 MP, 2 MP",
-      "videoQuality":"4K 2160p@30fps, HD 720p@240fps"
-    },
-    "font": "20 MP"
-  },
-  "prod_hardwareAndOS": {
-    "os": "Android 10",
-    "cpu": "Snapdragon 730 8 nhân",
-    "cpuSpec": "2 nhân 2.2 GHz & 6 nhân 1.8 GHz",
-    "gpu": "Adreno 618"
-  },
-  "prod_network": {
-    "telecom": "Hỗ trợ 4G",
-    "SIM": "2 Nano SIM",
-    "Wifi": "Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac",
-    "GPS": "A-GPS",
-    "Bluetooth": "v5.0",
-    "connector": "Type-C",
-    "others": "OTG"
-  },
-  "prod_batteryAndCharger": {
-    "battery": "4000 mAh",
-    "batteryType": "Li-Po",
-    "chargeType": "18W"
-  },
-  "prod_utilities": [
-    { "Bảo mật": "Mở khoá khuôn mặt, Mở khoá vân tay cạnh viền" },
-    { "Tính năng đặc biệt": "Chặn cuộc gọi, Chặn tin nhắn, Trợ lý ảo Google Assistant, Ghi âm cuộc gọi, Ứng dụng kép (Nhân bản ứng dụng), Tối ưu game (Chế độ trò chơi), Ứng dụng kép, Không gian thứ hai (Không gian riêng tư)" },
-    { "Kháng nước, bụi": "IP52" },
-    {"Ghi âm": "Có"},
-    {"Xem phim":"AVI, MP4"},
-    {"Nghe nhạc": "AAC, AMR, FLAC, MP3, Midi, WAV"}
-  ],
-  "prod_design": {
-    "structural": "Nguyên khối",
-    "material": "Khung kim loại & Mặt lưng kính",
-    "size": "Dài 156.2 mm - Ngang 75.04 mm - Dày 8.55 mm ",
-    "weight": "178 g"
-  },
-  "prod_status": "",
-  "brand_no": 6
-}
 
 ### Nokia 5.4 
 POST http://localhost:8000/api/products/
@@ -2039,3 +1974,70 @@ Content-Type: application/json
     "pd_sold": 0
   }
 ]
+
+
+# ---------------------------------------------------------------------
+
+# Sửa sản phẩm
+
+### Hợp lệ
+PUT http://localhost:8000/api/products/8
+Content-Type: application/json
+
+{
+  "prod_name": "Vsmart Aris",
+  "prod_manufacturer": {
+    "brand_name": "Vsmart",
+    "releaseDate": "2018-1",
+    "madeIn": "Việt Nam"
+  },
+  "prod_screen": {
+    "type": "AMOLED",
+    "resolution": "Full HD+ (1080 x 2340 Pixels)",
+    "size": "6.39' - Tần số quét 60 Hz",
+    "glass": "Kính cường lực Corning Gorilla Glass 5"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "Chính 64 MP & Phụ 8 MP, 8 MP, 2 MP",
+      "videoQuality":"4K 2160p@30fps, HD 720p@240fps"
+    },
+    "font": "20 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "Android 10",
+    "cpu": "Snapdragon 730 8 nhân",
+    "cpuSpec": "2 nhân 2.2 GHz & 6 nhân 1.8 GHz",
+    "gpu": "Adreno 618"
+  },
+  "prod_network": {
+    "telecom": "Hỗ trợ 4G",
+    "SIM": "2 Nano SIM",
+    "Wifi": "Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac",
+    "GPS": "A-GPS",
+    "Bluetooth": "v5.0",
+    "connector": "Type-C",
+    "others": "OTG"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "4000 mAh",
+    "batteryType": "Li-Po",
+    "chargeType": "18W"
+  },
+  "prod_utilities": [
+    { "Bảo mật": "Mở khoá khuôn mặt, Mở khoá vân tay cạnh viền" },
+    { "Tính năng đặc biệt": "Chặn cuộc gọi, Chặn tin nhắn, Trợ lý ảo Google Assistant, Ghi âm cuộc gọi, Ứng dụng kép (Nhân bản ứng dụng), Tối ưu game (Chế độ trò chơi), Ứng dụng kép, Không gian thứ hai (Không gian riêng tư)" },
+    { "Kháng nước, bụi": "IP52" },
+    {"Ghi âm": "Có"},
+    {"Xem phim":"AVI, MP4"},
+    {"Nghe nhạc": "AAC, AMR, FLAC, MP3, Midi, WAV"}
+  ],
+  "prod_design": {
+    "structural": "Nguyên khối",
+    "material": "Khung kim loại & Mặt lưng kính",
+    "size": "Dài 156.2 mm - Ngang 75.04 mm - Dày 8.55 mm ",
+    "weight": "178 g"
+  },
+  "prod_status": "",
+  "brand_no": 6
+}
