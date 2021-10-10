@@ -172,7 +172,7 @@ module.exports = class ProductsProcessor extends Processor {
 
     // Kiểm tra trùng tên sản phẩm khác
     const { prod_name } = newProduct;
-    await this.checkDuplicateName(prod_name, `prod_name: ${prod_name}`);
+    // await this.checkDuplicateName(prod_name, `prod_name: ${prod_name}`);
 
     // Thêm vào CSDL trả về prod_no mới thêm
     const dbProduct = this.converterService.toDbProduct(newProduct);
