@@ -24,7 +24,7 @@ const dao = new ProductsDAO(sqldao);
 const validator = new ProductsValidator();
 const imgService = new ImageService(config.baseImgUri);
 const converter = new ProductConverterService();
-const processor = new ProductsProcessor(validator, dao, converter, imgService);
+const processor = new ProductsProcessor(validator, dao, imgService);
 const controller = new ProductsController(processor, config);
 
 router

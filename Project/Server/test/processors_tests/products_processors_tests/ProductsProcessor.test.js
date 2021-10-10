@@ -64,11 +64,20 @@ class ProductsDAOMock {
   getProductByNo = jest.fn(async (prod_no) => {
     const product = products.filter((p) => p.prod_no == prod_no)[0];
 
+    if (product == undefined) {
+      throw new NotExistError();
+    }
+
     return product;
   });
 
   getProductByName = jest.fn(async (prod_name) => {
     const product = products.filter((p) => p.prod_name == prod_name)[0];
+
+    if (product == undefined) {
+      throw new NotExistError();
+    }
+
     return product;
   });
 
@@ -76,12 +85,30 @@ class ProductsDAOMock {
 
   // Trả về prod_no
   addProduct = jest.fn(async (newProduct) => {
+    try {
+      const p = await this.getProductByName(newProduct.prod_name);
+      if (!this.emptyData(p)) {
+        throw new ExistError();
+      }
+    } catch (error) {
+      if (error instanceof ExistError) {
+        throw error;
+      }
+    }
+
     return newProduct;
   });
 
   addProductDetails = jest.fn();
 
-  updateProduct = jest.fn();
+  updateProduct = jest.fn(async (prod_no, newInfo) => {
+    const p = await this.getProductByName(newInfo.prod_name);
+    if (!this.emptyData(p) && p.prod_no != prod_no) {
+      throw new ExistError();
+    }
+
+    return newInfo;
+  });
 
   emptyData = jest.fn((product) => {
     return product == undefined;
@@ -107,12 +134,6 @@ class ProductsValidatorMock {
   });
 }
 
-class ProductConverterServiceMock {
-  toProduct = jest.fn((p) => p);
-  toProducts = jest.fn((p) => p);
-  toDbProduct = jest.fn();
-}
-
 class ImageServiceMock {
   getProductImages = jest.fn();
 }
@@ -122,16 +143,10 @@ class ImageServiceMock {
 
 let daoMock;
 let validatorMock;
-let converterMock;
 let imgServiceMock;
 
 function getProcessor() {
-  return new ProductsProcessor(
-    validatorMock,
-    daoMock,
-    converterMock,
-    imgServiceMock
-  );
+  return new ProductsProcessor(validatorMock, daoMock, imgServiceMock);
 }
 
 //#region GET
@@ -140,7 +155,6 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
   beforeEach(() => {
     daoMock = new ProductsDAOMock();
     validatorMock = new ProductsValidatorMock();
-    converterMock = new ProductConverterServiceMock();
     imgServiceMock = new ImageServiceMock();
   });
 

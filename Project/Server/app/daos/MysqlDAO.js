@@ -6,8 +6,6 @@ module.exports = class MysqlDAO {
     this.connection = mysql.createConnection(config);
   }
 
-  emptyData = (data) => data == undefined;
-
   //Trả về các dòng
   query = async (sql, params = []) => {
     const promQuery = this.getPromsieQuery();
