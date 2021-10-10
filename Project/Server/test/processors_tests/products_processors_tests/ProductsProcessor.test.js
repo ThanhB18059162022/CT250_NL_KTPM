@@ -79,6 +79,8 @@ class ProductsDAOMock {
     return newProduct;
   });
 
+  addProductDetails = jest.fn();
+
   updateProduct = jest.fn();
 
   emptyData = jest.fn((product) => {
@@ -89,6 +91,10 @@ class ProductsDAOMock {
 class ProductsValidatorMock {
   validateProduct = jest.fn((product) => {
     return { hasAnyError: product === undefined };
+  });
+
+  validateProductDetails = jest.fn((details) => {
+    return { hasAnyError: details === undefined };
   });
 
   validateNo = jest.fn((prod_no) => {
@@ -423,6 +429,75 @@ describe("Proc Thêm sản phẩm", () => {
     expect(daoMock.addProduct).toBeCalledTimes(1);
   });
 });
+
+describe("Proc Thêm chi tiết của sản phẩm", () => {
+  beforeEach(() => {
+    daoMock = new ProductsDAOMock();
+    validatorMock = new ProductsValidatorMock();
+  });
+
+  test("Không hợp lệ - EX", async () => {
+    //Arrange
+    const prod_no = undefined;
+    const details = undefined;
+
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotValidError;
+    let actRs;
+    try {
+      await processor.addProductDetails(prod_no, details);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs).toBeDefined();
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateProductDetails).toBeCalledTimes(1);
+  });
+
+  test("Sản phẩm không tồn tại - EX", async () => {
+    //Arrange
+    const prod_no = 404;
+    const details = [];
+
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await processor.addProductDetails(prod_no, details);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs).toBeDefined();
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateProductDetails).toBeCalledTimes(1);
+  });
+
+  test("Thêm thành công", async () => {
+    //Arrange
+    const prod_no = 1;
+    const details = [];
+
+    const processor = getProcessor();
+
+    //Act
+    await processor.addProductDetails(prod_no, details);
+
+    //Expect
+    expect(validatorMock.validateProductDetails).toBeCalledTimes(1);
+    expect(daoMock.addProductDetails).toBeCalledTimes(1);
+  });
+});
+
+// TODO
+describe("Thêm hình cho sản phẩm", () => {});
 
 describe("Proc Sửa sản phẩm", () => {
   beforeEach(() => {

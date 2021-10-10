@@ -181,6 +181,16 @@ module.exports = class ProductsProcessor extends Processor {
     return { prod_no, ...newProduct };
   };
 
+  // Chi tiết sản phẩm
+  addProductDetails = async (prod_no, details) => {
+    //Kiểm tra model hợp lệ
+    this.checkValidate(() => this.validator.validateProductDetails(details));
+
+    const product = await this.getProductByNo(prod_no);
+
+    await this.dao.addProductDetails(product.prod_no, details);
+  };
+
   // Cập nhật sản phẩm
   updateProduct = async (prod_no, newInfo) => {
     this.checkValidate(() => this.validator.validateProduct(newInfo));

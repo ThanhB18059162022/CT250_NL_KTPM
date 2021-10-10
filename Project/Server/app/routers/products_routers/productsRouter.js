@@ -49,4 +49,9 @@ router
 // products/name/iPhone12
 router.route("/Name/:prod_name").get(errorCatch(controller.getProductByName));
 
+// products/1/details/
+router
+  .route("/:prod_no/details")
+  .post(errorCatch(controller.addProductDetails));
+
 module.exports = router;

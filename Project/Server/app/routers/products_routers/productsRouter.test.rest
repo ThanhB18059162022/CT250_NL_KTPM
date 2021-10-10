@@ -1960,3 +1960,82 @@ Content-Type: application/json
   "prod_status": "",
   "brand_no": 3
 }
+
+
+### OPPO Find X3 Pro Fake
+POST http://localhost:8000/api/products/
+Content-Type: application/json
+
+{
+  "prod_name": "OPPO Find X3 Pro Fake",
+  "prod_manufacturer": {
+    "brand_name": "Oppo",
+    "releaseDate": "2021-7",
+    "madeIn": "Trung Quốc"
+  },
+  "prod_screen": {
+    "type": "AMOLED",
+    "resolution": "Full HD+ (1080 x 2400 Pixels)",
+    "size": "6.43' - Tần số quét 60 Hz",
+    "glass": "Kính cường lực Corning Gorilla Glass 5"
+  },
+  "prod_camera": {
+    "rear": {
+      "spec": "Chính 64 MP & Phụ 8 MP, 2 MP",
+      "videoQuality":"4K 2160p@30fps, FullHD 1080p@30fps, HD 720p@30fps"
+    },
+    "font": "32 MP"
+  },
+  "prod_hardwareAndOS": {
+    "os": "Android 11",
+    "cpu": "MediaTek Dimensity 800U 5G 8 nhân",
+    "cpuSpec": "2 nhân 2.4 GHz & 6 nhân 2 GHz",
+    "gpu": "Mali-G57 MC3"
+  },
+  "prod_network": {
+    "telecom": "Hỗ trợ 5G",
+    "SIM": "2 Nano SIM",
+    "Wifi": "Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac, Wi-Fi Direct, Wi-Fi hotspot",
+    "GPS":"A-GPS ,BDS, GALILEO, GLONASS",
+    "Bluetooth": "A2DP, LE, v5.1",
+    "connector": "Type-C",
+    "others": "OTG"
+  },
+  "prod_batteryAndCharger": {
+    "battery": "4310 mAh",
+    "batteryType": "Li-Po",
+    "chargeType": "30W"
+  },
+  "prod_utilities": [
+    { "Bảo mật nâng cao": "Mở khoá khuôn mặt, Mở khoá vân tay dưới màn hình" },
+    { "Tính năng đặt biệt" :"Chạm 2 lần sáng màn hình, Ứng dụng kép (Nhân bản ứng dụng)" },
+    { "Kháng nước, bụi": "Không có" },
+    { "Ghi âm":"Có"},
+    { "Raido": "Có" },
+    { "Xem phim":"3GP, AVI, MP4, WMV"},
+    { "Nghe nhạc":"AAC, AMR, MP3, WAV, WMA"}
+  ],
+  "prod_design": {
+    "structural": "Nguyên khối",
+    "material": "Khung hợp kim & Mặt lưng thuỷ tinh hữu cơ",
+    "size": "Dài 160.2 mm - Ngang 73.38 mm - Dày 7.97 mm",
+    "weight": "Nặng 173 g"
+  },
+  "prod_status": "",
+  "brand_no": 3
+}
+
+### Thêm chi tiết
+POST http://localhost:8000/api/products/26/details
+Content-Type: application/json
+
+[
+  {
+    "pd_storage": "125G", 
+    "pd_ram": "8G", 
+    "pd_storageAvailable": "...", 
+    "pd_price": 125000, 
+    "pd_amount" : 1,
+    "pd_sold": 0
+  }
+]

@@ -77,6 +77,27 @@ module.exports = class ProductsDAO extends ModelDAO {
     return prod_no;
   };
 
+  addProductDetails = async (prod_no, details) => {
+    console.log(details);
+    const dbParams = this.extractParams(details);
+    console.log(dbParams);
+    const sql = `INSERT INTO Products(
+        prod_name,
+        prod_manufacturer,
+        prod_screen,
+        prod_camera,
+        prod_hardwareAndOS,
+        prod_network,
+        prod_batteryAndCharger,
+        prod_utilities,
+        prod_design,
+        brand_no
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    // await this.sqldao.execute(sql, dbParams);
+  };
+
   updateProduct = async (prod_no, product) => {
     const dbParams = this.extractParams(product);
     dbParams.push(prod_no);
