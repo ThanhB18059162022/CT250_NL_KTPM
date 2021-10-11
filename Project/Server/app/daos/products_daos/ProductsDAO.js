@@ -29,11 +29,15 @@ module.exports = class ProductsDAO extends ModelDAO {
     return prod_details;
   };
 
-  // Chưa làm xong
   getProductsByPrice = async (min, max, startIndex, endIndex) => {
-    const products = await this.sqldao.query(
-      `SELECT * FROM Products LIMIT ${startIndex}, ${endIndex - startIndex}`
+    const dbProducts = await this.sqldao.query(
+      `SELECT * FROM Products AS p, Products_Details AS pd 
+      WHERE p.prod_no = pd.prod_no 
+      AND pd.pd_price > ${min} AND pd.pd_price < ${max} 
+      LIMIT ${startIndex}, ${endIndex - startIndex}`
     );
+
+    const products = this.converter.toProducts(dbProducts);
 
     return products;
   };
@@ -75,9 +79,7 @@ module.exports = class ProductsDAO extends ModelDAO {
   //#region  ADD
 
   addProduct = async (newProduct) => {
-    await this.checkExistName(newProduct.prod_name);
-
-    const dbNewProduct = this.toDbProduct(newProduct);
+    const dbNewProduct = this.converter.toDbProduct(newProduct);
 
     const dbParams = this.extractParams(dbNewProduct);
 
@@ -95,7 +97,18 @@ module.exports = class ProductsDAO extends ModelDAO {
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    await this.sqldao.execute(sql, dbParams);
+    try {
+      await this.sqldao.execute(sql, dbParams);
+    } catch (error) {
+      if (
+        error.code == "ER_DUP_ENTRY" &&
+        error.sqlMessage.includes("prod_name")
+      ) {
+        throw new ExistError(`prod_name: ${newProduct.prod_name}`);
+      }
+
+      throw error;
+    }
 
     const product = await this.getProductByName(newProduct.prod_name);
 
@@ -138,20 +151,6 @@ module.exports = class ProductsDAO extends ModelDAO {
     };
   };
 
-  // Kiểm tra trùng tên
-  checkExistName = async (prod_name) => {
-    try {
-      const prodHasName = await this.getProductByName(prod_name);
-      if (!this.emptyData(prodHasName)) {
-        throw new ExistError(`prod_name: ${prodHasName.prod_name}`);
-      }
-    } catch (error) {
-      if (error instanceof ExistError) {
-        throw error;
-      }
-    }
-  };
-
   //#endregion
 
   //#region  UPDATE
@@ -159,9 +158,7 @@ module.exports = class ProductsDAO extends ModelDAO {
   updateProduct = async (prod_no, product) => {
     const prod = await this.getProductByNo(prod_no);
 
-    await this.checkDuplicateName(product.prod_name, prod.prod_no);
-
-    const dbProduct = this.toDbProduct(product);
+    const dbProduct = this.converter.toDbProduct(product);
     const dbParams = this.extractParams(dbProduct);
     dbParams.push(prod.prod_no);
 
@@ -178,53 +175,19 @@ module.exports = class ProductsDAO extends ModelDAO {
         brand_no = ? 
         WHERE prod_no = ?`;
 
-    await this.sqldao.execute(sql, dbParams);
-  };
-
-  // Kiểm tra trùng tên không phải tên cũ
-  checkDuplicateName = async (prod_name, prod_no) => {
     try {
-      const prodHasName = await this.getProductByName(prod_name);
-      if (!this.emptyData(prodHasName) && prodHasName.prod_no != prod_no) {
-        throw new ExistError(`prod_name: ${prodHasName.prod_name}`);
-      }
+      await this.sqldao.execute(sql, dbParams);
     } catch (error) {
-      if (error instanceof ExistError) {
-        throw error;
+      if (
+        error.code == "ER_DUP_ENTRY" &&
+        error.sqlMessage.includes("prod_name")
+      ) {
+        throw new ExistError(`prod_name: ${product.prod_name}`);
       }
+
+      throw error;
     }
   };
 
   //#endregion
-
-  // Không convert prod_no
-  toDbProduct = (product) => {
-    const {
-      prod_name,
-      prod_manufacturer,
-      prod_screen,
-      prod_camera,
-      prod_hardwareAndOS,
-      prod_network,
-      prod_batteryAndCharger,
-      prod_utilities,
-      prod_design,
-      brand_no,
-    } = product;
-
-    const dbProduct = {
-      prod_name,
-      prod_manufacturer: JSON.stringify(prod_manufacturer),
-      prod_screen: JSON.stringify(prod_screen),
-      prod_camera: JSON.stringify(prod_camera),
-      prod_hardwareAndOS: JSON.stringify(prod_hardwareAndOS),
-      prod_network: JSON.stringify(prod_network),
-      prod_batteryAndCharger: JSON.stringify(prod_batteryAndCharger),
-      prod_utilities: JSON.stringify(prod_utilities),
-      prod_design: JSON.stringify(prod_design),
-      brand_no,
-    };
-
-    return dbProduct;
-  };
 };

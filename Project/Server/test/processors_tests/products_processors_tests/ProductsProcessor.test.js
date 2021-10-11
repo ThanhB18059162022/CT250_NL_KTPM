@@ -175,6 +175,7 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
+    expect(actRs.items.length).toEqual(expRs.items.length);
     expect(daoMock.getProducts).toBeCalledTimes(1);
     expect(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
   });
@@ -194,7 +195,7 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
-    expect(actRs).toEqual(expRs);
+    expect(actRs.items.length).toEqual(expRs.items.length);
     expect(daoMock.getProductsByPrice).toBeCalledTimes(1);
   });
 
@@ -212,8 +213,7 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
-    expect(actRs).toEqual(expRs);
-
+    expect(actRs.items.length).toEqual(expRs.items.length);
     expect(daoMock.getProductsByPrice).toBeCalledTimes(1);
   });
 
@@ -231,8 +231,7 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
-    expect(actRs).toEqual(expRs);
-
+    expect(actRs.items.length).toEqual(expRs.items.length);
     expect(daoMock.getProductsByPrice).toBeCalledTimes(1);
   });
 

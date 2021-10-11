@@ -21,7 +21,8 @@ module.exports = class ProductsProcessor extends Processor {
       limit
     );
 
-    const products = await this.getList(startIndex, endIndex);
+    const dbProducts = await this.dao.getProducts(startIndex, endIndex);
+    const products = await this.getList(dbProducts);
 
     const productsPage = this.getPaginatedResults(
       products,
@@ -54,12 +55,14 @@ module.exports = class ProductsProcessor extends Processor {
       limit
     );
 
-    const products = await this.dao.getProductsByPrice(
+    const dbProducts = await this.dao.getProductsByPrice(
       min,
       max,
       startIndex,
       endIndex
     );
+
+    const products = await this.getList(dbProducts);
 
     const productsPage = this.getPaginatedResults(
       products,
@@ -70,17 +73,16 @@ module.exports = class ProductsProcessor extends Processor {
     return productsPage;
   };
 
-  getList = async (startIndex, endIndex) => {
-    const products = await this.dao.getProducts(startIndex, endIndex);
-    const prodPromises = [];
-    for (let i = 0; i < products.length; i++) {
-      const prodProm = this.getItem(products[i]);
+  getList = async (dbProducts) => {
+    const productsPromises = [];
+    for (let i = 0; i < dbProducts.length; i++) {
+      const prodProm = this.getItem(dbProducts[i]);
 
-      prodPromises.push(prodProm);
+      productsPromises.push(prodProm);
     }
-    const productsInfo = await Promise.all(prodPromises);
+    const products = await Promise.all(productsPromises);
 
-    return productsInfo;
+    return products;
   };
 
   getItem = async (product) => {
