@@ -15,7 +15,7 @@ const {
   CurrencyExchangeService,
   StorageService,
 } = require("../../../services/servicesContainer");
-const { DAO, CustomersOrdersDAO } = require("../../../daos/daosContainer");
+const { DAO, PaymentsDAO } = require("../../../daos/daosContainer");
 const {
   StripePaymentProcessor,
 } = require("../../../processors/processorsContainer");
@@ -26,7 +26,7 @@ const {
 //#region  INIT
 
 const sqldao = new DAO(config.dbConnection.mysql);
-const dao = new CustomersOrdersDAO(sqldao);
+const dao = new PaymentsDAO(sqldao);
 const { payment } = config;
 const service = new StripeService(payment.stripe);
 const validator = new PaymentsValidator();
