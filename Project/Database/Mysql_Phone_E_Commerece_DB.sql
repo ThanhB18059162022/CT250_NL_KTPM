@@ -24,24 +24,13 @@ CREATE TABLE Moderators(
   mod_sex TINYINT(1) NOT NULL DEFAULT '0', -- Giới tính 1 là nam 0 là nữ
   mod_address VARCHAR(128) NOT NULL, -- Địa chỉ
   mod_role TINYINT(1) NOT NULL DEFAULT '0', -- Vai trò 0 là nhân viên 1 là quản lý
+  mod_username VARCHAR(70) NOT NULL UNIQUE, -- Tài khoản
+  mod_password CHAR(64) NOT NULL, -- Mật khẩu
 
  -- Khóa chính
   CONSTRAINT Moderators_PK PRIMARY KEY (mod_no)
 );
 
--- Bảng tài khoản
-CREATE TABLE Accounts(
-  acc_no INT AUTO_INCREMENT, -- Mã tài khoản tự tăng
-  acc_username VARCHAR(70) NOT NULL UNIQUE, -- Tài khoản
-  acc_password CHAR(64) NOT NULL, -- Mật khẩu
-  mod_no INT NOT NULL, -- Mã quản trị viên khóa ngoại tham chiếu bảng quản trị viên
- 
- -- Khóa chính
-  CONSTRAINT Accounts_PK PRIMARY KEY (acc_no),
- 
- -- Khóa ngoại
-  CONSTRAINT Accounts_Moderators_FK FOREIGN KEY(mod_no) REFERENCES Moderators(mod_no) ON DELETE CASCADE
-);
 
 -- Bảng địa chỉ
 CREATE TABLE Addresses(

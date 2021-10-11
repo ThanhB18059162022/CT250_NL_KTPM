@@ -60,8 +60,7 @@ module.exports = class ModeratorsDAO extends ModelDAO {
   getModeratorByUsername = async (mod_username) => {
     const moderator = (
       await this.sqldao.query(
-        `SELECT m.* FROM Moderators AS m, Accounts as a 
-         WHERE m.mod_no = a.mod_no AND a.acc_username = ?`,
+        `SELECT * FROM Moderators WHERE mod_username = ?`,
         [mod_username]
       )
     )[0];

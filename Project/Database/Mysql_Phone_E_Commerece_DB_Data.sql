@@ -762,10 +762,8 @@ VALUES("12 GB", "256 GB", "245 GB", 21990000, 25, 15, 25);
 
 -- ------------------------------ Quản trị viên -----------------------------------------------------
 
-INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role) 
-VALUES ('Administrator', '000000000', '0000000000', '1', N'3/2 Ninh Kiều Cẩn Thơ', '1');
-INSERT INTO Accounts(acc_username, acc_password, mod_no) VALUES("admin", "123456", 1);
+INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role, mod_username, mod_password) 
+VALUES ('Administrator', '000000000', '0000000000', '1', N'3/2 Ninh Kiều Cẩn Thơ', '1', "admin", "123456");
 
-INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role) 
-VALUES ('Staff-lee', '111111111', '1111111111', '0', N'3/2 Ninh Kiều Cẩn Thơ', '0');
-INSERT INTO Accounts(acc_username, acc_password, mod_no) VALUES("staff", "123456", 2);
+INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role, mod_username, mod_password) 
+VALUES ('Staff-lee', '111111111', '1111111111', '0', N'3/2 Ninh Kiều Cẩn Thơ', '0', "staff", "123456");

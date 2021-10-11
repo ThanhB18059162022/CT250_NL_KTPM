@@ -40,7 +40,7 @@ class MySQLDAOMock {
       return MORDERATORS.filter((m) => m.mod_id == params[0]);
     }
 
-    if (sql.includes("WHERE m.mod_no = a.mod_no AND a.acc_username = ?")) {
+    if (sql.includes("WHERE mod_username = ?")) {
       return MORDERATORS.filter((m) => m.mod_username == params[0]);
     }
 
