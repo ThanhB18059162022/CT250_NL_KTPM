@@ -1,5 +1,5 @@
 const ModelDAO = require("../ModelDAO");
-const { NotExistError, ExistError } = require("../../errors/errorsContainer");
+const { NotExistError } = require("../../errors/errorsContainer");
 
 // Chỉ tương tác với db product
 module.exports = class ProductsDAO extends ModelDAO {
@@ -97,18 +97,9 @@ module.exports = class ProductsDAO extends ModelDAO {
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    try {
-      await this.sqldao.execute(sql, dbParams);
-    } catch (error) {
-      if (
-        error.code == "ER_DUP_ENTRY" &&
-        error.sqlMessage.includes("prod_name")
-      ) {
-        throw new ExistError(`prod_name: ${newProduct.prod_name}`);
-      }
-
-      throw error;
-    }
+    await this.handleExeError(
+      async () => await this.sqldao.execute(sql, dbParams)
+    );
 
     const product = await this.getProductByName(newProduct.prod_name);
 
@@ -175,18 +166,9 @@ module.exports = class ProductsDAO extends ModelDAO {
         brand_no = ? 
         WHERE prod_no = ?`;
 
-    try {
-      await this.sqldao.execute(sql, dbParams);
-    } catch (error) {
-      if (
-        error.code == "ER_DUP_ENTRY" &&
-        error.sqlMessage.includes("prod_name")
-      ) {
-        throw new ExistError(`prod_name: ${product.prod_name}`);
-      }
-
-      throw error;
-    }
+    await this.handleExeError(
+      async () => await this.sqldao.execute(sql, dbParams)
+    );
   };
 
   //#endregion
