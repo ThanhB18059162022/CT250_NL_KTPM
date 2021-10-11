@@ -13,7 +13,7 @@ GET http://localhost:8000/api/moderators
 GET http://localhost:8000/api/moderators?page=wtf&limit=1
 
 ### 2 limit không hợp lệ
-GET http://localhost:8000/api/moderators?page=10&limit=wtf
+GET http://localhost:8000/api/moderators?page=1&limit=wtf
 
 
 

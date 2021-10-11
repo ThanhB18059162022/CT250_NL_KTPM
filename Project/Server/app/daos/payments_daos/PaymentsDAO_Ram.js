@@ -4,7 +4,7 @@ const PRODUCTS = [
   { prod_no: 2, prod_name: "sản phẩm 2", prod_price: 1000 },
 ];
 
-module.exports = class CustomersOrdersDAO {
+module.exports = class PaymentsDAO_Ram {
   emptyData = (data) => {
     return data === undefined;
   };

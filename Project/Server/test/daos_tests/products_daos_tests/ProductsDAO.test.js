@@ -97,7 +97,7 @@ const getDAO = () => {
   return new ProductsDAO(sqldao, converter);
 };
 
-describe("Lấy ra danh sách sản phẩm", () => {
+describe("DAO Lấy ra danh sách sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
     converter = new ProductConverterServiceMock();
@@ -111,7 +111,7 @@ describe("Lấy ra danh sách sản phẩm", () => {
     const expRs = PRODUCTS;
     const actRs = await dao.getProducts();
 
-    //Assert
+    //Expect
     expect(actRs).toEqual(expRs);
     expect(sqldao.query).toBeCalledTimes(1);
     expect(converter.toProducts).toBeCalledTimes(1);
@@ -127,14 +127,14 @@ describe("Lấy ra danh sách sản phẩm", () => {
     const expRs = PRODUCTS;
     const actRs = await dao.getProductsByPrice(min, max);
 
-    //Assert
+    //Expect
     expect(actRs).toEqual(expRs);
     expect(sqldao.query).toBeCalledTimes(1);
     expect(converter.toProducts).toBeCalledTimes(1);
   });
 });
 
-describe("Lấy ra chi tiết của sản phẩm", () => {
+describe("DAO Lấy ra chi tiết của sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
     converter = new ProductConverterServiceMock();
@@ -149,7 +149,7 @@ describe("Lấy ra chi tiết của sản phẩm", () => {
     const expRs = [];
     const actRs = await dao.getProductDetails(prod_no);
 
-    //Assert
+    //Expect
     expect(actRs).toEqual(expRs);
     expect(sqldao.query).toBeCalledTimes(1);
   });
@@ -163,13 +163,13 @@ describe("Lấy ra chi tiết của sản phẩm", () => {
     const expRs = [{}];
     const actRs = await dao.getProductDetails(prod_no);
 
-    //Assert
+    //Expect
     expect(actRs).toEqual(expRs);
     expect(sqldao.query).toBeCalledTimes(1);
   });
 });
 
-describe("Lấy ra sản phẩm theo mã", () => {
+describe("DAO Lấy ra sản phẩm theo mã", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
     converter = new ProductConverterServiceMock();
@@ -189,7 +189,7 @@ describe("Lấy ra sản phẩm theo mã", () => {
       actRs = error;
     }
 
-    //Assert
+    //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.query).toBeCalledTimes(1);
   });
@@ -202,13 +202,13 @@ describe("Lấy ra sản phẩm theo mã", () => {
     //Act
     await dao.getProductByNo(prod_no);
 
-    //Assert
+    //Expect
     expect(sqldao.query).toBeCalledTimes(1);
     expect(converter.toProduct).toBeCalledTimes(1);
   });
 });
 
-describe("Lấy ra sản phẩm theo tên", () => {
+describe("DAO Lấy ra sản phẩm theo tên", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
     converter = new ProductConverterServiceMock();
@@ -228,7 +228,7 @@ describe("Lấy ra sản phẩm theo tên", () => {
       actRs = error;
     }
 
-    //Assert
+    //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.query).toBeCalledTimes(1);
   });
@@ -241,13 +241,13 @@ describe("Lấy ra sản phẩm theo tên", () => {
     //Act
     await dao.getProductByName(prod_name);
 
-    //Assert
+    //Expect
     expect(sqldao.query).toBeCalledTimes(1);
     expect(converter.toProduct).toBeCalledTimes(1);
   });
 });
 
-describe("Thêm sản phẩm", () => {
+describe("DAO Thêm sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
     converter = new ProductConverterServiceMock();
@@ -267,7 +267,7 @@ describe("Thêm sản phẩm", () => {
       actRs = error;
     }
 
-    //Assert
+    //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.execute).toBeCalledTimes(1);
   });
@@ -281,7 +281,7 @@ describe("Thêm sản phẩm", () => {
     const expRs = product;
     const actRs = await dao.addProduct(product);
 
-    //Assert
+    //Expect
     expect(actRs).toEqual(expRs);
     expect(sqldao.execute).toBeCalledTimes(1);
   });
@@ -300,13 +300,13 @@ describe("Thêm sản phẩm", () => {
       actRs = error;
     }
 
-    //Assert
+    //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.execute).toBeCalledTimes(1);
   });
 });
 
-describe("Thêm chi tiết sản phẩm", () => {
+describe("DAO Thêm chi tiết sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
     converter = new ProductConverterServiceMock();
@@ -326,7 +326,7 @@ describe("Thêm chi tiết sản phẩm", () => {
       actRs = error;
     }
 
-    //Assert
+    //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.query).toBeCalledTimes(1);
   });
@@ -340,13 +340,13 @@ describe("Thêm chi tiết sản phẩm", () => {
     //Act
     await dao.addProductDetails(prod_no, details);
 
-    //Assert
+    //Expect
     expect(sqldao.query).toBeCalledTimes(1);
     expect(sqldao.execute).toHaveBeenCalled();
   });
 });
 
-describe("Sửa sản phẩm", () => {
+describe("DAO Sửa sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
     converter = new ProductConverterServiceMock();
@@ -366,7 +366,7 @@ describe("Sửa sản phẩm", () => {
       actRs = error;
     }
 
-    //Assert
+    //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.query).toBeCalledTimes(1);
   });
@@ -386,7 +386,7 @@ describe("Sửa sản phẩm", () => {
       actRs = error;
     }
 
-    //Assert
+    //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.query).toHaveBeenCalled();
   });
@@ -399,7 +399,7 @@ describe("Sửa sản phẩm", () => {
     //Act
     await dao.updateProduct(prod_no, {});
 
-    //Assert
+    //Expect
     expect(sqldao.query).toHaveBeenCalled();
     expect(sqldao.execute).toBeCalledTimes(1);
   });
@@ -418,7 +418,7 @@ describe("Sửa sản phẩm", () => {
       actRs = error;
     }
 
-    //Assert
+    //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.execute).toBeCalledTimes(1);
   });

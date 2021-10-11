@@ -114,7 +114,6 @@ describe("Proc Lấy ra danh sách sản phẩm có giá", () => {
     const actRs = await processor.getOrderProducts(products);
 
     //Expect
-    console.log(actRs);
     expect(actRs).toEqual(expRs);
   });
 });

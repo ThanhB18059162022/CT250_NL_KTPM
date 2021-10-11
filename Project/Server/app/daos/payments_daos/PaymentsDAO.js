@@ -1,6 +1,7 @@
+const { NotExistError } = require("../../errors/errorsContainer");
 const ModelDAO = require("../ModelDAO");
 
-module.exports = class CustomersOrdersDAO extends ModelDAO {
+module.exports = class PaymentsDAO extends ModelDAO {
   constructor(sqldao) {
     super(sqldao);
   }
@@ -14,6 +15,10 @@ module.exports = class CustomersOrdersDAO extends ModelDAO {
 
     const product = (await this.sqldao.query(sql, [prod_no, pd_no]))[0];
 
+    if (this.emptyData(product)) {
+      throw new NotExistError(`prod_no: ${prod_no}, pd_no: ${pd_no}`);
+    }
+
     return { ...product, prod_price: product.pd_price, prod_quantity };
   };
 
@@ -24,18 +29,14 @@ module.exports = class CustomersOrdersDAO extends ModelDAO {
   };
 
   getSaveOrder = async (id) => {
-    if (id === 1) {
-      return {
-        id,
-        product: PRODUCTS.map((m) => ({
-          ...m,
-          prod_quantity: 3,
-        })),
-        customer: "alexander",
-        time: Date.now(),
-        payment: "Paypal",
-        total: 6666666666,
-      };
+    const sql = `SELECT * FROM Orders WHERE order_no = ?`;
+
+    const order = (await this.sqldao.query(sql, [id]))[0];
+
+    if (this.emptyData(order)) {
+      throw new NotExistError(`Order id: ${id}`);
     }
+
+    return order;
   };
 };
