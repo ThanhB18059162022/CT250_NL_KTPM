@@ -19,20 +19,41 @@ export const ProductItem = ({ id, compare = false, currentId = -1 }) => {
 
     const [item, setItem] = useState(null)
 
+    const [isHover,setHover] = useState(false)
+
+    const [images, setImages] = useState(null)
+
+    const [idx, setIdx] = useState(0)
+
     useEffect(()=>{
         let load = true;
         (async()=>{
             let data = await ProductServices.getProduct(id)
             if(!load) return
+            setImages(data.prod_imgs)
             setItem(data)
         })()
         return ()=>load =  false
     },[id])
 
+    useEffect(()=>{
+        let interval = null
+        if(isHover){
+            interval =setInterval(()=>{
+                if(idx===images.length-1) setIdx(0)
+                else setIdx(idx+1)
+            },1000)
+        }
+        else setIdx(0)
+        return ()=>{
+            interval && clearInterval(interval)
+        }
+    },[isHover, idx, images])
+
     return (
-        <li className="ProductItem">
+        <li className="ProductItem" onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)}>
             <div  onClick={()=>history.push(`/product/${id}`)}>
-                <img src={item?item.prod_imgs[0]:'/image/loading.gif'} alt="product_shower"/>
+                <img src={images?images[idx]:'/image/loading.gif'} alt="product_shower"/>
                 <div className="product-info">
                     <p className="name">{item && item.prod_name}</p>
                     <p className="price">{item && Helper.Exchange.toMoney(item.prod_details[0].pd_price)} VND</p>
