@@ -16,7 +16,7 @@ class LoginDaoMock {
 
   login = jest.fn(async (loginModel) => loginModel === LoginDaoMock.user);
 
-  getByUsername = jest.fn(async () => {
+  getUserToken = jest.fn(async () => {
     return LoginDaoMock.user;
   });
 }
@@ -131,7 +131,7 @@ describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
     expect(daoMock.login).toBeCalledTimes(1);
     expect(daoMock.login).toBeCalledWith(loginModel);
 
-    expect(daoMock.getByUsername).toBeCalledTimes(1);
+    expect(daoMock.getUserToken).toBeCalledTimes(1);
 
     expect(jwtMock.getToken).toBeCalledTimes(1);
     expect(jwtMock.getToken).toBeCalledWith(user);

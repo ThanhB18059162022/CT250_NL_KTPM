@@ -1,8 +1,6 @@
 const {
   InstantiateAbstractClassError,
   NotValidError,
-  NotExistError,
-  ExistError,
 } = require("../errors/errorsContainer");
 
 // Lưu các hàm xài chung của các controller
@@ -23,7 +21,6 @@ module.exports = class Processor {
       page = 1;
     }
 
-    limit = parseInt(limit);
     if (isNaN(limit) || limit < 0) {
       limit = 1;
     }
@@ -72,32 +69,6 @@ module.exports = class Processor {
       throw new NotValidError(result.error);
     }
   };
-
-  // Kiểm tra tồn tại trong CSDL
-  checkExistAsync = async (getFuncAsync, emptyData, dataName) => {
-    const data = await getFuncAsync();
-    if (emptyData(data)) {
-      throw new NotExistError(dataName);
-    }
-
-    return data;
-  };
-
-  // Đã tồn tại quăng lỗi khi exist - notvalid
-  checkExistData = async (asyncFunc, message) => {
-    try {
-      await asyncFunc();
-
-      throw new ExistError(message);
-    } catch (error) {
-      if (!(error instanceof NotExistError)) {
-        throw error;
-      }
-    }
-  };
-
-  // Kiểm tra khi cập nhật lại thông tin so sánh no
-  notOldData = (newNo, oldNo) => newNo !== oldNo;
 
   //#endregion
 };

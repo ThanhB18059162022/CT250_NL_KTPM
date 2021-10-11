@@ -161,3 +161,170 @@ describe("Val Kiểm tra sản phẩm hợp lệ", () => {
     expect(actRs).toEqual(expRs);
   });
 });
+
+const validDetail = {
+  pd_ram: "8G",
+  pd_storage: "124",
+  pd_storageAvailable: "223",
+  pd_amount: 12,
+  pd_sold: 10,
+  pd_price: 12000,
+};
+
+// Mảng chứa các chi tiết
+describe("Val Kiểm tra chi tiết sản phẩm hợp lệ", () => {
+  test("Chi tiết undefiend", () => {
+    //Arrange
+    const details = undefined;
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Chi tiết rỗng", () => {
+    //Arrange
+    const details = [];
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  // Không có ram pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold,
+  test("Không có ram", () => {
+    //Arrange
+    const details = [{ ...validDetail, pd_ram: undefined }];
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Không có bộ nhớ", () => {
+    //Arrange
+    const details = [{ ...validDetail, pd_storage: undefined }];
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Không có tổng", () => {
+    //Arrange
+    const details = [{ ...validDetail, pd_amount: undefined }];
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tổng < 0", () => {
+    //Arrange
+    const details = [{ ...validDetail, pd_amount: -1 }];
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Không có tổng bán", () => {
+    //Arrange
+    const details = [{ ...validDetail, pd_sold: undefined }];
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Tổng bán < 0", () => {
+    //Arrange
+    const details = [{ ...validDetail, pd_sold: -1 }];
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Không có giá", () => {
+    //Arrange
+    const details = [{ pd_ram: "8G" }];
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Giá < 0", () => {
+    //Arrange
+    const details = [{ pd_ram: "8G", pd_price: -1 }];
+    const validator = getValidator();
+    const valid = false;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Hợp lệ", () => {
+    //Arrange
+    const details = [validDetail];
+    const validator = getValidator();
+    const valid = true;
+
+    //Act
+    const expRs = !valid;
+    const actRs = validator.validateProductDetails(details).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});

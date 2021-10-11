@@ -120,8 +120,8 @@ describe("Val Kiểm tra sản phẩm có đúng định dạng mã - số lư�
   test("Mảng hợp lệ", () => {
     //Arrange
     const products = [
-      { prod_no: 3, prod_quantity: 1 },
-      { prod_no: 1, prod_quantity: 2 },
+      { prod_no: 3, prod_quantity: 1, pd_no: 1 },
+      { prod_no: 1, prod_quantity: 2, pd_no: 3 },
     ];
     const validator = getValidator();
     const failed = false;
@@ -557,7 +557,7 @@ describe("Val Kiểm tra thông tin khách hàng", () => {
 
 const validCart = {
   customer: validCustomer,
-  products: [{ prod_no: 1, prod_quantity: 1 }],
+  products: [{ prod_no: 1, prod_quantity: 1, pd_no: 1 }],
 };
 describe("Val Kiểm tra giỏ hàng đúng định dạng", () => {
   test("Giỏ hàng undefined", () => {
