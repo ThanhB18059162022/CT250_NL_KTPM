@@ -11,7 +11,7 @@ const ProductsDAO = require("./products_daos/ProductsDAO");
 const PaymentsDAO = require("./payments_daos/PaymentsDAO");
 const PaymentsDAO_Ram = require("./payments_daos/PaymentsDAO_Ram");
 
-const ModeratorsDAO = require("./moderators_daos/ModeratorDAO");
+const ModeratorsDAO = require("./moderators_daos/ModeratorsDAO");
 const ModeratorsDAO_Ram = require("./moderators_daos/ModeratorsDAO_Ram");
 
 const FeedbackDAO_Ram = require("./feedback_daos/FeedbackDAO_Ram");

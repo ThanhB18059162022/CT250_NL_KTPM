@@ -12,7 +12,7 @@ module.exports = class ModelDAO {
     this.sqldao = sqldao;
   }
 
-  extractParams = (product) => Object.entries(product).map((en) => en[1]);
+  extractParams = (model) => Object.entries(model).map((en) => en[1]);
 
   emptyData = (data) => data === undefined;
 
@@ -20,16 +20,8 @@ module.exports = class ModelDAO {
     try {
       await asyncFunc();
     } catch (error) {
-      if (
-        error.code == "ER_DUP_ENTRY" &&
-        error.sqlMessage.includes("prod_name")
-      ) {
-        const regex = /\'.*.\'/;
-
-        const content = regex.exec(error.sqlMessage)[0];
-        const src = content.split(" for key ");
-
-        throw new ExistError(`${src[1]}: ${src[0]}`);
+      if (error.code === "ER_DUP_ENTRY") {
+        throw new ExistError(error.sqlMessage);
       }
 
       throw error;

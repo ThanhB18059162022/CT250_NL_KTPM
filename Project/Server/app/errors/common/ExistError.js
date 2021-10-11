@@ -1,6 +1,6 @@
 module.exports = class ExistError extends Error {
-  constructor(value = "Data") {
-    super(`${value} has existed`);
+  constructor(message) {
+    super(message);
     this.name = this.constructor.name;
   }
 };

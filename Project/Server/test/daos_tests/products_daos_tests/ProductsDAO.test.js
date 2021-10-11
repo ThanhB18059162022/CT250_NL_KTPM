@@ -61,7 +61,7 @@ class MySQLDAOMock {
       if (nameP != undefined) {
         const mysqlError = new Error();
         mysqlError.code = "ER_DUP_ENTRY";
-        mysqlError.sqlMessage = "prod_name";
+        mysqlError.sqlMessage = "`prod_name`";
 
         throw mysqlError;
       }
@@ -268,6 +268,7 @@ describe("DAO Thêm sản phẩm", () => {
     }
 
     //Expect
+    console.log(actRs);
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.execute).toBeCalledTimes(1);
   });
