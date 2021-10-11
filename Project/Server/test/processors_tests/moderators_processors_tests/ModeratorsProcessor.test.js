@@ -10,7 +10,7 @@ const {
 // Kiểm tra các api end-points của quản trị viên
 
 //#region  Init
-const moderators = [
+const MODERATORS = [
   {
     mod_no: 1,
     mod_name: "alex",
@@ -60,28 +60,86 @@ class ModeratorDAOMock {
   });
 
   getModerators = jest.fn(async () => {
-    return moderators;
+    return MODERATORS;
   });
 
   getModeratorByNo = jest.fn(async (mod_no) => {
-    return moderators.filter((m) => m.mod_no === mod_no)[0];
+    const m = MODERATORS.filter((m) => m.mod_no == mod_no)[0];
+    if (m == undefined) {
+      throw new NotExistError();
+    }
+
+    return m;
   });
 
   getModeratorByPhoneNumber = jest.fn(async (mod_phoneNumber) => {
-    return moderators.filter((m) => m.mod_phoneNumber === mod_phoneNumber)[0];
+    const m = MODERATORS.filter(
+      (m) => m.mod_phoneNumber === mod_phoneNumber
+    )[0];
+
+    if (m == undefined) {
+      throw new NotExistError();
+    }
+
+    return m;
   });
 
   getModeratorByMod_Id = jest.fn(async (mod_id) => {
-    return moderators.filter((m) => m.mod_id == mod_id)[0];
+    const m = MODERATORS.filter((m) => m.mod_id == mod_id)[0];
+
+    if (m == undefined) {
+      throw new NotExistError();
+    }
+
+    return m;
   });
 
   getModeratorByUsername = jest.fn(async (mod_username) => {
-    return moderators.filter((m) => m.mod_username === mod_username)[0];
+    const m = MODERATORS.filter((m) => m.mod_username === mod_username)[0];
+
+    if (m == undefined) {
+      throw new NotExistError();
+    }
+
+    return m;
   });
 
-  addModerator = jest.fn(async (mod) => mod);
+  addModerator = jest.fn(async (mod) => {
+    const m_p = MODERATORS.filter(
+      (m) => m.mod_phoneNumber == mod.mod_phoneNumber
+    )[0];
+    if (m_p != undefined) {
+      throw new ExistError();
+    }
 
-  updateModerator = jest.fn();
+    const m_id = MODERATORS.filter((m) => m.mod_id == mod.mod_id)[0];
+    if (m_id != undefined) {
+      throw new ExistError();
+    }
+
+    const m_usr = MODERATORS.filter(
+      (m) => m.mod_username == mod.mod_username
+    )[0];
+    if (m_usr != undefined) {
+      throw new ExistError();
+    }
+
+    return mod;
+  });
+
+  updateModerator = jest.fn(async (mod_no, mod) => {
+    const m_p = MODERATORS.filter(
+      (m) => m.mod_phoneNumber == mod.mod_phoneNumber
+    )[0];
+    if (m_p != undefined && mod_no != m_p.mod_no) {
+      throw new ExistError();
+    }
+
+    const m_id = MODERATORS.filter((m) => m.mod_id == mod.mod_id)[0];
+    if (m_id != undefined && mod_no != m_id.mod_no) {
+      throw new ExistError();
+    }
+  });
 
   lockModerator = jest.fn();
 }
@@ -107,7 +165,7 @@ describe("Proc Lấy ra danh sách quản trị viên", () => {
     const processor = getProcessor();
     const query = {};
     //Act
-    const expRs = { items: moderators };
+    const expRs = { items: MODERATORS };
     const actRs = await processor.getModerators(query);
 
     //Assert
@@ -227,7 +285,7 @@ describe("Proc Lấy quản trị viên theo số điện thoại", () => {
   test("Lấy ra quản trị viên theo số điện thoại ", async () => {
     //Arrange
     const processor = getProcessor();
-    const mod = moderators[0];
+    const mod = MODERATORS[0];
     const { mod_phoneNumber } = mod;
 
     //Act
@@ -289,7 +347,7 @@ describe("Proc Lấy quản trị viên theo CMND", () => {
   test("Lấy ra quản trị viên theo CMND hợp lệ ", async () => {
     //Arrange
     const processor = getProcessor();
-    const mod = moderators[0];
+    const mod = MODERATORS[0];
     const { mod_id } = mod;
 
     //Act
@@ -351,7 +409,7 @@ describe("Proc Lấy ra quản trị viên theo tài khoản", () => {
   test("Tài khoản hợp lệ ", async () => {
     //Arrange
     const processor = getProcessor();
-    const mod = moderators[0];
+    const mod = MODERATORS[0];
     const { mod_username } = mod;
 
     //Act
@@ -395,7 +453,7 @@ describe("Proc Thêm quản trị viên", () => {
 
   test("Trùng số điện thoại - EX", async () => {
     //Arrange
-    const moderator = moderators[0];
+    const moderator = MODERATORS[0];
 
     const processor = getProcessor();
 
@@ -411,12 +469,15 @@ describe("Proc Thêm quản trị viên", () => {
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
   });
 
   test("Trùng số CMND - EX", async () => {
     //Arrange
-    const moderator = { ...moderators[0], mod_phoneNumber: "555555555" };
+    const moderator = {
+      ...MODERATORS[0],
+      mod_phoneNumber: "555555555",
+      mod_username: "aaa",
+    };
 
     const processor = getProcessor();
 
@@ -432,14 +493,12 @@ describe("Proc Thêm quản trị viên", () => {
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
   });
 
   test("Trùng tài khoản - EX", async () => {
     //Arrange
     const moderator = {
-      ...moderators[0],
+      ...MODERATORS[0],
       mod_phoneNumber: "555555555",
       mod_id: "11",
     };
@@ -458,9 +517,6 @@ describe("Proc Thêm quản trị viên", () => {
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByUsername).toBeCalledTimes(1);
   });
 
   test("Thêm thành công ", async () => {
@@ -480,9 +536,6 @@ describe("Proc Thêm quản trị viên", () => {
     //Expect
     expect(actRs).toEqual(expRs);
     expect(validatorMock.validateAddModerator).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
-    expect(daoMock.addModerator).toBeCalledTimes(1);
   });
 });
 
@@ -563,7 +616,7 @@ describe("Proc Sửa thông tin quản trị viên", () => {
   test("Số điện thoại đã tồn tại - EX", async () => {
     //Arrange
     const mod_no = 2;
-    const moderator = moderators[0];
+    const moderator = { ...MODERATORS[0], mod_id: "aa" };
 
     const processor = getProcessor();
 
@@ -582,14 +635,13 @@ describe("Proc Sửa thông tin quản trị viên", () => {
     expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
     expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
   });
 
   test("Số CMND đã tồn tại - EX", async () => {
     //Arrange
     const mod_no = 2;
-    const { mod_phoneNumber } = moderators[1];
-    const newInfo = { ...moderators[0], mod_phoneNumber };
+    const { mod_phoneNumber } = MODERATORS[1];
+    const newInfo = { ...MODERATORS[0], mod_phoneNumber };
     const processor = getProcessor();
 
     //Act
@@ -603,18 +655,18 @@ describe("Proc Sửa thông tin quản trị viên", () => {
     }
 
     //Expect
+    console.log(actRs);
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
     expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
   });
 
   test("Cập nhật thông tin cũ", async () => {
     //Arrange
     const mod_no = 1;
     const moderator = {
-      ...moderators[0],
+      ...MODERATORS[0],
     };
 
     const processor = getProcessor();
@@ -626,8 +678,6 @@ describe("Proc Sửa thông tin quản trị viên", () => {
     expect(validatorMock.validateNo).toBeCalledTimes(1);
     expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
-    expect(daoMock.getModeratorByMod_Id).toBeCalledTimes(1);
     expect(daoMock.updateModerator).toBeCalledTimes(1);
   });
 });

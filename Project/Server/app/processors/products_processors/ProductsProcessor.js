@@ -1,13 +1,11 @@
 const Processor = require("../Processor");
-const { ExistError } = require("../../errors/errorsContainer");
 
 module.exports = class ProductsProcessor extends Processor {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
-  constructor(validator, dao, converterService, imageService) {
+  constructor(validator, dao, imageService) {
     super();
     this.validator = validator;
     this.dao = dao;
-    this.converterService = converterService;
     this.imageService = imageService;
   }
 
@@ -24,8 +22,7 @@ module.exports = class ProductsProcessor extends Processor {
     );
 
     const dbProducts = await this.dao.getProducts(startIndex, endIndex);
-
-    const products = await this.toProducts(dbProducts);
+    const products = await this.getList(dbProducts);
 
     const productsPage = this.getPaginatedResults(
       products,
@@ -53,31 +50,42 @@ module.exports = class ProductsProcessor extends Processor {
       max = 0;
     }
 
-    const { startIndex, endIndex } = this.getIndexes(page, limit);
+    const { startIndex, endIndex, pageIndex, limitIndex } = this.getIndexes(
+      page,
+      limit
+    );
 
-    const products = await this.dao.getProductsByPrice(
+    const dbProducts = await this.dao.getProductsByPrice(
       min,
       max,
       startIndex,
       endIndex
     );
 
-    const productsPage = this.getPaginatedResults(products, page, limit);
+    const products = await this.getList(dbProducts);
+
+    const productsPage = this.getPaginatedResults(
+      products,
+      pageIndex,
+      limitIndex
+    );
 
     return productsPage;
   };
 
-  toProducts = async (dbProducts) => {
-    const products = this.converterService.toProducts(dbProducts);
+  getList = async (dbProducts) => {
+    const productsPromises = [];
+    for (let i = 0; i < dbProducts.length; i++) {
+      const prodProm = this.getItem(dbProducts[i]);
 
-    const items = await Promise.all(
-      products.map((p) => this.getProductItemInfo(p))
-    );
+      productsPromises.push(prodProm);
+    }
+    const products = await Promise.all(productsPromises);
 
-    return items;
+    return products;
   };
 
-  getProductItemInfo = async (product) => {
+  getItem = async (product) => {
     const {
       prod_no,
       prod_name,
@@ -124,34 +132,27 @@ module.exports = class ProductsProcessor extends Processor {
     const prod_no = Number(prod_noParam);
     this.checkValidate(() => this.validator.validateNo(prod_no));
 
-    const dbProduct = await this.checkExistAsync(
-      async () => await this.dao.getProductByNo(prod_no),
-      this.dao.emptyData,
-      `prod_no: ${prod_no}`
-    );
+    const product = await this.dao.getProductByNo(prod_no);
 
-    const product = await this.getProductInfo(dbProduct);
+    const productInfo = await this.getProductInfo(product);
 
-    return product;
+    return productInfo;
   };
 
   // Lấy theo tên
   getProductByName = async (prod_name) => {
     this.checkValidate(() => this.validator.validateName(prod_name));
 
-    const dbProduct = await this.checkExistAsync(
-      async () => await this.dao.getProductByName(prod_name),
-      this.dao.emptyData,
-      `prod_name: ${prod_name}`
-    );
+    const product = await this.dao.getProductByName(prod_name);
 
-    const product = await this.getProductInfo(dbProduct);
+    const productInfo = await this.getProductInfo(product);
 
-    return product;
+    return productInfo;
   };
 
-  getProductInfo = async (dbProduct) => {
-    const product = this.converterService.toProduct(dbProduct);
+  //#endregion
+
+  getProductInfo = async (product) => {
     const { prod_no } = product;
 
     const prod_details = await this.dao.getProductDetails(prod_no);
@@ -163,22 +164,17 @@ module.exports = class ProductsProcessor extends Processor {
 
   //#endregion
 
-  //#endregion
+  //#region ADD
 
   // Thêm sản phẩm
   addProduct = async (newProduct) => {
     //Kiểm tra model hợp lệ
     this.checkValidate(() => this.validator.validateProduct(newProduct));
 
-    // Kiểm tra trùng tên sản phẩm khác
-    const { prod_name } = newProduct;
-    await this.checkDuplicateName(prod_name, `prod_name: ${prod_name}`);
+    // Thêm vào CSDL trả về product
+    const product = await this.dao.addProduct(newProduct);
 
-    // Thêm vào CSDL trả về prod_no mới thêm
-    const dbProduct = this.converterService.toDbProduct(newProduct);
-    const prod_no = await this.dao.addProduct(dbProduct);
-
-    return { prod_no, ...newProduct };
+    return product;
   };
 
   // Chi tiết sản phẩm
@@ -191,44 +187,15 @@ module.exports = class ProductsProcessor extends Processor {
     await this.dao.addProductDetails(product.prod_no, details);
   };
 
+  //#endregion
+
   // Cập nhật sản phẩm
   updateProduct = async (prod_no, newInfo) => {
     this.checkValidate(() => this.validator.validateProduct(newInfo));
 
     const oldInfo = await this.getProductByNo(prod_no);
 
-    // Kiểm tra trùng tên sản phẩm khác
-    await this.checkDuplicateNameNotOldName(
-      newInfo.prod_name,
-      oldInfo.prod_no,
-      `prod_name: ${newInfo.prod_name}`
-    );
-
     // Cập nhật thông tin
-    const dbProduct = this.converterService.toDbProduct(newInfo);
-    await this.dao.updateProduct(oldInfo.prod_no, dbProduct);
+    await this.dao.updateProduct(oldInfo.prod_no, newInfo);
   };
-
-  //#region EX
-
-  checkDuplicateName = async (prod_name, message) => {
-    await this.checkExistData(
-      async () => await this.getProductByName(prod_name),
-      message
-    );
-  };
-
-  checkDuplicateNameNotOldName = async (prod_name, prod_no, message) => {
-    try {
-      const prodWithName = await this.getProductByName(prod_name);
-
-      if (this.notOldData(prod_no, prodWithName.prod_no)) {
-        throw new ExistError(message);
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  //#endregion
 };

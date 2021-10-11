@@ -1,3 +1,4 @@
+const { NotExistError } = require("../../errors/errorsContainer");
 const ModelDAO = require("../ModelDAO");
 
 module.exports = class ModeratorsDAO extends ModelDAO {
@@ -20,6 +21,10 @@ module.exports = class ModeratorsDAO extends ModelDAO {
       ])
     )[0];
 
+    if (this.emptyData(moderator)) {
+      throw new NotExistError(`mod_no: ${mod_no}`);
+    }
+
     return moderator;
   };
 
@@ -31,6 +36,10 @@ module.exports = class ModeratorsDAO extends ModelDAO {
       )
     )[0];
 
+    if (this.emptyData(moderator)) {
+      throw new NotExistError(`mod_phoneNumber: ${mod_phoneNumber}`);
+    }
+
     return moderator;
   };
 
@@ -40,6 +49,10 @@ module.exports = class ModeratorsDAO extends ModelDAO {
         mod_id,
       ])
     )[0];
+
+    if (this.emptyData(moderator)) {
+      throw new NotExistError(`mod_id: ${mod_id}`);
+    }
 
     return moderator;
   };
@@ -52,6 +65,10 @@ module.exports = class ModeratorsDAO extends ModelDAO {
         [mod_username]
       )
     )[0];
+
+    if (this.emptyData(moderator)) {
+      throw new NotExistError(`mod_username: ${mod_username}`);
+    }
 
     return moderator;
   };

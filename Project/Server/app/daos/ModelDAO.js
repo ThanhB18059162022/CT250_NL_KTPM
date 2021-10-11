@@ -11,5 +11,5 @@ module.exports = class ModelDAO {
 
   extractParams = (product) => Object.entries(product).map((en) => en[1]);
 
-  emptyData = (data) => this.sqldao.emptyData(data);
+  emptyData = (data) => data === undefined;
 };
