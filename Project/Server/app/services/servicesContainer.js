@@ -15,8 +15,8 @@ const StripeService = require("./payments_services/stripe_services/StripeService
 const ZaloPayService = require("./payments_services/zalopay_services/ZaloPaySerivce");
 
 const ImageService = require("./file_services/ImageService");
-const ProductConverterService = require("./converter_services/ProductConverterService");
-
+const ProductConverter = require("./converter_services/ProductConverter");
+const ModeratorConverter = require("./converter_services/ModeratorConverter");
 module.exports = {
   ApiCaller,
 
@@ -30,5 +30,6 @@ module.exports = {
   ZaloPayService,
 
   ImageService,
-  ProductConverterService,
+  ProductConverter,
+  ModeratorConverter,
 };

@@ -101,19 +101,4 @@ module.exports = class ModeratorsController extends Controller {
       return this.checkError(res, error);
     }
   };
-
-  // Khóa tài khoản quản trị viên
-  lockModerator = async (req, res) => {
-    try {
-      const { mod_no } = req.params;
-
-      const moderator = await this.processor.getModeratorByNo(mod_no);
-
-      await this.processor.lockModerator(moderator.mod_no);
-
-      return this.noContent(res);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
-  };
 };

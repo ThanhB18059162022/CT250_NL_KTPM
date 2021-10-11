@@ -11,7 +11,7 @@ const { errorCatch } = require("../routerErrorHandler");
 const { ProductsValidator } = require("../../validators/validatorsContainer");
 const {
   ImageService,
-  ProductConverterService,
+  ProductConverter,
 } = require("../../services/servicesContainer");
 const { DAO, ProductsDAO } = require("../../daos/daosContainer");
 const { ProductsProcessor } = require("../../processors/processorsContainer");
@@ -20,7 +20,7 @@ const {
 } = require("../../controllers/controllersContainer");
 
 const sqldao = new DAO(config.dbConnection.mysql);
-const converter = new ProductConverterService();
+const converter = new ProductConverter();
 const dao = new ProductsDAO(sqldao, converter);
 const validator = new ProductsValidator();
 const imgService = new ImageService(config.baseImgUri);
