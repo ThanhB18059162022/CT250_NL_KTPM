@@ -91,7 +91,7 @@ module.exports = class ModeratorsDAO extends ModelDAO {
 
   updateModerator = async (mod_no, moderator) => {
     const dbModerator = this.converter.toDbModerator(moderator);
-    delete dbModerator["prod_username"]; // Không cập nhật tài khoản
+    delete dbModerator["mod_username"]; // Không cập nhật tài khoản
     const dbParams = this.extractParams(dbModerator);
     dbParams.push(mod_no);
 

@@ -3,8 +3,6 @@
 
 const MysqlDAO = require("./MysqlDAO");
 
-const AuthenticationDAO_Ram = require("./authentication_daos/AuthenticationDAO_Ram");
-
 const ProductsDAO = require("./products_daos/ProductsDAO");
 // const ProductDAO_Ram = require("./products_daos/ProductsDAO_Ram");
 
@@ -18,8 +16,6 @@ const FeedbackDAO_Ram = require("./feedback_daos/FeedbackDAO_Ram");
 
 module.exports = {
   DAO: MysqlDAO, // Xài mysql
-
-  AuthenticationDAO: AuthenticationDAO_Ram,
 
   ProductsDAO,
 

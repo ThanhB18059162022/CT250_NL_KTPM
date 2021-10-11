@@ -5,19 +5,22 @@ const {
   NotValidError,
   LoginNotSuccessError,
   JwtTokenError,
+  NotExistError,
 } = require("../../../app/errors/errorsContainer");
 
 // Test xác thực người dùng
 
 //#region Init
 
-class LoginDaoMock {
-  static user = { username: "valid", password: "valid" };
+class ModDaoMock {
+  static user = { mod_username: "valid", mod_password: "valid" };
 
-  login = jest.fn(async (loginModel) => loginModel === LoginDaoMock.user);
+  getModeratorByUsername = jest.fn(async (username) => {
+    if (username !== ModDaoMock.user.mod_username) {
+      throw new NotExistError();
+    }
 
-  getUserToken = jest.fn(async () => {
-    return LoginDaoMock.user;
+    return ModDaoMock.user;
   });
 }
 
@@ -58,7 +61,7 @@ function getProcessor() {
 
 describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
   beforeEach(() => {
-    daoMock = new LoginDaoMock();
+    daoMock = new ModDaoMock();
     validatorMock = new AuthenticationValidatorMock();
     jwtMock = new JwtMock();
   });
@@ -90,6 +93,26 @@ describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
     const processor = getProcessor();
 
     //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await processor.login(loginModel);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
+    expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
+  });
+
+  test("Sai mật khẩu - EX", async () => {
+    //Arrange
+    const loginModel = { username: "valid", password: "notvalid" };
+    const processor = getProcessor();
+
+    //Act
     const expRs = LoginNotSuccessError;
     let actRs;
     try {
@@ -100,14 +123,13 @@ describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-
     expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
     expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
   });
 
-  test("Trả về token", async () => {
+  test("CUR Trả về token", async () => {
     //Arrange
-    const { user } = LoginDaoMock;
+    const { user } = ModDaoMock;
     const loginModel = user;
     const secretKey = "Key nè";
 

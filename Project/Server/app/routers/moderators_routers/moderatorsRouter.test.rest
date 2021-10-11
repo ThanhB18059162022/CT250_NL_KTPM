@@ -620,13 +620,13 @@ PUT http://localhost:8000/api/moderators/1
 Content-Type: application/json
 
 {
-    "mod_name": "Alexa",
-    "mod_id": "555555550",
+    "mod_name": "Administrator",
+    "mod_id": "000000000",
     "mod_phoneNumber": "0000000000",
     "mod_sex": true,
-    "mod_address": "3/2 NK CT",
-    "mod_role": 0,
-    "mod_password": "123456"
+    "mod_address": "3/2 Ninh Kiều Cẩn Thơ",
+    "mod_role": 1,
+    "mod_password": "0c1857fc020582a078352b546cb5b504a0c85cf61340470cd98b8dabff9d578e"
 }
 
 # Không hợp lệ 400
