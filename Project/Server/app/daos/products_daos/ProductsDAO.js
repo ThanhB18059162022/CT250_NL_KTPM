@@ -3,9 +3,8 @@ const { NotExistError } = require("../../errors/errorsContainer");
 
 // Chỉ tương tác với db product
 module.exports = class ProductsDAO extends ModelDAO {
-  constructor(sqldao, converter) {
+  constructor(sqldao) {
     super(sqldao);
-    this.converter = converter;
   }
 
   //#region  GET
@@ -15,7 +14,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       `SELECT * FROM Products LIMIT ${startIndex}, ${endIndex - startIndex}`
     );
 
-    const products = this.converter.toProducts(dbProducts);
+    const products = this.toProducts(dbProducts);
 
     return products;
   };
@@ -37,7 +36,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       LIMIT ${startIndex}, ${endIndex - startIndex}`
     );
 
-    const products = this.converter.toProducts(dbProducts);
+    const products = this.toProducts(dbProducts);
 
     return products;
   };
@@ -53,7 +52,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       throw new NotExistError(`prod_no: ${prod_no}`);
     }
 
-    const product = this.converter.toProduct(dbProduct);
+    const product = this.toProduct(dbProduct);
 
     return product;
   };
@@ -69,7 +68,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       throw new NotExistError(`prod_name: ${prod_name}`);
     }
 
-    const product = this.converter.toProduct(dbProduct);
+    const product = this.toProduct(dbProduct);
 
     return product;
   };
@@ -79,7 +78,7 @@ module.exports = class ProductsDAO extends ModelDAO {
   //#region  ADD
 
   addProduct = async (newProduct) => {
-    const dbNewProduct = this.converter.toDbProduct(newProduct);
+    const dbNewProduct = this.toDbProduct(newProduct);
 
     const dbParams = this.extractParams(dbNewProduct);
 
@@ -149,7 +148,7 @@ module.exports = class ProductsDAO extends ModelDAO {
   updateProduct = async (prod_no, product) => {
     const prod = await this.getProductByNo(prod_no);
 
-    const dbProduct = this.converter.toDbProduct(product);
+    const dbProduct = this.toDbProduct(product);
     const dbParams = this.extractParams(dbProduct);
     dbParams.push(prod.prod_no);
 
@@ -172,4 +171,68 @@ module.exports = class ProductsDAO extends ModelDAO {
   };
 
   //#endregion
+
+  // Không convert prod_no
+  toDbProduct = (product) => {
+    const {
+      prod_name,
+      prod_manufacturer,
+      prod_screen,
+      prod_camera,
+      prod_hardwareAndOS,
+      prod_network,
+      prod_batteryAndCharger,
+      prod_utilities,
+      prod_design,
+      brand_no,
+    } = product;
+
+    const dbProduct = {
+      prod_name,
+      prod_manufacturer: JSON.stringify(prod_manufacturer),
+      prod_screen: JSON.stringify(prod_screen),
+      prod_camera: JSON.stringify(prod_camera),
+      prod_hardwareAndOS: JSON.stringify(prod_hardwareAndOS),
+      prod_network: JSON.stringify(prod_network),
+      prod_batteryAndCharger: JSON.stringify(prod_batteryAndCharger),
+      prod_utilities: JSON.stringify(prod_utilities),
+      prod_design: JSON.stringify(prod_design),
+      brand_no,
+    };
+
+    return dbProduct;
+  };
+
+  // Có prod_no
+  toProduct = (dbProduct) => {
+    const {
+      prod_no,
+      prod_name,
+      prod_manufacturer,
+      prod_screen,
+      prod_camera,
+      prod_hardwareAndOS,
+      prod_network,
+      prod_batteryAndCharger,
+      prod_utilities,
+      prod_design,
+    } = dbProduct;
+
+    const product = {
+      prod_no,
+      prod_name,
+      prod_manufacturer: JSON.parse(prod_manufacturer),
+      prod_screen: JSON.parse(prod_screen),
+      prod_camera: JSON.parse(prod_camera),
+      prod_hardwareAndOS: JSON.parse(prod_hardwareAndOS),
+      prod_network: JSON.parse(prod_network),
+      prod_batteryAndCharger: JSON.parse(prod_batteryAndCharger),
+      prod_utilities: JSON.parse(prod_utilities),
+      prod_design: JSON.parse(prod_design),
+    };
+
+    return product;
+  };
+
+  toProducts = (dbProducts) => dbProducts.map((p) => this.toProduct(p));
 };

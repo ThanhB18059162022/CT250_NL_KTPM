@@ -2,9 +2,8 @@ const { NotExistError } = require("../../errors/errorsContainer");
 const ModelDAO = require("../ModelDAO");
 
 module.exports = class ModeratorsDAO extends ModelDAO {
-  constructor(sqldao, converter) {
+  constructor(sqldao) {
     super(sqldao);
-    this.converter = converter;
   }
 
   //#region GET
@@ -78,7 +77,7 @@ module.exports = class ModeratorsDAO extends ModelDAO {
   //#endregion
 
   addModerator = async (moderator) => {
-    const dbModerator = this.converter.toDbModerator(moderator);
+    const dbModerator = this.toDbModerator(moderator);
     const dbParams = this.extractParams(dbModerator);
 
     const sql = `INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role, mod_username, mod_password) 
@@ -90,7 +89,7 @@ module.exports = class ModeratorsDAO extends ModelDAO {
   };
 
   updateModerator = async (mod_no, moderator) => {
-    const dbModerator = this.converter.toDbModerator(moderator);
+    const dbModerator = this.toDbModerator(moderator);
     delete dbModerator["mod_username"]; // Không cập nhật tài khoản
     const dbParams = this.extractParams(dbModerator);
     dbParams.push(mod_no);
@@ -108,5 +107,29 @@ module.exports = class ModeratorsDAO extends ModelDAO {
     await this.handleExeError(
       async () => await this.sqldao.execute(sql, dbParams)
     );
+  };
+
+  toDbModerator = (moderator) => {
+    const {
+      mod_name,
+      mod_id,
+      mod_phoneNumber,
+      mod_sex,
+      mod_address,
+      mod_role,
+      mod_username,
+      mod_password,
+    } = moderator;
+
+    return {
+      mod_name,
+      mod_id,
+      mod_phoneNumber,
+      mod_sex,
+      mod_address,
+      mod_role,
+      mod_username,
+      mod_password,
+    };
   };
 };

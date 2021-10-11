@@ -4,6 +4,10 @@ const {
   ExistError,
 } = require("../../../app/errors/errorsContainer");
 
+class ModeratorsDAOFake extends ModeratorsDAO {
+  toDbModerator = jest.fn((p) => p);
+}
+
 //#region INIT
 const MORDERATORS = [
   {
@@ -84,15 +88,11 @@ class MySQLDAOMock {
   });
 }
 
-class ModConverterMock {
-  toDbModerator = jest.fn((p) => p);
-}
 //#endregion
 
 let sqldao;
-let converter;
 function getDAO() {
-  return new ModeratorsDAO(sqldao, converter);
+  return new ModeratorsDAOFake(sqldao);
 }
 
 describe("DAO Lấy ra danh sách quản trị", () => {
@@ -273,7 +273,6 @@ describe("DAO Lấy ra quản trị theo tài khoản", () => {
 describe("DAO Thêm quản trị", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
-    converter = new ModConverterMock();
   });
 
   test("Trùng số điện thoại", async () => {
@@ -362,7 +361,6 @@ describe("DAO Thêm quản trị", () => {
 describe("DAO Cập nhật quản trị", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
-    converter = new ModConverterMock();
   });
 
   test("Trùng số điện thoại", async () => {

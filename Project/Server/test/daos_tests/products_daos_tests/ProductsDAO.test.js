@@ -4,6 +4,14 @@ const {
   ExistError,
 } = require("../../../app/errors/errorsContainer");
 
+class ProductsDAOFake extends ProductsDAO {
+  toProduct = jest.fn((p) => p);
+
+  toProducts = jest.fn((p) => p);
+
+  toDbProduct = jest.fn((p) => p);
+}
+
 //#region INIT
 const PRODUCTS = [
   {
@@ -81,26 +89,16 @@ class MySQLDAOMock {
   });
 }
 
-class ProductConverterServiceMock {
-  toProduct = jest.fn((p) => p);
-
-  toProducts = jest.fn((p) => p);
-
-  toDbProduct = jest.fn((p) => p);
-}
-
 //#endregion
 
 let sqldao;
-let converter;
 const getDAO = () => {
-  return new ProductsDAO(sqldao, converter);
+  return new ProductsDAOFake(sqldao);
 };
 
 describe("DAO Lấy ra danh sách sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
-    converter = new ProductConverterServiceMock();
   });
 
   test("Theo số lượng", async () => {
@@ -114,7 +112,6 @@ describe("DAO Lấy ra danh sách sản phẩm", () => {
     //Expect
     expect(actRs).toEqual(expRs);
     expect(sqldao.query).toBeCalledTimes(1);
-    expect(converter.toProducts).toBeCalledTimes(1);
   });
 
   test("Theo giá", async () => {
@@ -130,14 +127,12 @@ describe("DAO Lấy ra danh sách sản phẩm", () => {
     //Expect
     expect(actRs).toEqual(expRs);
     expect(sqldao.query).toBeCalledTimes(1);
-    expect(converter.toProducts).toBeCalledTimes(1);
   });
 });
 
 describe("DAO Lấy ra chi tiết của sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
-    converter = new ProductConverterServiceMock();
   });
 
   test("Không tồn tại", async () => {
@@ -172,7 +167,6 @@ describe("DAO Lấy ra chi tiết của sản phẩm", () => {
 describe("DAO Lấy ra sản phẩm theo mã", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
-    converter = new ProductConverterServiceMock();
   });
 
   test("Không tồn tại", async () => {
@@ -204,14 +198,12 @@ describe("DAO Lấy ra sản phẩm theo mã", () => {
 
     //Expect
     expect(sqldao.query).toBeCalledTimes(1);
-    expect(converter.toProduct).toBeCalledTimes(1);
   });
 });
 
 describe("DAO Lấy ra sản phẩm theo tên", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
-    converter = new ProductConverterServiceMock();
   });
 
   test("Không tồn tại", async () => {
@@ -243,14 +235,12 @@ describe("DAO Lấy ra sản phẩm theo tên", () => {
 
     //Expect
     expect(sqldao.query).toBeCalledTimes(1);
-    expect(converter.toProduct).toBeCalledTimes(1);
   });
 });
 
 describe("DAO Thêm sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
-    converter = new ProductConverterServiceMock();
   });
 
   test("Trùng tên", async () => {
@@ -310,7 +300,6 @@ describe("DAO Thêm sản phẩm", () => {
 describe("DAO Thêm chi tiết sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
-    converter = new ProductConverterServiceMock();
   });
 
   test("Không tồn tại - EX", async () => {
@@ -350,7 +339,6 @@ describe("DAO Thêm chi tiết sản phẩm", () => {
 describe("DAO Sửa sản phẩm", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
-    converter = new ProductConverterServiceMock();
   });
 
   test("Không tồn tại - EX", async () => {

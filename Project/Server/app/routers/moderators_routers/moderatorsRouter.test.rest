@@ -162,7 +162,7 @@ Content-Type: application/json
 {
     "mod_name": "Alexa",
     "mod_id": "555555550",
-    "mod_phoneNumber": "0000000001",
+    "mod_phoneNumber": "0000000000",
     "mod_sex": true,
     "mod_address": "3/2 NK CT",
     "mod_role": 0,
@@ -191,8 +191,8 @@ Content-Type: application/json
 
 {
     "mod_name": "Alexa",
-    "mod_id": "555555550",
-    "mod_phoneNumber": "0000000000",
+    "mod_id": "555555556",
+    "mod_phoneNumber": "0000000001",
     "mod_sex": true,
     "mod_address": "3/2 NK CT",
     "mod_role": 0,
@@ -1013,24 +1013,3 @@ Content-Type: application/json
     "mod_role": 0,
     "mod_password":"123456"
 }
-
-
-
-# -------------------------------------------------------------------------------
-
-
-
-
-# Khóa tài khoản quản trị
-### Hợp lệ 204
-DELETE http://localhost:8000/api/moderators/1
-
-# Không hợp lệ 400
-### 1 mod_no < 0
-DELETE http://localhost:8000/api/moderators/-1
-
-### 1 mod_no > int max
-DELETE http://localhost:8000/api/moderators/9007199254740992
-
-### Không tồn tại 404
-DELETE http://localhost:8000/api/moderators/900

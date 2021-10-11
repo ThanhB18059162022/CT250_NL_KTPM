@@ -9,7 +9,6 @@ const { errorCatch } = require("../routerErrorHandler");
 
 // Controller và lớp xác thực - truy cập dữ liệu
 const { ModeratorsValidator } = require("../../validators/validatorsContainer");
-const { ModeratorConverter } = require("../../services/servicesContainer");
 const { DAO, ModeratorsDAO } = require("../../daos/daosContainer");
 const { ModeratorsProcessor } = require("../../processors/processorsContainer");
 const {
@@ -18,8 +17,7 @@ const {
 
 const validator = new ModeratorsValidator();
 const sqldao = new DAO(config.dbConnection.mysql);
-const converter = new ModeratorConverter();
-const dao = new ModeratorsDAO(sqldao, converter);
+const dao = new ModeratorsDAO(sqldao);
 const processor = new ModeratorsProcessor(validator, dao);
 const controller = new ModeratorsController(processor, config);
 
