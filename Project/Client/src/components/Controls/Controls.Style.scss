@@ -1,7 +1,3 @@
-:root {
-    --backgroundColor: #69baff;
-    --textColor: #363636;
-}
 
 /**     Button Style    */
 .Button {
@@ -108,7 +104,7 @@
             font-size: 12px;
             transform: translateY(15px);
             transition: all ease 0.3s;
-            color: #363636;
+            color: var(--textColor)
         }
         .cart_shower {
             position: relative;
@@ -119,7 +115,7 @@
                 width: 25px;
                 height: 25px;
                 display: inline-block;
-                color: #363636;
+                color: var(--textColor)
             }
             span {
                 position: absolute;
@@ -137,7 +133,7 @@
         }
         &::before{
             content: "";
-            background: rgba(0, 0, 0, 0.075);
+            background: rgba(255, 255, 255, 0.075);
             position: absolute;
             left: 50%;
             top:50%;
@@ -156,13 +152,9 @@
             }
             .cart_shower{
                 transform: translateY(2px);
-                i{
-                    color: black;
-                }
             }
             p{
                 transform: translateY(-5px);
-                color: black;
             }
            
         }

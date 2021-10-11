@@ -7,15 +7,11 @@ import Helper from "../../helpers"
 import { CartContext } from "../../providers/CartProviders"
 import "./ProductItem.Style.scss"
 
-export const ProductItem = ({ id, compare = false, currentId = -1 }) => {
+export const ProductItem = ({ id, compare = false, currentId = -1,...rest }) => {
 
     const history = useHistory()
     
     const {upItem} =useContext(CartContext)
-        
-    const addToLocalCart = () => {
-       upItem(currentId)
-    }
 
     const [item, setItem] = useState(null)
 
@@ -24,6 +20,8 @@ export const ProductItem = ({ id, compare = false, currentId = -1 }) => {
     const [images, setImages] = useState(null)
 
     const [idx, setIdx] = useState(0)
+
+    const addToLocalCart = () =>upItem(id)
 
     useEffect(()=>{
         let load = true;
@@ -51,7 +49,7 @@ export const ProductItem = ({ id, compare = false, currentId = -1 }) => {
     },[isHover, idx, images])
 
     return (
-        <li className="ProductItem" onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)}>
+        <li className="ProductItem" onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} {...rest}>
             <div  onClick={()=>history.push(`/product/${id}`)}>
                 <img src={images?images[idx]:'/image/loading.gif'} alt="product_shower"/>
                 <div className="product-info">

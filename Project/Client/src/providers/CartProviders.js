@@ -3,16 +3,17 @@ import { createContext,useEffect,useState } from "react";
 export const CartContext = createContext()
 
 export default function CartProvider(props){
-    const [amount, setAmount] = useState(0)
-
+   
+    const [change, setChange] = useState(false)
     const _getListItem = () =>{
         return JSON.parse(window.localStorage.getItem('optopus_store') || "[]")
     }
+    const [amount, setAmount] = useState(_getListItem().length)
 
     const _updateListItem = list =>{
-        console.log(list)
         window.localStorage.setItem('optopus_store',JSON.stringify(list));
         setAmount(list.length);
+        setChange(!change)
     }
 
     const getItemList = () =>{
@@ -29,6 +30,15 @@ export default function CartProvider(props){
         else carts.push({id:id, amount:1, type})
         _updateListItem(carts)
         return isExist
+    }
+
+    const forceItem = (id, type, value) =>{
+        let carts = _getListItem()
+        let index  = carts.findIndex(item=>item.id === id && item.type===type)
+        let isExist = index !==-1
+        if(isExist)
+            carts[index].amount =  value
+        _updateListItem(carts)
     }
 
     const downItem = (id,type) =>{
@@ -52,12 +62,12 @@ export default function CartProvider(props){
         _updateListItem([])
     }
 
-    useEffect(()=>{
-        _updateListItem(_getListItem())
-    },[])
+    // useEffect(()=>{
+    //     _updateListItem(_getListItem())
+    // },[])
 
     return(
-        <CartContext.Provider value = {{upItem, downItem, removeItem,clearItem, getItemList, amount}}>
+        <CartContext.Provider value = {{upItem, downItem, removeItem,clearItem, getItemList, forceItem,change, amount}}>
             {props.children}
         </CartContext.Provider>
     )

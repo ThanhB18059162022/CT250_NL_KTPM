@@ -1,19 +1,20 @@
-.ProductSuggestion{
-   &>div{
-       padding: 10px;
-    //    box-shadow: 0 0 5px rgba(0, 0, 0, 0.411);
-       border-radius: 10px 20px;
-       background: var(--backgroundColor);
-        ul{
+.ProductSuggestion {
+    & > div {
+        padding: 10px 20px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.425);
+        &>h3{
+            color: var(--backgroundColor);
+        }
+        ul {
             display: flex;
-           
+
             padding: 10px;
-            overflow-x:scroll;
-            li{
+            overflow-x: scroll;
+            li {
                 min-width: 260px;
             }
 
-            li +li{
+            li + li {
                 margin-left: 10px;
             }
         }
@@ -21,37 +22,37 @@
 }
 
 @media screen and(max-width:1020px) {
-    .ProductSuggestion{
-        ul{
+    .ProductSuggestion {
+        ul {
             display: flex;
-            overflow-x:scroll;
-            li{
-                min-width: 35%
+            overflow-x: scroll;
+            li {
+                min-width: 35%;
             }
         }
     }
 }
 
 @media screen and(max-width:786px) {
-    .ProductSuggestion{
-        ul{
+    .ProductSuggestion {
+        ul {
             display: flex;
-            overflow-x:scroll;
-            li{
-                min-width: 50%
+            overflow-x: scroll;
+            li {
+                min-width: 50%;
             }
         }
     }
 }
 
 @media screen and(max-width:450px) {
-    .ProductSuggestion{
+    .ProductSuggestion {
         padding: 10px;
-        ul{
+        ul {
             display: flex;
-            overflow-x:scroll;
-            li{
-                min-width: 100%
+            overflow-x: scroll;
+            li {
+                min-width: 100%;
             }
         }
     }

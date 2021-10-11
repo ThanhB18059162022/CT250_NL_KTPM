@@ -10,10 +10,6 @@ const ProductShower = () =>{
     const toNextPage = ()=>{
         isNextPage && setNextPage(nextPage+1)
     }
-
-    useEffect(()=>{
-        console.log(nextPage)
-    },[nextPage])
     
     useEffect(() => {
         (async()=>{

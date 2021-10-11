@@ -14,6 +14,9 @@
     align-items: flex-start;
     backdrop-filter: blur(5px);
     .wrapper {
+        & > h3 {
+            color: var(--backgroundColor);
+        }
         background: white;
         padding: 10px;
         border-radius: 10px;
@@ -39,14 +42,50 @@
             width: 100%;
             flex-grow: 1;
             .image-area {
+                position: relative;
                 display: flex;
-                justify-content: center;
                 align-items: center;
                 overflow: hidden;
+                flex-direction: column;
+                height: 400px;
+                overflow-y: hidden;
                 img {
-                    width: 50%;
-                    margin-top: 25px;
-                    min-width: 500px;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: all ease .5s;
+                    padding: 10px;
+                }
+                button{
+                    position: absolute;
+                    top:50%;
+                    transform: translate(0,-50%);
+                    font-size: 40px;
+                    padding: 20px 10px;
+                    border: none;
+                    outline: none;
+                    transition: all ease .5s;
+                    &:hover{
+                        background: none;
+                        svg{
+                            opacity: 1;
+                        }
+                    }
+                    background: rgba(0, 0, 0, 0.13);
+                    svg{
+                        opacity: .5;
+                    }
+                    &.btnLeft{
+                        left: 20px;
+                        &:active{
+                            transform: translate(-20px,-50%);
+                        }
+                    }
+                    &.btnRight{
+                        right: 20px;
+                        &:active{
+                            transform: translate(20px,-50%);
+                        }
+                    }
                 }
             }
             .info {
@@ -61,11 +100,14 @@
                     list-style: none;
                     li {
                         h3 {
-                            background: var(--backgroundBlur);
+                            background: var(--backgroundColor);
+                            color: var(--textColor);
                             padding: 5px;
                             border-bottom: 1px solid var(--backgroundColor);
                         }
                         .detail_info {
+                            background: rgba(0, 0, 0, 0.037);
+                            padding: 10px 0;
                             p {
                                 padding: 5px;
                                 width: 50%;
