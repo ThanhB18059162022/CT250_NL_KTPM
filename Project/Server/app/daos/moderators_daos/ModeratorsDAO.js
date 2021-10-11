@@ -109,6 +109,4 @@ module.exports = class ModeratorsDAO extends ModelDAO {
       async () => await this.sqldao.execute(sql, dbParams)
     );
   };
-
-  lockModerator = async () => {};
 };
