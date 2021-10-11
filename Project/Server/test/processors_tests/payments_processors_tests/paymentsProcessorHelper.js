@@ -1,3 +1,5 @@
+const { NotExistError } = require("../../../app/errors/errorsContainer");
+
 class PaymentValidatorMock {
   validateCart = jest.fn((cart) => {
     return {
@@ -23,21 +25,22 @@ class PaymentValidatorMock {
 }
 
 class PaymentDAOMock {
-  emptyData = jest.fn((order) => {
-    return order === undefined;
+  getOrderProduct = jest.fn((prod) => {
+    if (prod.prod_no == 666) throw new NotExistError();
+
+    return { ...prod };
   });
 
-  getOrderProduct = jest.fn((prod_no) => {
-    if (prod_no == 666) return undefined;
-    return { prod_no };
-  });
-
-  saveOrder = jest.fn((order) => {
+  saveOrder = jest.fn(() => {
     return 1;
   });
 
   getSaveOrder = jest.fn((id) => {
-    return id > 0 ? {} : undefined;
+    if (id < 0) {
+      throw new NotExistError();
+    }
+
+    return {};
   });
 }
 

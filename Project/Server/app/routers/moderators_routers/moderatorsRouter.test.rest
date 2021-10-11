@@ -13,7 +13,7 @@ GET http://localhost:8000/api/moderators
 GET http://localhost:8000/api/moderators?page=wtf&limit=1
 
 ### 2 limit không hợp lệ
-GET http://localhost:8000/api/moderators?page=10&limit=wtf
+GET http://localhost:8000/api/moderators?page=1&limit=wtf
 
 
 
@@ -48,7 +48,7 @@ GET http://localhost:8000/api/moderators/9999
 #Lấy theo số điện thoại
 
 ### Hợp lệ 200
-GET http://localhost:8000/api/moderators/phonenumber/0000000001
+GET http://localhost:8000/api/moderators/phonenumber/0000000000
 
 # Không hợp lệ 400
 
@@ -76,7 +76,7 @@ GET http://localhost:8000/api/moderators/phonenumber/0000000999
 #Lấy theo số CMND
 
 ### Hợp lệ 200
-GET http://localhost:8000/api/moderators/Mod_Id/555555555
+GET http://localhost:8000/api/moderators/Mod_Id/000000000
 
 # Không hợp lệ 400
 
@@ -141,9 +141,9 @@ POST http://localhost:8000/api/moderators
 Content-Type: application/json
 
 {
-    "mod_name": "Alexa",
     "mod_id": "555555550",
-    "mod_phoneNumber": "0000000000",
+    "mod_name": "Alexa",
+    "mod_phoneNumber": "0000000005",
     "mod_sex": true,
     "mod_address": "3/2 NK CT",
     "mod_role": 0,

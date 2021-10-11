@@ -49,6 +49,8 @@ module.exports = class ProductsController extends Controller {
 
   //#endregion
 
+  //#region  ADD
+
   // Thêm sản phẩm
   addProduct = async (req, res) => {
     try {
@@ -61,6 +63,24 @@ module.exports = class ProductsController extends Controller {
       return this.checkError(res, error);
     }
   };
+
+  // Thêm chi tiết sản phẩm
+  addProductDetails = async (req, res) => {
+    try {
+      const {
+        body: details,
+        params: { prod_no },
+      } = req;
+
+      const product = await this.processor.addProductDetails(prod_no, details);
+
+      return this.created(res, product);
+    } catch (error) {
+      return this.checkError(res, error);
+    }
+  };
+
+  //#endregion
 
   // Cập nhật sản phẩm
   updateProduct = async (req, res) => {

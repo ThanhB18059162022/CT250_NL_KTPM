@@ -9,14 +9,15 @@ const { errorCatch } = require("../routerErrorHandler");
 
 // Controller và lớp xác thực - truy cập dữ liệu
 const { ModeratorsValidator } = require("../../validators/validatorsContainer");
-const { ModeratorsDAO } = require("../../daos/daosContainer");
+const { DAO, ModeratorsDAO } = require("../../daos/daosContainer");
 const { ModeratorsProcessor } = require("../../processors/processorsContainer");
 const {
   ModeratorsController,
 } = require("../../controllers/controllersContainer");
 
 const validator = new ModeratorsValidator();
-const dao = new ModeratorsDAO();
+const sqldao = new DAO(config.dbConnection.mysql);
+const dao = new ModeratorsDAO(sqldao);
 const processor = new ModeratorsProcessor(validator, dao);
 const controller = new ModeratorsController(processor, config);
 

@@ -2,6 +2,7 @@ const Processor = require("../Processor");
 const crypto = require("crypto");
 const {
   InstantiateAbstractClassError,
+  NotExistError,
 } = require("../../errors/errorsContainer");
 
 // Abstract class
@@ -58,19 +59,10 @@ module.exports = class PaymentsProcessor extends Processor {
     const orderProducts = [];
 
     for (let i = 0; i < products.length; i++) {
-      const { prod_no, prod_quantity } = products[i];
-
       // Lấy giá theo mã
-      const orderProduct = await this.checkExistAsync(
-        async () => await this.dao.getOrderProduct(prod_no),
-        this.dao.emptyData,
-        `prod_no: ${prod_no}`
-      );
+      const orderProduct = await this.dao.getOrderProduct(products[i]);
 
-      orderProducts.push({
-        ...orderProduct,
-        prod_quantity,
-      });
+      orderProducts.push(orderProduct);
     }
 
     return orderProducts;
@@ -107,11 +99,10 @@ module.exports = class PaymentsProcessor extends Processor {
   // Thanh toán
   checkout = async (id) => {
     // Kiểm tra còn order trước khi thanh toán
-    const order = await this.checkExistAsync(
-      async () => await this.storageService.get(id),
-      this.storageService.emptyData,
-      `Order ${id} has been paid or`
-    );
+    const order = await this.storageService.get(id);
+    if (this.storageService.emptyData(order)) {
+      throw new NotExistError(`Order ${id} has been paid or`);
+    }
 
     // Lưu vào CSDL
     const saveOrderId = await this.saveOrder(order);
@@ -141,11 +132,7 @@ module.exports = class PaymentsProcessor extends Processor {
     const saveOrderId = Number(id);
     this.checkValidate(() => this.validator.validateSaveOrderId(saveOrderId));
 
-    const saveOrder = await this.checkExistAsync(
-      async () => await this.dao.getSaveOrder(saveOrderId),
-      this.dao.emptyData,
-      `id: ${id}`
-    );
+    const saveOrder = await this.dao.getSaveOrder(saveOrderId);
 
     return saveOrder;
   };

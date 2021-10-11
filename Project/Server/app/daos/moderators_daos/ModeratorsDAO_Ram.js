@@ -2,11 +2,11 @@ const moderators = [];
 
 module.exports = class ModeratorsDAO_Ram {
   constructor() {
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 0; i < 20; i++) {
       const mod = {
-        mod_no: i,
+        mod_no: i + 1,
         mod_name: "name" + i,
-        mod_id: "55555555" + i,
+        mod_id: "00000000" + i,
         mod_phoneNumber: "000000000" + i,
         mod_sex: "male",
         mod_address: "3/2 NK, CT",

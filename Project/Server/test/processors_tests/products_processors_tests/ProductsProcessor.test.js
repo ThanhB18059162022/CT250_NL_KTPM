@@ -64,11 +64,20 @@ class ProductsDAOMock {
   getProductByNo = jest.fn(async (prod_no) => {
     const product = products.filter((p) => p.prod_no == prod_no)[0];
 
+    if (product == undefined) {
+      throw new NotExistError();
+    }
+
     return product;
   });
 
   getProductByName = jest.fn(async (prod_name) => {
     const product = products.filter((p) => p.prod_name == prod_name)[0];
+
+    if (product == undefined) {
+      throw new NotExistError();
+    }
+
     return product;
   });
 
@@ -76,10 +85,30 @@ class ProductsDAOMock {
 
   // Trả về prod_no
   addProduct = jest.fn(async (newProduct) => {
+    try {
+      const p = await this.getProductByName(newProduct.prod_name);
+      if (!this.emptyData(p)) {
+        throw new ExistError();
+      }
+    } catch (error) {
+      if (error instanceof ExistError) {
+        throw error;
+      }
+    }
+
     return newProduct;
   });
 
-  updateProduct = jest.fn();
+  addProductDetails = jest.fn();
+
+  updateProduct = jest.fn(async (prod_no, newInfo) => {
+    const p = await this.getProductByName(newInfo.prod_name);
+    if (!this.emptyData(p) && p.prod_no != prod_no) {
+      throw new ExistError();
+    }
+
+    return newInfo;
+  });
 
   emptyData = jest.fn((product) => {
     return product == undefined;
@@ -89,6 +118,10 @@ class ProductsDAOMock {
 class ProductsValidatorMock {
   validateProduct = jest.fn((product) => {
     return { hasAnyError: product === undefined };
+  });
+
+  validateProductDetails = jest.fn((details) => {
+    return { hasAnyError: details === undefined };
   });
 
   validateNo = jest.fn((prod_no) => {
@@ -101,12 +134,6 @@ class ProductsValidatorMock {
   });
 }
 
-class ProductConverterServiceMock {
-  toProduct = jest.fn((p) => p);
-  toProducts = jest.fn((p) => p);
-  toDbProduct = jest.fn();
-}
-
 class ImageServiceMock {
   getProductImages = jest.fn();
 }
@@ -116,16 +143,10 @@ class ImageServiceMock {
 
 let daoMock;
 let validatorMock;
-let converterMock;
 let imgServiceMock;
 
 function getProcessor() {
-  return new ProductsProcessor(
-    validatorMock,
-    daoMock,
-    converterMock,
-    imgServiceMock
-  );
+  return new ProductsProcessor(validatorMock, daoMock, imgServiceMock);
 }
 
 //#region GET
@@ -134,7 +155,6 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
   beforeEach(() => {
     daoMock = new ProductsDAOMock();
     validatorMock = new ProductsValidatorMock();
-    converterMock = new ProductConverterServiceMock();
     imgServiceMock = new ImageServiceMock();
   });
 
@@ -155,6 +175,7 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
+    expect(actRs.items.length).toEqual(expRs.items.length);
     expect(daoMock.getProducts).toBeCalledTimes(1);
     expect(daoMock.getProducts).toBeCalledWith(startIndex, endIndex);
   });
@@ -174,7 +195,7 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
-    expect(actRs).toEqual(expRs);
+    expect(actRs.items.length).toEqual(expRs.items.length);
     expect(daoMock.getProductsByPrice).toBeCalledTimes(1);
   });
 
@@ -192,8 +213,7 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
-    expect(actRs).toEqual(expRs);
-
+    expect(actRs.items.length).toEqual(expRs.items.length);
     expect(daoMock.getProductsByPrice).toBeCalledTimes(1);
   });
 
@@ -211,8 +231,7 @@ describe("Proc List Lấy danh sách sản phẩm", () => {
 
     //Expect
     expect(actRs).toBeDefined();
-    expect(actRs).toEqual(expRs);
-
+    expect(actRs.items.length).toEqual(expRs.items.length);
     expect(daoMock.getProductsByPrice).toBeCalledTimes(1);
   });
 
@@ -423,6 +442,75 @@ describe("Proc Thêm sản phẩm", () => {
     expect(daoMock.addProduct).toBeCalledTimes(1);
   });
 });
+
+describe("Proc Thêm chi tiết của sản phẩm", () => {
+  beforeEach(() => {
+    daoMock = new ProductsDAOMock();
+    validatorMock = new ProductsValidatorMock();
+  });
+
+  test("Không hợp lệ - EX", async () => {
+    //Arrange
+    const prod_no = undefined;
+    const details = undefined;
+
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotValidError;
+    let actRs;
+    try {
+      await processor.addProductDetails(prod_no, details);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs).toBeDefined();
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateProductDetails).toBeCalledTimes(1);
+  });
+
+  test("Sản phẩm không tồn tại - EX", async () => {
+    //Arrange
+    const prod_no = 404;
+    const details = [];
+
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await processor.addProductDetails(prod_no, details);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs).toBeDefined();
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateProductDetails).toBeCalledTimes(1);
+  });
+
+  test("Thêm thành công", async () => {
+    //Arrange
+    const prod_no = 1;
+    const details = [];
+
+    const processor = getProcessor();
+
+    //Act
+    await processor.addProductDetails(prod_no, details);
+
+    //Expect
+    expect(validatorMock.validateProductDetails).toBeCalledTimes(1);
+    expect(daoMock.addProductDetails).toBeCalledTimes(1);
+  });
+});
+
+// TODO
+describe("Thêm hình cho sản phẩm", () => {});
 
 describe("Proc Sửa sản phẩm", () => {
   beforeEach(() => {

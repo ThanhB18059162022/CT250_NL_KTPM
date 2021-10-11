@@ -1,0 +1,235 @@
+const ModeratorsDAO = require("../../../app/daos/moderators_daos/ModeratorDAO");
+const { NotExistError } = require("../../../app/errors/errorsContainer");
+
+//#region INIT
+const MORDERATORS = [
+  {
+    mod_id: "555555550",
+    mod_name: "Alexa",
+    mod_phoneNumber: "0000000005",
+    mod_sex: true,
+    mod_address: "3/2 NK CT",
+    mod_role: 0,
+    mod_username: "alexader",
+    mod_password: "123456",
+    mod_no: 1,
+  },
+  {
+    mod_id: "111111111",
+    mod_name: "Alexa",
+    mod_phoneNumber: "1111111111",
+    mod_sex: true,
+    mod_address: "3/2 NK CT",
+    mod_role: 1,
+    mod_username: "alexader",
+    mod_password: "123456",
+    mod_no: 2,
+  },
+];
+class MySQLDAOMock {
+  query = jest.fn(async (sql, params) => {
+    if (sql.includes("SELECT * FROM Moderators WHERE mod_no = ?;")) {
+      return MORDERATORS.filter((m) => m.mod_no == params[0]);
+    }
+
+    if (sql.includes("SELECT * FROM Moderators WHERE mod_phoneNumber = ?;")) {
+      return MORDERATORS.filter((m) => m.mod_phoneNumber == params[0]);
+    }
+
+    if (sql.includes("SELECT * FROM Moderators WHERE mod_id = ?;")) {
+      return MORDERATORS.filter((m) => m.mod_id == params[0]);
+    }
+
+    if (sql.includes("WHERE m.mod_no = a.mod_no AND a.acc_username = ?")) {
+      return MORDERATORS.filter((m) => m.mod_username == params[0]);
+    }
+
+    if (sql.includes("SELECT * FROM Moderators")) {
+      return MORDERATORS;
+    }
+  });
+
+  execute = jest.fn();
+}
+
+//#endregion
+
+let sqldao;
+function getDAO() {
+  return new ModeratorsDAO(sqldao);
+}
+
+describe("DAO Lấy ra danh sách quản trị", () => {
+  beforeEach(() => {
+    sqldao = new MySQLDAOMock();
+  });
+
+  test("Mặc định", async () => {
+    //Arrange
+    const dao = getDAO();
+
+    //Act
+    const expRs = MORDERATORS;
+    const actRs = await dao.getModerators();
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+});
+
+describe("DAO Lấy ra quản trị theo mã", () => {
+  beforeEach(() => {
+    sqldao = new MySQLDAOMock();
+  });
+
+  test("Không tồn tại", async () => {
+    //Arrange
+    const mod_no = undefined;
+    const dao = getDAO();
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await dao.getModeratorByNo(mod_no);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+
+  test("Tồn tại", async () => {
+    //Arrange
+    const mod = MORDERATORS[0];
+    const dao = getDAO();
+
+    //Act
+    const expRs = mod;
+    const actRs = await dao.getModeratorByNo(mod.mod_no);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+});
+
+describe("DAO Lấy ra quản trị theo số điện thoại", () => {
+  beforeEach(() => {
+    sqldao = new MySQLDAOMock();
+  });
+
+  test("Không tồn tại", async () => {
+    //Arrange
+    const mod_phoneNumber = undefined;
+    const dao = getDAO();
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await dao.getModeratorByPhoneNumber(mod_phoneNumber);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+
+  test("Tồn tại", async () => {
+    //Arrange
+    const mod = MORDERATORS[0];
+    const dao = getDAO();
+
+    //Act
+    const expRs = mod;
+    const actRs = await dao.getModeratorByPhoneNumber(mod.mod_phoneNumber);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+});
+
+describe("DAO Lấy ra quản trị theo số cmnd", () => {
+  beforeEach(() => {
+    sqldao = new MySQLDAOMock();
+  });
+
+  test("Không tồn tại", async () => {
+    //Arrange
+    const mod_id = undefined;
+    const dao = getDAO();
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await dao.getModeratorByMod_Id(mod_id);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+
+  test("Tồn tại", async () => {
+    //Arrange
+    const mod = MORDERATORS[0];
+    const dao = getDAO();
+
+    //Act
+    const expRs = mod;
+    const actRs = await dao.getModeratorByMod_Id(mod.mod_id);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+});
+
+describe("DAO Lấy ra quản trị theo tài khoản", () => {
+  beforeEach(() => {
+    sqldao = new MySQLDAOMock();
+  });
+
+  test("Không tồn tại", async () => {
+    //Arrange
+    const mod_username = undefined;
+    const dao = getDAO();
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await dao.getModeratorByUsername(mod_username);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+
+  test("Tồn tại", async () => {
+    //Arrange
+    const mod = MORDERATORS[0];
+    const dao = getDAO();
+
+    //Act
+    const expRs = mod;
+    const actRs = await dao.getModeratorByUsername(mod.mod_username);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+    expect(sqldao.query).toBeCalledTimes(1);
+  });
+});
