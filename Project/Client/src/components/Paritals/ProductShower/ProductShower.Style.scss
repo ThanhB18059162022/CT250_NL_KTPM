@@ -1,7 +1,7 @@
 .ProductShower {
-    border: 1px solid black;
     border-top: none;
     border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     .ProductNavigation {
         background: var(--backgroundColor);
         border-radius: 10px 10px 0 0;
@@ -51,17 +51,21 @@
             }
             label,
             span {
-                padding: 5px 10px;
-                background: var(--fadeBackground);
-                border-radius: 15px;
+                padding: 7px 10px;
+                background: #efefef;
+                border-radius: 10px;
+                min-width: 120px;
+                text-align: center;
                 cursor: pointer;
                 display: inline-block;
-                font-size: 14px;
+                transition: all ease .3s;
                 svg {
                     transform: translateY(-3px);
                 }
                 &:hover {
-                    animation: beat 0.3s 0s 1 ease backwards;
+                    // animation: beat 0.3s 0s 1 ease backwards;
+                    background: white;
+                    color: black;
                 }
             }
             label.bars {
@@ -83,9 +87,10 @@
         }
 
         .Sort {
-            background: var(--fadeBackground);
-            padding: 5px;
+            padding: 7px 10px;
+            background: #efefef;
             border: none;
+            font-size: inherit;
             border-radius: 10px;
             outline: none;
         }

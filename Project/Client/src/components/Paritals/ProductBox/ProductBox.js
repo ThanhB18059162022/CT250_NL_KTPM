@@ -51,11 +51,11 @@ const ProductBox = ({ product }) => {
                         <div onClick={() => setChoose(index)}
                             className={choose === index ? "choose" : ""}
                             key={index}>
-                            <p>{item.storage}</p>
-                            <p>{Helper.Exchange.toMoney(item.price)}</p>
+                            <p>{item.pd_storage}</p>
+                            <p>{Helper.Exchange.toMoney(item.pd_price)}</p>
                         </div>)}
                 </div>
-                <p className="product-box-price">{Helper.Exchange.toMoney(product.prod_details[choose].price)} VNĐ</p>
+                <p className="product-box-price">{Helper.Exchange.toMoney(product.prod_details[choose].pd_price)} VNĐ</p>
                 <p className="support-sell">Hỗ trợ thanh toán</p>
                 <div className="sell-ways">
                     {sellway.map((item, index) => <img key={index} src={item.src} alt={item.alt} />)}

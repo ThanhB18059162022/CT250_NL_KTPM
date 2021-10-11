@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCogs } from "@fortawesome/free-solid-svg-icons"
 import Helper from "../../../helpers"
 const DetailAndRate = ({ product, showDetail }) => {
+    console.log(product)
     return (
         <div className="DetailAndRate">
             <div className="Comments">
@@ -14,11 +15,11 @@ const DetailAndRate = ({ product, showDetail }) => {
                 </div>
 
                 <ul>
-                    {product.prod_feedbacks.length > 0 ? product.prod_feedbacks.map((item, index) =>
+                    {product.prod_feedbacks?product.prod_feedbacks.length > 0 ? product.prod_feedbacks.map((item, index) =>
                         <li key={index}>
                             <Comment style={{ background: "#69baff33" }} title={item.fb_cusomter.cus_name} content={item.fb_content} options="left" time={Helper.Exchange.toLocalDate(item.fb_time)}
                                 children={item.fb_replies.map((e,idx) => <Comment key={idx} style={{ background: "#69baff33" }} title={e.rep_mod} content={e.rep_content} options="left" time={Helper.Exchange.toLocalDate(e.rep_time)} />)} />
-                        </li>): <p>Chưa có đánh giá nào</p>}
+                        </li>): <p>Chưa có đánh giá nào</p>:<p>Chưa có đánh giá nào</p>}
                 </ul>
             </div>
             <div className="DetailInfo">
