@@ -26,7 +26,6 @@ CREATE TABLE Moderators(
   mod_role TINYINT(1) NOT NULL DEFAULT '0', -- Vai trò 0 là nhân viên 1 là quản lý
   mod_username VARCHAR(70) NOT NULL UNIQUE, -- Tài khoản
   mod_password CHAR(64) NOT NULL, -- Mật khẩu
-  mod_status INT NOT NULL DEFAULT '0',
 
  -- Khóa chính
   CONSTRAINT Moderators_PK PRIMARY KEY (mod_no)
