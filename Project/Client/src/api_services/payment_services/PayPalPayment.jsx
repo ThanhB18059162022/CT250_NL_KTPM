@@ -10,7 +10,6 @@ const PayPalPayment = (props) => {
   const { cart } = props;
   const [paidFor, setPaidFor] = useState(false);
   const [clientId, setClientId] = useState("");
-
   // Chạy 1 lần
   useEffect(() => {
     getId();

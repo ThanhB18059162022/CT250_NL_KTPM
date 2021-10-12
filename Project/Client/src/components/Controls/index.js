@@ -1,7 +1,7 @@
 
 import Button,{CartButton, AdminListButton, AdminButton} from "./Button";
 import Comment from "./Comment";
-import Input,{SearchHeaderInput, AdminSearchInput} from "./Input";
+import {Input,SearchHeaderInput, AdminSearchInput} from "./Input";
 import Banner from "./Banner";
 import "./Controls.Style.scss";
 
