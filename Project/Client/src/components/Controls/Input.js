@@ -113,7 +113,7 @@ export const AdminSearchInput = (props) => {
   }
   return (
     <div className="AdminSearchInput">
-      <input placeholder="Tìm kiếm" value={search} onChange={SetSearchValue} />
+      <input placeholder="Tìm kiếm" value={search} onChange={SetSearchValue} required/>
       <button><SearchIcon /></button>
     </div>
   )

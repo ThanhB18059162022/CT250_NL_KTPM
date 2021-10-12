@@ -26,7 +26,7 @@ export default function CartProvider(props){
         if(isExist){
             carts[index].amount++
         }
-        else carts.push({id:id, amount:1, type})
+        else carts.push({id:Number(id), amount:1, type})
         _updateListItem(carts)
         setChange(!change)
         return isExist

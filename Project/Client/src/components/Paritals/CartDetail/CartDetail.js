@@ -4,7 +4,7 @@ import { faMinus, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useHistory } from 'react-router-dom'
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import ReactDOM from "react-dom";
 
 import { CartContext } from "../../../providers/CartProviders";
@@ -85,6 +85,8 @@ const CartDetail = () => {
       case 'DOWN':
         downItem(id, choosedType)
         break
+      default:
+        return;
     }
   };
 
@@ -167,6 +169,11 @@ export default CartDetail;
 const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalButtonFrame }) => {
   const [pos, setPos] = useState(-1)
 
+  useEffect(() => {
+    document.querySelector('body').style.overflow = 'hidden'
+    return () => document.querySelector('body').style.overflow = 'auto'
+  }, [])
+
   const trade = type => {
     let index = -1;
     switch (type) {
@@ -182,6 +189,8 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
         setPos(2)
         index = 2
         break;
+      default:
+        return;
     }
     const products = list.map(item => ({
       prod_no: item.prod_no,
@@ -199,7 +208,9 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
         break
       case 2:
         renderPaypalButtonFrame(cart)
-        break
+        break;
+      default:
+        return
     }
   }
   return (
@@ -233,8 +244,8 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
         </ul>
         <h3>Chọn hình thức thanh toán</h3>
         <div className="transaction-style">
-          <img style={pos === 0 ? { border: '2px solid var(--backgroundColor)', cursor: 'progress' } : null} onClick={() => trade('PAYPAL')} onClick={() => trade('ZALOPAY')} src="/icon/zalopayicon.png" alt="zalo transaction" />
-          <img style={pos === 1 ? { border: '2px solid var(--backgroundColor)', cursor: 'progress' } : null} onClick={() => trade('PAYPAL')} onClick={() => trade('STRIPE')} src="/icon/stripeicon.png" alt="stripe transaction" />
+          <img style={pos === 0 ? { border: '2px solid var(--backgroundColor)', cursor: 'progress' } : null} onClick={() => trade('ZALOPAY')} src="/icon/zalopayicon.png" alt="zalo transaction" />
+          <img style={pos === 1 ? { border: '2px solid var(--backgroundColor)', cursor: 'progress' } : null} onClick={() => trade('STRIPE')} src="/icon/stripeicon.png" alt="stripe transaction" />
           <img style={pos === 2 ? { border: '2px solid var(--backgroundColor)', cursor: 'progress' } : null} onClick={() => trade('PAYPAL')} src="/icon/paypalicon.png" alt="papal transaction" />
         </div>
         <FontAwesomeIcon icon={faTimes} onClick={() => setCustomer(null)} />
@@ -264,6 +275,10 @@ function CartTransaction({ display, setDisplay, setCustomer }) {
     commune: '',
     detail: '',
   })
+
+  useEffect(() => {
+    document.querySelector('body').style.overflow = display ? 'hidden' : 'auto'
+  }, [display])
 
   const [notify, setNotify] = useState({
     content: "",
@@ -388,15 +403,17 @@ const AddressInput = ({ onChange }) => {
     communes: [],
   });
 
+  const setChange = useCallback(onChange,[onChange])
+
   const setAddress = (event, key) => {
     if (typeof (event) === 'string') {
       setChooseLocation({ ...chooseLocation, detail: event })
-      onChange(pre => ({ ...pre, detail: event }))
+      setChange(pre => ({ ...pre, detail: event }))
       return
     }
 
     const { target } = event
-    onChange(pre => ({ ...pre, [key]: target.options[target.selectedIndex].innerText }))
+    setChange(pre => ({ ...pre, [key]: target.options[target.selectedIndex].innerText }))
     setChooseLocation(pre => ({ ...pre, [key]: event.target.value }))
   }
 
@@ -414,18 +431,18 @@ const AddressInput = ({ onChange }) => {
       );
       setLocation((l) => ({ ...l, districts: _districts }));
       setChooseLocation((c) => ({ ...c, district: -1, commune: -1 }));
-      onChange(pre => ({ ...pre, district: '', commune: '' }))
+      setChange(pre => ({ ...pre, district: '', commune: '' }))
     })();
-  }, [chooseLocation.province]);
+  }, [chooseLocation.province, setChange]);
 
   useEffect(() => {
     (async () => {
       let _commune = await Helper.Location.getCommunes(chooseLocation.district);
       setLocation((l) => ({ ...l, communes: _commune }));
       setChooseLocation((c) => ({ ...c, commune: -1 }));
-      onChange(pre => ({ ...pre, commune: '' }))
+      setChange(pre => ({ ...pre, commune: '' }))
     })();
-  }, [chooseLocation.district]);
+  }, [chooseLocation.district, setChange]);
   const inputs = [
     { type: 'select', value: chooseLocation.province, onChange: setAddress, label: 'Chọn tỉnh/thành phố', data: location.provinces, keycode: 'province' },
     { type: 'select', value: chooseLocation.district, onChange: setAddress, label: 'Chọn huyện/quận', data: location.districts, keycode: 'district' },
@@ -461,6 +478,8 @@ function CartItem(props) {
       case 'UP':
         (info.amount < info.prod_details[info.choosedType].pd_amount - info.prod_details[info.choosedType].pd_sold) && changeValue(info.prod_no, info.choosedType, type);
         return
+      default:
+          return
     }
   }
 

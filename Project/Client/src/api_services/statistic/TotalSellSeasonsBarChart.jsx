@@ -56,14 +56,14 @@ function TotalSellSeasonBarChart() {
   }
 
   function removeBar(label) {
-    setDataSets((old) => [...old.filter((o) => o.label != label)]);
+    setDataSets((old) => [...old.filter((o) => o.label !== label)]);
   }
 
   function getNotDisplayYears() {
     // Lấy chưa display
     const dyrs = dataSets.map((m) => m.label);
 
-    const ndyrs = years.filter((y) => !dyrs.some((dy) => dy == y));
+    const ndyrs = years.filter((y) => !dyrs.some((dy) => dy === y));
 
     return ndyrs;
   }
@@ -73,7 +73,7 @@ function TotalSellSeasonBarChart() {
     setDataSets((old) => {
       const newVal = [...old];
 
-      const value = newVal.find((v) => v.label == year);
+      const value = newVal.find((v) => v.label === year);
 
       const { data } = value;
       value.data = [...data.slice(0, 3), value.data[data.length - 1] + 1000000];

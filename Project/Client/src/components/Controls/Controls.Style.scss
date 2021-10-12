@@ -234,15 +234,21 @@
 // AdminListButton
 .AdminListButton{
     border: 0;
-    margin: 10px 0;
-    padding: 0 5px;
-    background-color: unset;
-    font-size: 20px;
-    &:not(:last-child){
-        border-right: 2px solid black;
+    padding: 15px 0;
+    flex-grow: 1;
+    color: var(--textColor);
+    cursor: pointer;
+    background: transparent;
+    font-size: inherit;
+    span{
+        transition: all ease .3s;
     }
     &:hover{
-        text-decoration: underline;
+        color: orange;
+        span{
+            display: inline-block;
+            transform: scale(1.2);
+        }
     }
     @media screen and (max-width: 820px){
         font-size: 15px;
@@ -268,23 +274,66 @@
 }
 
 //AdminSearchInput
+// .AdminSearchInput{
+//     position: relative;
+//     left: 80%;
+//     top: -5px;
+//     margin: 0 12% 0 0;
+//     width: 10%;
+//     input{
+//         border-radius: 45px;
+//         padding: 3px 0 3px 8px;
+//         background-color: none;
+//         outline: none;
+//     }
+//     button{
+//         width: 27px;
+//         height: 27px;
+//         border-radius: 55px;
+//         position: absolute;
+//         right: 13%;
+//     }
+// }
+
 .AdminSearchInput{
     position: relative;
-    left: 80%;
-    top: -5px;
-    margin: 0 12% 0 0;
-    width: 10%;
+    width: auto;
+    left: auto;
+    top:auto;
+    border-radius: 100px;
+    border: 3px solid var(--backgroundColor);
+    min-width: 42px;
+    min-height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover{
+        input{
+               padding: 10px 0 10px 20px;
+               width: 250px;
+        }
+    }
     input{
-        border-radius: 45px;
-        padding: 3px 0 3px 8px;
-        background-color: none;
         outline: none;
+        transition: all ease .5s;
+        border-radius: 100px;
+        border: none;
+        width: 0;
+        font-size: inherit;
+        &:valid, &:focus{
+            padding: 10px;
+            width: 250px;
+        }
     }
     button{
-        width: 27px;
-        height: 27px;
-        border-radius: 55px;
-        position: absolute;
-        right: 13%;
+        position: absolute !important;
+        border: none;
+        background: none;
+        right: 7px;
+        color: var(--backgroundColor);
+        svg{
+            width: 24px;
+            height: 24px;
+        }
     }
 }

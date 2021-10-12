@@ -40,10 +40,10 @@ export default class AuthenticationService {
 
 // DTOs
 
-class User {
-  constructor(username, password, id) {}
-}
+// class User {
+//   constructor(username, password, id) {}
+// }
 
-export class TokenPlaceHolder {
-  constructor(token) {}
-}
+// export class TokenPlaceHolder {
+//   constructor(token) {}
+// }

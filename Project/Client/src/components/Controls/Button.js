@@ -62,9 +62,7 @@ export const CartButton = ({handle, amount}) => {
 
 export const AdminListButton = (props) =>{
     const {name,handle,pos} = props
-    return(
-        <button className="AdminListButton" onClick={()=>handle(pos)}>{name}</button>
-    )
+    return <button className="AdminListButton" onClick={()=>handle(pos)}><span>{name}</span></button>
 }
 
 export const AdminButton = (props) =>{

@@ -21,7 +21,7 @@ const SuccessDirect = ({ match }) => {
     useEffect(() => {
         (async () => {
             let data = await OrderServices.getOrder(type, id)
-            // console.log(data)
+            
             setInfo(data)
             if (!data) return;
             setCustomer(data.customer)
@@ -32,7 +32,8 @@ const SuccessDirect = ({ match }) => {
             setList(sublist)
             data && clearItem()
         })()
-    }, [type, id])
+    }, [type, id,clearItem])
+    console.log(list)
     return (
         <div className="Home">
             <SearchHeader />

@@ -1,8 +1,6 @@
 import MorderatorList from "../../components/Paritals/Admin/ModeratorPage/ModeratorList"
-import { AdminButton } from "../../components/Controls"
 import { useState } from "react"
 import ModeratorInformation from "./ModeratorInformation"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
 
 const ModeratorManagement = () => {
     const [addNew, setAddNew] = useState(0)
@@ -17,10 +15,7 @@ const ModeratorManagement = () => {
 
     return(
         <div>
-            <div className="ProductManagementButton">
-                <AdminButton IconName={faPlus} ClickEvent={()=>setAddNew(1)}/>
-            </div>
-            <MorderatorList newMod={newMod} setNewModNo={setNewModNo}/>
+            <MorderatorList newMod={newMod} setNewModNo={setNewModNo} setAddNew={setAddNew}/>
             {displayAddModeratorForm()}
         </div>
     )
