@@ -5,7 +5,7 @@
 # Lấy ra người dùng đăng nhập
 GET http://localhost:8000/api/authentication/getUser
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidmFsaWQiLCJyb2xlIjoiZW1wIn0sImlhdCI6MTYzMjk2MTc2OCwiZXhwIjoxNjMyOTY1MzY4fQ.8ReFIUkfSYGakD3RjsogkkzgIi0mWVHqMAgKLWuwDaY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0MDAyMDI1LCJleHAiOjE2MzQwMDU2MjV9.nP4zjhpLIxzKjPGFuIkV7_STonykoa4XZS-HewRPHRE
 
 
 
@@ -19,8 +19,8 @@ POST http://localhost:8000/api/authentication/login
 Content-Type: application/json
 
 {
-    "username":"valid",
-    "password": "valid"
+    "username":"admin",
+    "password": "123456"
 }
 
 # Đăng nhập không hợp lệ 400
@@ -117,7 +117,7 @@ POST http://localhost:8000/api/authentication/login
 Content-Type: application/json
 
 {
-    "username":"valid",
+    "username":"admin",
     "password": "notValid"
 }
 

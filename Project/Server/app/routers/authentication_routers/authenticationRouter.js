@@ -11,7 +11,7 @@ const { errorCatch } = require("../routerErrorHandler");
 const {
   AuthenticationValidator,
 } = require("../../validators/validatorsContainer");
-const { AuthenticationDAO } = require("../../daos/daosContainer");
+const { DAO, ModeratorsDAO } = require("../../daos/daosContainer");
 const { JwtService } = require("../../services/servicesContainer");
 const {
   AuthenticationProcessor,
@@ -21,11 +21,9 @@ const {
 } = require("../../controllers/controllersContainer");
 
 const validator = new AuthenticationValidator();
-const {
-  jwt: { secretKey },
-} = config;
-const jwt = new JwtService(secretKey);
-const dao = new AuthenticationDAO();
+const jwt = new JwtService(config.jwt.secretKey);
+const sqldao = new DAO(config.dbConnection.mysql);
+const dao = new ModeratorsDAO(sqldao);
 const processor = new AuthenticationProcessor(validator, jwt, dao);
 const controller = new AuthenticationController(processor, config);
 

@@ -266,7 +266,7 @@ describe("Ctrlr Lấy ra người dùng đăng nhập trong jwt", () => {
 });
 
 // 403
-describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
+describe("Ctrlr Chuyển hướng người dùng theo quyền - mod_role", () => {
   test("Người dùng hợp lệ", async () => {
     //Arrange
     const role = "admin";
@@ -291,14 +291,14 @@ describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
     expect(nextMock).toBeCalledTimes(1);
   });
 
-  test("Người dùng hợp lệ - nhiều role", async () => {
+  test("Người dùng hợp lệ - nhiều mod_role", async () => {
     //Arrange
-    const roles = ["admin", "emp"];
+    const mod_roles = ["admin", "emp"];
     const controller = getController();
     const resMock = new ResponseMock();
 
-    for (let i = 0; i < roles.length; i++) {
-      const role = roles[i];
+    for (let i = 0; i < mod_roles.length; i++) {
+      const role = mod_roles[i];
 
       const user = {
         id: 1,
@@ -314,7 +314,7 @@ describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
       };
 
       //Act
-      await controller.authorize(roles)(reqMock, resMock, nextMock);
+      await controller.authorize(mod_roles)(reqMock, resMock, nextMock);
 
       //Expect
       expect(nextMock).toBeCalledTimes(1);
@@ -323,12 +323,12 @@ describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
 
   test("Người dùng không có thẩm quyền - 403", async () => {
     //Arrange
-    const role = "admin";
+    const mod_role = "admin";
     const user = {
       id: 1,
       username: "valid",
       name: "valid",
-      role: "nv",
+      mod_role: "nv",
     };
     const controller = getController();
 
@@ -341,7 +341,7 @@ describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
     //Act
     const expRes = { statusCode: 403, body: undefined };
 
-    const actRes = await controller.authorize([role])(
+    const actRes = await controller.authorize([mod_role])(
       reqMock,
       resMock,
       nextMock
@@ -355,9 +355,9 @@ describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
     expect(resMock.json).toBeCalledTimes(1);
   });
 
-  test("Người dùng không có role - 403", async () => {
+  test("Người dùng không có mod_role - 403", async () => {
     //Arrange
-    const role = "user";
+    const mod_role = "user";
     const user = {
       id: 1,
       username: "valid",
@@ -374,7 +374,7 @@ describe("Ctrlr Chuyển hướng người dùng theo quyền - role", () => {
     //Act
     const expRes = { statusCode: 403, body: undefined };
 
-    const actRes = await controller.authorize([role])(
+    const actRes = await controller.authorize([mod_role])(
       reqMock,
       resMock,
       nextMock

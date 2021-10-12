@@ -1,4 +1,7 @@
-const { InstantiateAbstractClassError } = require("../errors/errorsContainer");
+const {
+  InstantiateAbstractClassError,
+  ExistError,
+} = require("../errors/errorsContainer");
 
 module.exports = class ModelDAO {
   constructor(sqldao) {
@@ -9,7 +12,19 @@ module.exports = class ModelDAO {
     this.sqldao = sqldao;
   }
 
-  extractParams = (product) => Object.entries(product).map((en) => en[1]);
+  extractParams = (model) => Object.entries(model).map((en) => en[1]);
 
   emptyData = (data) => data === undefined;
+
+  handleExeError = async (asyncFunc) => {
+    try {
+      await asyncFunc();
+    } catch (error) {
+      if (error.code === "ER_DUP_ENTRY") {
+        throw new ExistError(error.sqlMessage);
+      }
+
+      throw error;
+    }
+  };
 };

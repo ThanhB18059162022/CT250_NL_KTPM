@@ -6,6 +6,8 @@ module.exports = class ModeratorsDAO extends ModelDAO {
     super(sqldao);
   }
 
+  //#region GET
+
   getModerators = async (startIndex, endIndex) => {
     const moderators = await this.sqldao.query(
       `SELECT * FROM Moderators LIMIT ${startIndex}, ${endIndex - startIndex};`
@@ -72,15 +74,62 @@ module.exports = class ModeratorsDAO extends ModelDAO {
     return moderator;
   };
 
-  addModerator = async (moderator) => {
-    const { mod_name, mod_phoneNumber, mod_sex, mod_address, mod_role } =
-      moderator;
+  //#endregion
 
-    const dbParams = this.extractParams(moderator);
-    console.log(dbParams);
+  addModerator = async (moderator) => {
+    const dbModerator = this.toDbModerator(moderator);
+    const dbParams = this.extractParams(dbModerator);
+
+    const sql = `INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role, mod_username, mod_password) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+
+    await this.handleExeError(
+      async () => await this.sqldao.execute(sql, dbParams)
+    );
   };
 
-  updateModerator = async () => {};
+  updateModerator = async (mod_no, moderator) => {
+    const dbModerator = this.toDbModerator(moderator);
+    delete dbModerator["mod_username"]; // Không cập nhật tài khoản
+    const dbParams = this.extractParams(dbModerator);
+    dbParams.push(mod_no);
 
-  lockModerator = async () => {};
+    const sql = `UPDATE Moderators 
+      SET mod_name=?, 
+          mod_id=?, 
+          mod_phoneNumber=?, 
+          mod_sex=?, 
+          mod_address=?, 
+          mod_role=?, 
+          mod_password=? 
+      WHERE mod_no=?`;
+
+    await this.handleExeError(
+      async () => await this.sqldao.execute(sql, dbParams)
+    );
+  };
+
+  toDbModerator = (moderator) => {
+    const {
+      mod_name,
+      mod_id,
+      mod_phoneNumber,
+      mod_sex,
+      mod_address,
+      mod_role,
+      mod_username,
+      mod_password,
+    } = moderator;
+
+    return {
+      mod_name,
+      mod_id,
+      mod_phoneNumber,
+      mod_sex,
+      mod_address,
+      mod_role,
+      mod_username,
+      mod_password,
+    };
+  };
 };

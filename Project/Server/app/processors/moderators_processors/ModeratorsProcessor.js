@@ -97,15 +97,4 @@ module.exports = class ModeratorsProcessor extends Processor {
   };
 
   //#endregion
-
-  //#region LOCK
-
-  // Khóa tài khoản quản trị viên
-  lockModerator = async (mod_noParam) => {
-    const moderator = await this.getModeratorByNo(mod_noParam);
-
-    await this.dao.lockModerator(moderator.mod_no);
-  };
-
-  //#endregion
 };

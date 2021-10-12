@@ -3,6 +3,7 @@ const {
   LoginNotSuccessError,
   JwtTokenError,
 } = require("../../errors/errorsContainer");
+const crypto = require("crypto");
 
 // Xử lý xác thực người dùng
 class AuthenticationProcessor extends Processor {
@@ -18,17 +19,31 @@ class AuthenticationProcessor extends Processor {
   login = async (loginModel) => {
     this.checkValidate(() => this.validator.validateLoginModel(loginModel));
 
-    const success = await this.dao.login(loginModel);
-    if (!success) {
+    const moderator = await this.dao.getModeratorByUsername(
+      loginModel.username
+    );
+    const hashPwd = this.getHasPassword(loginModel);
+
+    if (moderator.mod_password !== hashPwd) {
       throw new LoginNotSuccessError();
     }
 
-    const user = await this.dao.getUserToken(loginModel.username);
-
+    const user = {
+      id: moderator.mod_no,
+      role: this.getRole(moderator.mod_role),
+    };
     const token = this.jwt.getToken(user);
 
     return token;
   };
+
+  getHasPassword = (loginModel) =>
+    crypto
+      .createHash("sha256")
+      .update(`${loginModel.username}-${loginModel.password}`)
+      .digest("hex");
+
+  getRole = (roleIndex) => (roleIndex === 0 ? "emp" : "admin");
 
   // Authenticate
   // Xác thực đăng nhập bằng bearer jwt token

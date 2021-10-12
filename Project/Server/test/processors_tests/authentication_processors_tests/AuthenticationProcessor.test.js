@@ -5,19 +5,26 @@ const {
   NotValidError,
   LoginNotSuccessError,
   JwtTokenError,
+  NotExistError,
 } = require("../../../app/errors/errorsContainer");
 
 // Test xác thực người dùng
 
+class AuthenticationProcessorFake extends AuthenticationProcessor {
+  getHasPassword = (loginModel) => loginModel.password;
+}
+
 //#region Init
 
-class LoginDaoMock {
-  static user = { username: "valid", password: "valid" };
+class ModDaoMock {
+  static user = { mod_username: "valid", mod_password: "valid" };
 
-  login = jest.fn(async (loginModel) => loginModel === LoginDaoMock.user);
+  getModeratorByUsername = jest.fn(async (username) => {
+    if (username !== ModDaoMock.user.mod_username) {
+      throw new NotExistError();
+    }
 
-  getUserToken = jest.fn(async () => {
-    return LoginDaoMock.user;
+    return ModDaoMock.user;
   });
 }
 
@@ -53,12 +60,16 @@ let validatorMock;
 let jwtMock;
 
 function getProcessor() {
-  return new AuthenticationProcessor(validatorMock, jwtMock, daoMock);
+  return new AuthenticationProcessorFake(validatorMock, jwtMock, daoMock);
+}
+
+function getProcessorNoParam() {
+  return new AuthenticationProcessor();
 }
 
 describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
   beforeEach(() => {
-    daoMock = new LoginDaoMock();
+    daoMock = new ModDaoMock();
     validatorMock = new AuthenticationValidatorMock();
     jwtMock = new JwtMock();
   });
@@ -90,6 +101,26 @@ describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
     const processor = getProcessor();
 
     //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await processor.login(loginModel);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
+    expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
+  });
+
+  test("Sai mật khẩu - EX", async () => {
+    //Arrange
+    const loginModel = { username: "valid", password: "notvalid" };
+    const processor = getProcessor();
+
+    //Act
     const expRs = LoginNotSuccessError;
     let actRs;
     try {
@@ -100,15 +131,17 @@ describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
 
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-
     expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
     expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
   });
 
   test("Trả về token", async () => {
     //Arrange
-    const { user } = LoginDaoMock;
-    const loginModel = user;
+    const { user } = ModDaoMock;
+    const loginModel = {
+      username: user.mod_username,
+      password: user.mod_password,
+    };
     const secretKey = "Key nè";
 
     const token = jwtMock.getToken(user);
@@ -128,13 +161,7 @@ describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
     expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
     expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
 
-    expect(daoMock.login).toBeCalledTimes(1);
-    expect(daoMock.login).toBeCalledWith(loginModel);
-
-    expect(daoMock.getUserToken).toBeCalledTimes(1);
-
     expect(jwtMock.getToken).toBeCalledTimes(1);
-    expect(jwtMock.getToken).toBeCalledWith(user);
   });
 });
 
@@ -196,5 +223,46 @@ describe("Proc Kiểm tra bearer jwt có hợp lệ", () => {
     expect(actRs).toEqual(expRs);
     expect(validatorMock.validateToken).toBeCalledTimes(1);
     expect(jwtMock.getData).toBeCalledTimes(1);
+  });
+});
+
+describe("Proc Các hàm bổ sung", () => {
+  test("Mã hóa mật khẩu SHA256", () => {
+    //Arrange
+    const processor = getProcessorNoParam();
+
+    //Act
+    const expRs =
+      "465039ec2625fb7eace80f9a3e9bd63dd04b0c55d971f6af1894f4b8c1b3c0ad";
+    const actRs = processor.getHasPassword("");
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Lấy ra role - emp", () => {
+    //Arrange
+    const roleIndex = 0;
+    const processor = getProcessorNoParam();
+
+    //Act
+    const expRs = "emp";
+    const actRs = processor.getRole(roleIndex);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Lấy ra role - admin", () => {
+    //Arrange
+    const roleIndex = 1;
+    const processor = getProcessorNoParam();
+
+    //Act
+    const expRs = "admin";
+    const actRs = processor.getRole(roleIndex);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
   });
 });
