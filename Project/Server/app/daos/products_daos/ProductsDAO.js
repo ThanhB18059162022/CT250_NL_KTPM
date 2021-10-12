@@ -30,7 +30,7 @@ module.exports = class ProductsDAO extends ModelDAO {
 
   getProductsByPrice = async (min, max, startIndex, endIndex) => {
     const dbProducts = await this.sqldao.query(
-      `SELECT * FROM Products AS p, Products_Details AS pd 
+      `SELECT DISTINCT p.* FROM Products AS p, Products_Details AS pd 
       WHERE p.prod_no = pd.prod_no 
       AND pd.pd_price > ${min} AND pd.pd_price < ${max} 
       LIMIT ${startIndex}, ${endIndex - startIndex}`

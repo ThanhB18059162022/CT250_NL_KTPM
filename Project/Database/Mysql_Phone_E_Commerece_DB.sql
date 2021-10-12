@@ -79,19 +79,6 @@ CREATE TABLE Products(
   CONSTRAINT Products_Brands_FK FOREIGN KEY(brand_no) REFERENCES Brands(brand_no) ON DELETE CASCADE
 ); 
 
--- Bảng hình ảnh
-CREATE TABLE Images(
-  img_no INT AUTO_INCREMENT, -- Mã hình ảnh tự tăng
-  img_src VARCHAR(128) NOT NULL, -- Đường dẫn đến resource trên server
-  prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
-
- -- Khóa chính
-  CONSTRAINT Images_PK PRIMARY KEY (img_no),
-
- -- Khóa ngoại
-  CONSTRAINT Images_Products_FK FOREIGN KEY(prod_no) REFERENCES Products(prod_no) ON DELETE CASCADE
-); 
-
 -- Bảng đánh giá
 CREATE TABLE Feedbacks(
   fb_no INT AUTO_INCREMENT, -- Mã đánh giá tự tăng
