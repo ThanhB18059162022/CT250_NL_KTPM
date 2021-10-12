@@ -53,11 +53,11 @@ export const AdminSearchInput = (props) => {
   const [search, setSearch] = useState('')
   const SetSearchValue = (text) => {
     setSearch(text.target.value)
-    {filterModerator?(
+    filterModerator?(
       filterModerator(text.target.value)
     ):(
       filterProduct(text.target.value)
-    )}
+    )
     
   }
   return(

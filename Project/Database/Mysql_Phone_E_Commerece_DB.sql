@@ -1,7 +1,7 @@
 CREATE OR REPLACE DATABASE Phone_E_Commerece_DB;
 
 -- Tạo các bảng (13 bảng)
-
+use Phone_E_Commerece_DB;
 -- Bảng khách hàng
 
 CREATE TABLE Customers(

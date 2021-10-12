@@ -1,6 +1,6 @@
 import "./CartDetail.Style.scss";
 
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useHistory } from 'react-router-dom'
@@ -16,14 +16,15 @@ import Notifications from "../../../common/Notifications";
 
 import { ZaloPaymentService, StripePaymentService } from "../../../api_services/servicesContainer";
 import PayPalPayment from "../../../api_services/payment_services/PayPalPayment";
+import ProductServices from "../../../api_services/products_services/ProductsService";
 
 //==================To the Getway payment ===================
 
 const services = [new ZaloPaymentService(caller), new StripePaymentService(caller)]
 
 const toGetway = url => {
- window.location.href = url
-//  console.log(url)
+  window.location.href = url
+  //  console.log(url)
 }
 
 const checkout = async (type, cart) => toGetway(await services[type - 1].createOrder(cart))
@@ -34,7 +35,7 @@ const CartDetail = () => {
 
   const [total, setTotal] = useState(0);
 
-  const { clearItem, getItemList, upItem, removeItem, downItem, amount } =
+  const { clearItem, change, forceItem, getItemList, upItem, removeItem, downItem, amount } =
     useContext(CartContext);
 
   const [display, setDisplay] = useState(false);
@@ -53,22 +54,34 @@ const CartDetail = () => {
     (async () => {
       let listItem = await Promise.all(
         getItemList().map(async (item) => {
-          let data = await caller.get(`products/${item.id}`);
-          data.amount = item.amount;
+          let data = await ProductServices.getProduct(item.id)
+
+          let { pd_amount: amount, pd_sold: sold } = data.prod_details[item.type]
+          let somethinselse = amount - sold;
+          if (somethinselse > item.amount)
+            data.amount = item.amount;
+          else {
+            data.amount = somethinselse
+            forceItem(item.id, item.type, somethinselse)
+          }
+          if (somethinselse === 0) clearItem(item.id, item.type)
+
           data.choosedType = item.type
           return data;
         })
       );
       setList(listItem);
     })();
-  }, [amount, getItemList]);
+  }, [getItemList, change]);
 
   const onValueChange = (id, value, choosedType) => {
+    console.log(value)
     const newList = list.map((item) => {
       if (item.prod_no === id && item.choosedType === choosedType) {
-        item.amount > value ? downItem(id, choosedType) : upItem(id, choosedType);
+        Number(item.amount) > Number(value) ? downItem(id, choosedType) : upItem(id, choosedType);
         item.amount = value;
       }
+
       return item;
     });
     setList(newList);
@@ -89,19 +102,19 @@ const CartDetail = () => {
     let count = 0;
     list.forEach(
       (element) =>
-        (count += Number(element.prod_details[element.choosedType].price) * Number(element.amount))
+        (count += Number(element.prod_details[element.choosedType].pd_price) * Number(element.amount))
     );
     setTotal(count);
   }, [list]);
 
-  const renderPaypalButtonFrame = (cart) =>{
+  const renderPaypalButtonFrame = (cart) => {
     ReactDOM.unmountComponentAtNode(document.querySelector('#paypalwrapper'))
-    ReactDOM.render(<PayPalPayment cart={cart}/>,document.querySelector('#paypalwrapper'))
-    
+    ReactDOM.render(<PayPalPayment cart={cart} />, document.querySelector('#paypalwrapper'))
+
     document.querySelector('.paypalarea').classList.add('shower')
     window.scrollTo({
-      top:0,
-      behavior:'smooth'
+      top: 0,
+      behavior: 'smooth'
     })
   }
   return (
@@ -152,11 +165,11 @@ const CartDetail = () => {
         setDisplay={setDisplay}
         listPay={list}
         total={total}
-        paypalHandle = {renderPaypalButtonFrame}
+        paypalHandle={renderPaypalButtonFrame}
       />
       <Notifications {...notify} isShow={show} onHideRequest={setShow} />
     </div>
-    
+
   );
 };
 
@@ -225,12 +238,12 @@ function CartTransaction(props) {
           cus_address: customerinfo.address,
           cus_phoneNumber: customerinfo.phone
         }
-        const products = getItemList().map(item =>({prod_no:item.id, prod_quantity:item.amount*50}));
+        const products = getItemList().map(item => ({ prod_no: item.id, prod_quantity: item.amount * 50 }));
         if (customerinfo.transactionway !== 3) {
-          checkout(customerinfo.transactionway,{customer,products})
+          checkout(customerinfo.transactionway, { customer, products })
         }
-        else{
-          paypalHandle({customer,products})
+        else {
+          paypalHandle({ customer, products })
         }
       }
     }
@@ -290,7 +303,7 @@ function CartTransaction(props) {
   return (
     <>
       <div className={`carttransaction ${display ? "show" : ""}`}>
-    
+
         <div className="transaction-wrapper">
           <div className="transaction-info">
             <h3>Thông tin đơn hàng của bạn</h3>
@@ -461,7 +474,7 @@ function CartTransaction(props) {
           setDisplay={setLocation}
           setAddress={setAddress}
         />
-       
+
       </div>
       <Notifications {...notify} isShow={show} onHideRequest={setShow} />
     </>
@@ -600,31 +613,50 @@ function CartItem(props) {
 
   const history = useHistory()
 
-  const onValueChange = (e) => changeValue(info.prod_no, e.target.value, info.choosedType);
-
   const onRemoveItem = (e) => removeItem(info.prod_no, info.choosedType);
+
+  const stepUp = (e)=>{
+    if(info.amount >= info.prod_details[info.choosedType].pd_amount - info.prod_details[info.choosedType].pd_sold) return
+    else changeValue(info.prod_no, info.amount +1, info.choosedType);
+  }
+
+  const stepDown = (e)=>{
+    if(info.amount ===1) return
+    else changeValue(info.prod_no, info.amount - 1, info.choosedType);
+  }
 
   return (
     <li>
-      <span className="img">
+      <div className="images">
         <img src={info.prod_imgs[0]} alt={info.prod_name} onClick={() => history.push(`/product/${info.prod_no}`)} />
-      </span>
-      <span className="name">{info.prod_name}</span>
-      <span className="storage element">
-        <span>{info.prod_details[info.choosedType].storage}</span>
-      </span>
-      <span className="price element">
-        {Helper.Exchange.toMoney(info.prod_details[info.choosedType].price)} VNĐ
-      </span>
-      <span className="amount element">
-        <input
-          onKeyDown={(evt) => evt.preventDefault()}
-          type="number"
-          min="1"
-          onChange={onValueChange}
-          value={info.amount}
-        />
-      </span>
+      </div>
+      <div className="info">
+        <p className="name">{info.prod_name}</p>
+        <div className="details">
+          <div className="manufactor">
+            <p><span>Nhãn hiệu:</span>{info.prod_manufacturer.brand_name}</p>
+            <p><span>Bộ nhớ:</span>{info.prod_details[info.choosedType].pd_storage}</p>
+            <p><span>Xuất xứ:</span>{info.prod_manufacturer.madeIn}</p>
+          </div>
+          <div className="price">
+            <p>{Helper.Exchange.toMoney(info.prod_details[info.choosedType].pd_price)} VNĐ</p>
+          </div>
+          <div className="amount">
+            <div className="amountwrapper">
+              <button onClick={stepUp}><FontAwesomeIcon icon={faPlus} /></button>
+              <input
+                onKeyDown={(evt) => evt.preventDefault()}
+                type="number"
+                min="1"
+                max={info.prod_details[info.choosedType].pd_amount - info.prod_details[info.choosedType].pd_sold}
+                value={info.amount}
+                readOnly
+              />
+              <button onClick={stepDown}><FontAwesomeIcon icon={faMinus} /></button>
+            </div>
+          </div>
+        </div>
+      </div>
       <span onClick={onRemoveItem}>
         <FontAwesomeIcon icon={faTimes} />
       </span>

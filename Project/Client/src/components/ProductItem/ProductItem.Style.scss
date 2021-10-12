@@ -35,7 +35,7 @@
 
         .product-panel{
             padding: 10px;
-            background: var(--backgroundBlur);
+            background: rgba(82, 82, 82, 0.144);
             border-radius: 10px;
             p:first-child{
                height: 37px;
@@ -64,9 +64,10 @@
             font-weight: 600;
             text-transform: uppercase;
             border: none;
-            border-radius: 100px;
+            background: var(--backgroundColor);
             transition: all ease .35s;
-            background: #efefef;
+            // background: #efefef;
+            color: var(--textColor);
             &.add-cart:hover{
                 color: white;
                 background: var(--backgroundColor);
