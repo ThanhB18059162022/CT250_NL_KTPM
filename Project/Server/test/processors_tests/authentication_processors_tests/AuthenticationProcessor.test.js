@@ -10,12 +10,17 @@ const {
 
 // Test xác thực người dùng
 
+class AuthenticationProcessorFake extends AuthenticationProcessor {
+  getHasPassword = (loginModel) => loginModel.password;
+}
+
 //#region Init
 
 class ModDaoMock {
   static user = { mod_username: "valid", mod_password: "valid" };
 
   getModeratorByUsername = jest.fn(async (username) => {
+    console.log(username);
     if (username !== ModDaoMock.user.mod_username) {
       throw new NotExistError();
     }
@@ -56,7 +61,7 @@ let validatorMock;
 let jwtMock;
 
 function getProcessor() {
-  return new AuthenticationProcessor(validatorMock, jwtMock, daoMock);
+  return new AuthenticationProcessorFake(validatorMock, jwtMock, daoMock);
 }
 
 describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
@@ -127,10 +132,13 @@ describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
     expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
   });
 
-  test("CUR Trả về token", async () => {
+  test("Trả về token", async () => {
     //Arrange
     const { user } = ModDaoMock;
-    const loginModel = user;
+    const loginModel = {
+      username: user.mod_username,
+      password: user.mod_password,
+    };
     const secretKey = "Key nè";
 
     const token = jwtMock.getToken(user);
@@ -150,13 +158,7 @@ describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
     expect(validatorMock.validateLoginModel).toBeCalledTimes(1);
     expect(validatorMock.validateLoginModel).toBeCalledWith(loginModel);
 
-    expect(daoMock.login).toBeCalledTimes(1);
-    expect(daoMock.login).toBeCalledWith(loginModel);
-
-    expect(daoMock.getUserToken).toBeCalledTimes(1);
-
     expect(jwtMock.getToken).toBeCalledTimes(1);
-    expect(jwtMock.getToken).toBeCalledWith(user);
   });
 });
 

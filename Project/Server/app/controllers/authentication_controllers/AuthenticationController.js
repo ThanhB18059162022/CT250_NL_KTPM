@@ -69,9 +69,9 @@ class AuthenticationController extends Controller {
   // Authorize phải đăng nhập trước mới xài cái này
   // Closure function
   authorize = (roles) => async (req, res, next) => {
-    const { role = "" } = req.user;
+    const { mod_role = "" } = req.user;
 
-    const exist = this.roleInRoles(role, roles);
+    const exist = this.roleInRoles(mod_role, roles);
     if (exist) {
       return next();
     }

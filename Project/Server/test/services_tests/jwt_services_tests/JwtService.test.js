@@ -7,7 +7,6 @@ const options = { expiresIn: "1h" };
 function getService() {
   return new JwtService(secretKey);
 }
-
 function getJwtToken(user) {
   return jwt.sign({ user }, secretKey, options);
 }

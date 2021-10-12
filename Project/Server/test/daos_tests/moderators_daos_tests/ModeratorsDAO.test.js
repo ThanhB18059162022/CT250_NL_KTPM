@@ -95,6 +95,10 @@ function getDAO() {
   return new ModeratorsDAOFake(sqldao);
 }
 
+function getDAONoEngine() {
+  return new ModeratorsDAO();
+}
+
 describe("DAO Lấy ra danh sách quản trị", () => {
   beforeEach(() => {
     sqldao = new MySQLDAOMock();
@@ -418,5 +422,18 @@ describe("DAO Cập nhật quản trị", () => {
 
     //Expect
     expect(sqldao.execute).toBeCalledTimes(1);
+  });
+});
+
+describe("DAO Chuyển đổi", () => {
+  test("Sang dbModerator", async () => {
+    //Arrange
+    const mod = {};
+    const dao = getDAONoEngine();
+
+    //Act
+    dao.toDbModerator(mod);
+
+    //Expect
   });
 });

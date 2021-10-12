@@ -221,14 +221,14 @@ module.exports = class ProductsDAO extends ModelDAO {
     const product = {
       prod_no,
       prod_name,
-      prod_manufacturer: JSON.parse(prod_manufacturer),
-      prod_screen: JSON.parse(prod_screen),
-      prod_camera: JSON.parse(prod_camera),
-      prod_hardwareAndOS: JSON.parse(prod_hardwareAndOS),
-      prod_network: JSON.parse(prod_network),
-      prod_batteryAndCharger: JSON.parse(prod_batteryAndCharger),
-      prod_utilities: JSON.parse(prod_utilities),
-      prod_design: JSON.parse(prod_design),
+      prod_manufacturer: JSON.parse(prod_manufacturer ?? '""'),
+      prod_screen: JSON.parse(prod_screen ?? '""'),
+      prod_camera: JSON.parse(prod_camera ?? '""'),
+      prod_hardwareAndOS: JSON.parse(prod_hardwareAndOS ?? '""'),
+      prod_network: JSON.parse(prod_network ?? '""'),
+      prod_batteryAndCharger: JSON.parse(prod_batteryAndCharger ?? '""'),
+      prod_utilities: JSON.parse(prod_utilities ?? '""'),
+      prod_design: JSON.parse(prod_design ?? '""'),
     };
 
     return product;

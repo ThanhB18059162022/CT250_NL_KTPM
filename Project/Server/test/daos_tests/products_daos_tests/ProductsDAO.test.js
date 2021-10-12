@@ -92,9 +92,13 @@ class MySQLDAOMock {
 //#endregion
 
 let sqldao;
-const getDAO = () => {
+function getDAO() {
   return new ProductsDAOFake(sqldao);
-};
+}
+
+function getDAONoEngine() {
+  return new ProductsDAO();
+}
 
 describe("DAO Lấy ra danh sách sản phẩm", () => {
   beforeEach(() => {
@@ -258,7 +262,6 @@ describe("DAO Thêm sản phẩm", () => {
     }
 
     //Expect
-    console.log(actRs);
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.execute).toBeCalledTimes(1);
   });
@@ -410,5 +413,53 @@ describe("DAO Sửa sản phẩm", () => {
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(sqldao.execute).toBeCalledTimes(1);
+  });
+});
+
+describe("DAO Chuyển đổi sản phẩm", () => {
+  test("Sang DbProduct", async () => {
+    //Arrange
+    const prod_name = "aa";
+    const product = {
+      prod_name,
+    };
+    const dao = getDAONoEngine();
+
+    //Act
+    const expRs = {
+      prod_name,
+    };
+    const actRs = dao.toDbProduct(product);
+
+    //Expect
+    expect(actRs.prod_name).toEqual(expRs.prod_name);
+  });
+
+  test("Sang Product", async () => {
+    //Arrange
+    const prod_name = "aa";
+    const dbProduct = { prod_name };
+    const dao = getDAONoEngine();
+
+    //Act
+    const expRs = { prod_name };
+    const actRs = dao.toProduct(dbProduct);
+
+    //Expect
+    expect(actRs.prod_name).toEqual(expRs.prod_name);
+  });
+
+  test("Sang Products", async () => {
+    //Arrange
+    const prod_name = "aa";
+    const dbProducts = [{ prod_name }];
+    const dao = getDAONoEngine();
+
+    //Act
+    const expRs = [{ prod_name }];
+    const actRs = dao.toProducts(dbProducts);
+
+    //Expect
+    expect(actRs.prod_name).toEqual(expRs.prod_name);
   });
 });

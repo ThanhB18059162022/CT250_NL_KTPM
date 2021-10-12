@@ -7,12 +7,11 @@ const crypto = require("crypto");
 
 // Xử lý xác thực người dùng
 class AuthenticationProcessor extends Processor {
-  constructor(validator, jwt, dao, service) {
+  constructor(validator, jwt, dao) {
     super();
     this.validator = validator;
     this.jwt = jwt;
     this.dao = dao;
-    this.service = service;
   }
 
   // Đăng nhập
@@ -23,20 +22,28 @@ class AuthenticationProcessor extends Processor {
     const moderator = await this.dao.getModeratorByUsername(
       loginModel.username
     );
-    const hashPwd = crypto
-      .createHash("sha256")
-      .update(`${loginModel.username}-${loginModel.password}`)
-      .digest("hex");
+    const hashPwd = this.getHasPassword(loginModel);
 
     if (moderator.mod_password !== hashPwd) {
       throw new LoginNotSuccessError();
     }
 
-    const user = { mod_no: moderator.mod_no, mod_role: moderator.mod_role };
+    const user = {
+      mod_no: moderator.mod_no,
+      mod_role: this.getRole(moderator.mod_role),
+    };
     const token = this.jwt.getToken(user);
 
     return token;
   };
+
+  getHasPassword = (loginModel) =>
+    crypto
+      .createHash("sha256")
+      .update(`${loginModel.username}-${loginModel.password}`)
+      .digest("hex");
+
+  getRole = (roleIndex) => (roleIndex == 0 ? "emp" : "admin");
 
   // Authenticate
   // Xác thực đăng nhập bằng bearer jwt token
