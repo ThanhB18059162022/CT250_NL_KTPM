@@ -655,7 +655,6 @@ describe("Proc Sửa thông tin quản trị viên", () => {
     }
 
     //Expect
-    console.log(actRs);
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
     expect(validatorMock.validateNo).toBeCalledTimes(1);
@@ -679,5 +678,70 @@ describe("Proc Sửa thông tin quản trị viên", () => {
     expect(validatorMock.validateUpdateModerator).toBeCalledTimes(1);
     expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
     expect(daoMock.updateModerator).toBeCalledTimes(1);
+  });
+});
+
+describe("Proc Khóa tài khoản quản trị viên", () => {
+  beforeEach(() => {
+    validatorMock = new ModeratorValidatorMock();
+    daoMock = new ModeratorDAOMock();
+  });
+
+  test("Mã quản trị không hợp lệ - EX", async () => {
+    //Arrange
+    const mod_no = -1;
+
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotValidError;
+
+    let actRs;
+    try {
+      await processor.lockModerator(mod_no);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
+  });
+
+  test("Mã quản trị không tồn tại - EX", async () => {
+    //Arrange
+    const mod_no = 666;
+
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotExistError;
+
+    let actRs;
+    try {
+      await processor.lockModerator(mod_no);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
+    expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
+  });
+
+  test("Khóa", async () => {
+    //Arrange
+    const mod_no = 1;
+
+    const processor = getProcessor();
+
+    //Act
+    await processor.lockModerator(mod_no);
+
+    //Expect
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
+    expect(daoMock.getModeratorByNo).toBeCalledTimes(1);
+    expect(daoMock.lockModerator).toBeCalledTimes(1);
   });
 });

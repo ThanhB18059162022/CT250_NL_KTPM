@@ -425,6 +425,24 @@ describe("DAO Cập nhật quản trị", () => {
   });
 });
 
+describe("DAO Khóa tài khoản quản trị", () => {
+  beforeEach(() => {
+    sqldao = new MySQLDAOMock();
+  });
+
+  test("Thành công", async () => {
+    //Arrange
+    const mod_no = 2;
+    const dao = getDAO();
+
+    //Act
+    await dao.lockModerator(mod_no);
+
+    //Expect
+    expect(sqldao.execute).toBeCalledTimes(1);
+  });
+});
+
 describe("DAO Chuyển đổi", () => {
   test("Sang dbModerator", async () => {
     //Arrange
