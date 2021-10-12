@@ -91,10 +91,9 @@ module.exports = class ProductsDAO extends ModelDAO {
         prod_network,
         prod_batteryAndCharger,
         prod_utilities,
-        prod_design,
-        brand_no
+        prod_design
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     await this.handleExeError(
       async () => await this.sqldao.execute(sql, dbParams)
@@ -161,8 +160,7 @@ module.exports = class ProductsDAO extends ModelDAO {
         prod_network = ?, 
         prod_batteryAndCharger = ?, 
         prod_utilities = ?, 
-        prod_design = ?, 
-        brand_no = ? 
+        prod_design = ?
         WHERE prod_no = ?`;
 
     await this.handleExeError(
@@ -184,7 +182,6 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger,
       prod_utilities,
       prod_design,
-      brand_no,
     } = product;
 
     const dbProduct = {
@@ -197,7 +194,6 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger: JSON.stringify(prod_batteryAndCharger),
       prod_utilities: JSON.stringify(prod_utilities),
       prod_design: JSON.stringify(prod_design),
-      brand_no,
     };
 
     return dbProduct;
@@ -218,7 +214,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_design,
     } = dbProduct;
 
-    const product = {
+    return {
       prod_no,
       prod_name,
       prod_manufacturer: JSON.parse(prod_manufacturer ?? '""'),
@@ -230,8 +226,6 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_utilities: JSON.parse(prod_utilities ?? '""'),
       prod_design: JSON.parse(prod_design ?? '""'),
     };
-
-    return product;
   };
 
   toProducts = (dbProducts) => dbProducts.map((p) => this.toProduct(p));
