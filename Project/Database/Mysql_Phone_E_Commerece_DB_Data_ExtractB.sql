@@ -25,7 +25,7 @@ INSERT INTO Products(
 VALUES    
     (
         'Galaxy Z Fold3 | Z Flip3 5G',
-        '{"brand_name":"Samsung","releaseDate":"2021-8-1","madeIn":"Trung Quốc"}',
+        '{"releaseDate":"2021-8-1","madeIn":"Trung Quốc"}',
         '{"type":"Dynamic AMOLED 2X","resolution":"Full HD+ (1768 x 2208 Pixels)","size":"Chính 7.6\' & Phụ 6.2\' - Tần số quét 120 Hz","glass":"Kính cường lực Corning Gorilla Glass Victus"}',
         '{"rear":{"spec":"3 camera 12 MP","videoQuality":"4K 2160p@60fps, FullHD 1080p@240fps, FullHD 1080p@60fps, HD 720p@960fps"},"font":"10 MP & 4 MP 8 MP"}',
         '{"os":"Android 11","cpu":"Snapdragon 888 8 nhân","cpuSpec":"1 nhân 2.84 GHz, 3 nhân 2.42 GHz & 4 nhân 1.8 GHz","gpu":"Adreno 660"}',
@@ -59,7 +59,7 @@ INSERT INTO Products(
 VALUES
 (
     'iPhone 12 Pro Max',
-    '{"brand_name":"Apple","releaseDate":"2020-10","madeIn":"Trung Quốc"}',
+    '{"releaseDate":"2020-10","madeIn":"Trung Quốc"}',
     '{"type":"OLED","resolution":"1284 x 2778 Pixels","size":"6.7\' - Tần số quét 60 Hz","glass":"Kính cường lực Ceramic Shield"}',
     '{"rear":{"spec":"3 camera 12 MP","videoQuality":"4K 2160p@30fps, 4K 2160p@60fps, FullHD 1080p@30fps, HD 720p@30fps, FullHD 1080p@60fps, 4K 2160p@24fps"},"font":"12 MP"}',
     '{"os":"iOS 14","cpu":"Apple A14 Bionic 6 nhân","cpuSpec":"2 nhân 3.1 GHz & 4 nhân 1.8 GHz","gpu":"Apple GPU 4 nhân"}',
@@ -94,7 +94,7 @@ INSERT INTO Products(
 VALUES
 (
   'OPPO Reno6 Z 5G',
-  '{"brand_name":"Oppo","releaseDate":"2021-7","madeIn":"Trung Quốc"}',
+  '{"releaseDate":"2021-7","madeIn":"Trung Quốc"}',
   '{"type":"AMOLED","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.43\' - Tần số quét 60 Hz","glass":"Kính cường lực Corning Gorilla Glass 5"}',
   '{"rear":{"spec":"Chính 64 MP & Phụ 8 MP, 2 MP","videoQuality":"4K 2160p@30fps, FullHD 1080p@30fps, HD 720p@30fps"},"font":"32 MP"}',
   '{"os":"Android 11","cpu":"MediaTek Dimensity 800U 5G 8 nhân","cpuSpec":"2 nhân 2.4 GHz & 6 nhân 2 GHz","gpu":"Mali-G57 MC3"}',      
@@ -124,7 +124,7 @@ INSERT INTO Products(
 VALUES
 (
     'Xiaomi POCO X3 Pro NFC 8GB-256GB',
-    '{"brand_name":"Xiaomi","releaseDate":"2021-4","madeIn":"Trung Quốc"}',
+    '{"releaseDate":"2021-4","madeIn":"Trung Quốc"}',
     '{"type":"IPS LCD","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.67\'","glass":"Kính cường lực Corning Gorilla Glass 6"}',
     '{"rear":{"spec":"Chính 48 MP & Phụ 8 MP, 2 MP, 2 MP","videoQuality":"4K 2160p@30fps, FullHD 1080p@30fps, FullHD 1080p@60fps"},"font":"20 MP"}',
     '{"os":"Android 11","cpu":"Snapdragon 860 8 nhân","cpuSpec":"1 nhân 2.96 GHz, 3 nhân 2.42 GHz & 4 nhân 1.8 GHz","gpu":"Adreno 640"}',
@@ -154,7 +154,7 @@ INSERT INTO Products(
 VALUES
 (
     'Nokia C30 3GB-32GB',
-    '{"brand_name":"Nokia","releaseDate":"2021-8","madeIn":"Trung Quốc"}',
+    '{"releaseDate":"2021-8","madeIn":"Trung Quốc"}',
     '{"type":"IPS LCD","resolution":"HD+ (720 x 1600 Pixels)","size":"6.82\' - Tần số quét 60 Hz","glass":"Mặt kính cong 2.5D"}',
     '{"rear":{"spec":"Chính 13 MP & Phụ 2 MP","videoQuality":"FullHD 1080p@30fpsHD, 720p@30fps"},"font":"5 MP"}',
     '{"os":"Android 11 (Go Edition)","cpu":"Spreadtrum SC9863A 8 nhân","cpuSpec":"4 nhân 1.6 GHz & 4 nhân 1.2 GHz","gpu":"IMG PowerVR GE8322"}',
@@ -183,7 +183,7 @@ INSERT INTO Products(
 VALUES
 (
   'Xiaomi Redmi 10',
-  '{"brand_name":"Xiaomi","releaseDate":"2021-8","madeIn":"Trung Quốc"}',
+  '{"releaseDate":"2021-8","madeIn":"Trung Quốc"}',
   '{"type":"IPS LCD","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.5\' - Tần số quét 90 Hz","glass":"Kính cường lực Corning Gorilla Glass 3"}',
   '{"rear":{"spec":"Chính 50 MP & Phụ 8 MP, 2 MP, 2 MP","videoQuality":"FullHD 1080p@30fps, HD 720p@30fps"},"font":"8 MP"}',
   '{"os":"Android 11","cpu":"MediaTek Helio G88 8 nhân","cpuSpec":"2 nhân 2.0 GHz & 6 nhân 1.8 GHz","gpu":"Mali-G52 MC2"}',
@@ -217,7 +217,7 @@ INSERT INTO Products(
 VALUES    
     (  
     'Samsung Galaxy Note 20 Ultra',
-    '{"brand_name":"Samsung","releaseDate":"2020-8","madeIn":"Việt Nam"}',
+    '{"releaseDate":"2020-8","madeIn":"Việt Nam"}',
     '{"type":"Dynamic AMOLED 2X","resolution":"2K+ (1440 x 3088 Pixels)","size":"6.9\' - Tần số quét 120 Hz","glass":"Kính cường lực Corning Gorilla Glass Victus"}',
     '{"rear":{"spec":"Chính 108 MP & Phụ 12 MP, 12 MP, cảm biến Laser AF","videoQuality":"8K 4320p@24fps"},"font":"10 MP"}',  
     '{"os":"Android 10","cpu":"Exynos 990 8 nhân","cpuSpec":"2 nhân 2.73 GHz, 2 nhân 2.5 GHz & 4 nhân 2.0 Ghz","gpu":"Mali-G77 MP11"}',
@@ -246,7 +246,7 @@ INSERT INTO Products(
 VALUES    
     (  
     'Vsmart Aris',
-    '{"brand_name":"Vsmart","releaseDate":"2018-1","madeIn":"Việt Nam"}',
+    '{"releaseDate":"2018-1","madeIn":"Việt Nam"}',
     '{"type":"AMOLED","resolution":"Full HD+ (1080 x 2340 Pixels)","size":"6.39\' - Tần số quét 60 Hz","glass":"Kính cường lực Corning Gorilla Glass 5"}',
     '{"rear":{"spec":"Chính 64 MP & Phụ 8 MP, 8 MP, 2 MP","videoQuality":"4K 2160p@30fps, HD 720p@240fps"},"font":"20 MP"}',  '{"os":"Android 10","cpu":"Snapdragon 730 8 nhân","cpuSpec":"2 nhân 2.2 GHz & 6 nhân 1.8 GHz","gpu":"Adreno 618"}',
     '{"telecom":"Hỗ trợ 4G","SIM":"2 Nano SIM","Wifi":"Dual-band (2.4 GHz/5 GHz), Wi-Fi 802.11 a/b/g/n/ac","GPS":"A-GPS","Bluetooth":"v5.0","connector":"Type-C","others":"OTG"}',  '{"battery":"4000 mAh","batteryType":"Li-Po","chargeType":"18W"}',
@@ -273,7 +273,7 @@ INSERT INTO Products(
 VALUES    
 (  
     'Samsung Galaxy A22 5G',
-    '{"brand_name":"Samsung","releaseDate":"2021-6","madeIn":"Việt Nam"}',
+    '{"releaseDate":"2021-6","madeIn":"Việt Nam"}',
     '{"type":"TFT LCD","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.6\' - Tần số quét 90 Hz","glass":"Kính cường lực Corning Gorilla 4"}',
     '{"rear":{"spec":"Chính 48 MP & Phụ 5 MP, 2 MP","videoQuality":"FullHD 1080p@30fps"},"font":"8 MP"}',
     '{"os":"Android 11","cpu":"MediaTek Dimensity 700 5G 8 nhân","cpuSpec":"2 nhân 2.2 GHz & 6 nhân 2.0 GHz","gpu":"Mali-G57 MC2"}',
@@ -302,7 +302,7 @@ INSERT INTO Products(
 VALUES    
 (  
     'iPhone XR',
-    '{"brand_name":"Apple","releaseDate":"2018-9","madeIn":"Trung Quốc"}',
+    '{"releaseDate":"2018-9","madeIn":"Trung Quốc"}',
     '{"type":"IPS LCD","resolution":"828 x 1792 Pixels","size":"6.1\' - Tần số quét 60 Hz","glass":"Kính cường lực Oleophobic (ion cường lực)"}',
     '{"rear":{"spec":"12 MP","videoQuality":"4K 2160p@30fps, 4K 2160p@60fps, FullHD 1080p@30fps, HD 720p@30fps, FullHD 1080p@60fps, 4K 2160p@24fps"},"font":"7 MP"}',
     '{"os":"iOS 14","cpu":"Apple A12 Bionic 6 nhân","cpuSpec":"2 nhân 2.5 GHz & 4 nhân 1.6 GHz","gpu":"Apple GPU 4 nhân"}',   
@@ -336,7 +336,7 @@ INSERT INTO Products(
 VALUES    
 (  
   'Vivo Y21',
-  '{"brand_name":"Vivo","releaseDate":"2021-8","madeIn":"Trung Quốc"}',  
+  '{"releaseDate":"2021-8","madeIn":"Trung Quốc"}',  
   '{"type":"IPS LCD","resolution":"HD+ (720 x 1600 Pixels)","size":"6.51\' - Tần số quét 60 Hz","glass":"Kính cường lực"}',
   '{"rear":{"spec":"Chính 13 MP & Phụ 2 MP","videoQuality":"FullHD 1080p@30fps, HD 720p@30fps"},"font":"8 MP"}',
   '{"os":"Android 11","cpu":"MediaTek Helio P35 8 nhân","cpuSpec":"4 nhân 2.3 GHz & 4 nhân 1.8 GHz","gpu":"IMG PowerVR GE8320"}',
@@ -365,7 +365,7 @@ INSERT INTO Products(
 VALUES    
 (  
     'Samsung Galaxy A52s 5G',
-    '{"brand_name":"Samsung","releaseDate":"2021-6","madeIn":"Việt Nam"}',
+    '{"releaseDate":"2021-6","madeIn":"Việt Nam"}',
     '{"type":"TFT LCD","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.6\' - Tần số quét 90 Hz","glass":"Kính cường lực Corning Gorilla 4"}',
     '{"rear":{"spec":"Chính 48 MP & Phụ 5 MP, 2 MP","videoQuality":"FullHD 1080p@30fps"},"font":"8 MP"}',
     '{"os":"Android 11","cpu":"MediaTek Dimensity 700 5G 8 nhân","cpuSpec":"2 nhân 2.2 GHz & 6 nhân 2.0 GHz","gpu":"Mali-G57 MC2"}',
@@ -396,7 +396,7 @@ INSERT INTO Products(
 VALUES    
 ( 
   'Realme C21y',
-  '{"brand_name":"Realme","releaseDate":"2021-6","madeIn":"Trung Quốc"}',  
+  '{"releaseDate":"2021-6","madeIn":"Trung Quốc"}',  
   '{"type":"IPS LCD","resolution":"HD+ (720 x 1600 Pixels)","size":"6.5\' - Tần số quét 60 Hz","glass":"Kính cường lực"}',  
   '{"rear":{"spec":"Chính 64 MP & Phụ 12 MP, 5 MP, 5 MP","videoQuality":" 4K 2160p@30fps, FullHD 1080p@30fps, HD 720p@240fps"},"font":"32 MP"}',  '{"os":"Android 11","cpu":"Snapdragon 778G 5G 8 nhân","cpuSpec":"1 nhân 2.4 GHz, 3 nhân 2.2 GHz & 4 nhân 1.9 GHz","gpu":"Mali-G57 MC2"}',
   '{"telecom":"Hỗ trợ 5G","SIM":"2 Nano SIM","Wifi":"Dual-band (2.4 GHz/5 GHz), Wi-Fi Direct, Wi-Fi hotspot","GPS":"A-GPS, BDS, GALILEO, GLONASS","Bluetooth":"A2DP, LEv, 5.2","connector":"2 đầu Type-C","others":"NFC, OTG"}',
@@ -427,7 +427,7 @@ INSERT INTO Products(
     brand_no) 
 VALUES    
 ( 
-    'OPPO A54',  '{"brand_name":"Oppo","releaseDate":"2021-7","madeIn":"Trung Quốc"}',
+    'OPPO A54',  '{"releaseDate":"2021-7","madeIn":"Trung Quốc"}',
     '{"type":"AMOLED","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.43\' - Tần số quét 60 Hz","glass":"Kính cường lực Corning Gorilla Glass 5"}',
     '{"rear":{"spec":"Chính 64 MP & Phụ 8 MP, 2 MP","videoQuality":"4K 2160p@30fps, FullHD 1080p@30fps, HD 720p@30fps"},"font":"32 MP"}',
     '{"os":"Android 11","cpu":"MediaTek Dimensity 800U 5G 8 nhân","cpuSpec":"2 nhân 2.4 GHz & 6 nhân 2 GHz","gpu":"Mali-G57 MC3"}',
@@ -456,7 +456,7 @@ INSERT INTO Products(
 VALUES    
 (  
     'Samsung Galaxy S20 FE',
-    '{"brand_name":"Samsung","releaseDate":"2021-6","madeIn":"Việt Nam"}',
+    '{"releaseDate":"2021-6","madeIn":"Việt Nam"}',
     '{"type":"TFT LCD","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.6\' - Tần số quét 90 Hz","glass":"Kính cường lực Corning Gorilla 4"}',
     '{"rear":{"spec":"Chính 48 MP & Phụ 5 MP, 2 MP","videoQuality":"FullHD 1080p@30fps"},"font":"8 MP"}',
     '{"os":"Android 11","cpu":"MediaTek Dimensity 700 5G 8 nhân","cpuSpec":"2 nhân 2.2 GHz & 6 nhân 2.0 GHz","gpu":"Mali-G57 MC2"}',
@@ -485,7 +485,7 @@ INSERT INTO Products(
 VALUES
 (
   'Xiaomi Redmi Note 10S',
-  '{"brand_name":"Xiaomi","releaseDate":"2021-8","madeIn":"Trung Quốc"}',
+  '{"releaseDate":"2021-8","madeIn":"Trung Quốc"}',
   '{"type":"IPS LCD","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.5\' - Tần số quét 90 Hz","glass":"Kính cường lực Corning Gorilla Glass 3"}',
   '{"rear":{"spec":"Chính 50 MP & Phụ 8 MP, 2 MP, 2 MP","videoQuality":"FullHD 1080p@30fps, HD 720p@30fps"},"font":"8 MP"}',
   '{"os":"Android 11","cpu":"MediaTek Helio G88 8 nhân","cpuSpec":"2 nhân 2.0 GHz & 6 nhân 1.8 GHz","gpu":"Mali-G52 MC2"}',
@@ -514,7 +514,7 @@ INSERT INTO Products(
 VALUES    
 (  
   'Vivo Y12s',
-  '{"brand_name":"Vivo","releaseDate":"2021-8","madeIn":"Trung Quốc"}',  
+  '{"releaseDate":"2021-8","madeIn":"Trung Quốc"}',  
   '{"type":"IPS LCD","resolution":"HD+ (720 x 1600 Pixels)","size":"6.51\' - Tần số quét 60 Hz","glass":"Kính cường lực"}',
   '{"rear":{"spec":"Chính 13 MP & Phụ 2 MP","videoQuality":"FullHD 1080p@30fps, HD 720p@30fps"},"font":"8 MP"}',
   '{"os":"Android 11","cpu":"MediaTek Helio P35 8 nhân","cpuSpec":"4 nhân 2.3 GHz & 4 nhân 1.8 GHz","gpu":"IMG PowerVR GE8320"}',
@@ -543,7 +543,7 @@ INSERT INTO Products(
 VALUES    
 ( 
   'Realme C20',
-  '{"brand_name":"Realme","releaseDate":"2021-6","madeIn":"Trung Quốc"}',  
+  '{"releaseDate":"2021-6","madeIn":"Trung Quốc"}',  
   '{"type":"IPS LCD","resolution":"HD+ (720 x 1600 Pixels)","size":"6.5\' - Tần số quét 60 Hz","glass":"Kính cường lực"}',  
   '{"rear":{"spec":"Chính 64 MP & Phụ 12 MP, 5 MP, 5 MP","videoQuality":" 4K 2160p@30fps, FullHD 1080p@30fps, HD 720p@240fps"},"font":"32 MP"}',  '{"os":"Android 11","cpu":"Snapdragon 778G 5G 8 nhân","cpuSpec":"1 nhân 2.4 GHz, 3 nhân 2.2 GHz & 4 nhân 1.9 GHz","gpu":"Mali-G57 MC2"}',
   '{"telecom":"Hỗ trợ 5G","SIM":"2 Nano SIM","Wifi":"Dual-band (2.4 GHz/5 GHz), Wi-Fi Direct, Wi-Fi hotspot","GPS":"A-GPS, BDS, GALILEO, GLONASS","Bluetooth":"A2DP, LEv, 5.2","connector":"2 đầu Type-C","others":"NFC, OTG"}',
@@ -571,7 +571,7 @@ INSERT INTO Products(
 VALUES    
 (  
   'Vivo V21 5G',
-  '{"brand_name":"Vivo","releaseDate":"2021-8","madeIn":"Trung Quốc"}',  
+  '{"releaseDate":"2021-8","madeIn":"Trung Quốc"}',  
   '{"type":"IPS LCD","resolution":"HD+ (720 x 1600 Pixels)","size":"6.51\' - Tần số quét 60 Hz","glass":"Kính cường lực"}',
   '{"rear":{"spec":"Chính 13 MP & Phụ 2 MP","videoQuality":"FullHD 1080p@30fps, HD 720p@30fps"},"font":"8 MP"}',
   '{"os":"Android 11","cpu":"MediaTek Helio P35 8 nhân","cpuSpec":"4 nhân 2.3 GHz & 4 nhân 1.8 GHz","gpu":"IMG PowerVR GE8320"}',
@@ -600,7 +600,7 @@ INSERT INTO Products(
 VALUES
 (
   'Xiaomi Redmi 9C',
-  '{"brand_name":"Xiaomi","releaseDate":"2021-8","madeIn":"Trung Quốc"}',
+  '{"releaseDate":"2021-8","madeIn":"Trung Quốc"}',
   '{"type":"IPS LCD","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.5\' - Tần số quét 90 Hz","glass":"Kính cường lực Corning Gorilla Glass 3"}',
   '{"rear":{"spec":"Chính 50 MP & Phụ 8 MP, 2 MP, 2 MP","videoQuality":"FullHD 1080p@30fps, HD 720p@30fps"},"font":"8 MP"}',
   '{"os":"Android 11","cpu":"MediaTek Helio G88 8 nhân","cpuSpec":"2 nhân 2.0 GHz & 6 nhân 1.8 GHz","gpu":"Mali-G52 MC2"}',
@@ -630,7 +630,7 @@ INSERT INTO Products(
 VALUES    
 ( 
   'Realme 8',
-  '{"brand_name":"Realme","releaseDate":"2021-6","madeIn":"Trung Quốc"}',  
+  '{"releaseDate":"2021-6","madeIn":"Trung Quốc"}',  
   '{"type":"IPS LCD","resolution":"HD+ (720 x 1600 Pixels)","size":"6.5\' - Tần số quét 60 Hz","glass":"Kính cường lực"}',  
   '{"rear":{"spec":"Chính 64 MP & Phụ 12 MP, 5 MP, 5 MP","videoQuality":" 4K 2160p@30fps, FullHD 1080p@30fps, HD 720p@240fps"},"font":"32 MP"}',  '{"os":"Android 11","cpu":"Snapdragon 778G 5G 8 nhân","cpuSpec":"1 nhân 2.4 GHz, 3 nhân 2.2 GHz & 4 nhân 1.9 GHz","gpu":"Mali-G57 MC2"}',
   '{"telecom":"Hỗ trợ 5G","SIM":"2 Nano SIM","Wifi":"Dual-band (2.4 GHz/5 GHz), Wi-Fi Direct, Wi-Fi hotspot","GPS":"A-GPS, BDS, GALILEO, GLONASS","Bluetooth":"A2DP, LEv, 5.2","connector":"2 đầu Type-C","others":"NFC, OTG"}',
@@ -657,7 +657,7 @@ INSERT INTO Products(
     brand_no) 
 VALUES    
 ( 
-    'OPPO A74',  '{"brand_name":"Oppo","releaseDate":"2021-7","madeIn":"Trung Quốc"}',
+    'OPPO A74',  '{"releaseDate":"2021-7","madeIn":"Trung Quốc"}',
     '{"type":"AMOLED","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.43\' - Tần số quét 60 Hz","glass":"Kính cường lực Corning Gorilla Glass 5"}',
     '{"rear":{"spec":"Chính 64 MP & Phụ 8 MP, 2 MP","videoQuality":"4K 2160p@30fps, FullHD 1080p@30fps, HD 720p@30fps"},"font":"32 MP"}',
     '{"os":"Android 11","cpu":"MediaTek Dimensity 800U 5G 8 nhân","cpuSpec":"2 nhân 2.4 GHz & 6 nhân 2 GHz","gpu":"Mali-G57 MC3"}',
@@ -687,7 +687,7 @@ INSERT INTO Products(
 VALUES
 (
     'Nokia 5.4',
-    '{"brand_name":"Nokia","releaseDate":"2021-8","madeIn":"Trung Quốc"}',
+    '{"releaseDate":"2021-8","madeIn":"Trung Quốc"}',
     '{"type":"IPS LCD","resolution":"HD+ (720 x 1600 Pixels)","size":"6.82\' - Tần số quét 60 Hz","glass":"Mặt kính cong 2.5D"}',
     '{"rear":{"spec":"Chính 13 MP & Phụ 2 MP","videoQuality":"FullHD 1080p@30fpsHD, 720p@30fps"},"font":"5 MP"}',
     '{"os":"Android 11 (Go Edition)","cpu":"Spreadtrum SC9863A 8 nhân","cpuSpec":"4 nhân 1.6 GHz & 4 nhân 1.2 GHz","gpu":"IMG PowerVR GE8322"}',
@@ -717,7 +717,7 @@ INSERT INTO Products(
 VALUES    
 (  
     'Samsung Galaxy S20 Ultra',
-    '{"brand_name":"Samsung","releaseDate":"2021-6","madeIn":"Việt Nam"}',
+    '{"releaseDate":"2021-6","madeIn":"Việt Nam"}',
     '{"type":"TFT LCD","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.6\' - Tần số quét 90 Hz","glass":"Kính cường lực Corning Gorilla 4"}',
     '{"rear":{"spec":"Chính 48 MP & Phụ 5 MP, 2 MP","videoQuality":"FullHD 1080p@30fps"},"font":"8 MP"}',
     '{"os":"Android 11","cpu":"MediaTek Dimensity 700 5G 8 nhân","cpuSpec":"2 nhân 2.2 GHz & 6 nhân 2.0 GHz","gpu":"Mali-G57 MC2"}',
@@ -746,7 +746,7 @@ INSERT INTO Products(
     brand_no) 
 VALUES    
 ( 
-    'OPPO Find X3 Pro',  '{"brand_name":"Oppo","releaseDate":"2021-7","madeIn":"Trung Quốc"}',
+    'OPPO Find X3 Pro',  '{"releaseDate":"2021-7","madeIn":"Trung Quốc"}',
     '{"type":"AMOLED","resolution":"Full HD+ (1080 x 2400 Pixels)","size":"6.43\' - Tần số quét 60 Hz","glass":"Kính cường lực Corning Gorilla Glass 5"}',
     '{"rear":{"spec":"Chính 64 MP & Phụ 8 MP, 2 MP","videoQuality":"4K 2160p@30fps, FullHD 1080p@30fps, HD 720p@30fps"},"font":"32 MP"}',
     '{"os":"Android 11","cpu":"MediaTek Dimensity 800U 5G 8 nhân","cpuSpec":"2 nhân 2.4 GHz & 6 nhân 2 GHz","gpu":"Mali-G57 MC3"}',
@@ -769,5 +769,6 @@ VALUES ('Administrator', '000000000', '0000000000', '1', N'3/2 Ninh Kiều Cẩn
 INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role, mod_username, mod_password) 
 VALUES ('Staff-lee', '111111111', '1111111111', '0', N'3/2 Ninh Kiều Cẩn Thơ', '0', "staff", "8992768ee63aab3f8b6255e200121bc44712c42bc67662f48482178da09834b8");
 -- pwd : 123456
+
 
 -- rm brand "brand_name":".[a-zA-Z0-9_]*.".
