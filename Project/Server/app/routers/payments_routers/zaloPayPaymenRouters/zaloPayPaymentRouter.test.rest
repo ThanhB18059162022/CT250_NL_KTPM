@@ -72,7 +72,7 @@ http://localhost:8000/api/zalo/checkoutOrder/c5a7dcbe2df78a8c2c8ccc83fd81dcd94ef
 
 # Lấy ra order đã thanh toán trong CSDL
 ### Hợp lệ 200
-GET http://localhost:8000/api/zalo/getsaveorder/1
+GET http://localhost:8000/api/zalo/getsaveorder/6fa925d5907a5c6eeddb85c39ec2a401d2d76f8196f7343c68ac33218900b3e3
 
 # Không hợp lệ 400
 ### 1 Id undefined

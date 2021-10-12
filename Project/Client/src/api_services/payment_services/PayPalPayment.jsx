@@ -67,9 +67,10 @@ const PayPalPayment = (props) => {
 
     const order = await payService.captureOrder(orderID);
 
-    console.log("Order là", order);
+
 
     setPaidFor(true);
+    window.location.href = `http://localhost:3000/success/paypal/${order}`
   }
 
   function renderProductInfo() {
