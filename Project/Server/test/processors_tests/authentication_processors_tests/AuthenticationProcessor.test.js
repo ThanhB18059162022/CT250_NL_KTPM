@@ -20,7 +20,6 @@ class ModDaoMock {
   static user = { mod_username: "valid", mod_password: "valid" };
 
   getModeratorByUsername = jest.fn(async (username) => {
-    console.log(username);
     if (username !== ModDaoMock.user.mod_username) {
       throw new NotExistError();
     }
@@ -62,6 +61,10 @@ let jwtMock;
 
 function getProcessor() {
   return new AuthenticationProcessorFake(validatorMock, jwtMock, daoMock);
+}
+
+function getProcessorNoParam() {
+  return new AuthenticationProcessor();
 }
 
 describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
@@ -220,5 +223,46 @@ describe("Proc Kiểm tra bearer jwt có hợp lệ", () => {
     expect(actRs).toEqual(expRs);
     expect(validatorMock.validateToken).toBeCalledTimes(1);
     expect(jwtMock.getData).toBeCalledTimes(1);
+  });
+});
+
+describe("Proc Các hàm bổ sung", () => {
+  test("Mã hóa mật khẩu SHA256", () => {
+    //Arrange
+    const processor = getProcessorNoParam();
+
+    //Act
+    const expRs =
+      "465039ec2625fb7eace80f9a3e9bd63dd04b0c55d971f6af1894f4b8c1b3c0ad";
+    const actRs = processor.getHasPassword("");
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Lấy ra role - emp", () => {
+    //Arrange
+    const roleIndex = 0;
+    const processor = getProcessorNoParam();
+
+    //Act
+    const expRs = "emp";
+    const actRs = processor.getRole(roleIndex);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Lấy ra role - admin", () => {
+    //Arrange
+    const roleIndex = 1;
+    const processor = getProcessorNoParam();
+
+    //Act
+    const expRs = "admin";
+    const actRs = processor.getRole(roleIndex);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
   });
 });

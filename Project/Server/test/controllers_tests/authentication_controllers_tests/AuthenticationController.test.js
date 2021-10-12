@@ -269,12 +269,12 @@ describe("Ctrlr Lấy ra người dùng đăng nhập trong jwt", () => {
 describe("Ctrlr Chuyển hướng người dùng theo quyền - mod_role", () => {
   test("Người dùng hợp lệ", async () => {
     //Arrange
-    const mod_role = "admin";
+    const role = "admin";
     const user = {
       id: 1,
       username: "valid",
       name: "valid",
-      mod_role,
+      role,
     };
     const controller = getController();
 
@@ -285,7 +285,7 @@ describe("Ctrlr Chuyển hướng người dùng theo quyền - mod_role", () =>
     const nextMock = jest.fn();
 
     //Act
-    await controller.authorize([mod_role])(reqMock, resMock, nextMock);
+    await controller.authorize([role])(reqMock, resMock, nextMock);
 
     //Expect
     expect(nextMock).toBeCalledTimes(1);
@@ -298,13 +298,13 @@ describe("Ctrlr Chuyển hướng người dùng theo quyền - mod_role", () =>
     const resMock = new ResponseMock();
 
     for (let i = 0; i < mod_roles.length; i++) {
-      const mod_role = mod_roles[i];
+      const role = mod_roles[i];
 
       const user = {
         id: 1,
         username: "valid",
         name: "valid",
-        mod_role,
+        role,
       };
 
       const nextMock = jest.fn();

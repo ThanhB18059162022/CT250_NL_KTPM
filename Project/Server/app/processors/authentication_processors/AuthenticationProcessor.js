@@ -29,8 +29,8 @@ class AuthenticationProcessor extends Processor {
     }
 
     const user = {
-      mod_no: moderator.mod_no,
-      mod_role: this.getRole(moderator.mod_role),
+      id: moderator.mod_no,
+      role: this.getRole(moderator.mod_role),
     };
     const token = this.jwt.getToken(user);
 
@@ -43,7 +43,7 @@ class AuthenticationProcessor extends Processor {
       .update(`${loginModel.username}-${loginModel.password}`)
       .digest("hex");
 
-  getRole = (roleIndex) => (roleIndex == 0 ? "emp" : "admin");
+  getRole = (roleIndex) => (roleIndex === 0 ? "emp" : "admin");
 
   // Authenticate
   // Xác thực đăng nhập bằng bearer jwt token
