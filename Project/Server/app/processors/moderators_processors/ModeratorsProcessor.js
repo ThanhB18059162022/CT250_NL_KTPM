@@ -69,8 +69,6 @@ module.exports = class ModeratorsProcessor extends Processor {
 
   //#endregion
 
-  //#region  ADD
-
   // Thêm quản trị viên
   addModerator = async (newModerator) => {
     this.checkValidate(() => this.validator.validateAddModerator(newModerator));
@@ -80,10 +78,6 @@ module.exports = class ModeratorsProcessor extends Processor {
 
     return moderator;
   };
-
-  //#endregion
-
-  //#region UPDATE
 
   // Cập nhật thông tin quản trị viên
   updateModerator = async (mod_no, newInfo) => {
@@ -96,5 +90,11 @@ module.exports = class ModeratorsProcessor extends Processor {
     await this.dao.updateModerator(oldInfo.mod_no, newInfo);
   };
 
-  //#endregion
+  // Khóa tài khoản quản trị viên
+  lockModerator = async (mod_no) => {
+    //Quản trị viên có tồn tại
+    const oldInfo = await this.getModeratorByNo(mod_no);
+
+    await this.dao.lockModerator(oldInfo.mod_no);
+  };
 };

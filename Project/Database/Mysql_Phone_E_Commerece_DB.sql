@@ -1,7 +1,7 @@
 CREATE OR REPLACE DATABASE Phone_E_Commerece_DB;
 
 -- Tạo các bảng (13 bảng)
-use Phone_E_Commerece_DB;
+
 -- Bảng khách hàng
 
 CREATE TABLE Customers(
@@ -26,7 +26,6 @@ CREATE TABLE Moderators(
   mod_role TINYINT(1) NOT NULL DEFAULT '0', -- Vai trò 0 là nhân viên 1 là quản lý
   mod_username VARCHAR(70) NOT NULL UNIQUE, -- Tài khoản
   mod_password CHAR(64) NOT NULL, -- Mật khẩu
-  mod_status INT NOT NULL DEFAULT '0', -- Trạng thái 0 là OK 1 là khóa
 
  -- Khóa chính
   CONSTRAINT Moderators_PK PRIMARY KEY (mod_no)
@@ -70,13 +69,26 @@ CREATE TABLE Products(
   prod_utilities VARCHAR(1000) NOT NULL, -- Tiện ích
   prod_design VARCHAR(1000) NOT NULL, -- Thiết kế
   prod_status TINYINT(1) NOT NULL DEFAULT '0', -- Trạng thái sản phẩm
-  brand_no INT NOT NULL, -- Thương hiệu khóa ngoại tham chiếu bảng thương hiệu
+  brand_no INT NOT NULL DEFAULT '1', -- Thương hiệu khóa ngoại tham chiếu bảng thương hiệu
 
  -- Khóa chính
   CONSTRAINT Products_PK PRIMARY KEY (prod_no),
 
  -- Khóa ngoại
   CONSTRAINT Products_Brands_FK FOREIGN KEY(brand_no) REFERENCES Brands(brand_no) ON DELETE CASCADE
+); 
+
+-- Bảng hình ảnh
+CREATE TABLE Images(
+  img_no INT AUTO_INCREMENT, -- Mã hình ảnh tự tăng
+  img_src VARCHAR(128) NOT NULL, -- Đường dẫn đến resource trên server
+  prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
+
+ -- Khóa chính
+  CONSTRAINT Images_PK PRIMARY KEY (img_no),
+
+ -- Khóa ngoại
+  CONSTRAINT Images_Products_FK FOREIGN KEY(prod_no) REFERENCES Products(prod_no) ON DELETE CASCADE
 ); 
 
 -- Bảng đánh giá

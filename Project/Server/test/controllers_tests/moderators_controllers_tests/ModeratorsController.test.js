@@ -109,7 +109,9 @@ class ModeratorsProcessorMock {
     }
   });
 
-  lockModerator = jest.fn();
+  lockModerator = jest.fn(async (m_no) => {
+    await this.getModeratorByNo(m_no);
+  });
 }
 //#endregion
 
@@ -609,6 +611,66 @@ describe("Ctrlr Sửa thông tin quản trị viên", () => {
     //Expect
     expect(actRes).toEqual(expRes);
     expect(processorMock.updateModerator).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+});
+
+describe("Ctrlr Khóa tài khoản quản trị viên", () => {
+  beforeEach(() => {
+    processorMock = new ModeratorsProcessorMock();
+  });
+
+  test("Mã quản trị không hợp lệ - 400", async () => {
+    //Arrange
+    const mod_no = undefined;
+    const controller = getController();
+
+    const reqMock = { params: { mod_no } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 400, body: undefined };
+    const actRes = await controller.lockModerator(reqMock, resMock);
+
+    //Expect
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.lockModerator).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Mã quản trị không tồn tại - 404", async () => {
+    //Arrange
+    const mod_no = 404;
+    const controller = getController();
+
+    const reqMock = { params: { mod_no } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 404, body: undefined };
+    const actRes = await controller.lockModerator(reqMock, resMock);
+
+    //Expect
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.lockModerator).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Khóa thành công - 204", async () => {
+    //Arrange
+    const mod_no = 1;
+    const controller = getController();
+
+    const reqMock = { params: { mod_no } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 204, body: undefined };
+    const actRes = await controller.lockModerator(reqMock, resMock);
+
+    //Expect
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.lockModerator).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
   });
 });

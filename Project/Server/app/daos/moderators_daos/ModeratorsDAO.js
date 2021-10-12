@@ -109,6 +109,12 @@ module.exports = class ModeratorsDAO extends ModelDAO {
     );
   };
 
+  lockModerator = async (mod_no) => {
+    const sql = `UPDATE Moderators SET mod_password='' WHERE mod_no=?`;
+
+    await this.sqldao.execute(sql, [mod_no]);
+  };
+
   toDbModerator = (moderator) => {
     const {
       mod_name,

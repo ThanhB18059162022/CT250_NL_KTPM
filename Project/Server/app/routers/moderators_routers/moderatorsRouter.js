@@ -31,7 +31,8 @@ router
 router
   .route("/:mod_no")
   .get(errorCatch(controller.getModeratorByNo))
-  .put(errorCatch(controller.updateModerator));
+  .put(errorCatch(controller.updateModerator))
+  .delete(errorCatch(controller.lockModerator));
 
 // moderators/PhoneNumber/1234567899
 router
