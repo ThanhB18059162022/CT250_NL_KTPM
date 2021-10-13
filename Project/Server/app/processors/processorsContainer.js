@@ -9,6 +9,7 @@ const ProductsProcessor = require("./products_processors/ProductsProcessor");
 const PayPalPaymentProcessor = require("./payments_processors/paypal_payment_processors/PayPalPaymentProcessor");
 const StripePaymentProcessor = require("./payments_processors/stripe_payment_processors/StripePaymentProcessor");
 const ZaloPayPaymentProcessor = require("./payments_processors/zalo_payment_processors/ZaloPayPaymentProcessor");
+const DefaultPaymentProcessor = require("./payments_processors/default_payment_processors/DefaultPaymentProcessor");
 
 const ModeratorsProcessor = require("./moderators_processors/ModeratorsProcessor");
 
@@ -22,6 +23,7 @@ module.exports = {
   PayPalPaymentProcessor,
   StripePaymentProcessor,
   ZaloPayPaymentProcessor,
+  DefaultPaymentProcessor,
 
   ModeratorsProcessor,
 
