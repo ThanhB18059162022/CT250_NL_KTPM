@@ -75,7 +75,7 @@ const FeedbackList = () => {
     return (
         <>
             <div className="ListLayout">
-                <div className="ProductToolHeader Comment">
+                <div className="ProductToolHeader FeedbackTool">
                     <AdminSearchInput />
                 </div>
                 <li className="FeedbackListHeader">

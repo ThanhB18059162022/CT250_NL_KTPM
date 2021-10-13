@@ -28,7 +28,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    &.Comment {
+    &.FeedbackTool {
         justify-content: flex-end;
     }
     .AdminButton {
@@ -220,7 +220,7 @@
     .FeedbackListHeader {
         display: flex;
         background-color: var(--backgroundColor);
-        margin: auto;
+        // margin: auto;
         align-items: center;
         padding: 10px 5px;
         color: var(--textColor);
