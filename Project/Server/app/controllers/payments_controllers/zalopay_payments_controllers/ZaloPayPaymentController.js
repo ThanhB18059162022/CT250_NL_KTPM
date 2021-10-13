@@ -13,7 +13,7 @@ module.exports = class ZaloPayPaymentController extends PaymentsController {
       this.processor.checkValidateUrl(successUrl);
       this.processor.checkValidateUrl(cancelUrl);
 
-      const serverCheckoutUrl = `${req.protocol}://${req.headers.host}/api/zalo/checkoutOrder`;
+      const serverCheckoutUrl = `${req.protocol}://${req.headers.host}/api/payments/zalo/checkoutOrder`;
       const { body: cart } = req;
       const url = await this.processor.createOrder(cart, {
         successUrl,
