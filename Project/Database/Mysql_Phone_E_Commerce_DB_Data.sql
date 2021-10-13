@@ -1,4 +1,4 @@
-USE Phone_E_Commerece_DB;
+USE Phone_E_Commerce_DB;
 
 INSERT INTO Brands(brand_name) VALUES(N'SAMSUNG');
 INSERT INTO Brands(brand_name) VALUES(N'iPhone');
