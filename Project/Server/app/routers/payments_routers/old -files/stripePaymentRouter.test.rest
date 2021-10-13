@@ -5,7 +5,7 @@
 # Tạo order
 
 ### 1 Hợp lệ - 201
-POST http://localhost:8000/api/stripe/createorder?successUrl=http://localhost:3000&cancelUrl=http://localhost:3000
+POST http://localhost:8000/api/payments/stripe/createorder?successUrl=http://localhost:3000&cancelUrl=http://localhost:3000
 Content-Type: application/json
 
 {
@@ -36,14 +36,14 @@ Content-Type: application/json
 
 ### 1 Đã thanh toán rồi - 404
 
-GET http://localhost:8000/api/stripe/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?successUrl=http://localhost
+GET http://localhost:8000/api/payments/stripe/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?successUrl=http://localhost
 
     
 ### 2 Không hợp lệ id < 64 - 400
-GET http://localhost:8000/api/stripe/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe4
+GET http://localhost:8000/api/payments/stripe/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe4
 
 ### 2 Không hợp lệ id > 64 - 400
-GET http://localhost:8000/api/stripe/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efeA11
+GET http://localhost:8000/api/payments/stripe/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efeA11
 
 
 
@@ -53,20 +53,20 @@ GET http://localhost:8000/api/stripe/checkoutorder/7210a5e54e1b47c33073e703f1aac
 
 # Lấy ra order đã thanh toán trong CSDL
 ### Hợp lệ 200
-GET http://localhost:8000/api/stripe/getsaveorder/1
+GET http://localhost:8000/api/payments/stripe/getsaveorder/1
 
 # Không hợp lệ 400
 ### 1 Id undefined
-GET http://localhost:8000/api/stripe/getsaveorder/""
+GET http://localhost:8000/api/payments/stripe/getsaveorder/""
 
 ### 2 Id không phải số
-GET http://localhost:8000/api/stripe/getsaveorder/wtf
+GET http://localhost:8000/api/payments/stripe/getsaveorder/wtf
 
 ### 3 Id < 0
-GET http://localhost:8000/api/stripe/getsaveorder/-1
+GET http://localhost:8000/api/payments/stripe/getsaveorder/-1
 
 ### 4 Id > int max
-GET http://localhost:8000/api/stripe/getsaveorder/9007199254740992
+GET http://localhost:8000/api/payments/stripe/getsaveorder/9007199254740992
 
 ### Không tồn tại - 404
-GET http://localhost:8000/api/stripe/getsaveorder/666
+GET http://localhost:8000/api/payments/stripe/getsaveorder/666

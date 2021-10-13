@@ -1,0 +1,91 @@
+# Extension REST Client
+
+# Mỗi Request cách nhau 3 dấu '#'
+
+# Tạo order
+
+### 1 Hợp lệ - 201
+POST http://localhost:8000/api/payments/zalo/createorder?successUrl=http://localhost:3000/success/zalo&cancelUrl=http://localhost:3000/cart
+Content-Type: application/json
+
+{
+    // Thông tin khác hàng
+    "customer": {
+    "cus_name": "Thạch Chí Tâm",
+    "cus_id": "987563256",
+    "cus_email": "giaob1805686@student.ctu.edu.vn",
+    "cus_sex": false,
+    "cus_address": "Trần Hưng Đạo, Tân Hiệp A, Tân Hiệp, Kiên Giang, Việt Nam",
+    "cus_phoneNumber": "0987654321"
+    },
+
+    // Mảng nhận id và số lượng
+    "products":[
+        {"prod_no": 1, "prod_quantity": 1, "pd_no": 0},
+        {"prod_no": 2, "prod_quantity": 1, "pd_no": 0}
+    ]
+}
+
+
+
+
+# ---------------------------------------------------------------------
+
+
+
+
+# Thanh toán
+
+### 1 Đã thanh toán rồi - 500
+
+GET http://localhost:8000/api/payments/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?url=http://localhost-http://localhost
+
+    
+### 2 Không hợp lệ id < 64 - 400
+GET http://localhost:8000/api/payments/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe4
+
+### 3 Không hợp lệ id > 64 - 400
+GET http://localhost:8000/api/payments/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efeA11
+
+### 4 Không có successUrl - 400
+GET http://localhost:8000/api/payments/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?cancelUrl=http://localhost/wtf
+
+
+### 5 Không có cancelUrl - 400
+GET http://localhost:8000/api/payments/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?successUrl=http://localhost:3000
+
+
+### 6 Sửa query của zalo - 400
+http://localhost:8000/api/payments/zalo/checkoutOrder/c5a7dcbe2df78a8c2c8ccc83fd81dcd94efc1eb825132546f35cb0c92571d37d?successUrl=http%3A%2F%2Flocalhost%3A3000&cancelUrl=http://localhost&amount=101000&discountamount=0&appid=2553&checksum=b824269081e4cf8cc347345b805ad937455f36d9665bd1954ad268b39380369d&apptransid=210924_efc1eb825132546f35cb0c92571d37d&pmcid=1&bankcode=&status=-49
+
+### 7 Chưa thanh toán về trang cancel - 301
+http://localhost:8000/api/payments/zalo/checkoutOrder/c5a7dcbe2df78a8c2c8ccc83fd81dcd94efc1eb825132546f35cb0c92571d37d?successUrl=http%3A%2F%2Flocalhost%3A3000&cancelUrl=http://localhost:8000&amount=101000&discountamount=0&appid=2553&checksum=b824269081e4cf8cc347345b805ad937455f36d9665bd1954ad268b39380369d&apptransid=210924_efc1eb825132546f35cb0c92571d37d&pmcid=0&bankcode=&status=-49
+
+
+
+
+
+
+# ---------------------------------------------------------------------
+
+
+
+# Lấy ra order đã thanh toán trong CSDL
+### Hợp lệ 200
+GET http://localhost:8000/api/payments/zalo/getsaveorder/6fa925d5907a5c6eeddb85c39ec2a401d2d76f8196f7343c68ac33218900b3e3
+
+# Không hợp lệ 400
+### 1 Id undefined
+GET http://localhost:8000/api/payments/zalo/getsaveorder/""
+
+### 2 Id không phải số
+GET http://localhost:8000/api/payments/zalo/getsaveorder/wtf
+
+### 3 Id < 0
+GET http://localhost:8000/api/payments/zalo/getsaveorder/-1
+
+### 4 Id > int max
+GET http://localhost:8000/api/payments/zalo/getsaveorder/9007199254740992
+
+### Không tồn tại - 404
+GET http://localhost:8000/api/payments/zalo/getsaveorder/666
