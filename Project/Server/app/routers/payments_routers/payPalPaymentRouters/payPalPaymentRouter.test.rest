@@ -25,7 +25,7 @@ Content-Type: application/json
     // Mảng nhận id và số lượng
     "products":[
         {"prod_no": 1, "prod_quantity": 1, "pd_no": 1},
-        {"prod_no": 2, "prod_quantity": 3, "pd_no": 3}
+        {"prod_no": 2, "prod_quantity": 1, "pd_no": 3}
     ]
 }
 
@@ -60,7 +60,7 @@ GET http://localhost:8000/api/paypal/captureorder/6072225628845804H1
 
 # Lấy ra order đã thanh toán trong CSDL
 ### Hợp lệ 200
-GET http://localhost:8000/api/paypal/getsaveorder/1
+GET http://localhost:8000/api/paypal/getsaveorder/2
 
 # Không hợp lệ 400
 ### 1 Id undefined

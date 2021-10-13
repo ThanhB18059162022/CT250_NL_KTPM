@@ -2,7 +2,7 @@
 
 export default class StatisticService {
   getDataOfSeasons = async (year) => {
-    if (year == 2021) {
+    if (year === 2021) {
       return [
         9000000 + ((year * year) % 2) * year * 1000,
         10000000 + (((year * year) % 2) + 1) * year * 1000,

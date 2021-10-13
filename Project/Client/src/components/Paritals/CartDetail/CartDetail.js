@@ -4,7 +4,7 @@ import { faMinus, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useHistory } from 'react-router-dom'
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import ReactDOM from "react-dom";
 
 import { CartContext } from "../../../providers/CartProviders";
@@ -17,6 +17,7 @@ import Notifications from "../../../common/Notifications";
 import { ZaloPaymentService, StripePaymentService } from "../../../api_services/servicesContainer";
 import PayPalPayment from "../../../api_services/payment_services/PayPalPayment";
 import ProductServices from "../../../api_services/products_services/ProductsService";
+import { Input } from "../../Controls";
 
 //==================To the Getway payment ===================
 
@@ -27,7 +28,7 @@ const toGetway = url => {
   //  console.log(url)
 }
 
-const checkout = async (type, cart) => toGetway(await services[type - 1].createOrder(cart))
+const checkout = async (type, cart) => toGetway(await services[type].createOrder(cart))
 //===========================================================
 
 const CartDetail = () => {
@@ -35,12 +36,14 @@ const CartDetail = () => {
 
   const [total, setTotal] = useState(0);
 
-  const { clearItem, change, forceItem, getItemList, upItem, removeItem, downItem, amount } =
+  const { clearItem, change, forceItem, getItemList, upItem, removeItem, downItem } =
     useContext(CartContext);
 
   const [display, setDisplay] = useState(false);
 
   const [show, setShow] = useState(false);
+
+  const [customer, setCustomer] = useState(null)
 
   const [notify, setNotify] = useState({
     content: "",
@@ -59,7 +62,7 @@ const CartDetail = () => {
           let { pd_amount: amount, pd_sold: sold } = data.prod_details[item.type]
           let somethinselse = amount - sold;
           if (somethinselse > item.amount)
-            data.amount = item.amount;
+            data.amount = Number(item.amount);
           else {
             data.amount = somethinselse
             forceItem(item.id, item.type, somethinselse)
@@ -69,22 +72,22 @@ const CartDetail = () => {
           data.choosedType = item.type
           return data;
         })
-      );
+      )
       setList(listItem);
     })();
-  }, [getItemList, change]);
+  }, [change, clearItem, forceItem, getItemList]);
 
-  const onValueChange = (id, value, choosedType) => {
-    console.log(value)
-    const newList = list.map((item) => {
-      if (item.prod_no === id && item.choosedType === choosedType) {
-        Number(item.amount) > Number(value) ? downItem(id, choosedType) : upItem(id, choosedType);
-        item.amount = value;
-      }
-
-      return item;
-    });
-    setList(newList);
+  const onValueChange = (id, choosedType, type) => {
+    switch (type) {
+      case 'UP':
+        upItem(id, choosedType)
+        break;
+      case 'DOWN':
+        downItem(id, choosedType)
+        break
+      default:
+        return;
+    }
   };
 
   const onRemoveItem = (id, type) => {
@@ -99,11 +102,9 @@ const CartDetail = () => {
   };
 
   useEffect(() => {
-    let count = 0;
-    list.forEach(
-      (element) =>
-        (count += Number(element.prod_details[element.choosedType].pd_price) * Number(element.amount))
-    );
+    let count = list.reduce((pre, item) =>
+      pre + item.prod_details[item.choosedType].pd_price * item.amount, 0)
+
     setTotal(count);
   }, [list]);
 
@@ -112,30 +113,23 @@ const CartDetail = () => {
     ReactDOM.render(<PayPalPayment cart={cart} />, document.querySelector('#paypalwrapper'))
 
     document.querySelector('.paypalarea').classList.add('shower')
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
   return (
     <div className="CartDetail">
       <h3>Giỏ hàng của bạn</h3>
       <div className="detail-wrapper">
         <div className="cart-list">
-          {list.length > 0 ? (
+          {list.length > 0 ?
             <ul>
-              {list.map((item, index) => (
+              {list.map((item, index) =>
                 <CartItem
                   key={index}
                   info={item}
                   changeValue={onValueChange}
-                  removeItem={onRemoveItem}
-                />
-              ))}
-            </ul>
-          ) : (
-            <p>Giỏ hàng trống! Tiếp tục mua hàng đi nào!</p>
-          )}
+                  removeItem={onRemoveItem} />)}
+            </ul> :
+            <p>Giỏ hàng trống! Tiếp tục mua hàng đi nào!</p>}
         </div>
         <div className="cart-transaction">
           <div className="wrapper">
@@ -149,52 +143,142 @@ const CartDetail = () => {
             <p className="total_title">Số lượng chi tiết:</p>
             <p className="total_data">{getItemList().reduce((pre, item) => pre + item.amount, 0)} chi tiết</p>
 
-            <button
-              onClick={() => {
-                setDisplay(true);
-                // clearItem();
-              }}
-            >
-              Thanh toán
-            </button>
+            <button onClick={() => setDisplay(true)}>Thanh toán</button>
           </div>
         </div>
       </div>
       <CartTransaction
         display={display}
         setDisplay={setDisplay}
-        listPay={list}
-        total={total}
-        paypalHandle={renderPaypalButtonFrame}
+        setCustomer={setCustomer}
+
       />
+      {customer && <DetailTransaction
+        customer={customer}
+        setCustomer={setCustomer}
+        total={total}
+        list={list}
+        renderPaypalButtonFrame={renderPaypalButtonFrame} />}
       <Notifications {...notify} isShow={show} onHideRequest={setShow} />
     </div>
-
   );
 };
 
 export default CartDetail;
 
-function CartTransaction(props) {
-  const { display, setDisplay, total, paypalHandle } = props;
+const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalButtonFrame }) => {
+  const [pos, setPos] = useState(-1)
 
-  const { getItemList } = useContext(CartContext)
+  useEffect(() => {
+    document.querySelector('body').style.overflow = 'hidden'
+    return () => document.querySelector('body').style.overflow = 'auto'
+  }, [])
 
-  const [step, setStep] = useState(0);
+  const trade = type => {
+    let index = -1;
+    switch (type) {
+      case 'ZALOPAY':
+        setPos(0)
+        index = 0
+        break;
+      case 'STRIPE':
+        setPos(1)
+        index = 1;
+        break;
+      case 'PAYPAL':
+        setPos(2)
+        index = 2
+        break;
+      default:
+        return;
+    }
+    const products = list.map(item => ({
+      prod_no: item.prod_no,
+      prod_quantity: item.amount,
+      pd_no: item.prod_details[item.choosedType].pd_no
+    }))
+    const cart = { customer, products }
 
-  const [location, setLocation] = useState(false);
+    switch (index) {
+      case 0:
+        checkout(0, cart)
+        break;
+      case 1:
+        checkout(1, cart);
+        break
+      case 2:
+        renderPaypalButtonFrame(cart)
+        break;
+      default:
+        return
+    }
+  }
+  return (
+    <div className="detail_transaction">
+      <div className="detail_wrapper">
+        <h3>Xác nhận mua hàng và chọn hình thức thanh toán</h3>
+        <div className="cus_info">
+          <p><span>Khách hàng:</span>{customer.cus_name}</p>
+          <p><span>Số CMND/CCCD:</span>{customer.cus_id}</p>
+          <p><span>Giới tính:</span>{customer.cus_sex ? 'Nam' : 'Nữ'}</p>
+          <p><span>Email:</span>{customer.cus_email}</p>
+          <p><span>Số điện thoại:</span>{customer.cus_phoneNumber}</p>
+          <p><span>Địa chỉ nhận hàng:</span>{customer.cus_address}</p>
+          <p><span>Tổng giá trị:</span>{Helper.Exchange.toMoney(total)}</p>
+        </div>
+        <div className="detail_header">
+          <p className="dh_name">Tên sản phẩm</p>
+          <p className="dh_price">Phiên bản</p>
+          <p className="dh_price">Đơn giá</p>
+          <p className="dh_amount">Số lượng</p>
+          <p className="dh_total">Thành tiền</p>
+        </div>
+        <ul>
+          {list.map((item, index) => <li key={index}>
+            <p className="dh_name">{item.prod_name}</p>
+            <p className="dh_price">{item.prod_details[item.choosedType].pd_storage}</p>
+            <p className="dh_price">{item.prod_details[item.choosedType].pd_price}</p>
+            <p className="dh_amount">{item.amount}</p>
+            <p className="dh_total">{Helper.Exchange.toMoney(Number(item.prod_details[item.choosedType].pd_price) * Number(item.amount))}</p>
+          </li>)}
+        </ul>
+        <h3>Chọn hình thức thanh toán</h3>
+        <div className="transaction-style">
+          <img style={pos === 0 ? { border: '2px solid var(--backgroundColor)', cursor: 'progress' } : null} onClick={() => trade('ZALOPAY')} src="/icon/zalopayicon.png" alt="zalo transaction" />
+          <img style={pos === 1 ? { border: '2px solid var(--backgroundColor)', cursor: 'progress' } : null} onClick={() => trade('STRIPE')} src="/icon/stripeicon.png" alt="stripe transaction" />
+          <img style={pos === 2 ? { border: '2px solid var(--backgroundColor)', cursor: 'progress' } : null} onClick={() => trade('PAYPAL')} src="/icon/paypalicon.png" alt="papal transaction" />
+        </div>
+        <FontAwesomeIcon icon={faTimes} onClick={() => setCustomer(null)} />
+      </div>
+    </div>
+  )
+}
 
-  const [customerinfo, setCustomerInfo] = useState({
-    ccid: "",
-    email: "",
-    name: "",
-    gender: -1,
-    address: "",
-    phone: "",
-    transactionway: -1,
-  });
+
+function CartTransaction({ display, setDisplay, setCustomer }) {
+
+  const [ccid, setCcid] = useState("")
+
+  const [name, setName] = useState("")
+
+  const [email, setEmail] = useState("")
+
+  const [gender, setGender] = useState(-1)
+
+  const [phone, setPhone] = useState("")
 
   const [show, setShow] = useState(false);
+
+  const [address, setAddress] = useState({
+    province: '',
+    district: '',
+    commune: '',
+    detail: '',
+  })
+
+  useEffect(() => {
+    document.querySelector('body').style.overflow = display ? 'hidden' : 'auto'
+  }, [display])
 
   const [notify, setNotify] = useState({
     content: "",
@@ -203,293 +287,109 @@ function CartTransaction(props) {
     infoType: "INFO",
   });
 
-  const setAddress = (value) => {
-    setCustomerInfo({ ...customerinfo, address: value });
-  };
+  const leftInput = [
+    { type: 'input', value: name, name: 'name', onChange: setName, label: 'Họ và tên' },
+    { type: 'input', value: ccid, name: 'ccid', onChange: setCcid, label: 'Số CMND/CCCD' },
+    { type: 'input', value: email, name: 'email', onChange: setEmail, label: 'Email' },
+    { type: 'radio', value: gender, name: 'gender', onChange: setGender, label: 'Giới tính', data: [{ name: 'Nam', value: "1" }, { name: 'Nữ', value: "0" }] }
+  ]
 
-  const previousStep = () => {
-    if (step !== 0) {
-      setStep(step + 1);
-    }
-  };
+  const showResult = (mess) => {
+    setNotify({ ...notify, content: mess })
+    setShow(true)
+  }
 
-  const nextStep = () => {
-    if (step !== -2) {
-      if (step === 0) {
-        if (validateStep1()) setStep(step - 1);
-      }
-      if (step === -1) {
-        if (validateStep2()) setStep(step - 1);
-      }
-    } else {
-      if (customerinfo.transactionway === -1) {
-        setNotify({
-          ...notify,
-          content: "Vui lòng chọn hình thức thanh toán!",
-          infoType: "INFO",
-        });
-        setShow(true);
-      } else {
-        const customer = {
-          cus_name: customerinfo.name,
-          cus_id: customerinfo.ccid,
-          cus_email: customerinfo.email,
-          cus_sex: true,
-          cus_address: customerinfo.address,
-          cus_phoneNumber: customerinfo.phone
-        }
-        const products = getItemList().map(item => ({ prod_no: item.id, prod_quantity: item.amount * 50 }));
-        if (customerinfo.transactionway !== 3) {
-          checkout(customerinfo.transactionway, { customer, products })
-        }
-        else {
-          paypalHandle({ customer, products })
-        }
-      }
-    }
-  };
-
-  const validateStep1 = () => {
-    const validateCCID = Helper.TransactionValidator.checkingCCID(
-      customerinfo.ccid
-    );
-    if (!validate(validateCCID)) return false;
-
-    const validateEmail = Helper.TransactionValidator.checkingEmail(
-      customerinfo.email
-    );
-    if (!validate(validateEmail)) return false;
-
-    return true;
-  };
-
-  const validateStep2 = () => {
-    const validateName = Helper.TransactionValidator.checkingName(
-      customerinfo.name
-    );
-    if (!validate(validateName)) return false;
-
-    const validateGender = Helper.TransactionValidator.checkingGender(
-      customerinfo.gender
-    );
-    if (!validate(validateGender)) return false;
-
-    const validateAddress = Helper.TransactionValidator.checkingAddress(
-      customerinfo.address
-    );
-    if (!validate(validateAddress)) return false;
-
-    const validatePhone = Helper.TransactionValidator.checkingPhone(
-      customerinfo.phone
-    );
-    if (!validate(validatePhone)) return false;
-    return true;
-  };
-
-  const validate = (result) => {
+  const checkValidation = () => {
+    let result = Helper.TransactionValidator.checkingName(name)
     if (!result.result) {
-      setNotify({
-        ...notify,
-        title: "Cảnh báo",
-        infoType: "WARN",
-        content: result.resson,
-      });
-      setShow(true);
-      return false;
+      showResult(result.resson)
+      return false
+    }
+
+    result = Helper.TransactionValidator.checkingCCID(ccid)
+    if (!result.result) {
+      showResult(result.resson)
+      return false
+    }
+
+    result = Helper.TransactionValidator.checkingEmail(email)
+    if (!result.result) {
+      showResult(result.resson)
+      return false
+    }
+
+
+    result = Helper.TransactionValidator.checkingGender(gender)
+    if (!result.result) {
+      showResult(result.resson)
+      return false
+    }
+
+    result = Helper.TransactionValidator.checkingPhone(phone)
+    if (!result.result) {
+      showResult(result.resson)
+      return false
+    }
+
+    if (address.province.length === 0 || address.commune.length === 0 || address.district.length === 0 || address.detail.length === 0) {
+      showResult('Bạn chưa hoàn thành địa chỉ nhận hàng')
+      return false
     }
     return true;
-  };
+  }
+
+  const makeAddressTemplate = () => `${address.detail.trim()}, ${address.commune.trim()}, ${address.district.trim()}, ${address.province.trim()}, Việt Nam`
+
+  const transationHandle = () => {
+    if (!checkValidation()) return
+    setCustomer({
+      "cus_name": name,
+      "cus_id": ccid,
+      "cus_email": email,
+      "cus_sex": Number(gender) === 1,
+      "cus_address": makeAddressTemplate(),
+      "cus_phoneNumber": phone
+    })
+    setDisplay(false)
+  }
 
   return (
     <>
-      <div className={`carttransaction ${display ? "show" : ""}`}>
-
+      <div className={`cart-info ${display ? "show" : ""}`}>
         <div className="transaction-wrapper">
-          <div className="transaction-info">
-            <h3>Thông tin đơn hàng của bạn</h3>
-            <div className="wrapper">
-              <p>
-                <span>Tổng giá trị: </span> {Helper.Exchange.toMoney(total)} VNĐ
-              </p>
-              <p>
-                <span>Thời gian: </span>
-                {Helper.Exchange.toLocalDate(new Date().toISOString())}
-              </p>
-              <p>
-                <span>Số lượng sản phẩm: </span>
-                {getItemList().length}
-              </p>
-              <p>
-                <span>Số lượng chi tiết:</span>
-                {getItemList().reduce((pre, item) => pre + item.amount, 0)}
-              </p>
+          <h3>Thông tin thanh toán</h3>
+          <div>
+            <div>
+              {leftInput.map((item, index) => <Input key={index} {...item} />)}
+            </div>
+            <div>
+              <Input
+                type='input'
+                value={phone}
+                onChange={setPhone}
+                name="phone"
+                label={"Số điện thoại nhận hàng"}
+              />
+              <AddressInput
+                value={address}
+                name="address"
+                onChange={setAddress}
+                label={"Địa chỉ nhận hàng"}
+              />
             </div>
           </div>
-          <div className="transaction-input">
-            <h3>Thông tin thanh toán</h3>
-            <div className="transaction-slider">
-              <div
-                className="slider-element"
-                style={{ left: `${100 * step}%` }}
-              >
-                <p>
-                  <input
-                    value={customerinfo.ccid}
-                    onChange={(e) =>
-                      setCustomerInfo({ ...customerinfo, ccid: e.target.value })
-                    }
-                    type="text"
-                    placeholder="CMND/CCCD (bắt buộc)"
-                  />
-                </p>
-                <p>
-                  <input
-                    value={customerinfo.email}
-                    onChange={(e) =>
-                      setCustomerInfo({
-                        ...customerinfo,
-                        email: e.target.value,
-                      })
-                    }
-                    type="email"
-                    placeholder="Email (bắt buộc)"
-                  />
-                </p>
-              </div>
-              <div
-                className="slider-element"
-                style={{ left: `${100 * step}%` }}
-              >
-                <p>
-                  <input
-                    type="text"
-                    placeholder="Họ tên (bắt buộc)"
-                    value={customerinfo.name}
-                    onChange={(e) =>
-                      setCustomerInfo({ ...customerinfo, name: e.target.value })
-                    }
-                  />
-                </p>
-                <p>
-                  <select
-                    value={customerinfo.gender}
-                    onChange={(e) =>
-                      setCustomerInfo({
-                        ...customerinfo,
-                        gender: e.target.value,
-                      })
-                    }
-                  >
-                    <option value="-1" disabled>
-                      Giới tính
-                    </option>
-                    <option value="1">Nam</option>
-                    <option value="0">Nữ</option>
-                  </select>
-                </p>
-                <p>
-                  <input
-                    type="text"
-                    onKeyDown={(e) => e.preventDefault()}
-                    onClick={() => setLocation(true)}
-                    style={{ cursor: "pointer" }}
-                    placeholder="Địa chỉ nhận hàng (bắt buộc)"
-                    value={customerinfo.address}
-                    readOnly={true}
-                  />
-                </p>
-                <p>
-                  <input
-                    type="phone"
-                    placeholder="Số điện thoại nhận hàng (bắt buộc)"
-                    value={customerinfo.phone}
-                    onChange={(e) =>
-                      setCustomerInfo({
-                        ...customerinfo,
-                        phone: e.target.value,
-                      })
-                    }
-                  />
-                </p>
-              </div>
-              <div
-                className="slider-element"
-                style={{ left: `${100 * step}%` }}
-              >
-                <p>
-                  <input
-                    onClick={() => setCustomerInfo({ ...customerinfo, transactionway: 1 })}
-                    name="transaction-way"
-                    type="radio"
-                  />
-                  <span>
-                    <img alt="zalopay" src="/icon/zalopayicon.png" />
-                  </span>
-                  <span>Zalo pay</span>
-                </p>
-                <p>
-                  <input
-                    onClick={() =>
-                      setCustomerInfo({ ...customerinfo, transactionway: 2 })
-                    }
-                    name="transaction-way"
-                    type="radio"
-                  />
-                  <span>
-                    <img alt="stripe" src="/icon/stripeicon.png" />
-                  </span>
-                  <span>Stripe</span>
-                </p>
-                <p>
-                  <input
-                    onClick={() =>
-                      setCustomerInfo({ ...customerinfo, transactionway: 3 })
-                    }
-                    name="transaction-way"
-                    type="radio"
-                  />
-                  <span>
-                    <img alt="paypal" src="/icon/paypalicon.png" />
-                  </span>
-                  <span>Paypal</span>
-                </p>
-              </div>
-            </div>
-            <div className="transaction-control">
-              <button
-                onClick={() => {
-                  setDisplay(!display);
-                  setStep(0);
-                }}
-              >
-                Hủy
-              </button>
-              <button onClick={previousStep}>Trở lại</button>
-              <button onClick={nextStep}>Tiếp tục</button>
-            </div>
+          <div className="behavior">
+            <button onClick={() => setDisplay(false)}>Hủy</button>
+            <button onClick={transationHandle}>Thanh toán</button>
           </div>
         </div>
-        <SetLocation
-          display={location}
-          setDisplay={setLocation}
-          setAddress={setAddress}
-        />
-
       </div>
       <Notifications {...notify} isShow={show} onHideRequest={setShow} />
     </>
   );
 }
 
-function SetLocation(props) {
-  const { display, setDisplay, setAddress } = props;
-
-  const [location, setLocation] = useState({
-    provinces: [],
-    districts: [],
-    communes: [],
-  });
-
+const AddressInput = ({ onChange }) => {
   const [chooseLocation, setChooseLocation] = useState({
     province: -1,
     district: -1,
@@ -497,24 +397,25 @@ function SetLocation(props) {
     detail: "",
   });
 
-  const submitAddress = () => {
-    if (
-      chooseLocation.province === -1 ||
-      chooseLocation.district === -1 ||
-      chooseLocation.commune === -1 ||
-      chooseLocation.detail.trim().length === 0
-    ) {
-      alert("Chưa nhập đủ thông tin");
-      return false;
+  const [location, setLocation] = useState({
+    provinces: [],
+    districts: [],
+    communes: [],
+  });
+
+  const setChange = useCallback(onChange,[onChange])
+
+  const setAddress = (event, key) => {
+    if (typeof (event) === 'string') {
+      setChooseLocation({ ...chooseLocation, detail: event })
+      setChange(pre => ({ ...pre, detail: event }))
+      return
     }
-    const locationString = Helper.Location.getLocationString(
-      chooseLocation.province,
-      chooseLocation.district,
-      chooseLocation.commune
-    );
-    setAddress(`${chooseLocation.detail}, ${locationString}`);
-    setDisplay(false);
-  };
+
+    const { target } = event
+    setChange(pre => ({ ...pre, [key]: target.options[target.selectedIndex].innerText }))
+    setChooseLocation(pre => ({ ...pre, [key]: event.target.value }))
+  }
 
   useEffect(() => {
     (async () => {
@@ -530,82 +431,36 @@ function SetLocation(props) {
       );
       setLocation((l) => ({ ...l, districts: _districts }));
       setChooseLocation((c) => ({ ...c, district: -1, commune: -1 }));
+      setChange(pre => ({ ...pre, district: '', commune: '' }))
     })();
-  }, [chooseLocation.province]);
+  }, [chooseLocation.province, setChange]);
 
   useEffect(() => {
     (async () => {
       let _commune = await Helper.Location.getCommunes(chooseLocation.district);
       setLocation((l) => ({ ...l, communes: _commune }));
       setChooseLocation((c) => ({ ...c, commune: -1 }));
+      setChange(pre => ({ ...pre, commune: '' }))
     })();
-  }, [chooseLocation.district]);
-
+  }, [chooseLocation.district, setChange]);
+  const inputs = [
+    { type: 'select', value: chooseLocation.province, onChange: setAddress, label: 'Chọn tỉnh/thành phố', data: location.provinces, keycode: 'province' },
+    { type: 'select', value: chooseLocation.district, onChange: setAddress, label: 'Chọn huyện/quận', data: location.districts, keycode: 'district' },
+    { type: 'select', value: chooseLocation.commune, onChange: setAddress, label: 'Chọn xã/phường', data: location.communes, keycode: 'commune' }
+  ]
   return (
-    <div className={`carttransaction ${display ? "show" : ""}`}>
-      <div className="address-wrapper">
-        <h3>Thông tin địa chỉ giao hàng</h3>
-        <div className="location-group">
-          <select
-            value={chooseLocation.province}
-            onChange={(e) =>
-              setChooseLocation({ ...chooseLocation, province: e.target.value })
-            }
-          >
-            <option value="-1">Chọn tỉnh/ thành phố</option>
-            {location.provinces.map((item, index) => (
-              <option key={index} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="location-group">
-          <select
-            value={chooseLocation.district}
-            onChange={(e) =>
-              setChooseLocation({ ...chooseLocation, district: e.target.value })
-            }
-          >
-            <option value="-1">Chọn huyện/ quận</option>
-            {location.districts.map((item, index) => (
-              <option key={index} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="location-group">
-          <select
-            value={chooseLocation.commune}
-            onChange={(e) =>
-              setChooseLocation({ ...chooseLocation, commune: e.target.value })
-            }
-          >
-            <option value="-1">Chọn xã phường</option>
-            {location.communes.map((item, index) => (
-              <option key={index} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="location-group">
-          <input
-            value={chooseLocation.detail}
-            placeholder="Số nhà/ Tên đường"
-            onChange={(e) =>
-              setChooseLocation({ ...chooseLocation, detail: e.target.value })
-            }
-          />
-        </div>
-        <div className="location-group">
-          <button onClick={() => setDisplay(false)}>Hủy</button>
-          <button onClick={submitAddress}>Xong</button>
-        </div>
-      </div>
+    <div className='address'>
+      <span>Địa chỉ nhận hàng</span>
+      {inputs.map((item, index) => <Input key={index} {...item} />)}
+      <Input
+        type='input'
+        value={chooseLocation.detail}
+        label="Số nhà/ Tên đường"
+        name="house"
+        onChange={setAddress}
+      />
     </div>
-  );
+  )
 }
 
 function CartItem(props) {
@@ -615,14 +470,17 @@ function CartItem(props) {
 
   const onRemoveItem = (e) => removeItem(info.prod_no, info.choosedType);
 
-  const stepUp = (e)=>{
-    if(info.amount >= info.prod_details[info.choosedType].pd_amount - info.prod_details[info.choosedType].pd_sold) return
-    else changeValue(info.prod_no, info.amount +1, info.choosedType);
-  }
-
-  const stepDown = (e)=>{
-    if(info.amount ===1) return
-    else changeValue(info.prod_no, info.amount - 1, info.choosedType);
+  const step = (type) => {
+    switch (type) {
+      case 'DOWN':
+        (info.amount !== 1) && changeValue(info.prod_no, info.choosedType, type);
+        return
+      case 'UP':
+        (info.amount < info.prod_details[info.choosedType].pd_amount - info.prod_details[info.choosedType].pd_sold) && changeValue(info.prod_no, info.choosedType, type);
+        return
+      default:
+          return
+    }
   }
 
   return (
@@ -643,7 +501,7 @@ function CartItem(props) {
           </div>
           <div className="amount">
             <div className="amountwrapper">
-              <button onClick={stepUp}><FontAwesomeIcon icon={faPlus} /></button>
+              <button onClick={() => step('UP')}><FontAwesomeIcon icon={faPlus} /></button>
               <input
                 onKeyDown={(evt) => evt.preventDefault()}
                 type="number"
@@ -652,7 +510,7 @@ function CartItem(props) {
                 value={info.amount}
                 readOnly
               />
-              <button onClick={stepDown}><FontAwesomeIcon icon={faMinus} /></button>
+              <button onClick={() => step('DOWN')}><FontAwesomeIcon icon={faMinus} /></button>
             </div>
           </div>
         </div>

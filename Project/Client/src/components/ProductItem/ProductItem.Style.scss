@@ -37,7 +37,7 @@
             padding: 10px;
             background: rgba(82, 82, 82, 0.144);
             border-radius: 10px;
-            p:first-child{
+            p:first-child,p:nth-child(2){
                height: 37px;
             }
             svg{

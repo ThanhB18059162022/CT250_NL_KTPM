@@ -14,6 +14,7 @@ const DetailAndRate = ({ id, showDetail }) => {
             let data = await ProductServices.getProduct(id, 'prod_name','prod_screen','prod_manufacturer','prod_hardwareAndOS','prod_batteryAndCharger','prod_design')
            setProduct(data)
         })()
+        setFeedback([])
     },[id])
 
     return (

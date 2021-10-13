@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import PayPalPaymentService from "./PayPalPaymentService";
 import ApiCaller from "../ApiCaller";
 
@@ -10,7 +10,6 @@ const PayPalPayment = (props) => {
   const { cart } = props;
   const [paidFor, setPaidFor] = useState(false);
   const [clientId, setClientId] = useState("");
-
   // Chạy 1 lần
   useEffect(() => {
     getId();
@@ -22,8 +21,19 @@ const PayPalPayment = (props) => {
     setClientId(clientId);
   }
 
-  // create callback
+  let payPalRef = useRef();
+  function displayButton() {
+    window.paypal
+      .Buttons({
+        createOrder: creatOrderForPayment,
+        onApprove: saveOrderTransaction,
+        onError: (err) => console.error(err),
+      })
+      .render(payPalRef);
+  }
 
+  // create callback
+  const setButton = useCallback(displayButton,[displayButton])
   // Chưa coi dispose
   useEffect(() => {
     // Use state khởi tạo cũng làm thay đổi clientId'
@@ -37,23 +47,16 @@ const PayPalPayment = (props) => {
 
       //Chờ cho load xong
       // Event load là event load trang html
-      payPalScript.addEventListener("load", displayButton);
+      payPalScript.addEventListener("load", setButton);
 
       return () => document.body.removeChild(payPalScript);
     }
-  }, [clientId]);
+  }, [clientId, setButton]);
 
   //Button tham chiếu bên ui dom
-  let payPalRef = useRef();
-  function displayButton() {
-    window.paypal
-      .Buttons({
-        createOrder: creatOrderForPayment,
-        onApprove: saveOrderTransaction,
-        onError: (err) => console.error(err),
-      })
-      .render(payPalRef);
-  }
+  
+
+ 
 
   // createOrder nhận vào id của order
   async function creatOrderForPayment() {
@@ -68,9 +71,10 @@ const PayPalPayment = (props) => {
 
     const order = await payService.captureOrder(orderID);
 
-    console.log("Order là", order);
+
 
     setPaidFor(true);
+    window.location.href = `http://localhost:3000/success/paypal/${order}`
   }
 
   function renderProductInfo() {

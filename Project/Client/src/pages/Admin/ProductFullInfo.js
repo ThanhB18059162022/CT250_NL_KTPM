@@ -55,7 +55,7 @@ const ProductFullInfo = (props) => {
                 setProductDetails(data.prod_details)
             }
         })()
-    },[])
+    },[productNo])
 
     const [newProductFullInfo, setNewProductFullInfo] = useState(
         {

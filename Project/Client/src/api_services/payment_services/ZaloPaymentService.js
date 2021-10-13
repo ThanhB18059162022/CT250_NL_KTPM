@@ -6,8 +6,7 @@ export default class ZaloPaymentService {
   // Tạo đơn hàng theo danh sách sản phẩm
   createOrder = async (cart) => {
     const successUrl = "http://localhost:3000/success/zalo";
-    const cancelUrl = "http://localhost:3000";
-    console.log(cart)
+    const cancelUrl = "http://localhost:3000/cart";
     const { url } = await this.apiCaller.post(
       `zalo/createOrder?successUrl=${successUrl}&cancelUrl=${cancelUrl}`,
       cart

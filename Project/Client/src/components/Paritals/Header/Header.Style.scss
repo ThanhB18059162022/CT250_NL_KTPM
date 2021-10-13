@@ -53,6 +53,7 @@
                     padding: 5px 10px;
                     border-radius: 10px;
                     display: block;
+                    color: var(--textColor);
                     span{
                         font-weight: 600;
                     } 
@@ -60,9 +61,12 @@
                         background: rgba(0, 0, 0, 0.075);
                         animation: admin_spinner .5s 0s 1 backwards;
                         &~div{
-                            height: 165px;
+                            height:200px;
+                            padding: 5px;
+                            padding-top: 30px;
                             .panel{
                                 padding:15px;
+                                box-shadow: 0 0 5px black;
                             }
                         }
                     }
@@ -72,26 +76,30 @@
                     position: absolute;
                     right: 0;
                     top: 30px;
-                    padding-top: 25px;
-                   
+                    padding-top: 30px;
                     overflow: hidden;
                     height: 0px;
                     transition: all ease .5s;
                     &:hover{
-                        height: 165px;
+                        height: 200px;
+                        padding: 5px;
+                        padding-top: 30px;
                     }
                     .panel{
                         padding: 15px;
                         display: flex;
-                        background: var(--backgroundColor);
+                        background: white;
+                        z-index: 11;
                         flex-direction: column;
                         border-radius: 10px;
                         button+button{
                             margin-top: 10px;
                         }
+                        &:hover{
+                            box-shadow: 0 0 5px black;
+                        }
                         button{
-                            padding: 5px 20px;
-                            border-radius: 100px;
+                            padding: 10px 20px;
                             outline: none;
                             border: none;
                             &:hover{
