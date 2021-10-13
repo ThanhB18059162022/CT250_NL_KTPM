@@ -2,7 +2,11 @@ import { SearchHeader } from "../../components/Paritals/Header"
 import ProductSuggestion from "../../components/Paritals/ProductSuggestion"
 import Footer from '../../components/Paritals/Footer'
 import CartDetail from "../../components/Paritals/CartDetail"
+import { useEffect } from "react"
 const Cart = () =>{
+    useEffect(()=>{
+        return ()=> document.querySelector('body').style.overflow ='auto'
+    },[])
     return(
         <div className="Cart Home">
             <SearchHeader/>

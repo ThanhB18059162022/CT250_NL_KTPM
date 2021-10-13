@@ -35,7 +35,7 @@ import { SearchIcon } from "./FlatIcon";
     <label>{label}</label>
     <div>
       {data.map((item, index) =>
-        <p key={index}><input name={name} checked={item.value === value} onChange={() => onChange(item.value)} type="radio" /> {item.name}</p>)}
+        <p key={index}><input name={name} {...item} checked={item.value === value} onChange={() => onChange(item.value)} type="radio" /> {item.name}</p>)}
     </div>
   </div>)
 }
@@ -49,11 +49,12 @@ function TextInput({ value, onChange, label, name, ...rest }) {
   )
 }
 
-const SelectInput = ({ value, onChange, label, data, keycode }) => {
+const SelectInput = ({ value, onChange, label, data, keycode,...rest }) => {
   return (
     <select className="select-input"
       value={value}
       onChange={(e) => onChange(e, keycode)}
+      {...rest}
     >
       <option value="-1">{label}</option>
       {data.map((item, index) => (
