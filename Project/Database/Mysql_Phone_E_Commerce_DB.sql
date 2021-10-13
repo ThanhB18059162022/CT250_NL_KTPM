@@ -1,4 +1,6 @@
-CREATE OR REPLACE DATABASE Phone_E_Commerece_DB;
+CREATE OR REPLACE DATABASE Phone_E_Commerce_DB;
+
+USE Phone_E_Commerce_DB;
 
 -- Tạo các bảng (13 bảng)
 
