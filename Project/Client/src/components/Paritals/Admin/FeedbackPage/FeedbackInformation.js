@@ -8,9 +8,6 @@ import Notifications from "../../../../common/Notifications";
 
 const FeedbackInformation = (props) => {
     const {setFbInfo, fbNo} = props
-    const cusStyle = {
-        margin : "0 0 0 35%"
-    }
 
     const [show, setShow] = useState(false)
   

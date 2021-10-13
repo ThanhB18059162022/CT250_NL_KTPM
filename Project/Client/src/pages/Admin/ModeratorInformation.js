@@ -1,5 +1,4 @@
 import {
-  faKey,
   faSave,
   faWindowClose,
 } from "@fortawesome/free-solid-svg-icons";
@@ -11,9 +10,7 @@ import "../../components/Paritals/Admin/Admin.Style.scss";
 
 const ModeratorInformation = (props) => {
   const { setDisplay, modInfo, setNewMod, setModInfo, newModNo, mods, setMods, modsTmp, setModsTmp } = props
-  const cusStyle = {
-    margin: `0 0 0 ${!modInfo ? "45%" : "40%"}`,
-  };
+
   //biến hiển thị thông báo
   const [show, setShow] = useState(false)
 

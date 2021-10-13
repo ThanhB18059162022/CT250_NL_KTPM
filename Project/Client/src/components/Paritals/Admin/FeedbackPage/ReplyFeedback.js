@@ -7,9 +7,6 @@ import "../Admin.Style.scss"
 
 const ReplyFeedback = (props) => {
     const { setRep } = props
-    const CusStyle = {
-        margin: "0 0 0 40%"
-    }
 
     const [show, setShow] = useState(false)
 
