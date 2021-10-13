@@ -1,0 +1,102 @@
+# Extension REST Client
+
+# Mỗi Request cách nhau 3 dấu '#'
+
+
+
+# -------------------------------- Paypal --------------------------------
+
+# Lấy ra paypay client id - 200
+GET http://localhost:8000/api/payments/paypal/clientid
+
+### Tạo order - 201
+POST http://localhost:8000/api/payments/paypal/createorder
+Content-Type: application/json
+
+{
+    // Thông tin khác hàng
+    "customer": {
+    "cus_name": "Alexander",
+    "cus_id": "555555555",
+    "cus_email": "alex@gmail.com",
+    "cus_sex": true,
+    "cus_address": "3/2 Ninh Kiều Cần Thơ",
+    "cus_phoneNumber": "0000000000"
+    },
+    
+    // Mảng nhận id và số lượng
+    "products":[
+        {"prod_no": 1, "prod_quantity": 1, "pd_no": 1},
+        {"prod_no": 2, "prod_quantity": 1, "pd_no": 3}
+    ]
+}
+
+
+### Thanh toán
+GET http://localhost:8000/api/payments/paypal/captureorder/6072225628845804W
+
+
+# -------------------------------- Stripe --------------------------------
+
+# Tạo order
+
+### Tạo order 201
+POST http://localhost:8000/api/payments/stripe/createorder?successUrl=http://localhost:3000&cancelUrl=http://localhost:3000
+Content-Type: application/json
+
+{
+    // Thông tin khác hàng
+    "customer": {
+    "cus_name": "Alexander",
+    "cus_id": "555555555",
+    "cus_email": "alex@gmail.com",
+    "cus_sex": true,
+    "cus_address": "3/2 Ninh Kiều Cần Thơ",
+    "cus_phoneNumber": "0000000000"
+    },
+
+    // Mảng nhận id và số lượng
+    "products":[
+        {"prod_no": 1, "prod_quantity": 1, "pd_no": 1 },
+        {"prod_no": 2, "prod_quantity": 1, "pd_no": 3}
+    ]
+}
+
+
+### Thanh toán
+GET http://localhost:8000/api/payments/stripe/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?successUrl=http://localhost
+
+
+# -------------------------------- ZaloPay --------------------------------
+
+### Tạo order
+POST http://localhost:8000/api/payments/zalo/createorder?successUrl=http://localhost:3000/success/zalo&cancelUrl=http://localhost:3000/cart
+Content-Type: application/json
+
+{
+    // Thông tin khác hàng
+    "customer": {
+    "cus_name": "Alexander",
+    "cus_id": "555555555",
+    "cus_email": "alex@gmail.com",
+    "cus_sex": true,
+    "cus_address": "3/2 Ninh Kiều Cần Thơ",
+    "cus_phoneNumber": "0000000000"
+    },
+
+    // Mảng nhận id và số lượng
+    "products":[
+        {"prod_no": 1, "prod_quantity": 1, "pd_no": 1 },
+        {"prod_no": 2, "prod_quantity": 1, "pd_no": 3}
+    ]
+}
+
+### Thanh toán
+GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?url=http://localhost-http://localhost
+
+
+
+# -------------------------------------------------------------------------
+
+### Lấy ra order đã thanh toán trong CSDL
+GET http://localhost:8000/api/payments/getsaveorder/1
