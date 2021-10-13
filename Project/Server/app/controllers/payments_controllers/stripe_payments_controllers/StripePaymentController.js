@@ -13,7 +13,7 @@ module.exports = class StripePaymentController extends PaymentsController {
       this.processor.checkValidateUrl(successUrl);
       this.processor.checkValidateUrl(cancelUrl);
 
-      const serverCheckoutUrl = `${req.protocol}://${req.headers.host}/api/stripe/checkoutOrder`;
+      const serverCheckoutUrl = `${req.protocol}://${req.headers.host}/api/payments/stripe/checkoutOrder`;
       const { body: cart } = req;
       const url = await this.processor.createOrder(cart, {
         successUrl,
