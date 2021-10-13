@@ -2,11 +2,11 @@ import { AccessCount, Sales, ProductTrendRating} from "../../components/Paritals
 
 const OverView = () => {
     return(
-        <>
+        <div className="OverViewContainer">
             <AccessCount/>
             <Sales/>
             <ProductTrendRating/>
-        </>
+        </div>
     )
 }
 

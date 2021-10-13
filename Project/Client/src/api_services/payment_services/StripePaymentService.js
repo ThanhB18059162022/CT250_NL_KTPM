@@ -9,7 +9,7 @@ export default class PayPalPaymentService {
     const cancelUrl = "http://localhost:3000/cart";
 
     const { url } = await this.apiCaller.post(
-      `stripe/createOrder?successUrl=${successUrl}&cancelUrl=${cancelUrl}`,
+      `payments/stripe/createOrder?successUrl=${successUrl}&cancelUrl=${cancelUrl}`,
       cart
     );
 

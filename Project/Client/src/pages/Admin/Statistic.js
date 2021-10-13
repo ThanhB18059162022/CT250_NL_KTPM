@@ -2,7 +2,7 @@ import { AccessCount, Sales } from "../../components/Paritals/Admin"
 
 const Statistic = () => {
     return(
-        <div>
+        <div className="StatisticContainer">
             <AccessCount/>
             <Sales/>
         </div>

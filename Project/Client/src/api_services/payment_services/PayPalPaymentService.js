@@ -4,14 +4,14 @@ export default class PayPalPaymentService {
   }
 
   getClientId = async () => {
-    const { clientId } = await this.apiCaller.get("paypal/clientid");
+    const { clientId } = await this.apiCaller.get("payments/paypal/clientid");
 
     return clientId;
   };
 
   // Tạo đơn hàng theo danh sách sản phẩm
   createOrder = async (cart) => {
-    const { orderID } = await this.apiCaller.post("paypal/createOrder", cart);
+    const { orderID } = await this.apiCaller.post("payments/paypal/createOrder", cart);
 
     return orderID;
   };
@@ -19,7 +19,7 @@ export default class PayPalPaymentService {
   // Thanh toán đơn hàng
   captureOrder = async (orderID) => {
     const { saveOrderId } = await this.apiCaller.get(
-      `paypal/captureOrder/${orderID}`
+      `payments/paypal/captureOrder/${orderID}`
     );
 
     return saveOrderId;

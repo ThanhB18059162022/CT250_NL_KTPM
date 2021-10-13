@@ -263,11 +263,12 @@
 
 //AdminButton
 .AdminButton{
-    border-radius: 25px;
+    // border-radius: 25px;
     padding: 2px auto;
     font-size: 20px;
-    width: 55px;
-    border: 0.5px solid black;
+    // width: 55px;
+    border:none;
+    outline: none;
     &:active{
         background-color: rgba(59, 59, 252, 0.432);
     }

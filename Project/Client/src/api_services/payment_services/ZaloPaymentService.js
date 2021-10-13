@@ -8,7 +8,7 @@ export default class ZaloPaymentService {
     const successUrl = "http://localhost:3000/success/zalo";
     const cancelUrl = "http://localhost:3000/cart";
     const { url } = await this.apiCaller.post(
-      `zalo/createOrder?successUrl=${successUrl}&cancelUrl=${cancelUrl}`,
+      `payments/zalo/createOrder?successUrl=${successUrl}&cancelUrl=${cancelUrl}`,
       cart
     );
 

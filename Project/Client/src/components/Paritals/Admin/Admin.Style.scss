@@ -1,20 +1,20 @@
 * {
     .Title {
         text-align: center;
-        font-size: 30px;
+        font-size: 24px;
         margin: 10px;
         font-weight: bold;
     }
     .BorderFormat {
         border: 2px solid black;
-        width: 80%;
+        width: 100%;
         margin: auto;
         border-radius: 15px;
     }
 }
 
 .OverView {
-    margin: 1% auto;
+    // margin: 1% auto;
     height: 300px;
     p {
         margin: 8px;
@@ -52,8 +52,13 @@
     }
 }
 
+.OverViewContainer,
+.StatisticContainer {
+    padding: 10px 5%;
+}
+
 .AccessCount {
-    margin: 2% auto 1%;
+    margin: 10px 0;
     @media screen and(max-width: 600px) {
         border: 1px solid black;
     }
@@ -124,8 +129,9 @@
 }
 
 .ListLayout {
-    width: 90%;
     margin: auto;
+    user-select: none;
+    padding: 0 5%;
     .ProductListHeader {
         display: flex;
         background-color: var(--backgroundColor);
@@ -416,22 +422,51 @@
     }
 }
 
+.ProductFullInfoHeader {
+    width: 100%;
+    display: flex;
+    padding: 0 5px 10px 5px;
+    p.Title {
+        text-align: center;
+        flex-basis: 100%;
+        color: var(--backgroundColor);
+    }
+    button {
+        font-size: 24px;
+        background: transparent;
+        border: none;
+        margin: 0 !important;
+        width: auto;
+        &:first-child {
+            color: var(--backgroundColor) !important;
+        }
+        &:last-child {
+            color: red;
+        }
+    }
+}
+
+.ProductInfoContent {
+    height: calc(100% - 50px);
+    overflow-y: scroll;
+}
+
 .ProductInfo {
-    padding: 0 0 20px 0;
+    // background: white !important;
     .AddProductForm {
-        div {
+        padding: 10px;
+        li {
             display: flex;
-            width: 100%;
+            align-items: center;
             justify-content: right;
-            margin: 2% -5%;
-            width: 100%;
+            padding: 10px;
             p {
-                font-weight: bold;
+                flex-basis: 20%;
             }
             input {
-                width: 70%;
+                width: 80%;
                 margin-left: 2%;
-                padding: 2px;
+                padding: 10px;
                 font-size: 16px;
             }
         }
@@ -452,21 +487,36 @@
 }
 
 .ProductDetail {
-    padding: 0 0 20px 0;
+    margin: 5px auto;
+    padding: 10px;
+    background: var(--backgroundColorFade);
+    max-width: 950px;
+    button {
+        color: rgb(253, 48, 48);
+        background: transparent;
+        font-size: 24px;
+        &:nth-child(2) {
+            color: var(--backgroundColor);
+            margin-left: 10px;
+        }
+    }
     .ProductDetailForm {
-        div {
+        li {
             display: flex;
             justify-content: right;
-            margin: 2% -15%;
-            width: 100%;
+            align-items: center;
+
             p {
-                font-weight: bold;
+                flex-basis: 20%;
             }
             input {
-                width: 60%;
+                width: 80%;
                 margin-left: 2%;
-                padding: 2px;
+                padding: 10px;
                 font-size: 16px;
+            }
+            & + li {
+                margin-top: 10px;
             }
         }
     }
@@ -494,18 +544,27 @@
     position: relative;
     .Line {
         margin: 30px auto;
-        width: 65%;
-        border-bottom: 1px solid #000;
+        width: 80%;
+        border-bottom: 3px solid var(--backgroundColor);
         line-height: 0.1em;
         span {
-            background: #f5f5f5;
-            padding: 0 10px;
+            background: white;
+            padding: 0 20px;
+            color: var(--backgroundColor);
         }
     }
-    .Button {
+    button {
         position: absolute;
-        top: -15px;
-        left: 10%;
+        top: -25px;
+        left: 5px;
+        padding: 10px;
+        color: green;
+        svg {
+            transition: all ease 0.5s;
+        }
+        &:hover svg {
+            transform: rotate(180deg);
+        }
     }
 }
 
@@ -637,24 +696,22 @@
 
 .ProductFullInfo {
     position: absolute;
+    height: calc(100vh - 65px);
     width: 100%;
-    height: calc(100vh - 55px);
-    top: 55px;
-    background-color: rgba(128, 128, 128, 0.822);
+    overflow: hidden;
+    top: 65px;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.349);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
     .ProductFullInfoWrapper {
-        position: relative;
-        height: 100%;
-        margin: auto;
-        background-color: rgba(255, 255, 255, 0.9);
+        height: calc(100vh - 40px - 65px);
+        background-color: white;
+        max-width: 950px;
+        padding: 20px;
         width: 80%;
-        padding: 2% 10%;
-        overflow-y: auto;
-        .CloseBtn {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 25px;
-        }
     }
 }
 
@@ -800,7 +857,6 @@
     justify-content: center;
     align-items: center;
     .FeedbackInformationBorder {
-
         width: 40%;
         padding: 10px 20px;
         background: white;
@@ -818,13 +874,14 @@
                 display: flex;
                 align-items: flex-start;
                 padding: 5px 0;
-                span{
+                span {
                     display: inline-block;
                     width: 130px;
                     font-size: 14px;
                     font-weight: 600;
                 }
-                p, textarea{
+                p,
+                textarea {
                     width: calc(100% - 130px);
                     resize: none;
                     outline: none;
@@ -837,20 +894,20 @@
             margin-bottom: 10px;
             padding: 10px 0;
         }
-        .FbInfoBtn{
+        .FbInfoBtn {
             display: flex;
             justify-content: center;
             width: 100%;
-            button{
-                border-radius: 0;;
+            button {
+                border-radius: 0;
                 padding: 5px 10px;
                 font-size: 24px;
                 border: none;
                 background: transparent;
-                &:first-child{
+                &:first-child {
                     color: var(--backgroundColor);
                 }
-                &:nth-child(2){
+                &:nth-child(2) {
                     color: red;
                 }
             }
@@ -863,7 +920,7 @@
     .AdminReplied_User {
         display: flex;
         margin: 5px 0;
-        p{
+        p {
             font-size: 14px;
         }
     }
