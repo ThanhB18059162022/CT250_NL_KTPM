@@ -143,7 +143,7 @@ const CartDetail = () => {
             <p className="total_title">Số lượng chi tiết:</p>
             <p className="total_data">{getItemList().reduce((pre, item) => pre + item.amount, 0)} chi tiết</p>
 
-            <button onClick={() => setDisplay(true)}>Thanh toán</button>
+            <button title="Thanh toán đơn hàng của bạn" onClick={() => setDisplay(true)}>Thanh toán</button>
           </div>
         </div>
       </div>
@@ -288,10 +288,10 @@ function CartTransaction({ display, setDisplay, setCustomer }) {
   });
 
   const leftInput = [
-    { type: 'input', value: name, name: 'name', onChange: setName, label: 'Họ và tên' },
-    { type: 'input', value: ccid, name: 'ccid', onChange: setCcid, label: 'Số CMND/CCCD' },
-    { type: 'input', value: email, name: 'email', onChange: setEmail, label: 'Email' },
-    { type: 'radio', value: gender, name: 'gender', onChange: setGender, label: 'Giới tính', data: [{ name: 'Nam', value: "1" }, { name: 'Nữ', value: "0" }] }
+    { type: 'input', value: name, name: 'name', onChange: setName, label: 'Họ và tên', title:'Họ và tên' },
+    { type: 'input', value: ccid, name: 'ccid', onChange: setCcid, label: 'Số CMND/CCCD', title:"CMNN/ CCCD" },
+    { type: 'input', value: email, name: 'email', onChange: setEmail, label: 'Email' , title:"Địa chỉ email"},
+    { type: 'radio', value: gender, name: 'gender', onChange: setGender, label: 'Giới tính', data: [{ name: 'Nam', value: "1", title:'Giới tính nam' }, { name: 'Nữ', value: "0", title:'Giới tính nữ' }] }
   ]
 
   const showResult = (mess) => {
@@ -379,8 +379,8 @@ function CartTransaction({ display, setDisplay, setCustomer }) {
             </div>
           </div>
           <div className="behavior">
-            <button onClick={() => setDisplay(false)}>Hủy</button>
-            <button onClick={transationHandle}>Thanh toán</button>
+            <button title="Hủy thanh toán" onClick={() => setDisplay(false)}>Hủy</button>
+            <button title="Tiến hành thanh toán" onClick={transationHandle}>Thanh toán</button>
           </div>
         </div>
       </div>
@@ -444,9 +444,9 @@ const AddressInput = ({ onChange }) => {
     })();
   }, [chooseLocation.district, setChange]);
   const inputs = [
-    { type: 'select', value: chooseLocation.province, onChange: setAddress, label: 'Chọn tỉnh/thành phố', data: location.provinces, keycode: 'province' },
-    { type: 'select', value: chooseLocation.district, onChange: setAddress, label: 'Chọn huyện/quận', data: location.districts, keycode: 'district' },
-    { type: 'select', value: chooseLocation.commune, onChange: setAddress, label: 'Chọn xã/phường', data: location.communes, keycode: 'commune' }
+    { type: 'select', value: chooseLocation.province, onChange: setAddress, label: 'Chọn tỉnh/thành phố', data: location.provinces, keycode: 'province', title:'Chọn tỉnh/ thành phố' },
+    { type: 'select', value: chooseLocation.district, onChange: setAddress, label: 'Chọn huyện/quận', data: location.districts, keycode: 'district',title:'Chọn quận/ huyện' },
+    { type: 'select', value: chooseLocation.commune, onChange: setAddress, label: 'Chọn xã/phường', data: location.communes, keycode: 'commune', title:'Chọn phường/xã' }
   ]
   return (
     <div className='address'>
@@ -457,6 +457,7 @@ const AddressInput = ({ onChange }) => {
         value={chooseLocation.detail}
         label="Số nhà/ Tên đường"
         name="house"
+        title="Số nhà hoặc tên đường"
         onChange={setAddress}
       />
     </div>
@@ -501,16 +502,18 @@ function CartItem(props) {
           </div>
           <div className="amount">
             <div className="amountwrapper">
-              <button onClick={() => step('UP')}><FontAwesomeIcon icon={faPlus} /></button>
+              <button title="Tăng số lượng" onClick={() => step('UP')}><FontAwesomeIcon icon={faPlus} /></button>
               <input
                 onKeyDown={(evt) => evt.preventDefault()}
                 type="number"
                 min="1"
+                placeholder="Số lượng"
+                title="Số lượng bạn đã đặt"
                 max={info.prod_details[info.choosedType].pd_amount - info.prod_details[info.choosedType].pd_sold}
                 value={info.amount}
                 readOnly
               />
-              <button onClick={() => step('DOWN')}><FontAwesomeIcon icon={faMinus} /></button>
+              <button title="Giảm số lượng" onClick={() => step('DOWN')}><FontAwesomeIcon icon={faMinus} /></button>
             </div>
           </div>
         </div>

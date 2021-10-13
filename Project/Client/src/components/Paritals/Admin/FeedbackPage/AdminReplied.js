@@ -10,7 +10,7 @@ const AdminReplied = (props) => {
                 <FontAwesomeIcon icon={faUserEdit}/> &nbsp;
                 <p>{obj.user}</p>
             </div>
-            <textarea value={obj.message} disabled></textarea>
+            <textarea value={obj.message} readOnly></textarea>
         </div>
     )
 }

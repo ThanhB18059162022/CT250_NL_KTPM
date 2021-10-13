@@ -224,6 +224,7 @@
             &:nth-child(1) {
                 min-width: 80px;
                 max-width: 80px;
+                margin-right: 10px;
             }
             &:nth-child(2) {
                 width: 30%;
@@ -790,56 +791,89 @@
 .FeedbackInformation {
     position: absolute;
     width: 100%;
-    top: 55px;
-    background-color: rgba(128, 128, 128, 0.822);
-    height: calc(100vh - 55px);
-    overflow-y: auto;
+    left: 0;
+    top: 65px;
+    background-color: rgba(0, 0, 0, 0.486);
+    backdrop-filter: blur(5px);
+    height: calc(100vh - 65px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .FeedbackInformationBorder {
-        border: 1px solid black;
+
         width: 40%;
-        margin: 5% auto;
-        border-radius: 15px;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 1% 0;
-        h1 {
-            text-align: center;
+        padding: 10px 20px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.377);
+        h2 {
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--backgroundColor);
+            color: var(--backgroundColor);
         }
         .FbInfoPart1 {
+            padding: 10px 0;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--backgroundColor);
             div {
                 display: flex;
-                margin: 2% 5%;
-                .col1 {
-                    width: 20%;
-                    text-align: right;
-                    margin: 0 15px 0 0;
-                    font-weight: bold;
+                align-items: flex-start;
+                padding: 5px 0;
+                span{
+                    display: inline-block;
+                    width: 130px;
+                    font-size: 14px;
+                    font-weight: 600;
                 }
-                .col2 {
-                    // position: relative;
-                    width: 70&;
-                    text-align: left;
+                p, textarea{
+                    width: calc(100% - 130px);
+                    resize: none;
+                    outline: none;
                 }
             }
         }
-        hr {
-            width: 60%;
-            margin: 2% auto;
+        .FbInfoPart2 {
+            height: 200px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+            padding: 10px 0;
+        }
+        .FbInfoBtn{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            button{
+                border-radius: 0;;
+                padding: 5px 10px;
+                font-size: 24px;
+                border: none;
+                background: transparent;
+                &:first-child{
+                    color: var(--backgroundColor);
+                }
+                &:nth-child(2){
+                    color: red;
+                }
+            }
         }
     }
 }
 
 .AdminReplied {
-    width: 70%;
-    margin: 10px auto;
+    margin: 10px 0;
     .AdminReplied_User {
         display: flex;
         margin: 5px 0;
+        p{
+            font-size: 14px;
+        }
     }
     textarea {
         width: 100%;
         height: 70px;
         resize: none;
+        outline: none;
         padding: 5px;
+        font-size: inherit;
     }
 }
 

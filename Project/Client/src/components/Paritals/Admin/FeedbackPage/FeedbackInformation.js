@@ -59,35 +59,34 @@ const FeedbackInformation = (props) => {
         <>
             <div className="FeedbackInformation">
                 <div className="FeedbackInformationBorder">
-                    <h1>Thông tin đánh giá</h1>
+                    <h2>Thông tin đánh giá</h2>
                     <div className="FbInfoPart1">
                         <div>
-                            <p className="col1">Người đánh giá:</p>
+                            <span className="col1">Người đánh giá:</span>
                             <p className="col2">test user</p>
                         </div>
                         <div>
-                            <p className="col1">Nội dung:</p>
-                            <textarea className="col2" cols="70" rows="5" disabled></textarea>
+                            <span className="col1">Nội dung:</span>
+                            <textarea className="col2" cols="70" rows="5" readOnly></textarea>
                         </div>
                         <div>
-                            <p className="col1">Sản phẩm:</p>
+                            <span className="col1">Sản phẩm:</span>
                             <p className="col2">Điện thoại...</p>
                         </div>
                         <div>
-                            <p className="col1">Thời gian:</p>
+                            <span className="col1">Thời gian:</span>
                             <p className="col2">1/9/2021</p>
                         </div>
                         <div>
-                            <p className="col1">Số phản hồi:</p>
+                            <span className="col1">Số phản hồi:</span>
                             <p className="col2">{obj.length}</p>
                         </div>
                     </div>
-                    <hr/>
                     <div className="FbInfoPart2">
                         {getAdminReplied(obj)}
                     </div>
                     <div className="FbInfoBtn">
-                        <AdminButton style={cusStyle} ClickEvent={()=>setRep(1)} IconName={faReply}/> &nbsp;
+                        <AdminButton ClickEvent={()=>setRep(1)} IconName={faReply}/> &nbsp;
                         <AdminButton ClickEvent={notifyDeleteFeedback} setID={()=>{}} IconName={faTrashAlt}/> &nbsp;
                         <AdminButton IconName={faWindowClose} ClickEvent={()=>setFbInfo(0)}/>
                     </div>
