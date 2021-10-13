@@ -6,49 +6,49 @@ import Notifications from "../../../../common/Notifications"
 import "../Admin.Style.scss"
 
 const ReplyFeedback = (props) => {
-    const {setRep} = props
+    const { setRep } = props
     const CusStyle = {
-        margin : "0 0 0 40%"
+        margin: "0 0 0 40%"
     }
 
     const [show, setShow] = useState(false)
-  
+
     const [notify, setNotify] = useState({
-        type :"INFORMATION", //CONFIRMATION, INFORMATION
-        title :"", // title of the notifications
-        content :"", // content of the notify
-        infoType :""
+        type: "INFORMATION", //CONFIRMATION, INFORMATION
+        title: "", // title of the notifications
+        content: "", // content of the notify
+        infoType: ""
     })
 
-  const notifyFeedbackReplied = () =>{
-      setNotify({
-          ...notify,
-          title:"Thông báo",
-          content:"Đã phản hồi bình luận",
-          infoType:'SUCCESS'
-      })
-      setShow(true)
-  }
+    const notifyFeedbackReplied = () => {
+        setNotify({
+            ...notify,
+            title: "Thông báo",
+            content: "Đã phản hồi bình luận",
+            infoType: 'SUCCESS'
+        })
+        setShow(true)
+    }
 
-    return(
+    return (
         <>
             <div className="ReplyFeedback">
                 <div className="ReplyFeedbackBorder">
-                    <h1>Phản hồi đánh giá</h1>
+                    <h2>Phản hồi đánh giá</h2>
                     <div className="ReplyFeedback_User">
-                        <FontAwesomeIcon icon={faReply}/> &nbsp;
-                        <p>Test user</p>
-                    </div>
-                    <div>
+                        <FontAwesomeIcon icon={faReply} />
+                        <span>Test user</span>
                         <textarea className="textarea1" rows="4" disabled></textarea>
                         <p>Nội dung phản hồi:</p>
-                        <textarea className="textarea2" rows="8"></textarea>
+                        <textarea className="textarea2" rows="5"></textarea>
                     </div>
-                    <AdminButton ClickEvent={notifyFeedbackReplied} style={CusStyle} IconName={faPaperPlane}/> &nbsp;
-                    <AdminButton ClickEvent={()=>setRep(0)} IconName={faWindowClose}/>
+                    <div className="FeedbackBehavior">
+                        <AdminButton ClickEvent={notifyFeedbackReplied} IconName={faPaperPlane} />
+                        <AdminButton ClickEvent={() => setRep(0)} IconName={faWindowClose} />
+                    </div>
                 </div>
             </div>
-            <Notifications {...notify} isShow={show} onHideRequest={setShow}/>
+            <Notifications {...notify} isShow={show} onHideRequest={setShow} />
         </>
     )
 }

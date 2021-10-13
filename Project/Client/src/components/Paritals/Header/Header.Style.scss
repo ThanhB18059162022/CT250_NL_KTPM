@@ -81,9 +81,13 @@
                     height: 0px;
                     transition: all ease .5s;
                     &:hover{
-                        height: 200px;
+                        height:200px;
                         padding: 5px;
                         padding-top: 30px;
+                        .panel{
+                            padding:15px;
+                            box-shadow: 0 0 5px black;
+                        }
                     }
                     .panel{
                         padding: 15px;

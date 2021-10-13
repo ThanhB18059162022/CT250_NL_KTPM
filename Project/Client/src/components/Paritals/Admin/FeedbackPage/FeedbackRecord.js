@@ -24,7 +24,7 @@ const FeedbackRecord = (props) => {
     return(
         <>
             <div className="FeedbackRecord">
-                {Object.keys(obj).map((item,index)=><p key={item}>{getContent(obj[item])}</p>)}
+                {Object.keys(obj).map((item,index)=><p key={index}>{getContent(obj[item])}</p>)}
             </div>
             <hr/>
         </>
