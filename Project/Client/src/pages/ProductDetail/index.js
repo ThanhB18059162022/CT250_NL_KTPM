@@ -20,10 +20,8 @@ const ProductDetail = () => {
     }
 
     useEffect(() => {
-        if(show)
-            document.querySelector('html').style.overflow = 'hidden'
-        else document.querySelector('html').style.overflowY = 'visible'
-        return ()=>document.querySelector('html').style.overflowY = 'visible'
+        show ? document.querySelector('body').style.overflowY = 'hidden' : document.querySelector('body').style.overflowY = 'auto'
+        return ()=>document.querySelector('body').style.overflowY = 'auto'
     }, [show])
 
     useEffect(() => {

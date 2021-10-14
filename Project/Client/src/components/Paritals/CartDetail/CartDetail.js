@@ -170,8 +170,8 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
   const [pos, setPos] = useState(-1)
 
   useEffect(() => {
-    document.querySelector('html').style.overflow = 'hidden'
-    return () => document.querySelector('html').style.overflow = 'visible'
+    document.querySelector('body').style.overflow = 'hidden'
+    return () => document.querySelector('body').style.overflow = 'auto'
   }, [])
 
   const trade = type => {
@@ -277,7 +277,7 @@ function CartTransaction({ display, setDisplay, setCustomer }) {
   })
 
   useEffect(() => {
-    document.querySelector('html').style.overflow = display ? 'hidden' : 'visible'
+    document.querySelector('body').style.overflow = display ? 'hidden' : 'auto'
   }, [display])
 
   const [notify, setNotify] = useState({
