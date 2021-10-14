@@ -16,7 +16,7 @@ const TransactionValidator = (()=>{
     }
 
     const checkingEmail = (email) =>{
-        if(isEmpty(email) || !email.match(/@/) || !email.match(/(?=^[^@])/) || !email.match(/[^@]+$/)){
+        if(isEmpty(email) || !email.match(/@/) || !email.match(/(?=^[^@])/) || !email.match(/[^@]+$/) || !email.includes('.')){
             return{
                 result:false,
                 resson:'Email không hợp lệ!'
