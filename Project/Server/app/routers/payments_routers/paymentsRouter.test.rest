@@ -124,11 +124,15 @@ Content-Type: application/json
 }
 
 ### Thanh toán
-GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?url=http://localhost-http://localhost
+GET http://localhost:8000/api/payments/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?url=http://localhost-http://localhost
 
 
 
 # -------------------------------------------------------------------------
+
+### Lấy ra order lưu tạm
+GET http://localhost:8000/api/payments/getstoreorders
+
 
 ### Lấy ra order đã thanh toán trong CSDL
 GET http://localhost:8000/api/payments/getsaveorder/1

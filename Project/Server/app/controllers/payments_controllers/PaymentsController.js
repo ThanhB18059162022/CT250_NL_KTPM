@@ -12,6 +12,14 @@ module.exports = class PaymentsController extends Controller {
     this.processor = processor;
   }
 
+  getStoreOrders = async (_, res) => {
+    const orders = await this.processor.getStoreOrders();
+
+    const arrOrder = Array.from(orders, ([_, value]) => value);
+
+    return this.ok(res, arrOrder);
+  };
+
   // Lưu đơn hàng đã thanh toán
   checkoutOrder = async (req, res) => {
     try {

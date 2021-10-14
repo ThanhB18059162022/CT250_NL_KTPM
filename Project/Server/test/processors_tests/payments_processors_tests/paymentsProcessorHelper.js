@@ -55,11 +55,11 @@ class CurrencyExchangeServiceMock {
 }
 
 class StorageServiceMock {
-  getSize = jest.fn();
+  getSize = jest.fn(async () => {});
 
-  set = jest.fn();
+  set = jest.fn(async () => {});
 
-  setex = jest.fn();
+  setex = jest.fn(async () => {});
 
   get = jest.fn(async (id) => {
     if (id != 1) return undefined;
@@ -67,7 +67,7 @@ class StorageServiceMock {
     return { id };
   });
 
-  delete = jest.fn();
+  delete = jest.fn(async () => {});
 
   emptyData = jest.fn((data) => data == undefined);
 }

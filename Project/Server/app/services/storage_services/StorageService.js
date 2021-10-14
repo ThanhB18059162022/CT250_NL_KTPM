@@ -1,7 +1,17 @@
 module.exports = class StorageService {
   static storageBase = new Map();
 
-  getSize = () => StorageService.storageBase.size;
+  //#region GET
+
+  get = async (key) => StorageService.storageBase.get(key);
+
+  getAll = async () => StorageService.storageBase;
+
+  getSize = async () => StorageService.storageBase.size;
+
+  //#endregion
+
+  //#region  SET
 
   set = async (key, data) => StorageService.storageBase.set(key, data);
 
@@ -20,7 +30,7 @@ module.exports = class StorageService {
     }, miliSec);
   };
 
-  get = async (key) => StorageService.storageBase.get(key);
+  //#endregion
 
   delete = async (key) => StorageService.storageBase.delete(key);
 

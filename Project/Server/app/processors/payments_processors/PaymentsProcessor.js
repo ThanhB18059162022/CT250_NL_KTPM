@@ -18,6 +18,8 @@ module.exports = class PaymentsProcessor extends Processor {
     this.storageService = storageService;
   }
 
+  //#region Order
+
   // Tạo giỏ hàng
   createOrderFromCartAsync = async (cart) => {
     const { products, customer } = cart;
@@ -30,7 +32,7 @@ module.exports = class PaymentsProcessor extends Processor {
     const total = this.getTotalPrice(orderProducts);
 
     // Tạo id để lưu tạm đơn hàng
-    const id = this.getOrderId();
+    const id = await this.getOrderId();
 
     const order = {
       id,
@@ -43,11 +45,13 @@ module.exports = class PaymentsProcessor extends Processor {
   };
 
   // Tạo id dài 64 ký tự cho đơn hàng
-  getOrderId = () => {
+  getOrderId = async () => {
     // Tạo id cho order theo số lượng order trong danh sách + thời gian
+    const size = await this.storageService.getSize();
+
     const id = crypto
       .createHash("sha256")
-      .update(this.storageService.getSize() + new Date())
+      .update(size + new Date())
       .digest("hex");
 
     return id;
@@ -81,6 +85,13 @@ module.exports = class PaymentsProcessor extends Processor {
     return this.exchangeService.roundTakeTwo(total);
   };
 
+  //#endregion
+
+  //#region Temp orders
+
+  // Lấy ra danh sách các order lưu tạm
+  getStoreOrders = async () => await this.storageService.getAll();
+
   // Lưu tạm thông tin order và mặc định sẽ xóa sau 1 ngày
   storeOrder = async (tempOrder, sec = 86400) => {
     const order = {
@@ -110,6 +121,10 @@ module.exports = class PaymentsProcessor extends Processor {
     return saveOrderId;
   };
 
+  //#endregion
+
+  //#region Database order
+
   // Lưu đơn hàng
   saveOrder = async (order) => {
     const paidOrder = {
@@ -134,6 +149,10 @@ module.exports = class PaymentsProcessor extends Processor {
     return saveOrder;
   };
 
+  //#endregion
+
+  //#region Ex
+
   checkValidateCart = (cart) => {
     this.checkValidate(() => this.validator.validateCart(cart));
   };
@@ -141,4 +160,6 @@ module.exports = class PaymentsProcessor extends Processor {
   checkValidateUrl = (url) => {
     this.checkValidate(() => this.validator.validateUrl(url));
   };
+
+  //#endregion
 };

@@ -109,6 +109,11 @@ router
 
 //#endregion
 
+// Lấy ra order lưu tạm
+router
+  .route("/getStoreOrders/")
+  .get(errorCatch(payPalcontroller.getStoreOrders));
+
 // Lấy ra order đã thanh toán
 router
   .route("/getSaveOrder/:id")
