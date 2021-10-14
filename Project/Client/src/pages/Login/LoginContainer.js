@@ -70,7 +70,7 @@ const LoginContainer = () => {
     let result = await auth.login(loginInfo);
 
     if(!result){
-      onError("Thông tin đăng nhập không đúng")
+      onError("Đăng nhập thất baị", "Thông tin đăng nhập không đúng!",'WARN')
       return
     }
     history.push("/admin");

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import {useEffect} from "react";
 import React from "react";
 import "./NotificationStyle.scss";
 const Notifications = ({
@@ -35,7 +35,7 @@ const Notifications = ({
     );
 };
 
-export default React.memo(Notifications)
+export default Notifications
 
 const Confirm = (props) => {
     const { title, content, handle, isShow, onHideRequest } = props;
@@ -67,8 +67,6 @@ const Confirm = (props) => {
 const Information = (props) => {
     const { title, content, isShow, onHideRequest, infoType, duration } = props;
 
-    const callback = useCallback(() => onHideRequest !== null && onHideRequest(false), [onHideRequest])
-
     const getImage = () => {
         switch (infoType) {
             case "WARN":
@@ -80,15 +78,16 @@ const Information = (props) => {
             default:
                 return <img src="/notify/info.png" alt="info" />;
         }
-    };
+    }
 
     useEffect(() => {
-        let timeout = setTimeout(callback, duration);
-        return () => clearTimeout(timeout);
-    }, [isShow, duration, callback]);
+        let timeout = setTimeout(() => onHideRequest(false), duration)
+        return () => clearTimeout(timeout)
+    }, [isShow, onHideRequest, duration])
+
 
     return (
-        <div className={`Notifications notify_information ${isShow ? "show" : ""}`} onClick={callback} >
+        <div className={`Notifications notify_information ${isShow ? "show" : ""}`} onClick={() => onHideRequest(false)} >
             <div className="notify_image">{getImage()}</div>
             <div className="notify_content">
                 <p>{title}</p>
