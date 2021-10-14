@@ -22,26 +22,42 @@ export default class ApiCaller {
   getToken = (jwkToken) => `Bearer ${localStorage.getItem(jwkToken) ?? ""}`;
 
   get = async (uri) => {
-    const res = await this.axiosApi.get(uri);
+    try {
+      const res = await this.axiosApi.get(uri);
 
-    return res.data;
+      return res.data;
+    } catch (error) {
+      throw error.response;
+    }
   };
 
   post = async (uri, params) => {
-    const res = await this.axiosApi.post(uri, params);
+    try {
+      const res = await this.axiosApi.post(uri, params);
 
-    return res.data;
+      return res.data;
+    } catch (error) {
+      throw error.response;
+    }
   };
 
   put = async (uri, params) => {
-    const res = await this.axiosApi.put(uri, params);
+    try {
+      const res = await this.axiosApi.put(uri, params);
 
-    return res.data;
+      return res.data;
+    } catch (error) {
+      throw error.response;
+    }
   };
 
   delete = async (uri) => {
-    const res = await this.axiosApi.delete(uri);
+    try {
+      const res = await this.axiosApi.delete(uri);
 
-    return res.data;
+      return res.data;
+    } catch (error) {
+      throw error.response;
+    }
   };
 }

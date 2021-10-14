@@ -5,7 +5,7 @@
 # Lấy ra người dùng đăng nhập
 GET http://localhost:8000/api/authentication/getUser
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0MDAyMDI1LCJleHAiOjE2MzQwMDU2MjV9.nP4zjhpLIxzKjPGFuIkV7_STonykoa4XZS-HewRPHRE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0MTk3OTc5LCJleHAiOjE2MzQyMDE1Nzl9.FFBAttkiRlRzkwOt9IWST6zeNhEa_8EDpKzQWuzimsw
 
 
 

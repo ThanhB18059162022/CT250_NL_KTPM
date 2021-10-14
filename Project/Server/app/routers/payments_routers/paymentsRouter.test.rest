@@ -3,6 +3,38 @@
 # Mỗi Request cách nhau 3 dấu '#'
 
 
+# -------------------------------- Default --------------------------------
+
+# Tạo order
+
+### Tạo order 201
+POST http://localhost:8000/api/payments/default/createorder
+Content-Type: application/json
+
+{
+    // Thông tin khác hàng
+    "customer": {
+    "cus_name": "Alexander",
+    "cus_id": "555555555",
+    "cus_email": "alex@gmail.com",
+    "cus_sex": true,
+    "cus_address": "3/2 Ninh Kiều Cần Thơ",
+    "cus_phoneNumber": "0000000000"
+    },
+
+    // Mảng nhận id và số lượng
+    "products":[
+        {"prod_no": 1, "prod_quantity": 1, "pd_no": 1 },
+        {"prod_no": 2, "prod_quantity": 1, "pd_no": 3}
+    ]
+}
+
+
+### Thanh toán
+GET http://localhost:8000/api/payments/default/checkoutorder/02e96174f38afdd0117eb634bb85591b49bc482f7418f7bf9be8055688d32eb1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0MTI3NjE4LCJleHAiOjE2MzQxMzEyMTh9.qNtF9v42RHTOUpAaXcOxbiUU_XfBr8IuujVRDegAC0U
+
+
 
 # -------------------------------- Paypal --------------------------------
 

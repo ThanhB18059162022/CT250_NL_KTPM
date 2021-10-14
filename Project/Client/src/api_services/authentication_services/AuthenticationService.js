@@ -22,13 +22,7 @@ export default class AuthenticationService {
     }
   };
 
-  getUser = async () => {
-    try {
-      return await this.apiCaller.get("authentication/getuser");
-    } catch {
-      return null;
-    }
-  };
+  getUser = async () => await this.apiCaller.get("authentication/getuser");
 
   logout = () => this.removeTokenInStorage();
 
@@ -37,13 +31,3 @@ export default class AuthenticationService {
 
   removeTokenInStorage = () => localStorage.removeItem(this.JwtKey);
 }
-
-// DTOs
-
-// class User {
-//   constructor(username, password, id) {}
-// }
-
-// export class TokenPlaceHolder {
-//   constructor(token) {}
-// }
