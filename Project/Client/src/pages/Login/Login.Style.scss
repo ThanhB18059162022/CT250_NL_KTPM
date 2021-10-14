@@ -26,6 +26,8 @@
                 margin-bottom: 40px;
                 h2{
                     text-transform: uppercase;
+                    margin-bottom: 20px;
+                    color: var(--backgroundColor);
                 }
             }
             .login_form{
@@ -39,7 +41,7 @@
                     outline-color: var(--backgroundColor);
                     &:focus ~ label,
                     &:valid ~ label{
-                        top:-10px;
+                        top:-7px;
                         left: 10px;
                         padding: 0 10px;
                         font-size: 14px;
@@ -51,7 +53,7 @@
                 }
                 label{
                     position: absolute;
-                    top:10px;
+                    top:13px;
                     left: 20px;
                     font-size: inherit;
                     transition:  all ease .3s;
@@ -62,8 +64,9 @@
                     text-transform: uppercase;
                     font-weight: bold;
                     padding: 10px 0;
-                    background: var(--backgroundBlur);
-                    border:none;
+                    background: transparent;
+                    color: var(--backgroundColor);
+                    border: 2px solid var(--backgroundColor);
                     transition: all ease .2s;
                     &:active{
                         transform: scale(.95);

@@ -724,78 +724,105 @@
 }
 
 .BgAdminHeaderPopup {
-    position: absolute;
-    top: 100%;
-    left: -12.5%;
-    width: 125%;
-    height: calc(100vh - 50px);
-    background-color: rgba(128, 128, 128, 0.822);
+    position: fixed;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 65px);
+    background-color: rgba(0, 0, 0, 0.377);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .AdminInformation {
-        border: 1px solid black;
-        border-radius: 15px;
         width: 40%;
-        position: absolute;
-        left: 30%;
-        top: 20%;
+        max-width: 500px;
         background-color: #fff;
-        h1 {
-            text-align: center;
-            margin: 2% 0 0 0;
+        padding: 20px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.418);
+        .InfomationHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: var(--backgroundColor);
+            button {
+                font-size: 24px;
+                &:first-child {
+                    color: var(--backgroundColor);
+                }
+                &:last-child {
+                    color: red;
+                }
+            }
         }
         .AdminInformationForm {
             div {
                 display: flex;
-                margin: 5px 0;
-                p {
-                    width: 20%;
-                    text-align: right;
-                    margin: 0 15px 0 0;
-                    font-weight: bold;
+                padding: 10px 0;
+                align-items: center;
+                span {
+                    width: 120px;
+                    display: inline-block;
                 }
-                .TextField {
-                    width: 60%;
-                    padding: 2px;
+                .TextField,
+                textarea {
+                    width: calc(100% - 120px);
+                    padding: 10px;
+                    resize: none;
+                    font-size: inherit;
                 }
                 .Sex {
+                    display: flex;
                     align-items: center;
-                }
-                textarea {
-                    width: 60%;
-                    padding: 2px;
-                    resize: none;
+                    input {
+                        width: 20px;
+                        height: 20px;
+                        margin-right: 5px;
+                    }
+                    input + label + input {
+                        margin-left: 20px;
+                    }
                 }
             }
         }
-        .AdminInformationBtn {
-            margin: 2% 0 0 0;
-        }
     }
     .ChangePwd {
-        border: 1px solid black;
-        border-radius: 15px;
-        width: 30%;
-        position: absolute;
-        left: 35%;
-        top: 20%;
+        width: 80%;
+        max-width: 500px;
         background-color: #fff;
-        h1 {
-            text-align: center;
-            margin: 2% 0 0 0;
+        padding: 20px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.418);
+        .ChangePwdHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: var(--backgroundColor);
+            button {
+                font-size: 24px;
+                &:first-child {
+                    color: var(--backgroundColor);
+                }
+                &:last-child {
+                    color: red;
+                }
+            }
         }
         form {
-            margin: 3% 0;
             div {
                 display: flex;
-                margin: 1% 0;
-                p {
-                    width: 30%;
-                    text-align: right;
-                    margin: 0 2% 0 0;
-                    font-weight: bold;
+                padding: 10px 0;
+                align-items: center;
+                span {
+                    width: 120px;
+                    display: inline-block;
                 }
                 input {
-                    width: 60%;
-                    padding: 2px;
+                    width: calc(100% - 120px);
+                    padding: 10px;
+                    resize: none;
+                    font-size: inherit;
                 }
             }
         }
@@ -920,7 +947,7 @@
                     width: calc(100% - 130px);
                     resize: none;
                     outline: none;
-                    cursor:context-menu;
+                    cursor: context-menu;
                 }
             }
         }
@@ -929,7 +956,7 @@
             overflow-y: scroll;
             margin-bottom: 10px;
             padding: 10px;
-            textarea{
+            textarea {
                 cursor: context-menu;
             }
         }
@@ -1008,9 +1035,9 @@
                 justify-content: center;
                 button {
                     font-size: 28px;
-                    padding:5px 20px;
+                    padding: 5px 20px;
                     background: transparent;
-                    &:first-child{
+                    &:first-child {
                         color: var(--backgroundColor);
                     }
                 }
