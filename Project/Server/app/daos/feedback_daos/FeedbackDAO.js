@@ -69,7 +69,11 @@ module.exports = class FeedbackDAO extends ModelDAO{
         return feedback;
     }
 
-    replyFeedback = async () => {
+    replyFeedback = async (fb_no, rep_content, mod_no) => {
+        const sql = `INSERT INTO replies(rep_content, mod_no, fb_no) VALUES(?, ?, ?);`;
 
+        await this.handleExeError(
+            async () => await this.sqldao.execute(sql, [rep_content, mod_no, fb_no])
+          );
     }
 }
