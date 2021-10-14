@@ -9,7 +9,10 @@ const config = require("../../config");
 // Bắt lỗi server
 const { errorCatch } = require("../routerErrorHandler");
 
-const { PaymentsValidator } = require("../../validators/validatorsContainer");
+const {
+  PaymentsValidator,
+  AuthenticationValidator,
+} = require("../../validators/validatorsContainer");
 const {
   PayPalService,
   StripeService,
@@ -17,18 +20,47 @@ const {
   StorageService,
   ApiCaller,
   ZaloPayService,
+  JwtService,
 } = require("../../services/servicesContainer");
 const { DAO, PaymentsDAO } = require("../../daos/daosContainer");
 const {
+  DefaultPaymentProcessor,
   PayPalPaymentProcessor,
   StripePaymentProcessor,
   ZaloPayPaymentProcessor,
+  AuthenticationProcessor,
 } = require("../../processors/processorsContainer");
 const {
+  DefaultPaymentController,
   PayPalPaymentController,
   StripePaymentController,
   ZaloPayPaymentController,
+  AuthenticationController,
 } = require("../../controllers/controllersContainer");
+
+//#endregion
+
+//#region Default
+
+const authController = new AuthenticationController(getAuthProc(), config);
+
+const defaultController = new DefaultPaymentController(
+  getDefaultProc(),
+  config
+);
+
+router
+  .route("/default/createOrder")
+  .post(errorCatch(defaultController.createOrder));
+
+// Thanh toán admin only
+router
+  .route("/default/checkoutOrder/:id")
+  .get(
+    authController.authenticate,
+    authController.authorize(["admin", "emp"]),
+    errorCatch(defaultController.checkoutOrder)
+  );
 
 //#endregion
 
@@ -85,6 +117,19 @@ router
 module.exports = router;
 
 //#region EX
+
+function getDefaultProc() {
+  const { validator, dao, exService, storeService } = getDI();
+
+  return new DefaultPaymentProcessor(validator, dao, exService, storeService);
+}
+
+function getAuthProc() {
+  const validator = new AuthenticationValidator();
+  const jwt = new JwtService(config.jwt.secretKey);
+
+  return new AuthenticationProcessor(validator, jwt);
+}
 
 function getPayPalProc() {
   const { validator, dao, exService, storeService } = getDI();

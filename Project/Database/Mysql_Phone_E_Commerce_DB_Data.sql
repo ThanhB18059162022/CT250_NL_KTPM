@@ -36,10 +36,10 @@ VALUES
         1 -- Nhãn hiệu Samsung
     );
 
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("12 GB", "256 GB", "223 GB", 41990000, 20, 5, 1);
 
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("12 GB", "512 GB", "480 GB", 44990000, 20, 5, 1);    
 
 
@@ -69,13 +69,13 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung thép không gỉ & Mặt lưng kính cường lực","size":"Dài 160.8 mm - Ngang 78.1 mm - Dày 7.4 mm","weight":"228 g"}',
     2 -- Nhãn hiệu Apple
 ); 
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "128 GB", "113 GB", 32990000, 30, 15, 2);
 
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "256 GB", "241 GB", 37490000, 10, 15, 2);
 
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "512 GB", "113 GB", 42490000, 10, 7, 2);
 
 
@@ -105,7 +105,7 @@ VALUES
   3 -- Nhãn hiệu Oppo
 );
 
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "128 GB", "110 GB", 9490000, 20, 9, 3);
 
 
@@ -135,7 +135,7 @@ VALUES
     4 -- Nhãn hiệu Xiaomi
 );
 
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "256 GB", "...", 6990000, 5, 3, 4);
 
 
@@ -164,7 +164,7 @@ VALUES
     '{"structural":"Pin liền","material":"Khung & Mặt lưng nhựa Polycarbonate","size":"Dài 177.7 mm - Ngang 79.1 mm - Dày 9.9 mm","weight":"Nặng 237 g"}',
     5 -- Nhãn hiệu Nokia
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("3 GB", "32 GB", "25 GB", 2790000, 5, 3, 5);
 
 
@@ -193,11 +193,11 @@ VALUES
   '{"structural":"Nguyên khối","material":"Khung & Mặt lưng nhựa","size":"Dài 161 mm - Ngang 75.53 mm - Dày 8.92 mm","weight":"Nặng 181 g"}',
   4
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("4 GB", "64 GB", "50 GB", 3990000, 15, 7, 6);
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("4 GB", "128 GB", "100 GB", 4290000, 15, 7, 6);
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "128 GB", "100 GB", 4690000, 15, 7, 6);
 
 
@@ -227,7 +227,7 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 164.8 mm - Ngang 77.2 mm - Dày 8.1 mm","weight":"208 g"}',
     1
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("12 GB", "256 GB", "223 GB", 18999000, 20, 7, 7);
 
 
@@ -254,7 +254,7 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung kim loại & Mặt lưng kính","size":"Dài 156.2 mm - Ngang 75.04 mm - Dày 8.55 mm ","weight":"178 g"}',
     6
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "128 GB", "119 GB", 5190000, 10, 7, 8);
 
 
@@ -283,7 +283,7 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 167.2 mm - Ngang 76.4 mm - Dày 9 mm ","weight":"203 g"}',
     1
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "128 GB", "119 GB", 5399000, 10, 7, 9);
 
 
@@ -312,11 +312,11 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 150.9 mm - Ngang 75.7 mm - Dày 8.3 mm","weight":"194 g"}',
     2
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "64 GB", "57 GB", 12990000, 20, 7, 10);
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "128 GB", "121 GB", 14990000, 20, 7, 10);
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "256 GB", "246 GB", 16990000, 20, 7, 10);
 
 
@@ -346,7 +346,7 @@ VALUES
   '{"structural":"Nguyên khối","material":"Khung & Mặt lưng nhựa Polycarbonate","size":"Dài 164.26 mm - Ngang 76.08 mm - Dày 8 mm","weight":"182 g"}',
   7
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("4 GB", "64 GB", "52 GB", 4290000, 25, 15, 11);
 
 
@@ -375,9 +375,9 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 167.2 mm - Ngang 76.4 mm - Dày 9 mm ","weight":"203 g"}',
     1
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "128 GB", "115 GB", 10290000, 25, 15, 12);
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "256 GB", "223 GB", 11090000, 25, 15, 12);
 
 
@@ -405,9 +405,9 @@ VALUES
   '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 167.2 mm - Ngang 76.4 mm - Dày 9 mm ","weight":"203 g"}',
   8
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("3 GB", "32 GB", "16 GB", 3490000, 25, 15, 13);
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("4 GB", "32 GB", "16 GB", 3990000, 25, 15, 13);
 
 
@@ -437,7 +437,7 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung hợp kim & Mặt lưng thuỷ tinh hữu cơ","size":"Dài 160.2 mm - Ngang 73.38 mm - Dày 7.97 mm","weight":"Nặng 173 g"}',
     3
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("4 GB", "64 GB", "52 GB", 4690000, 25, 15, 14);
 
 
@@ -466,7 +466,7 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 167.2 mm - Ngang 76.4 mm - Dày 9 mm ","weight":"203 g"}',
     1
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "256 GB", "223 GB", 12990000, 25, 15, 15);
 
 
@@ -495,7 +495,7 @@ VALUES
   '{"structural":"Nguyên khối","material":"Khung & Mặt lưng nhựa","size":"Dài 161 mm - Ngang 75.53 mm - Dày 8.92 mm","weight":"Nặng 181 g"}',
   4
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "128 GB", "113 GB", 5990000, 15, 7, 16);
 
 
@@ -524,7 +524,7 @@ VALUES
   '{"structural":"Nguyên khối","material":"Khung & Mặt lưng nhựa Polycarbonate","size":"Dài 164.26 mm - Ngang 76.08 mm - Dày 8 mm","weight":"182 g"}',
   7
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("3 GB", "34 GB", "20 GB", 3290000, 25, 15, 17);
 
 
@@ -552,7 +552,7 @@ VALUES
   '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 167.2 mm - Ngang 76.4 mm - Dày 9 mm ","weight":"203 g"}',
   8
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("2 GB", "32 GB", "16 GB", 3490000, 25, 15, 18);
 
 
@@ -581,7 +581,7 @@ VALUES
   '{"structural":"Nguyên khối","material":"Khung & Mặt lưng nhựa Polycarbonate","size":"Dài 164.26 mm - Ngang 76.08 mm - Dày 8 mm","weight":"182 g"}',
   7
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "128 GB", "120 GB", 9190000, 25, 15, 19);
 
 
@@ -610,7 +610,7 @@ VALUES
   '{"structural":"Nguyên khối","material":"Khung & Mặt lưng nhựa","size":"Dài 161 mm - Ngang 75.53 mm - Dày 8.92 mm","weight":"Nặng 181 g"}',
   4
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("3 GB", "64 GB", "55 GB", 2990000, 15, 7, 20);
 
 
@@ -639,7 +639,7 @@ VALUES
   '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 167.2 mm - Ngang 76.4 mm - Dày 9 mm ","weight":"203 g"}',
   8
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "128 GB", "120 GB", 6990000, 25, 15, 21);
 
 
@@ -667,7 +667,7 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung hợp kim & Mặt lưng thuỷ tinh hữu cơ","size":"Dài 160.2 mm - Ngang 73.38 mm - Dày 7.97 mm","weight":"Nặng 173 g"}',
     3
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("8 GB", "128 GB", "120 GB", 6690000, 25, 15, 22);
 
 
@@ -697,7 +697,7 @@ VALUES
     '{"structural":"Pin liền","material":"Khung & Mặt lưng nhựa Polycarbonate","size":"Dài 177.7 mm - Ngang 79.1 mm - Dày 9.9 mm","weight":"Nặng 237 g"}',
     5 -- Nhãn hiệu Nokia
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("4 GB", "128 GB", "119 GB", 3290000, 5, 3, 23);
 
 
@@ -727,7 +727,7 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 167.2 mm - Ngang 76.4 mm - Dày 9 mm ","weight":"203 g"}',
     1
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("12 GB", "128 GB", "119 GB", 16999000, 25, 15, 24);
 
 
@@ -756,14 +756,16 @@ VALUES
     '{"structural":"Nguyên khối","material":"Khung hợp kim & Mặt lưng thuỷ tinh hữu cơ","size":"Dài 160.2 mm - Ngang 73.38 mm - Dày 7.97 mm","weight":"Nặng 173 g"}',
     3
 );
-INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("12 GB", "256 GB", "245 GB", 21990000, 25, 15, 25);
 
 
 -- ------------------------------ Quản trị viên -----------------------------------------------------
 
 INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role, mod_username, mod_password) 
-VALUES ('Administrator', '000000000', '0000000000', '1', N'3/2 Ninh Kiều Cẩn Thơ', '1', "admin", "123456");
+VALUES ('Administrator', '000000000', '0000000000', '1', N'3/2 Ninh Kiều Cẩn Thơ', '1', "admin", "0c1857fc020582a078352b546cb5b504a0c85cf61340470cd98b8dabff9d578e");
+-- pwd: 123456
 
 INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role, mod_username, mod_password) 
-VALUES ('Staff-lee', '111111111', '1111111111', '0', N'3/2 Ninh Kiều Cẩn Thơ', '0', "staff", "123456");
+VALUES ('Staff-lee', '111111111', '1111111111', '0', N'3/2 Ninh Kiều Cẩn Thơ', '0', "staff", "8992768ee63aab3f8b6255e200121bc44712c42bc67662f48482178da09834b8");
+-- pwd: 123456

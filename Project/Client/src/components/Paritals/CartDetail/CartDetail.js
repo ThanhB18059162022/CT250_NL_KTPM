@@ -237,9 +237,9 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
           {list.map((item, index) => <li key={index}>
             <p className="dh_name">{item.prod_name}</p>
             <p className="dh_price">{item.prod_details[item.choosedType].pd_storage}</p>
-            <p className="dh_price">{item.prod_details[item.choosedType].pd_price}</p>
+            <p className="dh_price">{Helper.Exchange.toMoney(item.prod_details[item.choosedType].pd_price)}</p>
             <p className="dh_amount">{item.amount}</p>
-            <p className="dh_total">{Helper.Exchange.toMoney(Number(item.prod_details[item.choosedType].pd_price) * Number(item.amount))}</p>
+            <p className="dh_total">{Helper.Exchange.toMoney(Number(item.prod_details[item.choosedType].pd_price) * Number(item.amount))} VNĐ</p>
           </li>)}
         </ul>
         <h3>Chọn hình thức thanh toán</h3>

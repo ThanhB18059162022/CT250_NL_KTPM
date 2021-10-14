@@ -81,19 +81,16 @@ module.exports = class PaymentsProcessor extends Processor {
     return this.exchangeService.roundTakeTwo(total);
   };
 
-  // Lưu tạm thông tin order và sẽ xóa sau 1 ngày
-  storeOrder = async (tempOrder) => {
+  // Lưu tạm thông tin order và mặc định sẽ xóa sau 1 ngày
+  storeOrder = async (tempOrder, sec = 86400) => {
     const order = {
       ...tempOrder,
       paid: false, // Chưa trả tiền
       createTime: new Date(), // Thời gian tạo đơn
     };
 
-    // Số giây 1 ngày
-    const secInDay = 86400;
-
     // Save bằng order id
-    await this.storageService.setex(order.id, secInDay, order);
+    await this.storageService.setex(order.id, sec, order);
   };
 
   // Thanh toán

@@ -8,7 +8,7 @@ module.exports = class PaymentsDAO extends ModelDAO {
 
   // Mã sản phẩm và mã chi tiết
   getOrderProduct = async ({ prod_no, pd_no, prod_quantity }) => {
-    const sql = `SELECT p.prod_no, p.prod_name, pd.pd_price
+    const sql = `SELECT p.prod_no, p.prod_name, pd.pd_price, pd.pd_no
                  FROM Products AS p, Products_Details AS pd 
                  WHERE p.prod_no = pd.prod_no AND p.prod_no = ? 
                  AND pd.pd_no = ?;`;
