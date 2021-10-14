@@ -69,7 +69,11 @@ const LoginContainer = () => {
 
     let result = await auth.login(loginInfo);
 
-    result && history.push("/admin");
+    if(!result){
+      onError("Thông tin đăng nhập không đúng")
+      return
+    }
+    history.push("/admin");
   };
 
   return (
