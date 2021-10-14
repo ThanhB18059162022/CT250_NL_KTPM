@@ -10,6 +10,7 @@ const ProductsController = require("./products_controllers/ProductsController");
 const PayPalPaymentController = require("./payments_controllers/paypal_payments_controllers/PayPalPaymentController");
 const StripePaymentController = require("./payments_controllers/stripe_payments_controllers/StripePaymentController");
 const ZaloPayPaymentController = require("./payments_controllers/zalopay_payments_controllers/ZaloPayPaymentController");
+const DefaultPaymentController = require("./payments_controllers/default_payments_controllers/DefaultPaymentController");
 
 const ModeratorsController = require("./moderators_controllers/ModeratorsController");
 
@@ -23,6 +24,7 @@ module.exports = {
   PayPalPaymentController,
   StripePaymentController,
   ZaloPayPaymentController,
+  DefaultPaymentController,
 
   ModeratorsController,
 
