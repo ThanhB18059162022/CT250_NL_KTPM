@@ -109,10 +109,17 @@ router
 
 //#endregion
 
+//#region StoreOrders
+
 // Lấy ra order lưu tạm
+router.route("/StoreOrders/").get(errorCatch(payPalcontroller.getStoreOrders));
+
+// Xóa order lưu tạm
 router
-  .route("/getStoreOrders/")
-  .get(errorCatch(payPalcontroller.getStoreOrders));
+  .route("/StoreOrders/:id")
+  .delete(errorCatch(payPalcontroller.deleteStoreOrder));
+
+//#endregion
 
 // Lấy ra order đã thanh toán
 router
@@ -181,7 +188,7 @@ function getDI() {
   const dao = new PaymentsDAO(sqldao);
   const validator = new PaymentsValidator();
   const exService = new CurrencyExchangeService(config.payment.currency);
-  const storeService = new StorageService();
+  const storeService = new StorageService(config.dbConnection.redis);
 
   return { dao, validator, exService, storeService };
 }

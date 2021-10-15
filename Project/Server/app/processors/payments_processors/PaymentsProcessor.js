@@ -104,6 +104,9 @@ module.exports = class PaymentsProcessor extends Processor {
     await this.storageService.setex(order.id, sec, order);
   };
 
+  // Xóa đơn hàng lưu tạm
+  deleteStoreOrder = async (id) => await this.storageService.delete(id);
+
   // Thanh toán
   checkout = async (id) => {
     // Kiểm tra còn order trước khi thanh toán
@@ -116,7 +119,7 @@ module.exports = class PaymentsProcessor extends Processor {
     const saveOrderId = await this.saveOrder(order);
 
     // Xóa order lưu tạm
-    await this.storageService.delete(order.id);
+    await this.deleteStoreOrder(order.id);
 
     return saveOrderId;
   };

@@ -131,7 +131,13 @@ GET http://localhost:8000/api/payments/zalo/checkoutorder/7210a5e54e1b47c33073e7
 # -------------------------------------------------------------------------
 
 ### Lấy ra order lưu tạm
-GET http://localhost:8000/api/payments/getstoreorders
+GET http://localhost:8000/api/payments/storeorders
+
+### Lấy ra order lưu tạm
+DELETE http://localhost:8000/api/payments/storeorders/4d1051f237bb482ab4a2f11bb858e94b400b4bdbe7632b319463dcd48b17be90
+
+
+# -------------------------------------------------------------------------
 
 
 ### Lấy ra order đã thanh toán trong CSDL

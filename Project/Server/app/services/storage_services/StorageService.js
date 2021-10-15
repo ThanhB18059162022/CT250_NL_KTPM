@@ -5,7 +5,14 @@ module.exports = class StorageService {
 
   get = async (key) => StorageService.storageBase.get(key);
 
-  getAll = async () => StorageService.storageBase;
+  getAll = async () => {
+    const orders = Array.from(
+      StorageService.storageBase,
+      ([_, value]) => value
+    );
+
+    return orders;
+  };
 
   getSize = async () => StorageService.storageBase.size;
 

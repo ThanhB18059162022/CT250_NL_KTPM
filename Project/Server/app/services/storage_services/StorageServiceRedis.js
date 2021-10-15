@@ -2,7 +2,9 @@ const redis = require("redis");
 const { promisify } = require("util"); // callback => promise
 
 module.exports = class StorageService {
-  constructor(host = "redis") {
+  constructor(config) {
+    const { host } = config;
+
     this.client = redis.createClient({
       host, //ip
     });
@@ -13,10 +15,13 @@ module.exports = class StorageService {
   get = async (key) => {
     const getPromise = promisify(this.client.get).bind(this.client);
 
-    return await getPromise(key);
+    const value = await getPromise(key);
+
+    return JSON.parse(value);
   };
 
-  getAll = async (keys) => {
+  getAll = async () => {
+    const keys = await this.keys("*");
     const data = [];
 
     for (let i = 0; i < keys.length; i++) {
@@ -28,7 +33,7 @@ module.exports = class StorageService {
     return data;
   };
 
-  getSize = async (name) => (await this.keys(name)).length;
+  getSize = async (name = "*") => (await this.keys(name)).length;
 
   keys = async (name) => {
     const keysPromise = promisify(this.client.keys).bind(this.client);
@@ -48,9 +53,11 @@ module.exports = class StorageService {
 
   // Có đát
   setex = async (key, sec, data) => {
+    const value = JSON.stringify(data);
+
     const setexPromise = promisify(this.client.setex).bind(this.client);
 
-    await setexPromise(key, sec, data);
+    await setexPromise(key, sec, value);
   };
 
   //#endregion

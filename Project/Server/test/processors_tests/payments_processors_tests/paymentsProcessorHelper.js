@@ -55,9 +55,9 @@ class CurrencyExchangeServiceMock {
 }
 
 class StorageServiceMock {
-  getSize = jest.fn(async () => {});
+  getAll = jest.fn(async () => []);
 
-  set = jest.fn(async () => {});
+  getSize = jest.fn(async () => {});
 
   setex = jest.fn(async () => {});
 
