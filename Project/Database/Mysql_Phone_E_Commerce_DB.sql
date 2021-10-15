@@ -152,7 +152,6 @@ CREATE TABLE Products_Details(
 CREATE TABLE Orders_Details(
   order_no INT NOT NULL, -- Mã giỏ hàng khóa ngoại tham chiếu bảng đơn hàng
   pd_no INT NOT NULL, -- Mã chi tiết sản phẩm khóa ngoại tham chiếu bảng chi tiết sản phẩm
-
   od_quantity INT NOT NULL, -- Số lượng sản phẩm trong giỏ
 
     -- Khóa ngoại
@@ -934,3 +933,23 @@ VALUES ('Administrator', '000000000', '0000000000', '1', N'3/2 Ninh Kiều Cẩn
 INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role, mod_username, mod_password) 
 VALUES ('Staff-lee', '111111111', '1111111111', '0', N'3/2 Ninh Kiều Cẩn Thơ', '0', "staff", "8992768ee63aab3f8b6255e200121bc44712c42bc67662f48482178da09834b8");
 -- pwd: 123456
+
+
+-- ------------------------------ Orders -----------------------------------------------------
+
+
+
+INSERT INTO Customers( cus_name, cus_id, cus_email, cus_sex, cus_location, cus_phoneNumber)
+VALUES ('Alexander', '555555555', 'alex@gmail.com', true, '3/2 Ninh Kiều Cần Thơ', '0000000000');
+INSERT INTO Orders(order_id, order_total, order_create, order_pay, order_payment, cus_no)
+VALUES ('d46eaa2e47852617027cae62a93292213ae79b3c18d55332d8babf29f4ffd9f6', 74980000, '2021-10-15 07:05:15', '2021-10-15 09:01:00', 'default', 1);
+INSERT INTO Orders_Details(order_no, pd_no, od_quantity) VALUES(1, 1, 1);
+INSERT INTO Orders_Details(order_no, pd_no, od_quantity) VALUES(1, 2, 1);
+
+INSERT INTO Customers( cus_name, cus_id, cus_email, cus_sex, cus_location, cus_phoneNumber)
+VALUES ('Alexander', '555555555', 'alex@gmail.com', true, '3/2 Ninh Kiều Cần Thơ', '0000000000');
+INSERT INTO Orders(order_id, order_total, order_create, order_pay, order_payment, cus_no)
+VALUES ('ceaa5c583d66d3e0b95d91c7a8663ec4c78088913a2e1ebb4176efe4da3db8d0', 74980000, '2021-10-15 09:05:15', '2021-10-15 10:10:25', 'default', 1);
+INSERT INTO Orders_Details(order_no, pd_no, od_quantity) VALUES(2, 1, 1);
+INSERT INTO Orders_Details(order_no, pd_no, od_quantity) VALUES(2, 2, 1);
+
