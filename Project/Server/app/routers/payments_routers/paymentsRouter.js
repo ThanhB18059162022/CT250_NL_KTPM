@@ -1,10 +1,10 @@
+//#region Require
+
 const express = require("express");
 const router = express.Router();
 const config = require("../../config");
 
 // Router gắn endpoints vào controller
-
-//#region Require
 
 // Bắt lỗi server
 const { errorCatch } = require("../routerErrorHandler");
