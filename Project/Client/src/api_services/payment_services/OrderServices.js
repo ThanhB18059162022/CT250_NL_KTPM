@@ -6,7 +6,7 @@ const OrderServices = (()=>{
     const getOrder = async(type,id) =>{
         if(!geteway.includes(type) || isNaN(id)) return null
 
-        let data = await caller.get(`${type}/getsaveorder/${id}`)
+        let data = await caller.get(`payments/getsaveorder/${id}`)
         return data
     }
     return{

@@ -4,7 +4,7 @@
 const MysqlDAO = require("./MysqlDAO");
 
 const ProductsDAO = require("./products_daos/ProductsDAO");
-// const ProductDAO_Ram = require("./products_daos/ProductsDAO_Ram");
+const ProductDAO_Ram = require("./products_daos/ProductsDAO_Ram");
 
 const PaymentsDAO = require("./payments_daos/PaymentsDAO");
 const PaymentsDAO_Ram = require("./payments_daos/PaymentsDAO_Ram");
@@ -20,6 +20,7 @@ module.exports = {
   ProductsDAO,
 
   PaymentsDAO,
+  // PaymentsDAO: PaymentsDAO_Ram,
 
   ModeratorsDAO,
 

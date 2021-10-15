@@ -73,12 +73,12 @@ const ProductBox = ({ id }) => {
                                 key={index}>
                                 <p>{item.pd_storage}</p>
                                 <p>{Helper.Exchange.toMoney(item.pd_price)}</p>
-                                <span className="else">Còn lại: {item.pd_amount - item.pd_sold}</span>
                             </div>)}
                     </div>
                     <p> <span>Hệ điều hành: </span>{product && product.prod_hardwareAndOS.os}</p>
                     <p> <span>Vi xử lý: </span>{product && product.prod_hardwareAndOS.cpu}</p>
                     <p> <span>Đồ họa: </span>{product && product.prod_hardwareAndOS.gpu}</p>
+                    <p> <span>RAM: </span>{product && product.prod_details[choose].pd_ram}</p>
                     <p className="product-box-price">{Helper.Exchange.toMoney(product && product.prod_details[choose].pd_price)} VNĐ</p>
                     <p className="support-sell">Hỗ trợ thanh toán</p>
                     <div className="sell-ways">
