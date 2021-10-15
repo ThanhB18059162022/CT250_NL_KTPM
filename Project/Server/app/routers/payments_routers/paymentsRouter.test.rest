@@ -118,7 +118,6 @@ Content-Type: application/json
 
     // Mảng nhận id và số lượng
     "products":[
-        {"prod_no": 1, "prod_quantity": 1, "pd_no": 1 },
         {"prod_no": 2, "prod_quantity": 1, "pd_no": 3}
     ]
 }
@@ -145,4 +144,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyL
 
 
 ### Lấy ra order đã thanh toán trong CSDL
-GET http://localhost:8000/api/payments/getsaveorder/1
+GET http://localhost:8000/api/payments/getsaveorder/11
