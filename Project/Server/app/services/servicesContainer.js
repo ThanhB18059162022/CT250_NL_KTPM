@@ -8,6 +8,7 @@ const ApiCaller = require("./ApiCaller");
 const JwtService = require("./jwt_services/JwtService");
 
 const StorageService = require("./storage_services/StorageService");
+const StorageServiceRedis = require("./storage_services/StorageServiceRedis");
 
 const CurrencyExchangeService = require("./payments_services/CurrencyExchangeService");
 const PayPalService = require("./payments_services/paypal_services/PayPalService");
@@ -22,6 +23,8 @@ module.exports = {
   JwtService,
 
   StorageService,
+
+  // StorageService: StorageServiceRedis,
 
   CurrencyExchangeService,
   PayPalService,

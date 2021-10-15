@@ -1,3 +1,5 @@
+//#region Require
+
 const express = require("express");
 const router = express.Router();
 const config = require("../../config");
@@ -8,31 +10,49 @@ const config = require("../../config");
 const { errorCatch } = require("../routerErrorHandler");
 
 // Controller và lớp xác thực - truy cập dữ liệu
-const { ModeratorsValidator } = require("../../validators/validatorsContainer");
+const {
+  ModeratorsValidator,
+  AuthenticationValidator,
+} = require("../../validators/validatorsContainer");
 const { DAO, ModeratorsDAO } = require("../../daos/daosContainer");
-const { ModeratorsProcessor } = require("../../processors/processorsContainer");
+const {
+  ModeratorsProcessor,
+  AuthenticationProcessor,
+} = require("../../processors/processorsContainer");
 const {
   ModeratorsController,
+  AuthenticationController,
 } = require("../../controllers/controllersContainer");
 
-const validator = new ModeratorsValidator();
-const sqldao = new DAO(config.dbConnection.mysql);
-const dao = new ModeratorsDAO(sqldao);
-const processor = new ModeratorsProcessor(validator, dao);
-const controller = new ModeratorsController(processor, config);
+//#endregion
+
+const authController = new AuthenticationController(getAuthProc(), config);
+
+const controller = new ModeratorsController(getModProc(), config);
+
+//#region Router
 
 router
   .route("/")
   // /moderators?page=1&limit=10
   .get(errorCatch(controller.getModerators))
-  .post(errorCatch(controller.addModerator));
+  .post(
+    authController.authorize(["admin"]),
+    errorCatch(controller.addModerator)
+  );
 
 // moderators/1
 router
   .route("/:mod_no")
   .get(errorCatch(controller.getModeratorByNo))
-  .put(errorCatch(controller.updateModerator))
-  .delete(errorCatch(controller.lockModerator));
+  .put(
+    authController.authorize(["admin"]),
+    errorCatch(controller.updateModerator)
+  )
+  .delete(
+    authController.authorize(["admin"]),
+    errorCatch(controller.lockModerator)
+  );
 
 // moderators/PhoneNumber/1234567899
 router
@@ -47,4 +67,24 @@ router
   .route("/Username/:mod_username")
   .get(errorCatch(controller.getModeratorByUsername));
 
+//#endregion
+
 module.exports = router;
+
+//#region EX
+
+function getAuthProc() {
+  const validator = new AuthenticationValidator();
+
+  return new AuthenticationProcessor(validator);
+}
+
+function getModProc() {
+  const validator = new ModeratorsValidator();
+  const sqldao = new DAO(config.dbConnection.mysql);
+  const dao = new ModeratorsDAO(sqldao);
+
+  return new ModeratorsProcessor(validator, dao);
+}
+
+//#endregion

@@ -31,8 +31,8 @@ Content-Type: application/json
 
 
 ### Thanh toán
-GET http://localhost:8000/api/payments/default/checkoutorder/02e96174f38afdd0117eb634bb85591b49bc482f7418f7bf9be8055688d32eb1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0MTI3NjE4LCJleHAiOjE2MzQxMzEyMTh9.qNtF9v42RHTOUpAaXcOxbiUU_XfBr8IuujVRDegAC0U
+GET http://localhost:8000/api/payments/default/checkoutorder/3a45964e0335174eb34b61525cda52f731d0761275467cf57d7e8b871d8f30cf
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0Mjc5NTkyLCJleHAiOjE2MzQyODMxOTJ9.D9easpUN-YPslrMaBH96jNCAsY4b03uo64Gs1XmFOPQ
 
 
 
@@ -124,11 +124,25 @@ Content-Type: application/json
 }
 
 ### Thanh toán
-GET http://localhost:8000/api/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?url=http://localhost-http://localhost
+GET http://localhost:8000/api/payments/zalo/checkoutorder/7210a5e54e1b47c33073e703f1aac099332400f109432ccc815278b1052efe44?url=http://localhost-http://localhost
 
 
 
 # -------------------------------------------------------------------------
+
+### Lấy ra order lưu tạm
+GET http://localhost:8000/api/payments/storeorders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0Mjc5NTkyLCJleHAiOjE2MzQyODMxOTJ9.D9easpUN-YPslrMaBH96jNCAsY4b03uo64Gs1XmFOPQ
+
+
+### Lấy xóa order lưu tạm
+DELETE http://localhost:8000/api/payments/storeorders/5cef8006b0e964a64f06c3bd57702b2de1217f953f3d61d79ed618cc3863543f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJyb2xlIjoiZW1wIn0sImlhdCI6MTYzNDI3OTg5MywiZXhwIjoxNjM0MjgzNDkzfQ.J5JGt-898DMMnbweMuVzAQGMa6-D4m6Owl0vJJEbRzQ
+
+
+
+# -------------------------------------------------------------------------
+
 
 ### Lấy ra order đã thanh toán trong CSDL
 GET http://localhost:8000/api/payments/getsaveorder/1

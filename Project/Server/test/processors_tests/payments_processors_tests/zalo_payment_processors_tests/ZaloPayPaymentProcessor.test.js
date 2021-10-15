@@ -127,7 +127,7 @@ describe("Proc Tạo đơn hàng", () => {
     const processor = new getProcessor();
 
     //Act
-    const id = processor.getOrderId();
+    const id = await processor.getOrderId();
 
     //Expect
     expect(id).toBeDefined();

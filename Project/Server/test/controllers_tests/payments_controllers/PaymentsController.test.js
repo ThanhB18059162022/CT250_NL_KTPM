@@ -10,6 +10,10 @@ class PaymentsControllerImp extends PaymentsController {}
 //#region INIT
 
 class ProcessorMock {
+  getStoreOrders = jest.fn(async () => []);
+
+  deleteStoreOrder = jest.fn();
+
   getSaveOrder = jest.fn((id) => {
     if (id == undefined) {
       throw new NotValidError();
@@ -31,6 +35,47 @@ function getController() {
 describe("Ctrlr Abstract class", () => {
   test("Khởi tạo lớp trừu tượng", () => {
     expect(() => new PaymentsController()).toThrowError();
+  });
+});
+
+describe("Ctrlr Đơn hàng đã đặt", () => {
+  beforeEach(() => {
+    processorMock = new ProcessorMock();
+  });
+
+  test("Lấy ra các đơn hàng đã đặt", async () => {
+    //Arrange
+    const controller = getController();
+
+    const reqMock = {};
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 200, body: [] };
+    const actRes = await controller.getStoreOrders(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(processorMock.getStoreOrders).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Xóa đơn hàng đã đặt", async () => {
+    //Arrange
+    const id = "";
+    const controller = getController();
+
+    const reqMock = { params: { id } };
+    const resMock = new ResponseMock();
+
+    //Act
+    const expRes = { statusCode: 204, body: {} };
+    const actRes = await controller.deleteStoreOrder(reqMock, resMock);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(processorMock.deleteStoreOrder).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
   });
 });
 

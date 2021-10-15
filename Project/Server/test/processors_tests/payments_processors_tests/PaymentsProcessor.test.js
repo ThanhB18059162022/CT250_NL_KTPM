@@ -3,6 +3,7 @@ const {
   CurrencyExchangeServiceMock,
   PaymentDAOMock,
   PaymentValidatorMock,
+  StorageServiceMock,
 } = require("./paymentsProcessorHelper");
 const {
   NotValidError,
@@ -15,9 +16,15 @@ class PaymentsProcessorImp extends PaymentsProcessor {}
 let validatorMock;
 let daoMock;
 let serviceMock;
+let storageMock;
 
 function getProcessor() {
-  return new PaymentsProcessorImp(validatorMock, daoMock, serviceMock);
+  return new PaymentsProcessorImp(
+    validatorMock,
+    daoMock,
+    serviceMock,
+    storageMock
+  );
 }
 
 describe("Proc Abstract Test", () => {
@@ -112,6 +119,25 @@ describe("Proc Lấy ra danh sách sản phẩm có giá", () => {
       { prod_no: 3, prod_quantity: undefined },
     ];
     const actRs = await processor.getOrderProducts(products);
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+});
+
+describe("Proc Đơn đặt hàng", () => {
+  beforeEach(() => {
+    storageMock = new StorageServiceMock();
+  });
+
+  test("Lấy ra danh sách đơn đặt hàng", async () => {
+    //Arrange
+    const orders = [];
+    const processor = getProcessor();
+
+    //Act
+    const expRs = orders;
+    const actRs = await processor.getStoreOrders();
 
     //Expect
     expect(actRs).toEqual(expRs);

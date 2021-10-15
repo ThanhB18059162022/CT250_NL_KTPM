@@ -24,13 +24,34 @@ module.exports = class MysqlDAO {
     return affectedRows;
   };
 
+  //#region Trans
+
+  //Tạo giao dịch
+  beginTrans = async () => {
+    const promTrans = promisify(
+      this.connection.beginTransaction.bind(this.connection)
+    );
+
+    return await promTrans();
+  };
+
+  //Dành khi bị lỗi
+  rollBack = async () => {
+    const promRoll = promisify(this.connection.rollback.bind(this.connection));
+
+    await promRoll();
+  };
+
+  //Kết thúc trans
+  commit = async () => {
+    const promCom = promisify(this.connection.commit.bind(this.connection));
+
+    await promCom();
+  };
+
+  //#endregion
+
   //Chuyển callback sang promise
   getPromsieQuery = () =>
     promisify(this.connection.query.bind(this.connection));
-
-  //Tạo giao dịch
-  beginTrans = () => this.connection?.beginTransaction();
-
-  //Kết thúc truy vấn
-  done = () => this.connection?.end();
 };

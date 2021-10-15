@@ -106,6 +106,7 @@ GET http://localhost:8000/api/moderators/Mod_Id/000000090
 
 ### Hợp lệ 200
 GET http://localhost:8000/api/moderators/username/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJyb2xlIjoiZW1wIn0sImlhdCI6MTYzNDI5NjMwMCwiZXhwIjoxNjM0Mjk5OTAwfQ.JNYZGseZ7t9vyyLc_HpaPz6CNK0UPYuAf2C1ofzFP7g
 
 # Không hợp lệ 400
 
@@ -139,6 +140,7 @@ GET http://localhost:8000/api/moderators/username/alexa
 # Trả về mod có mod_no
 POST http://localhost:8000/api/moderators
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0Mjk2Mzc5LCJleHAiOjE2MzQyOTk5Nzl9.P8WwVk3e1KVkTayvsN618cpCCa2VgqSCQRzS3hJ5NJI
 
 {
     "mod_id": "555555550",
@@ -1026,7 +1028,8 @@ Content-Type: application/json
 
 # Khóa tài khoản quản trị
 ### Hợp lệ 204
-DELETE http://localhost:8000/api/moderators/3
+DELETE http://localhost:8000/api/moderators/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0Mjk2Mzc5LCJleHAiOjE2MzQyOTk5Nzl9.P8WwVk3e1KVkTayvsN618cpCCa2VgqSCQRzS3hJ5NJI
 
 # Không hợp lệ 400
 ### 1 mod_no < 0

@@ -30,11 +30,7 @@ const controller = new AuthenticationController(processor, config);
 // Bắc buộc đăng nhập
 router
   .route("/getUser")
-  .get(
-    controller.authenticate,
-    controller.authorize(["admin", "emp"]),
-    errorCatch(controller.getLoginUser)
-  );
+  .get(controller.authenticate, errorCatch(controller.getLoginUser));
 
 router.route("/login").post(errorCatch(controller.login));
 

@@ -16,10 +16,15 @@ services:
     build: ./database
     volumes:
       - mariadb:/var/lib/mysql
+    ports:
+      - 3307:3306
 
   redis:
     image: redis
+    volumes:
+      - redis:/data
 
 volumes:
   server-node_modules:
   mariadb:
+  redis:

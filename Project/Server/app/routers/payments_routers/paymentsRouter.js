@@ -1,10 +1,10 @@
+//#region Require
+
 const express = require("express");
 const router = express.Router();
 const config = require("../../config");
 
 // Router gắn endpoints vào controller
-
-//#region Require
 
 // Bắt lỗi server
 const { errorCatch } = require("../routerErrorHandler");
@@ -53,12 +53,11 @@ router
   .route("/default/createOrder")
   .post(errorCatch(defaultController.createOrder));
 
-// Thanh toán admin only
+// Thanh toán  - login
 router
   .route("/default/checkoutOrder/:id")
   .get(
     authController.authenticate,
-    authController.authorize(["admin", "emp"]),
     errorCatch(defaultController.checkoutOrder)
   );
 
@@ -106,6 +105,27 @@ router.route("/zalo/createOrder").post(errorCatch(zaloController.createOrder));
 router
   .route("/zalo/checkoutOrder/:id")
   .get(errorCatch(zaloController.checkoutOrder));
+
+//#endregion
+
+//#region StoreOrders
+// Lấy ra order lưu tạm - Phải login
+
+router
+  .route("/StoreOrders/")
+  .get(
+    authController.authenticate,
+    errorCatch(payPalcontroller.getStoreOrders)
+  );
+
+// Xóa order lưu tạm - Admin
+router
+  .route("/StoreOrders/:id")
+  .delete(
+    authController.authenticate,
+    authController.authorize(["admin"]),
+    errorCatch(payPalcontroller.deleteStoreOrder)
+  );
 
 //#endregion
 
@@ -176,7 +196,7 @@ function getDI() {
   const dao = new PaymentsDAO(sqldao);
   const validator = new PaymentsValidator();
   const exService = new CurrencyExchangeService(config.payment.currency);
-  const storeService = new StorageService();
+  const storeService = new StorageService(config.dbConnection.redis);
 
   return { dao, validator, exService, storeService };
 }

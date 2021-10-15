@@ -76,8 +76,8 @@ module.exports = class ModeratorsDAO extends ModelDAO {
 
   //#endregion
 
-  addModerator = async (moderator) => {
-    const dbModerator = this.toDbModerator(moderator);
+  addModerator = async (newModerator) => {
+    const dbModerator = this.toDbModerator(newModerator);
     const dbParams = this.extractParams(dbModerator);
 
     const sql = `INSERT INTO Moderators (mod_name, mod_id, mod_phoneNumber, mod_sex, mod_address, mod_role, mod_username, mod_password) 
@@ -86,6 +86,14 @@ module.exports = class ModeratorsDAO extends ModelDAO {
     await this.handleExeError(
       async () => await this.sqldao.execute(sql, dbParams)
     );
+
+    const moderator = (
+      await this.sqldao.query("SELECT * FROM Moderators WHERE mod_username=?", [
+        dbModerator.mod_username,
+      ])
+    )[0];
+
+    return moderator;
   };
 
   updateModerator = async (mod_no, moderator) => {
