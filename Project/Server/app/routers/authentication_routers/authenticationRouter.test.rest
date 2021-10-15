@@ -4,8 +4,7 @@
 
 # Lấy ra người dùng đăng nhập
 GET http://localhost:8000/api/authentication/getUser
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0MTk3OTc5LCJleHAiOjE2MzQyMDE1Nzl9.FFBAttkiRlRzkwOt9IWST6zeNhEa_8EDpKzQWuzimsw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0Mjc5NTkyLCJleHAiOjE2MzQyODMxOTJ9.D9easpUN-YPslrMaBH96jNCAsY4b03uo64Gs1XmFOPQ
 
 
 
@@ -14,7 +13,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
 
 
 
-### Đăng nhập hợp lệ trả về token 201
+### Đăng nhập hợp lệ trả về token 201 - Admin
 POST http://localhost:8000/api/authentication/login
 Content-Type: application/json
 
@@ -22,6 +21,17 @@ Content-Type: application/json
     "username":"admin",
     "password": "123456"
 }
+
+
+### Đăng nhập hợp lệ trả về token 201 - Staff
+POST http://localhost:8000/api/authentication/login
+Content-Type: application/json
+
+{
+    "username":"staff",
+    "password": "123456"
+}
+
 
 # Đăng nhập không hợp lệ 400
 

@@ -53,12 +53,11 @@ router
   .route("/default/createOrder")
   .post(errorCatch(defaultController.createOrder));
 
-// Thanh toán admin only
+// Thanh toán  - login
 router
   .route("/default/checkoutOrder/:id")
   .get(
     authController.authenticate,
-    authController.authorize(["admin", "emp"]),
     errorCatch(defaultController.checkoutOrder)
   );
 
@@ -110,14 +109,23 @@ router
 //#endregion
 
 //#region StoreOrders
+// Lấy ra order lưu tạm - Phải login
 
-// Lấy ra order lưu tạm
-router.route("/StoreOrders/").get(errorCatch(payPalcontroller.getStoreOrders));
+router
+  .route("/StoreOrders/")
+  .get(
+    authController.authenticate,
+    errorCatch(payPalcontroller.getStoreOrders)
+  );
 
-// Xóa order lưu tạm
+// Xóa order lưu tạm - Admin
 router
   .route("/StoreOrders/:id")
-  .delete(errorCatch(payPalcontroller.deleteStoreOrder));
+  .delete(
+    authController.authenticate,
+    authController.authorize(["admin"]),
+    errorCatch(payPalcontroller.deleteStoreOrder)
+  );
 
 //#endregion
 
