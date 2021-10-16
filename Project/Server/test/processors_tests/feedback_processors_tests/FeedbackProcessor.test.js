@@ -294,6 +294,7 @@ describe("Proc Xóa phản hồi", () => {
     }
 
     //Expect
+    console.log(actRs);
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
   });

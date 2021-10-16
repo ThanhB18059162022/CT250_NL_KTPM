@@ -1,13 +1,5 @@
 const FeedbackValidator = require("../../../app/validators/feedback_validators/FeedbackValidator");
 
-//#region INIT
-
-class ProductValidatorMock {
-  validateNo = jest.fn((prod_no) => ({ hasAnyError: isNaN(prod_no) }));
-}
-
-//#endregion
-
 let prodValidator;
 function getValidator() {
   return new FeedbackValidator(prodValidator);
