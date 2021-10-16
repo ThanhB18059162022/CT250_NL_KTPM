@@ -953,3 +953,29 @@ VALUES ('ceaa5c583d66d3e0b95d91c7a8663ec4c78088913a2e1ebb4176efe4da3db8d0', 7498
 INSERT INTO Orders_Details(order_no, pd_no, od_quantity) VALUES(2, 1, 1);
 INSERT INTO Orders_Details(order_no, pd_no, od_quantity) VALUES(2, 2, 1);
 
+
+
+-- ------------------------------ Feedback -----------------------------------------------------
+
+
+
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Xài được", 1, 1);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Máy hơi nóng", 2, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Điện thoại chạy chia màng hình hơi giật", 1, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Fan táo", 2, 1);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Xài được", 1, 1);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Máy hơi nóng", 2, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Điện thoại chạy chia màng hình hơi giật", 1, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Fan táo", 2, 1);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Xài được", 1, 1);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Máy hơi nóng", 2, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Điện thoại chạy chia màng hình hơi giật", 1, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Fan táo", 2, 1);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Xài được", 1, 1);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Máy hơi nóng", 2, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Điện thoại chạy chia màng hình hơi giật", 1, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Fan táo", 2, 1);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Xài được", 1, 1);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Máy hơi nóng", 2, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Điện thoại chạy chia màng hình hơi giật", 1, 2);
+INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Fan táo", 2, 1);

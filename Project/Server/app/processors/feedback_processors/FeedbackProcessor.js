@@ -1,8 +1,4 @@
 const Processor = require("../Processor");
-const {
-  NotValidError,
-  NotExistError,
-} = require("../../errors/errorsContainer");
 
 module.exports = class FeedbackProcessor extends Processor {
   constructor(validator, dao) {
@@ -96,11 +92,12 @@ module.exports = class FeedbackProcessor extends Processor {
 
   //#endregion
 
-  addFeedback = async (newFeedback) => {
+  addFeedback = async (prod_no, newFeedback) => {
+    this.checkValidate(() => this.validator.validateProductNo(prod_no));
     this.checkValidate(() => this.validator.validateFeedback(newFeedback));
 
     // Thêm vào CSDL trả về fb_no
-    const feedback = await this.dao.addFeedback(newFeedback);
+    const feedback = await this.dao.addFeedback(prod_no, newFeedback);
 
     return feedback;
   };

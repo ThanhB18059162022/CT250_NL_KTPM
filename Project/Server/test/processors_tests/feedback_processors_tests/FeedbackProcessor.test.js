@@ -222,6 +222,7 @@ describe("Proc Thêm phản hồi", () => {
 
   test("Phản hồi không hợp lệ - EX", async () => {
     //Arrange
+    const prod_no = 1;
     const feedback = undefined;
     const processor = getProcessor();
 
@@ -229,7 +230,7 @@ describe("Proc Thêm phản hồi", () => {
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.addFeedback(feedback);
+      await processor.addFeedback(prod_no, feedback);
     } catch (error) {
       actRs = error;
     }
@@ -241,12 +242,13 @@ describe("Proc Thêm phản hồi", () => {
 
   test("Thêm thành công", async () => {
     //Arrange
+    const prod_no = 1;
     const feedback = {};
     const processor = getProcessor();
 
     //Act
     const expRes = { fb_no: FEEDBACK.length + 1 };
-    const actRes = await processor.addFeedback(feedback);
+    const actRes = await processor.addFeedback(prod_no, feedback);
 
     //Expect
     expect(actRes).toEqual(expRes);
@@ -263,6 +265,7 @@ describe("Proc Thêm trả lời phản hồi", () => {
 
   test("Phản hồi không hợp lệ - EX", async () => {
     //Arrange
+    const prod_no = 1;
     const feedback = undefined;
     const processor = getProcessor();
 
@@ -270,7 +273,7 @@ describe("Proc Thêm trả lời phản hồi", () => {
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.addFeedback(feedback);
+      await processor.addFeedback(prod_no, feedback);
     } catch (error) {
       actRs = error;
     }
@@ -282,12 +285,13 @@ describe("Proc Thêm trả lời phản hồi", () => {
 
   test("Thêm thành công", async () => {
     //Arrange
+    const prod_no = 1;
     const feedback = {};
     const processor = getProcessor();
 
     //Act
     const expRes = { fb_no: FEEDBACK.length + 1 };
-    const actRes = await processor.addFeedback(feedback);
+    const actRes = await processor.addFeedback(prod_no, feedback);
 
     //Expect
     expect(actRes).toEqual(expRes);

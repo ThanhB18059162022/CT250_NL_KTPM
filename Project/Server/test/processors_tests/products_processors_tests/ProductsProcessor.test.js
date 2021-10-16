@@ -137,6 +137,12 @@ class ProductsValidatorMock {
 class ImageServiceMock {
   getProductImages = jest.fn();
 }
+
+class FeedbackProcessorMock {
+  getFeedbackByProductNo = jest.fn();
+
+  addFeedback = jest.fn(async (f) => f);
+}
 //#endregion
 
 // Test các api endpoints của products processor
@@ -144,9 +150,15 @@ class ImageServiceMock {
 let daoMock;
 let validatorMock;
 let imgServiceMock;
+let fbProcMock;
 
 function getProcessor() {
-  return new ProductsProcessor(validatorMock, daoMock, imgServiceMock);
+  return new ProductsProcessor(
+    validatorMock,
+    daoMock,
+    imgServiceMock,
+    fbProcMock
+  );
 }
 
 //#region GET
@@ -374,6 +386,25 @@ describe("Proc Lấy sản phẩm theo tên", () => {
   });
 });
 
+describe("Proc Lấy ra đánh giá sản phẩm", () => {
+  beforeEach(() => {
+    fbProcMock = new FeedbackProcessorMock();
+  });
+
+  test("Gọi feedback proc", async () => {
+    //Arrange
+    const prod_no = undefined;
+
+    const processor = getProcessor();
+
+    //Act
+    await processor.getFeedback(prod_no);
+
+    //Expect
+    expect(fbProcMock.getFeedbackByProductNo).toBeCalledTimes(1);
+  });
+});
+
 //#endregion
 
 describe("Proc Thêm sản phẩm", () => {
@@ -506,6 +537,75 @@ describe("Proc Thêm chi tiết của sản phẩm", () => {
     //Expect
     expect(validatorMock.validateProductDetails).toBeCalledTimes(1);
     expect(daoMock.addProductDetails).toBeCalledTimes(1);
+  });
+});
+
+describe("Proc Thêm đánh giá cho sản phẩm", () => {
+  beforeEach(() => {
+    daoMock = new ProductsDAOMock();
+    validatorMock = new ProductsValidatorMock();
+    fbProcMock = new FeedbackProcessorMock();
+  });
+
+  test("Không hợp lệ - EX", async () => {
+    //Arrange
+    const prod_no = undefined;
+    const feedback = undefined;
+
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotValidError;
+    let actRs;
+    try {
+      await processor.addFeedback(prod_no, feedback);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs).toBeDefined();
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
+  });
+
+  test("Sản phẩm không tồn tại - EX", async () => {
+    //Arrange
+    const prod_no = 404;
+    const feedback = [];
+
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotExistError;
+    let actRs;
+    try {
+      await processor.addFeedback(prod_no, feedback);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs).toBeDefined();
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
+    expect(daoMock.getProductByNo).toBeCalledTimes(1);
+  });
+
+  test("Thêm thành công", async () => {
+    //Arrange
+    const prod_no = 1;
+    const feedback = [];
+
+    const processor = getProcessor();
+
+    //Act
+    await processor.addFeedback(prod_no, feedback);
+
+    //Expect
+    expect(validatorMock.validateNo).toBeCalledTimes(1);
+    expect(daoMock.getProductByNo).toBeCalledTimes(1);
+    expect(fbProcMock.addFeedback).toBeCalledTimes(1);
   });
 });
 

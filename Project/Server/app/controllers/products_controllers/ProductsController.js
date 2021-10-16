@@ -47,6 +47,17 @@ module.exports = class ProductsController extends Controller {
     }
   };
 
+  //Lấy đánh giá
+  getFeedback = async (req, res) => {
+    const {
+      params: { prod_no },
+      query,
+    } = req;
+    const product = await this.processor.getFeedback(prod_no, query);
+
+    return this.ok(res, product);
+  };
+
   //#endregion
 
   //#region  ADD
@@ -75,6 +86,21 @@ module.exports = class ProductsController extends Controller {
       const product = await this.processor.addProductDetails(prod_no, details);
 
       return this.created(res, product);
+    } catch (error) {
+      return this.checkError(res, error);
+    }
+  };
+
+  addFeedback = async (req, res) => {
+    try {
+      const {
+        body: newFeedback,
+        params: { prod_no },
+      } = req;
+
+      const feedback = await this.processor.addFeedback(prod_no, newFeedback);
+
+      return this.created(res, feedback);
     } catch (error) {
       return this.checkError(res, error);
     }

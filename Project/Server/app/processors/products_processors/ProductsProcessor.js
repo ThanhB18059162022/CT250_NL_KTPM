@@ -167,10 +167,6 @@ module.exports = class ProductsProcessor extends Processor {
   getFeedback = async (prod_no, query) =>
     await this.feedbackProcessor.getFeedbackByProductNo(prod_no, query);
 
-  // Lấy phản hồi đánh giá
-  getSubFeedback = async (fb_no, query) =>
-    await this.feedbackProcessor.getSubFeedback(fb_no, query);
-
   //#endregion
 
   //#region ADD
@@ -196,8 +192,12 @@ module.exports = class ProductsProcessor extends Processor {
     await this.dao.addProductDetails(product.prod_no, details);
   };
 
-  // Thêm phản hồi
-  // addFeedback = async (prod_no, feedback) => await this.feedbackProcessor.addFeedback
+  // Đánh giá
+  addFeedback = async (prod_no, feedback) => {
+    const product = await this.getProductByNo(prod_no);
+
+    return this.feedbackProcessor.addFeedback(product.prod_no, feedback);
+  };
 
   //#endregion
 

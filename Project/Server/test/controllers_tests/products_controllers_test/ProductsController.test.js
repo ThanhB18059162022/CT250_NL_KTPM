@@ -76,6 +76,8 @@ class ProductsProcessorMock {
     return await this.getProductByNo(prod_name);
   });
 
+  getFeedback = jest.fn();
+
   // Trả về prod_no
   addProduct = jest.fn(async (newProduct) => {
     if (newProduct == undefined) {
@@ -90,6 +92,16 @@ class ProductsProcessorMock {
   });
 
   addProductDetails = jest.fn(async (prod_no, details) => {
+    if (details == undefined) {
+      throw new NotValidError();
+    }
+
+    if (prod_no != 1) {
+      throw new NotExistError();
+    }
+  });
+
+  addFeedback = jest.fn(async (prod_no, details) => {
     if (details == undefined) {
       throw new NotValidError();
     }
@@ -355,6 +367,39 @@ describe("Ctrlr Lấy sản phẩm theo tên", () => {
   });
 });
 
+// 200 - 400 - 404
+describe("Ctrlr Lấy danh sách đánh giá của sản phẩm", () => {
+  beforeEach(() => {
+    processorMock = new ProductsProcessorMock();
+  });
+
+  test("Trả về danh sách", async () => {
+    //Arrange
+    const prod_no = undefined;
+
+    const requestMock = {
+      params: {
+        prod_no,
+      },
+    };
+
+    const response = { statusCode: 200 };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.getFeedback(requestMock, resMock);
+
+    //Expect
+    expect(actRes).toBeDefined();
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.getFeedback).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+});
+
 // 201 - 400
 describe("Ctrlr Thêm sản phẩm", () => {
   beforeEach(() => {
@@ -517,6 +562,91 @@ describe("Ctrlr Thêm chi tiết sản phẩm", () => {
     expect(actRes).toBeDefined();
     expect(actRes.statusCode).toEqual(expRes.statusCode);
     expect(processorMock.addProductDetails).toBeCalledTimes(1);
+    expect(resMock.status).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+});
+
+// 201 - 400 - 404
+describe("Ctrlr Thêm đánh giá", () => {
+  beforeEach(() => {
+    processorMock = new ProductsProcessorMock();
+  });
+
+  test("Không hợp lệ - 400", async () => {
+    //Arrange
+    const details = undefined;
+
+    const requestMock = {
+      params: {},
+      body: details,
+    };
+
+    const response = { statusCode: 400, body: details };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.addFeedback(requestMock, resMock);
+
+    //Expect
+    expect(actRes).toBeDefined();
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.addFeedback).toBeCalledTimes(1);
+    expect(resMock.status).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Không tồn tại - 404", async () => {
+    //Arrange
+    const details = {};
+
+    const requestMock = {
+      params: {},
+      body: details,
+    };
+
+    const response = { statusCode: 404, body: details };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.addFeedback(requestMock, resMock);
+
+    //Expect
+    expect(actRes).toBeDefined();
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.addFeedback).toBeCalledTimes(1);
+    expect(resMock.status).toBeCalledTimes(1);
+    expect(resMock.json).toBeCalledTimes(1);
+  });
+
+  test("Thành công - 201", async () => {
+    //Arrange
+    const details = {};
+
+    const requestMock = {
+      params: { prod_no: 1 },
+      body: details,
+    };
+
+    const response = { statusCode: 201, body: details };
+    const resMock = new ResponseMock();
+
+    const controller = getController();
+
+    //Act
+    const expRes = response;
+    const actRes = await controller.addFeedback(requestMock, resMock);
+
+    //Expect
+    expect(actRes).toBeDefined();
+    expect(actRes.statusCode).toEqual(expRes.statusCode);
+    expect(processorMock.addFeedback).toBeCalledTimes(1);
     expect(resMock.status).toBeCalledTimes(1);
     expect(resMock.json).toBeCalledTimes(1);
   });

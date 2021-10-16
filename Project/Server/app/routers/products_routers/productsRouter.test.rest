@@ -2041,3 +2041,25 @@ Content-Type: application/json
   "prod_status": "",
   "brand_no": 6
 }
+
+
+# ---------------------------------------------------------------------
+
+
+
+### Get Feedback
+GET http://localhost:8000/api/products/1/feedbacks?page=1&limit=30
+
+### Add Feedback
+POST http://localhost:8000/api/products/1/feedbacks
+Content-Type: application/json
+
+{
+  "customer":{
+      "cus_name": "Alexander",
+      "cus_email": "alex@gmail.com",
+      "cus_sex": true,
+      "cus_phoneNumber": "0000000000"
+  },
+  "fb_content": "Điện thoại chạy chia màng hình hơi giật"
+}
