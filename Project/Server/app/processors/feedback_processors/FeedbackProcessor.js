@@ -39,12 +39,9 @@ module.exports = class FeedbackProcessor extends Processor {
 
   // Lấy phản hồi theo mã sản phẩm
   getFeedbackByProductNo = async (
-    prod_noParam,
+    prod_no,
     { page = 1, limit = 3, order = "DESC" }
   ) => {
-    const prod_no = Number(prod_noParam);
-    this.checkValidate(() => this.validator.validateProductNo(prod_no));
-
     const { startIndex, endIndex, pageIndex, limitIndex } = this.getIndexes(
       page,
       limit
@@ -93,27 +90,19 @@ module.exports = class FeedbackProcessor extends Processor {
   //#endregion
 
   addFeedback = async (prod_no, newFeedback) => {
-    this.checkValidate(() => this.validator.validateProductNo(prod_no));
     this.checkValidate(() => this.validator.validateFeedback(newFeedback));
 
-    // Thêm vào CSDL trả về fb_no
     const feedback = await this.dao.addFeedback(prod_no, newFeedback);
 
     return feedback;
   };
 
-  addSubFeedback = async (fb_no, newFeedback) => {
-    this.checkValidate(() => this.validator.validateFeedback(newFeedback));
-
+  addReply = async (fb_no, newReply) => {
     const feedback = await this.getFeedbackByNo(fb_no);
 
-    // Thêm vào CSDL trả về fb_no
-    const subFeedback = await this.dao.addSubFeedback(
-      feedback.fb_no,
-      newFeedback
-    );
+    const reply = await this.dao.addReply(feedback.fb_no, newReply);
 
-    return subFeedback;
+    return reply;
   };
 
   deleteFeedback = async (fb_noParam) => {

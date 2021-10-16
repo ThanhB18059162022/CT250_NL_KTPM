@@ -143,23 +143,3 @@ describe("Val Kiểm tra phản hồi model", () => {
     expect(actRs).toEqual(expRs);
   });
 });
-
-describe("Val Kiểm tra mã sản phẩm", () => {
-  beforeEach(() => {
-    prodValidator = new ProductValidatorMock();
-  });
-
-  test("Mã sản phẩm gọi hàm xác thực mã", () => {
-    // Arrange
-    const pro_no = undefined;
-    const validator = getValidator();
-    const failed = true;
-
-    //Act
-    const expRs = failed;
-    const actRs = validator.validateProductNo(pro_no).hasAnyError;
-
-    //Expect
-    expect(actRs).toEqual(expRs);
-  });
-});

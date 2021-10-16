@@ -59,9 +59,4 @@ module.exports = class FeedbackValidator extends Validator {
 
     return result;
   };
-
-  // Kiểm tra mã sản phẩm
-  validateProductNo = (prod_no) => {
-    return this.productValidator.validateNo(prod_no);
-  };
 };
