@@ -72,11 +72,68 @@ describe("Val Kiểm tra mã phản hồi", () => {
 });
 
 describe("Val Kiểm tra phản hồi model", () => {
-  test("OK - mẫu", () => {
+  test("Undefined", () => {
     // Arrange
     const fb = undefined;
     const validator = getValidator();
     const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateFeedback(fb).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Thiếu customer", () => {
+    // Arrange
+    const fb = {};
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateFeedback(fb).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Thiếu content", () => {
+    // Arrange
+    const fb = {
+      customer: {
+        cus_name: "Alexander",
+        cus_email: "alex@gmail.com",
+        cus_sex: true,
+        cus_phoneNumber: "0000000000",
+      },
+    };
+    const validator = getValidator();
+    const failed = true;
+
+    //Act
+    const expRs = failed;
+    const actRs = validator.validateFeedback(fb).hasAnyError;
+
+    //Expect
+    expect(actRs).toEqual(expRs);
+  });
+
+  test("Hợp lệ", () => {
+    // Arrange
+    const fb = {
+      customer: {
+        cus_name: "Alexander",
+        cus_email: "alex@gmail.com",
+        cus_sex: true,
+        cus_phoneNumber: "0000000000",
+      },
+      fb_content: "aaaaaaaa",
+    };
+    const validator = getValidator();
+    const failed = false;
 
     //Act
     const expRs = failed;

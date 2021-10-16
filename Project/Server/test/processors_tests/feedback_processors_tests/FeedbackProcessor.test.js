@@ -42,19 +42,21 @@ class FeedbackDAOMock {
     if (no === 1) {
       return FEEDBACK[0];
     }
+
+    throw new NotExistError();
   });
 
-  getFeedbackByProductNo = jest.fn(async () => FEEDBACK);
+  getFeedbackByProductNo = jest.fn(async (prod_no) => {
+    if (prod_no == 1) {
+      return FEEDBACK;
+    }
 
-  getSubFeedbackOfFeedback = jest.fn(async () => FEEDBACK);
-
-  existProduct = jest.fn((pro_no) => {
-    return pro_no === 1;
+    throw new NotExistError();
   });
 
-  existFeedback = jest.fn((fb_no) => fb_no === 1);
+  getSubFeedback = jest.fn(async () => FEEDBACK);
 
-  addFeedback = jest.fn(async () => FEEDBACK.length + 1);
+  addFeedback = jest.fn(async () => ({ fb_no: FEEDBACK.length + 1 }));
 
   deleteFeedback = jest.fn();
 }
@@ -87,19 +89,25 @@ describe("Proc Lấy danh sách phản hồi", () => {
     //Expect
     expect(actRes).toEqual(expRes);
   });
+});
 
-  //#region  Sản phẩm
+describe("Proc Lấy danh sách phản hồi của sản phẩm", () => {
+  beforeEach(() => {
+    validatorMock = new FeedBackValidatorMock();
+    daoMock = new FeedbackDAOMock();
+  });
 
   test("Mã không hợp lệ - EX", async () => {
     //Arrange
     const prod_no = undefined;
+    const query = {};
     const processor = getProcessor();
 
     //Act
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.getFeedbackByProductNo(prod_no);
+      await processor.getFeedbackByProductNo(prod_no, query);
     } catch (error) {
       actRs = error;
     }
@@ -111,19 +119,19 @@ describe("Proc Lấy danh sách phản hồi", () => {
   test("Sản phẩm không tồn tại - EX", async () => {
     //Arrange
     const prod_no = "3";
+    const query = {};
     const processor = getProcessor();
 
     //Act
     const expRs = NotExistError;
     let actRs;
     try {
-      await processor.getFeedbackByProductNo(prod_no);
+      await processor.getFeedbackByProductNo(prod_no, query);
     } catch (error) {
       actRs = error;
     }
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(daoMock.existProduct).toBeCalledTimes(1);
     expect(validatorMock.validateProductNo).toBeCalledTimes(1);
   });
 
@@ -140,23 +148,26 @@ describe("Proc Lấy danh sách phản hồi", () => {
     //Expect
     expect(actRs).toEqual(expRs);
     expect(validatorMock.validateProductNo).toBeCalledTimes(1);
-    expect(daoMock.existProduct).toBeCalledTimes(1);
   });
+});
 
-  //#endregion
-
-  //#region SubFeedback
+describe("Proc Lấy danh sách trả lời của 1 phản hồi", () => {
+  beforeEach(() => {
+    validatorMock = new FeedBackValidatorMock();
+    daoMock = new FeedbackDAOMock();
+  });
 
   test("Danh sách trả lời không hợp lệ - EX", async () => {
     //Arrange
     const processor = getProcessor();
     const fb_no = undefined;
+    const query = {};
 
     //Act
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.getSubFeedbackOfFeedback(fb_no);
+      await processor.getSubFeedback(fb_no, query);
     } catch (error) {
       actRs = error;
     }
@@ -170,12 +181,13 @@ describe("Proc Lấy danh sách phản hồi", () => {
     //Arrange
     const processor = getProcessor();
     const fb_no = "5";
+    const query = {};
 
     //Act
     const expRs = NotExistError;
     let actRs;
     try {
-      await processor.getSubFeedbackOfFeedback(fb_no);
+      await processor.getSubFeedback(fb_no, query);
     } catch (error) {
       actRs = error;
     }
@@ -183,7 +195,6 @@ describe("Proc Lấy danh sách phản hồi", () => {
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
-    expect(daoMock.existFeedback).toBeCalledTimes(1);
   });
 
   test("Lấy danh sách trả lời phản hồi của phản hồi - 200", async () => {
@@ -194,15 +205,13 @@ describe("Proc Lấy danh sách phản hồi", () => {
 
     //Act
     const expRes = { items: feedback };
-    const actRes = await processor.getSubFeedbackOfFeedback(fb_no, {});
+    const actRes = await processor.getSubFeedback(fb_no, {});
 
     //Expect
     expect(actRes).toEqual(expRes);
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
-    expect(daoMock.existFeedback).toBeCalledTimes(1);
+    expect(daoMock.getSubFeedback).toBeCalledTimes(1);
   });
-
-  //#endregion
 });
 
 describe("Proc Thêm phản hồi", () => {
@@ -213,6 +222,7 @@ describe("Proc Thêm phản hồi", () => {
 
   test("Phản hồi không hợp lệ - EX", async () => {
     //Arrange
+    const prod_no = 1;
     const feedback = undefined;
     const processor = getProcessor();
 
@@ -220,7 +230,7 @@ describe("Proc Thêm phản hồi", () => {
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.addFeedback(feedback);
+      await processor.addFeedback(prod_no, feedback);
     } catch (error) {
       actRs = error;
     }
@@ -232,12 +242,56 @@ describe("Proc Thêm phản hồi", () => {
 
   test("Thêm thành công", async () => {
     //Arrange
+    const prod_no = 1;
     const feedback = {};
     const processor = getProcessor();
 
     //Act
     const expRes = { fb_no: FEEDBACK.length + 1 };
-    const actRes = await processor.addFeedback(feedback);
+    const actRes = await processor.addFeedback(prod_no, feedback);
+
+    //Expect
+    expect(actRes).toEqual(expRes);
+    expect(validatorMock.validateFeedback).toBeCalledTimes(1);
+    expect(daoMock.addFeedback).toBeCalledTimes(1);
+  });
+});
+
+describe("Proc Thêm trả lời phản hồi", () => {
+  beforeEach(() => {
+    validatorMock = new FeedBackValidatorMock();
+    daoMock = new FeedbackDAOMock();
+  });
+
+  test("Phản hồi không hợp lệ - EX", async () => {
+    //Arrange
+    const prod_no = 1;
+    const feedback = undefined;
+    const processor = getProcessor();
+
+    //Act
+    const expRs = NotValidError;
+    let actRs;
+    try {
+      await processor.addFeedback(prod_no, feedback);
+    } catch (error) {
+      actRs = error;
+    }
+
+    //Expect
+    expect(actRs instanceof expRs).toBeTruthy();
+    expect(validatorMock.validateFeedback).toBeCalledTimes(1);
+  });
+
+  test("Thêm thành công", async () => {
+    //Arrange
+    const prod_no = 1;
+    const feedback = {};
+    const processor = getProcessor();
+
+    //Act
+    const expRes = { fb_no: FEEDBACK.length + 1 };
+    const actRes = await processor.addFeedback(prod_no, feedback);
 
     //Expect
     expect(actRes).toEqual(expRes);
@@ -261,12 +315,13 @@ describe("Proc Xóa phản hồi", () => {
     const expRs = NotValidError;
     let actRs;
     try {
-      await processor.getSubFeedbackOfFeedback(fb_no);
+      await processor.deleteFeedback(fb_no);
     } catch (error) {
       actRs = error;
     }
 
     //Expect
+    console.log(actRs);
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
   });
@@ -280,7 +335,7 @@ describe("Proc Xóa phản hồi", () => {
     const expRs = NotExistError;
     let actRs;
     try {
-      await processor.getSubFeedbackOfFeedback(fb_no);
+      await processor.deleteFeedback(fb_no);
     } catch (error) {
       actRs = error;
     }
@@ -288,7 +343,6 @@ describe("Proc Xóa phản hồi", () => {
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
-    expect(daoMock.existFeedback).toBeCalledTimes(1);
   });
 
   test("Xóa thành công", async () => {
@@ -301,7 +355,7 @@ describe("Proc Xóa phản hồi", () => {
 
     //Expect
     expect(validatorMock.validateFeedbackNo).toBeCalledTimes(1);
-    expect(daoMock.existFeedback).toBeCalledTimes(1);
+
     expect(daoMock.deleteFeedback).toBeCalledTimes(1);
   });
 });

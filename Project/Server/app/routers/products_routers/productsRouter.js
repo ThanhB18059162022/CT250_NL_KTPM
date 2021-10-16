@@ -13,15 +13,17 @@ const { errorCatch } = require("../routerErrorHandler");
 const {
   ProductsValidator,
   AuthenticationValidator,
+  FeedbackValidator,
 } = require("../../validators/validatorsContainer");
 const {
   ImageService,
   JwtService,
 } = require("../../services/servicesContainer");
-const { DAO, ProductsDAO } = require("../../daos/daosContainer");
+const { DAO, ProductsDAO, FeedbackDAO } = require("../../daos/daosContainer");
 const {
   ProductsProcessor,
   AuthenticationProcessor,
+  FeedbackProcessor,
 } = require("../../processors/processorsContainer");
 const {
   ProductsController,
@@ -74,6 +76,12 @@ router
     errorCatch(controller.addProductDetails)
   );
 
+// products/1/feedbacks/
+router
+  .route("/:prod_no/feedbacks")
+  .get(errorCatch(controller.getFeedback))
+  .post(errorCatch(controller.addFeedback));
+
 //#endregion
 
 module.exports = router;
@@ -93,7 +101,19 @@ function getProdProc() {
   const validator = new ProductsValidator();
   const imgService = new ImageService(config.baseImgUri);
 
-  return new ProductsProcessor(validator, dao, imgService);
+  return new ProductsProcessor(
+    validator,
+    dao,
+    imgService,
+    getFbProc(validator, sqldao)
+  );
+}
+
+function getFbProc(prodVal, sqldao) {
+  const validator = new FeedbackValidator(prodVal);
+  const dao = new FeedbackDAO(sqldao);
+
+  return new FeedbackProcessor(validator, dao);
 }
 
 //#endregion
