@@ -6,70 +6,12 @@ module.exports = class FeedbackController extends Controller {
     this.processor = processor;
   }
 
-  //#region GET
-
-  // Lấy phản hồi từ ngày đó trở về trước
+  // Lấy phản hồi mới nhất
   getFeedback = async (req, res) => {
     const feedbackPage = await this.processor.getFeedback(req.query);
 
     return this.ok(res, feedbackPage);
   };
-
-  // Lấy phản hồi theo mã sản phẩm
-  getFeedbackByProductNo = async (req, res) => {
-    try {
-      const {
-        params: { prod_no },
-        query,
-      } = req;
-
-      const feedbackPage = this.processor.getFeedbackByProductNo(
-        prod_no,
-        query
-      );
-
-      return this.ok(res, feedbackPage);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
-  };
-
-  // Lấy danh sách trả lời phản hồi của phản hồi
-  getSubFeedbackOfFeedback = async (req, res) => {
-    try {
-      const {
-        params: { fb_no },
-        query,
-      } = req;
-
-      const subFeedbackPage = this.processor.getSubFeedbackOfFeedback(
-        fb_no,
-        query
-      );
-
-      return this.ok(res, subFeedbackPage);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
-  };
-
-  //#endregion
-
-  //#region ADD
-
-  addFeedback = async (req, res) => {
-    try {
-      const newFeedback = await this.processor.addFeedback(req.body);
-
-      return this.created(res, newFeedback);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
-  };
-
-  //#endregion
-
-  //#region DELETE
 
   deleteFeedback = async (req, res) => {
     try {
@@ -81,6 +23,4 @@ module.exports = class FeedbackController extends Controller {
       return this.checkError(res, error);
     }
   };
-
-  //#endregion
 };

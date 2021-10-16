@@ -2,11 +2,12 @@ const Processor = require("../Processor");
 
 module.exports = class ProductsProcessor extends Processor {
   // Dao dùng truy cập CSDL, validator dùng để xác thực dữ liệu
-  constructor(validator, dao, imageService) {
+  constructor(validator, dao, imageService, feedbackProcessor) {
     super();
     this.validator = validator;
     this.dao = dao;
     this.imageService = imageService;
+    this.feedbackProcessor = feedbackProcessor;
   }
 
   //#region GET
@@ -162,6 +163,14 @@ module.exports = class ProductsProcessor extends Processor {
     return { ...product, prod_details, prod_imgs };
   };
 
+  // Lấy đánh giá
+  getFeedback = async (prod_no, query) =>
+    await this.feedbackProcessor.getFeedbackByProductNo(prod_no, query);
+
+  // Lấy phản hồi đánh giá
+  getSubFeedback = async (fb_no, query) =>
+    await this.feedbackProcessor.getSubFeedback(fb_no, query);
+
   //#endregion
 
   //#region ADD
@@ -186,6 +195,9 @@ module.exports = class ProductsProcessor extends Processor {
 
     await this.dao.addProductDetails(product.prod_no, details);
   };
+
+  // Thêm phản hồi
+  // addFeedback = async (prod_no, feedback) => await this.feedbackProcessor.addFeedback
 
   //#endregion
 
