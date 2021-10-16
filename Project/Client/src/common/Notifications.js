@@ -35,7 +35,7 @@ const Notifications = ({
     );
 };
 
-export default Notifications
+export default React.memo(Notifications)
 
 const Confirm = (props) => {
     const { title, content, handle, isShow, onHideRequest } = props;
