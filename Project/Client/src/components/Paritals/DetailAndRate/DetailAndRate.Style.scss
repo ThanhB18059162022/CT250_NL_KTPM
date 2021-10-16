@@ -1,15 +1,18 @@
 .DetailAndRate {
     display: flex;
+    height: 440px;
     .Comments {
         flex-basis: calc(60% - 10px);
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.466);
         padding: 10px 20px;
+        
         .comment-area {
             position: relative;
             input {
                 padding: 10px;
                 margin: 10px 0;
                 width: 100%;
+                font-size: inherit  ;
                 outline: none;
                 border: none;
                 background: var(--fadeBackground);
@@ -39,6 +42,20 @@
             height: calc(100% - 100px);
             li {
                 list-style: none;
+                &.showMoreFB{
+                    button{
+                        display: block;
+                        margin: 0 auto;
+                        padding: 5px 20px;
+                        color: var(--backgroundColor);
+                        border: 1px solid var(--backgroundColor);
+                        background: transparent;
+                        &:hover{
+                            background: var(--backgroundColor);
+                            color:white;
+                        }
+                    }
+                }
             }
             li + li {
                 margin-top: 10px;
@@ -99,87 +116,82 @@
             user-select: none;
             cursor: pointer;
         }
+
     }
+
     @media screen and (max-width:800px) {
         flex-direction: column;
+        height: auto;
         div.DetailInfo{
             margin: 0;
             flex-basis: 100%;
             margin-top: 20px;
         }
+
+        .Comments ul{
+            max-height: 400px;
+        }
     }
 }
 
-// @media screen and (max-width: 1550px) {
-//     .DetailAndRate {
-//         .Comments {
-//             ul {
-//                 display: flex;
-//                 flex-direction: column;
-//                 height: 480px;
-//             }
-//         }
-//     }
-// }
+.customerFeedbackInfo{
+    position: fixed;
+    height: calc(100vh - 65px);
+    left: 0;
+    top:65px;
+    background: red;
+    width: 100%;
+    z-index: 111;
+    background: rgba(0, 0, 0, 0.288);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .customerWrapper{
+        background: white;
+        padding: 10px 20px;
+        min-width: 450px;
+        h2{
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            color: var(--backgroundColor);
+            border-bottom: 2px solid var(--backgroundColor);
+        }
+        p{
+            & + p{
+                margin-top: 15px;
+            }
+            span{
+                display:inline-block;
+                width: 120px;
+            }
+            input:not([type="radio"]){
+                width: calc(100% - 120px);
+                padding: 5px 10px;
+                font-size: inherit;
+            }
 
-// @media screen and (max-width: 1390px) {
-//     .DetailAndRate {
-//         .Comments {
-//             ul {
-//                 display: flex;
-//                 flex-direction: column;
-//                 height: 450px;
-//             }
-//         }
-//     }
-// }
+            input[type="radio"]{
+                & + label{
+                    margin-left: 5px;
+                }
+                & +label + input[type="radio"]{
+                    margin-left: 20px;
+                }
+            }
+        }
+        .fbbehavior{
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 0;
+            margin-top: 10px;
+            button{
 
-// @media screen and (max-width: 1260px) {
-//     .DetailAndRate {
-//         .Comments {
-//             ul {
-//                 display: flex;
-//                 flex-direction: column;
-//                 height: 470px;
-//             }
-//             flex-basis: 50%;
-//         }
-//         .DetailInfo {
-//             flex-basis: 48%;
-//         }
-//     }
-// }
-
-// @media screen and (max-width: 882px) {
-//     .DetailAndRate {
-//         flex-direction: column-reverse;
-//         flex-wrap: wrap;
-//         .Comments,
-//         .DetailInfo {
-//             flex-basis: 100%;
-//             margin: 15px 0;
-//             .detail-wrapper {
-//                 height: 100%;
-//                 img {
-//                     height: auto;
-//                     width: 100%;
-//                 }
-//             }
-//             .detail-ways {
-//                 top: 0;
-//                 right: 0;
-//                 left: auto;
-//                 transform: translateX(0);
-//                 width: 100px;
-//                 border-radius: 10px;
-//                 padding: 20px;
-//                 width: auto;
-//                 p {
-//                     span:last-child {
-//                         display: none;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
+                padding: 5px 20px;
+                & + button{
+                    margin-left: 20px;
+                }
+            }
+        }
+    }
+}

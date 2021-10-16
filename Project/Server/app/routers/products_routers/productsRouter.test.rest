@@ -2059,7 +2059,7 @@ Content-Type: application/json
 
 
 ### Get Feedback
-GET http://localhost:8000/api/products/1/feedbacks?page=1&limit=30
+GET http://localhost:8000/api/products/2/feedbacks?page=2&limit=30
 
 ### Add Feedback
 POST http://localhost:8000/api/products/1/feedbacks
