@@ -7,9 +7,11 @@ import { useState } from "react";
 import Notifications from "../../common/Notifications";
 import { AdminButton } from "../../components/Controls";
 import "../../components/Paritals/Admin/Admin.Style.scss";
+import ApiCaller from "../../api_services/ApiCaller"
+import { sha256 } from "js-sha256"
 
 const ModeratorInformation = (props) => {
-  const { setDisplay, modInfo, setNewMod, setModInfo, newModNo, mods, setMods, modsTmp, setModsTmp } = props
+  const { setDisplay, modInfo, setNewMod, setModInfo, newModNo } = props
 
   //biến hiển thị thông báo
   const [show, setShow] = useState(false)
@@ -20,16 +22,6 @@ const ModeratorInformation = (props) => {
     content: "", // content of the notify
     infoType: ""
   })
-  //thông báo reset pass
-  const notifyResetPassword = () => {
-    setNotify({
-      ...notify,
-      title: "Thông báo",
-      content: "Đã đặt lại mật khẩu",
-      infoType: 'SUCCESS'
-    })
-    setShow(true)
-  }
   //thông báo tạo mod mới
   const notifyCreateMod = () => {
     setNotify({
@@ -40,7 +32,7 @@ const ModeratorInformation = (props) => {
     })
     setShow(true)
   }
-  //thông báo xóa mod
+  //thông báo sửa thông tin mod
   const notifyEditMod = () => {
     setNotify({
       ...notify,
@@ -51,21 +43,34 @@ const ModeratorInformation = (props) => {
     setShow(true)
   }
   //mod tạm
-  const [modTmp, setModTmp] = useState({ mod_no: newModNo, mod_name: "", mod_id: "", mod_phoneNumber: "", mod_sex: "", mod_address: "" })
+  const [modTmp, setModTmp] = useState({ mod_name: "", mod_id: "", mod_phoneNumber: "", mod_sex: "", mod_address: "" , mod_role: 0, mod_username: "", mod_password: ""})
   //tạo quản trị mới
-  const CreateMod = () => {
+  const CreateMod = async (modTmp) => {
     setNewMod(modTmp)
+    const caller = new ApiCaller()
+    await caller.post('moderators', modTmp)
     notifyCreateMod()
     setTimeout(() => {
       setDisplay(0)
     }, 2000)
   }
+  //gán thông tin mod cần chỉnh thông tin cho modTmp
+  if( modInfo && modTmp.mod_name.length === 0 )
+  {
+    setModTmp({ mod_name: modInfo.mod_name, 
+                mod_id: modInfo.mod_id, 
+                mod_phoneNumber: modInfo.mod_phoneNumber, 
+                mod_sex: (modInfo.mod_sex === 1)?true:false, 
+                mod_address: modInfo.mod_address, 
+                mod_role: modInfo.mod_role, 
+                mod_password: modInfo.mod_password})
+  }
+
   //gọi api cập nhật thông tin mod
-  const callApiUpdateMod = () => {
-    setModInfo(modInfo)
-    mods.map((item, index) => index + 1 !== modInfo.mod_no ? (setModsTmp([...modsTmp, modsTmp[index] = item])) : (setModsTmp([...modsTmp, modsTmp[index] = modInfo])))
-    setMods([])
-    setMods(modsTmp)
+  const callApiUpdateMod = async (modTmp) => {
+    setModInfo(modTmp)
+    const caller = new ApiCaller()
+    await caller.put('moderators/' + modInfo.mod_no, modTmp)
     notifyEditMod()
     setTimeout(() => {
       setDisplay(0)
@@ -75,11 +80,12 @@ const ModeratorInformation = (props) => {
   return (
     <>
       {!modInfo ? (
+        //tạo mới quản trị
         <div className="ModeratorInformation">
           <div className="ModeratorInformationBoder">
             <div className="ModeratorHeader">
               <AdminButton
-                ClickEvent={() => CreateMod()}
+                ClickEvent={() => CreateMod(modTmp)}
                 IconName={faSave}
               />
               <h2>Tạo mới quản trị viên</h2>
@@ -108,23 +114,39 @@ const ModeratorInformation = (props) => {
               <div>
                 <p>Giới tính:</p>
                 <div className="Sex">
-                  <input name="txtModSex" type="radio" onChange={() => setModTmp({ ...modTmp, mod_sex: "male" })} /> <label>Nam</label>
-                  <input name="txtModSex" type="radio" onChange={() => setModTmp({ ...modTmp, mod_sex: "female" })} /> <label>Nữ</label>
+                  <input name="txtModSex" type="radio" onChange={() => setModTmp({ ...modTmp, mod_sex: true })} /> <label>Nam</label>
+                  <input name="txtModSex" type="radio" onChange={() => setModTmp({ ...modTmp, mod_sex: false })} /> <label>Nữ</label>
                 </div>
               </div>
               <div>
                 <p>Địa chỉ:</p>
                 <textarea name="txtModAddress" rows="5" onChange={e => setModTmp({ ...modTmp, mod_address: e.target.value })} />
               </div>
+              <div>
+                <p>Vai trò:</p>
+                <div className="Role">
+                  <input name="txtModRole" type="radio" onChange={() => setModTmp({ ...modTmp, mod_role: 1 })} /> <label>Quản trị</label>
+                  <input name="txtModRole" type="radio" onChange={() => setModTmp({ ...modTmp, mod_role: 0 })} /> <label>Nhân viên</label>
+                </div>
+              </div>
+              <div>
+                <p>Tài khoản:</p>
+                <input name="txtModUserName" type="text" className="TextField" onChange={e => setModTmp({ ...modTmp, mod_username: e.target.value })} />
+              </div>
+              <div>
+                <p>Mật khẩu:</p>
+                <input name="txtModPassword" type="password" className="TextField" onChange={e => setModTmp({ ...modTmp, mod_password: sha256(e.target.value) })} />
+              </div>
             </form>
           </div>
         </div>
       ) : (
+        //sửa thông tin quản trị
         <div className="ModeratorInformation">
           <div className="ModeratorInformationBoder">
             <div className="ModeratorHeader">
               <AdminButton
-                ClickEvent={() => callApiUpdateMod()}
+                ClickEvent={() => callApiUpdateMod(modTmp)}
                 IconName={faSave}
               />
               <h2>Chỉnh sửa quản trị viên</h2>
@@ -140,30 +162,37 @@ const ModeratorInformation = (props) => {
               </div>
               <div>
                 <p>Họ tên:</p>
-                <input name="txtModName" type="text" className="TextField" value={modInfo.mod_name} onChange={e => setModInfo({ ...modInfo, mod_name: e.target.value })} />
+                <input name="txtModName" type="text" className="TextField" value={modTmp.mod_name} onChange={e => setModTmp({ ...modTmp, mod_name: e.target.value })} />
               </div>
               <div>
                 <p>CMND:</p>
-                <input name="txtModID" type="text" className="TextField" value={modInfo.mod_id} onChange={e => setModInfo({ ...modInfo, mod_id: e.target.value })} />
+                <input name="txtModID" type="text" className="TextField" value={modTmp.mod_id} onChange={e => setModTmp({ ...modTmp, mod_id: e.target.value })} />
               </div>
               <div>
                 <p>SĐT:</p>
-                <input name="txtModPhoneNumber" type="text" className="TextField" value={modInfo.mod_phoneNumber} onChange={e => setModInfo({ ...modInfo, mod_phoneNumber: e.target.value })} />
+                <input name="txtModPhoneNumber" type="text" className="TextField" value={modTmp.mod_phoneNumber} onChange={e => setModTmp({ ...modTmp, mod_phoneNumber: e.target.value })} />
               </div>
               <div>
                 <p>Giới tính:</p>
                 <div className="Sex">
-                  <input name="txtModSex" type="radio" checked={modInfo.mod_sex === "male" ? true : false} onChange={e => setModInfo({ ...modInfo, mod_sex: "male" })} />&nbsp; Nam &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input name="txtModSex" type="radio" checked={modInfo.mod_sex === "female" ? true : false} onChange={e => setModInfo({ ...modInfo, mod_sex: "female" })} />&nbsp; Nữ
+                  <input name="txtModSex" type="radio" checked={modTmp.mod_sex === true ? true : false} onChange={e => setModTmp({ ...modTmp, mod_sex: true })} />&nbsp; Nam &nbsp;&nbsp;&nbsp;&nbsp;
+                  <input name="txtModSex" type="radio" checked={modTmp.mod_sex === false ? true : false} onChange={e => setModTmp({ ...modTmp, mod_sex: false })} />&nbsp; Nữ
                 </div>
               </div>
               <div>
                 <p>Địa chỉ:</p>
-                <textarea name="txtModAddress" rows="5" value={modInfo.mod_address} onChange={e => setModInfo({ ...modInfo, mod_address: e.target.value })} />
+                <textarea name="txtModAddress" rows="5" value={modTmp.mod_address} onChange={e => setModTmp({ ...modTmp, mod_address: e.target.value })} />
+              </div>
+              <div>
+                <p>Vai trò:</p>
+                <div className="Role">
+                  <input name="txtModRole" type="radio" checked={modTmp.mod_role === 1 ? true : false} onChange={() => setModTmp({ ...modTmp, mod_role: 1 })} /> <label>Quản trị</label>
+                  <input name="txtModRole" type="radio" checked={modTmp.mod_role === 0 ? true : false} onChange={() => setModTmp({ ...modTmp, mod_role: 0 })} /> <label>Nhân viên</label>
+                </div>
               </div>
               <div>
                 <p>Mật khẩu:</p>
-                <button onClick={notifyResetPassword}>Đặt lại mật khẩu</button>
+                <input name="txtModPassword" type="password" className="TextField" onChange={e => setModTmp({ ...modTmp, mod_password: sha256(e.target.value) })} />
               </div>
             </form>
           </div>

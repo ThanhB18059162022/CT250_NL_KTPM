@@ -21,7 +21,6 @@ const Admin = () => {
 
     try {
       const user = await auth.getUser();
-      console.log(user);
     } catch (error) {
       history.push("/login");
     }

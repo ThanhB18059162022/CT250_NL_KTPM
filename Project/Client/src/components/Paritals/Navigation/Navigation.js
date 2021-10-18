@@ -5,7 +5,7 @@ import './Navigation.Style.scss'
 const Navigation = (props)=>{
     const {handle} = props //rest
     const buttonName = [
-        {name: "Tổng quan"},
+        {name: "Đơn hàng"},
         {name: "Quản lý sản phẩm"},
         {name: "Quản lý đánh giá"},
         {name: "Quản lý quản trị viên"},
