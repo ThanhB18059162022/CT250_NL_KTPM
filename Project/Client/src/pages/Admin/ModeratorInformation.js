@@ -46,9 +46,9 @@ const ModeratorInformation = (props) => {
   const [modTmp, setModTmp] = useState({ mod_name: "", mod_id: "", mod_phoneNumber: "", mod_sex: "", mod_address: "" , mod_role: 0, mod_username: "", mod_password: ""})
   //tạo quản trị mới
   const CreateMod = async (modTmp) => {
-    setNewMod(modTmp)
     const caller = new ApiCaller()
     await caller.post('moderators', modTmp)
+    setNewMod(modTmp)
     notifyCreateMod()
     setTimeout(() => {
       setDisplay(0)
@@ -68,9 +68,9 @@ const ModeratorInformation = (props) => {
 
   //gọi api cập nhật thông tin mod
   const callApiUpdateMod = async (modTmp) => {
-    setModInfo(modTmp)
     const caller = new ApiCaller()
     await caller.put('moderators/' + modInfo.mod_no, modTmp)
+    setModInfo(modTmp)
     notifyEditMod()
     setTimeout(() => {
       setDisplay(0)
