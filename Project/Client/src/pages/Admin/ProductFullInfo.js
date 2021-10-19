@@ -8,7 +8,7 @@ import Notifications from "../../common/Notifications";
 import ApiCaller from "../../api_services/ApiCaller"
 
 const ProductFullInfo = (props) => {
-    const { productNo, setDisplayEditProduct } = props
+    const { productNo, setDisplayEditProduct, setModifyList } = props
     const CusStyle = {
         margin: "1% 5px 5px 12%"
     };
@@ -62,13 +62,6 @@ const ProductFullInfo = (props) => {
         })()
     }, [productNo])
 
-    // useEffect(()=>{
-    //     if( newProductFullInfo.prod_name )
-    //         setNewProductFullInfo({...newProductFullInfo, prod_details: productDetails})
-    //     else if( productNo )
-    //         setProductFullInfo({...productFullInfo, prod_details: productDetails})
-    // },[productDetails])
-
     //sản phẩm mới
     const [newProductFullInfo, setNewProductFullInfo] = useState(
         {
@@ -118,30 +111,54 @@ const ProductFullInfo = (props) => {
                 size: "",
                 weight: ""
             },
-            prod_status: "",
-            // prod_imgs: [],
+            prod_status: ""
         }
     )
-    //gọi api lưu sản phẩm
+    //mảng hình ảnh sản phẩm
+    const [prod_imgs, setProd_imgs] = useState([])
+    //gọi api lưu thông tin sản phẩm
     const callSaveProductAPI = async() => {
         const caller = new ApiCaller()
         //lưu sản phẩm mới
         if ( newProductFullInfo && newProductFullInfo.prod_name ) {
+            console.log("Thêm sản phẩm mới")
             console.log(newProductFullInfo)
+            console.log(prod_imgs)
             await caller.post("products", newProductFullInfo)
-            // notifySaveProduct()
+            setModifyList(1)
+            notifySaveProduct()
             // setTimeout(() => {
             //     setDisplayEditProduct(0)
             // }, 3000);
             
         }
-        //lưu thông tin sản phẩm chỉnh sửa
+        //cập nhật thông tin sản phẩm
         else if (productFullInfo){
+            console.log("Cập nhật thông tin sản phẩm")
+            let prodTmp =   {   
+                                prod_name: productFullInfo.prod_name,
+                                prod_manufacturer: productFullInfo.prod_manufacturer,
+                                prod_screen: productFullInfo.prod_screen,
+                                prod_camera: productFullInfo.prod_camera,
+                                prod_hardwareAndOS: productFullInfo.prod_hardwareAndOS,
+                                prod_network: productFullInfo.prod_network,
+                                prod_batteryAndCharger: productFullInfo.prod_batteryAndCharger,
+                                prod_utilities: productFullInfo.prod_utilities,
+                                prod_design: productFullInfo.prod_design,
+                                prod_status: productFullInfo.prod_status,
+                                brand_no: productFullInfo.brand_no
+                            }
             console.log(productFullInfo)
+            console.log(productDetails)
+            console.log(prod_imgs)
+            if(prod_imgs.length > 0) await caller.post("products/"+ productNo +"/images", prod_imgs)
+            // await caller.put("products/" + productNo, ProductFullInfo)
+            if(productDetails.length > 0) await caller.post("products/" + productNo + "/details", productDetails)
+            setModifyList(1)
             notifySaveProduct()
-            setTimeout(() => {
-                setDisplayEditProduct(0)
-            }, 3000);
+            // setTimeout(() => {
+            //     setDisplayEditProduct(0)
+            // }, 3000);
         }
         else notifySaveProductFailed()
     }
@@ -157,7 +174,7 @@ const ProductFullInfo = (props) => {
                         <button onClick={() => setDisplayEditProduct(0)} className="CloseBtn"><FontAwesomeIcon icon={faWindowClose} /></button>
                     </div>
                     <div className="ProductInfoContent">
-                        <ProductInfo productFullInfo={productFullInfo} setProductFullInfo={setProductFullInfo} newProductFullInfo={newProductFullInfo} setNewProductFullInfo={setNewProductFullInfo} />
+                        <ProductInfo productFullInfo={productFullInfo} setProductFullInfo={setProductFullInfo} newProductFullInfo={newProductFullInfo} setNewProductFullInfo={setNewProductFullInfo} prod_imgs={prod_imgs} setProd_imgs={setProd_imgs}/>
                         <div className="ProductFullInfoSplit">
                             <p className="Title Line"><span>Chi tiết sản phẩm</span></p>
                             <AdminButton IconName={faPlus} ClickEvent={() => setDisplay(1)} />

@@ -35,7 +35,7 @@ const ProductDetail = (props) => {
         setShow(true)
     }
     //chi tiết sản phẩm tạm
-    const [detail, setDetail] = useState({ pd_ram: "", pd_storage: "", pd_storageAvailable: "", pd_price: 0, pd_amount: 0 })
+    const [detail, setDetail] = useState({ pd_ram: "", pd_storage: "", pd_storageAvailable: "", pd_price: 0, pd_amount: 0, pd_sold: 0 })
     //xoá chi tiết sản phẩm
     const deleteProdDetail = (pd_no) => {
         let arrTmp = []

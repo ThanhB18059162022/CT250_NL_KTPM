@@ -7,7 +7,7 @@ import Notifications from "../../../../common/Notifications"
 
 const ProductList = (props) => {
     const { productsList, setDisplayAddForm } = props
-
+    
     const cusStyle = {
         fontSize: "15px",
         width: "45px"

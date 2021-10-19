@@ -1,7 +1,7 @@
 import "../Admin.Style.scss"
 
 const ProductInfo = (props) => {
-    const { productFullInfo, setProductFullInfo, newProductFullInfo, setNewProductFullInfo } = props
+    const { productFullInfo, setProductFullInfo, newProductFullInfo, setNewProductFullInfo, prod_imgs, setProd_imgs} = props
 
     const uploadImage = async (e) => {
         const files = e.target.files;
@@ -12,11 +12,11 @@ const ProductInfo = (props) => {
             imgs.push(img)
         }
 
-        if( newProductFullInfo )
-            setNewProductFullInfo({ ...newProductFullInfo, prod_imgs: [...imgs] })
-        else setProductFullInfo({ ...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, ...imgs] })
+        // if( newProductFullInfo )
+            setProd_imgs([...imgs])
+            // else setProductFullInfo({ ...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, ...imgs] })
     }
-
+        
     const getBase64 = (file) => {
         return new Promise(resolve => {
             let reader = new FileReader()
@@ -137,7 +137,9 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Tiện ích:</p>
-                                <input name="txtUtilities" type="text" defaultValue={"đang cập nhật"} /> <br />
+                                <div>
+                                    {productFullInfo.prod_utilities.map((item, index)=> <div><p>{Object.keys(item)[0]}:</p> <input type="text" value={Object.values(item)[0]}/></div>)}
+                                </div>
                             </li>
                             <li>
                                 <p>Thiết kế:</p>
@@ -161,6 +163,7 @@ const ProductInfo = (props) => {
                             </li>
                             <li className="ImageContainer">
                                 {showProductImage(productFullInfo)}
+                                {prod_imgs?(showProductImage(prod_imgs)):(<></>)}
                             </li>
                         </form>
                     </div>
@@ -204,11 +207,11 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Camera sau:</p>
-                                <input name="txtCameraRearSpec" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera.rear, spec: e.target.value } })} /> <br />
+                                <input name="txtCameraRearSpec" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera, rear: {...newProductFullInfo.prod_camera.rear, spec: e.target.value} } })} /> <br />
                             </li>
                             <li>
                                 <p>Quay phim:</p>
-                                <input name="txtCameraRearVideoQuality" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera.rear, videoQuality: e.target.value } })} /> <br />
+                                <input name="txtCameraRearVideoQuality" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera, rear: {...newProductFullInfo.prod_camera.rear, videoQuality: e.target.value} } })} /> <br />
                             </li>
                             <li>
                                 <p>Camera trước:</p>
@@ -272,7 +275,7 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Tiện ích:</p>
-                                <input name="txtUtilities" type="text" defaultValue={"đang cập nhật"} /> <br />
+                                <input name="txtUtilities" type="text" defaultValue={"đang cập nhật"} readOnly/> <br />
                             </li>
                             <li>
                                 <p>Thiết kế:</p>
@@ -292,11 +295,11 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Hình ảnh:</p>
-                                {/* <input type="file" onChange={uploadImage} accept='image/*' id="imageUpload" multiple /> */}
+                                <input type="file" onChange={uploadImage} accept='image/*' id="imageUpload" multiple />
                             </li>
-                            {/* <li className="ImageContainer">
-                                {showProductImage(newProductFullInfo)}
-                            </li> */}
+                            <li className="ImageContainer">
+                                {prod_imgs?(showProductImage(prod_imgs)):(<></>)}
+                            </li>
                         </form>
                     </div>
                 </>
@@ -309,10 +312,10 @@ const ProductInfo = (props) => {
 const showProductImage = (props) => {
     return (
         <>
-            {props ? (
+            {props.prod_imgs ? (
                 props.prod_imgs.map((item, index) => <><img key={index} alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></>)
             ) : (
-                <></>
+                props.map((item, index) => <><img key={index} alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></>) 
             )}
         </>
     )
