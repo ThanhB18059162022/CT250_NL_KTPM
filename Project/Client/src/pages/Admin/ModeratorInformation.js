@@ -11,7 +11,7 @@ import ApiCaller from "../../api_services/ApiCaller"
 import { sha256 } from "js-sha256"
 
 const ModeratorInformation = (props) => {
-  const { setDisplay, modInfo, setNewMod, setModInfo, newModNo } = props
+  const { setDisplay, modInfo, setNewMod, setModInfo } = props
 
   //biến hiển thị thông báo
   const [show, setShow] = useState(false)
@@ -44,7 +44,7 @@ const ModeratorInformation = (props) => {
   }
   //mod tạm
   const [modTmp, setModTmp] = useState({ mod_name: "", mod_id: "", mod_phoneNumber: "", mod_sex: "", mod_address: "" , mod_role: 0, mod_username: "", mod_password: ""})
-  //tạo quản trị mới
+  //gọi api tạo quản trị mới
   const CreateMod = async (modTmp) => {
     const caller = new ApiCaller()
     await caller.post('moderators', modTmp)
@@ -96,10 +96,6 @@ const ModeratorInformation = (props) => {
             </div>
             <form className="ModInfoForm">
               <div>
-                <p>Mã số:</p>
-                <input name="txtModNo" type="text" className="TextField" disabled defaultValue={newModNo} />
-              </div>
-              <div>
                 <p>Họ tên:</p>
                 <input name="txtModName" type="text" className="TextField" onChange={e => setModTmp({ ...modTmp, mod_name: e.target.value })} />
               </div>
@@ -135,7 +131,7 @@ const ModeratorInformation = (props) => {
               </div>
               <div>
                 <p>Mật khẩu:</p>
-                <input name="txtModPassword" type="password" className="TextField" onChange={e => setModTmp({ ...modTmp, mod_password: sha256(e.target.value) })} />
+                <input name="txtModPassword" type="password" className="TextField" onChange={e => setModTmp({ ...modTmp, mod_password: sha256(modTmp.mod_username + "-" + e.target.value) })} />
               </div>
             </form>
           </div>
@@ -192,7 +188,7 @@ const ModeratorInformation = (props) => {
               </div>
               <div>
                 <p>Mật khẩu:</p>
-                <input name="txtModPassword" type="password" className="TextField" onChange={e => setModTmp({ ...modTmp, mod_password: sha256(e.target.value) })} />
+                <input name="txtModPassword" type="password" className="TextField" onChange={e => setModTmp({ ...modTmp, mod_password: sha256(modInfo.mod_username + "-" + e.target.value) })} />
               </div>
             </form>
           </div>

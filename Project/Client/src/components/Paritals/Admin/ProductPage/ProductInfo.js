@@ -3,51 +3,18 @@ import "../Admin.Style.scss"
 const ProductInfo = (props) => {
     const { productFullInfo, setProductFullInfo, newProductFullInfo, setNewProductFullInfo } = props
 
-    //test
-    // const imgUpload = document.getElementById("imageUpload")
-    // if(imgUpload){
-    //     imgUpload.addEventListener("change", (e) => {
-    //         // Lấy thông tin tập tin được đăng tải
-    //         const files  = e.target.files;
-    //         // Đọc thông tin tập tin đã được đăng tải
-    //         let reader
-    //         for(let i=0; i<files.length; i++)
-    //         {
-    //             reader = new FileReader()
-    //             reader.readAsDataURL(files[i])
-    //             // Quá trình đọc tập tin hoàn thành
-    //             if(reader) 
-    //                 reader.addEventListener("load", (e) => {
-    //                 // Lấy chuỗi Binary thông tin hình ảnh
-    //                     const img = e.target.result;
-    //                     setProductFullInfo({...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, img]})
-    //                 })
-    //         }
-    //     })
-    // }
-
     const uploadImage = async (e) => {
-        // console.log(productFullInfo)
         const files = e.target.files;
         // Đọc thông tin tập tin đã được đăng tải
-        // let reader
         let imgs = []
         for (let i = 0; i < files.length; i++) {
-            // let reader = new FileReader()
-            // reader.readAsDataURL(files[i])
-            // // Quá trình đọc tập tin hoàn thành
-            // if(reader) 
-            //     reader.addEventListener("load", (e) => {
-            //     // Lấy chuỗi Binary thông tin hình ảnh
-            //         const img = e.target.result;
-            //         setProductFullInfo({...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, img]})
-            //     })
             let img = await getBase64(files[i])
             imgs.push(img)
-            // console.log(tmp)
-
         }
-        setProductFullInfo({ ...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, ...imgs] })
+
+        if( newProductFullInfo )
+            setNewProductFullInfo({ ...newProductFullInfo, prod_imgs: [...imgs] })
+        else setProductFullInfo({ ...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, ...imgs] })
     }
 
     const getBase64 = (file) => {
@@ -58,15 +25,14 @@ const ProductInfo = (props) => {
         })
             .then(resolve => {
                 return resolve.srcElement.result
-                // return new Promise(resolve=>img.onload = resolve)
             })
-
     }
 
     return (
         <>
             {productFullInfo ? (
                 <>
+                    {/* hiển thị/chỉnh sửa thông tin sản phẩm */}
                     <div className="ProductInfo">
                         <form className="AddProductForm">
                             <li>
@@ -201,6 +167,7 @@ const ProductInfo = (props) => {
                 </>
             ) : (
                 <>
+                    {/* tạo mới thông tin sản phẩm */}
                     <div className="ProductInfo">
                         <form className="AddProductForm">
                             <li>
@@ -325,8 +292,11 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Hình ảnh:</p>
-                                <input type="file" onChange={uploadImage} accept='image/*' id="myFile" name="imgUpload" multiple />
+                                {/* <input type="file" onChange={uploadImage} accept='image/*' id="imageUpload" multiple /> */}
                             </li>
+                            {/* <li className="ImageContainer">
+                                {showProductImage(newProductFullInfo)}
+                            </li> */}
                         </form>
                     </div>
                 </>

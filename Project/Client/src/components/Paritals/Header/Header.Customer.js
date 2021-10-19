@@ -9,6 +9,7 @@ import { CartContext } from "../../../providers/CartProviders";
 // Thanh viết
 import { AuthenticationService } from "../../../api_services/servicesContainer";
 import ApiCaller from "../../../api_services/ApiCaller";
+import { useEffect } from "react/cjs/react.development";
 
 const Header = ({ children, ...rest }) => {
   const history = useHistory();
@@ -55,7 +56,7 @@ export const SearchHeader = ({ ...rest }) => {
   );
 };
 
-export const AdminHeader = ({ ...rest }) => {
+export const AdminHeader = ({ adminNo, ...rest }) => {
   const [state, setState] = useState(0);
   // Thanh viết
   const history = useHistory();
@@ -63,14 +64,25 @@ export const AdminHeader = ({ ...rest }) => {
   const review = () => {
     switch (state) {
       case 1:
-        return <AdminInformation setState={setState} />;
+        return <AdminInformation setState={setState} adminInfo={adminInfo} setAdminInfoChanged={setAdminInfoChanged}/>;
       case 2:
-        return <ChangePwd setState={setState} />;
+        return <ChangePwd setState={setState} adminInfo={adminInfo} setAdminInfoChanged={setAdminInfoChanged}/>;
       default:
         return;
     }
   };
-
+  //biến kiểm tra chỉnh sửa thông tin admin
+  const [adminInfoChanged, setAdminInfoChanged] = useState(0)
+  //Thông tin admin
+  const [adminInfo, setAdminInfo] = useState({mod_name:""})
+  useEffect(()=>{
+    (async()=>{
+      const caller = new ApiCaller();
+      let tmp = await caller.get("moderators/" + adminNo)
+      setAdminInfo(tmp)
+      if(adminInfoChanged===1) setAdminInfoChanged(0)
+    })();
+  },[adminNo, adminInfoChanged])
   // Thanh viết
   const logout = () => {
     const auth = new AuthenticationService(new ApiCaller());
@@ -85,7 +97,7 @@ export const AdminHeader = ({ ...rest }) => {
       <div className="header-admin">
         <div className="header-admin-panel">
           <label>
-            Xin chào <span> Admin name </span>
+            Xin chào <span> {adminInfo.mod_name} </span>
           </label>
           <div className="admin-control-panel">
             <div className="panel">

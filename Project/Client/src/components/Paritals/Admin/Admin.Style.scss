@@ -593,8 +593,12 @@
     top: 0;
     left: 0;
     height: 100%;
-    background-color: #f5f5f5;
+    background-color: rgba(0, 0, 0, 0.349);
     overflow-y: auto;
+    .ProductDetail{
+        background-color: #fff;
+        margin: 10px auto;
+    }
 }
 
 .DetailSplit {
@@ -638,126 +642,6 @@
     left: 12%;
     top: 15.5%;
 }
-
-// .ProductRecord{
-//     display: flex;
-//     align-items: center;
-//     p + p{
-//         border-left: 2px solid black;
-//     }
-//     p{
-//         height: 26px;
-//         text-align: center;
-//         padding: 3px 0;
-//         &:nth-child(1){
-//             width: 7%;
-//         }
-//         &:nth-child(2){
-//             width: 25%;
-//         }
-//         &:nth-child(3){
-//             width: 8%;
-//         }
-//         &:nth-child(4){
-//             width: 45%;
-//         }
-//         &:nth-child(5){
-//             width: 6%;
-//         }
-//         &:nth-child(6){
-//             width: 9%;
-//         }
-//     }
-//     + hr{
-//         width: 98%;
-//         margin: 5px auto;
-//         &:last-child{
-//             display: none;
-//         }
-//     }
-// }
-
-// .FeedbackRecord{
-//     display: flex;
-//     align-items: center;
-//     p + p{
-//         border-left: 2px solid black;
-//     }
-//     p{
-//         height: 26px;
-//         text-align: center;
-//         padding: 3px 0;
-//         &:nth-child(1){
-//             width: 7%;
-//         }
-//         &:nth-child(2){
-//             width: 14%;
-//         }
-//         &:nth-child(3){
-//             width: 35%;
-//         }
-//         &:nth-child(4){
-//             width: 20%;
-//         }
-//         &:nth-child(5){
-//             width: 8%;
-//         }
-//         &:nth-child(6){
-//             width: 7%;
-//         }
-//         &:nth-child(7){
-//             width: 9%;
-//         }
-//     }
-//     + hr{
-//         width: 98%;
-//         margin: 5px auto;
-//         &:last-child{
-//             display: none;
-//         }
-//     }
-// }
-
-// .ModeratorRecord{
-//     display: flex;
-//     align-items: center;
-//     p + p{
-//         border-left: 2px solid black;
-//     }
-//     p{
-//         height: 26px;
-//         text-align: center;
-//         padding: 3px 0;
-//         &:nth-child(1){
-//             width: 5%;
-//         }
-//         &:nth-child(2){
-//             width: 20%;
-//         }
-//         &:nth-child(3){
-//             width: 9%;
-//         }
-//         &:nth-child(4){
-//             width: 9%;
-//         }
-//         &:nth-child(5){
-//             width: 5%;
-//         }
-//         &:nth-child(6){
-//             width: 43%;
-//         }
-//         &:nth-child(7){
-//             width: 9%;
-//         }
-//     }
-//     + hr{
-//         width: 98%;
-//         margin: 5px auto;
-//         &:last-child{
-//             display: none;
-//         }
-//     }
-// }
 
 .ProductFullInfo {
     position: absolute;

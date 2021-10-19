@@ -7,7 +7,7 @@ import Notifications from "../../../../common/Notifications"
 import ApiCaller from "../../../../api_services/ApiCaller"
 
 const MorderatorList = (props) => {
-    const { newMod, setNewModNo, setAddNew } = props
+    const { newMod, setAddNew, currentAdNo } = props
     const [editMod, setEditMod] = useState(0)
     const [modInfo, setModInfo] = useState()
    
@@ -57,10 +57,6 @@ const MorderatorList = (props) => {
         })(); // IIFE // Note setProduct([...products, item])
     }, [modInfo])
 
-    //gán id cho mod thêm mới
-    useEffect(() => {
-        setNewModNo(mods.length + 1)
-    }, [mods, setNewModNo])
     //thêm mod mới vào mảng
     useEffect(() => {
         setMods(pre=>([...pre, newMod]))
@@ -70,7 +66,6 @@ const MorderatorList = (props) => {
         const newArray = mods.filter(item => item.mod_name.includes(message))
         setFilter(newArray)
     }
-
     return (
         <div className="ListLayout">
             <div className="ProductToolHeader">
@@ -89,9 +84,9 @@ const MorderatorList = (props) => {
             </li>
             <div className="AdminListClass">
                 {filter.length === 0 ? (
-                    mods.map((item, index) => <Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />)
+                    mods.map((item, index) => item.mod_no!==currentAdNo ? (<Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />):(<></>))
                 ) : (
-                    filter.map((item, index) => <Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />)
+                    filter.map((item, index) => item.mod_no!==currentAdNo ? (<Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />):(<></>))
                 )}
             </div>
             {displayEditMod()}
