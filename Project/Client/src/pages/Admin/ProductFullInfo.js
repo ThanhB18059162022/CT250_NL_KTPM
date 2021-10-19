@@ -4,16 +4,18 @@ import { AdminButton } from "../../components/Controls"
 import { faPlus, faSave, faWindowClose } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { useEffect, useState } from "react"
-import { caller } from "../../api_services/servicesContainer"
 import Notifications from "../../common/Notifications";
+import ApiCaller from "../../api_services/ApiCaller"
 
 const ProductFullInfo = (props) => {
-    const { newProductNo, productNo, setDisplayEditProduct, setNewProduct } = props
+    const { productNo, setDisplayEditProduct } = props
     const CusStyle = {
         margin: "1% 5px 5px 12%"
     };
+    //biến hiển thị thông báo
     const [show, setShow] = useState(false)
     const [notify, setNotify] = useState()
+    //thông báo lưu sản phẩm thành công
     const notifySaveProduct = () => {
         setNotify({
             type: "INFORMATION", //CONFIRMATION, INFORMATION
@@ -23,20 +25,23 @@ const ProductFullInfo = (props) => {
         })
         setShow(true)
     }
-
-    const notifyAddProductFail = () => {
+    //thông báo lưu sản phẩm thất bại
+    const notifySaveProductFailed = () => {
         setNotify({
             type: "INFORMATION", //CONFIRMATION, INFORMATION
             title: "Thông báo",
-            content: "Lỗi thêm sản phẩm",
+            content: "Lỗi lưu sản phẩm",
             infoType: "ERROR"
         })
         setShow(true)
     }
-    const [productDetails, setProductDetails] = useState([])
+    //mảng chi tiết sản phẩm
+    const [productDetails, setProductDetails] = useState()
+    //biến hiển thị thêm chi tiết sản phẩm
     const [display, setDisplay] = useState(0)
+    //biến lưu thông tin sản phẩm
     const [productFullInfo, setProductFullInfo] = useState()
-
+    //hiển thị thêm chi tiết mới
     const displayAddDetail = () => {
         switch (display) {
             case 1: return <div className="AddProductDetail">
@@ -45,10 +50,11 @@ const ProductFullInfo = (props) => {
             default: return;
         }
     }
-
+    //lấy thông tin sản phẩm từ server
     useEffect(() => {
         (async () => {
             if (productNo) {
+                const caller = new ApiCaller()
                 let data = await caller.get("products/" + String(productNo))
                 setProductFullInfo(data)
                 setProductDetails(data.prod_details)
@@ -56,9 +62,16 @@ const ProductFullInfo = (props) => {
         })()
     }, [productNo])
 
+    // useEffect(()=>{
+    //     if( newProductFullInfo.prod_name )
+    //         setNewProductFullInfo({...newProductFullInfo, prod_details: productDetails})
+    //     else if( productNo )
+    //         setProductFullInfo({...productFullInfo, prod_details: productDetails})
+    // },[productDetails])
+
+    //sản phẩm mới
     const [newProductFullInfo, setNewProductFullInfo] = useState(
         {
-            prod_no: newProductNo,
             prod_name: "",
             prod_manufacturer: {
                 brand_name: "",
@@ -105,40 +118,32 @@ const ProductFullInfo = (props) => {
                 size: "",
                 weight: ""
             },
-            prod_feedbacks: [],
             prod_status: "",
-            prod_imgs: [],
-            prod_details: []
+            // prod_imgs: [],
         }
     )
-
-    const callSaveProductAPI = () => {
-        if (newProductFullInfo.prod_no) {
-            if (newProductFullInfo.prod_name && newProductFullInfo.prod_hardwareAndOS.os && newProductFullInfo.prod_hardwareAndOS.cpu && newProductFullInfo.prod_batteryAndCharger.battery) {
-                setNewProduct({
-                    prod_no: newProductFullInfo.prod_no,
-                    prod_name: newProductFullInfo.prod_name,
-                    prod_os: newProductFullInfo.prod_hardwareAndOS.os,
-                    prod_cpu: newProductFullInfo.prod_hardwareAndOS.cpu,
-                    prod_battery: newProductFullInfo.prod_batteryAndCharger.battery,
-                    prod_detailsLength: newProductFullInfo.prod_details.length
-                })
-                notifySaveProduct()
-                setTimeout(() => {
-                    setDisplayEditProduct(0)
-                }, 3000);
-            }
-            else {
-                notifyAddProductFail()
-            }
+    //gọi api lưu sản phẩm
+    const callSaveProductAPI = async() => {
+        const caller = new ApiCaller()
+        //lưu sản phẩm mới
+        if ( newProductFullInfo && newProductFullInfo.prod_name ) {
+            console.log(newProductFullInfo)
+            await caller.post("products", newProductFullInfo)
+            // notifySaveProduct()
+            // setTimeout(() => {
+            //     setDisplayEditProduct(0)
+            // }, 3000);
+            
         }
-        else {
+        //lưu thông tin sản phẩm chỉnh sửa
+        else if (productFullInfo){
             console.log(productFullInfo)
             notifySaveProduct()
             setTimeout(() => {
                 setDisplayEditProduct(0)
             }, 3000);
         }
+        else notifySaveProductFailed()
     }
 
     return (
@@ -158,7 +163,7 @@ const ProductFullInfo = (props) => {
                             <AdminButton IconName={faPlus} ClickEvent={() => setDisplay(1)} />
                         </div>
                         {productDetails ? (
-                            productDetails.map((detail, index) => <ProductDetail key={index} productDetail={detail} setProductDetails={setProductDetails} />)
+                            productDetails.map((detail, index) => <ProductDetail key={index} index={index} productDetail={detail} setProductDetails={setProductDetails}  productDetails={productDetails}/>)
                         ) : (
                             <></>
                         )}

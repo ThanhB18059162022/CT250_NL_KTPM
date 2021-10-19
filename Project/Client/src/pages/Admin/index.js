@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 
 const Admin = () => {
   const [pos, setPos] = useState(0);
+  const [adminNo, setAdminNo] = useState(0);
   // Thanh viết
   const history = useHistory();
   (async () => {
@@ -21,12 +22,13 @@ const Admin = () => {
 
     try {
       const user = await auth.getUser();
-      console.log(user);
+      if(!adminNo)
+        setAdminNo(user.user.id)
     } catch (error) {
       history.push("/login");
     }
   })();
-  //
+  
   const getComponents = () => {
     switch (pos) {
       case 0:
@@ -36,7 +38,7 @@ const Admin = () => {
       case 2:
         return <FeedbackManagement />;
       case 3:
-        return <ModeratorManagement />;
+        return <ModeratorManagement currentAdNo={adminNo}/>;
       case 4:
         return <Statistic />;
       default:
@@ -46,7 +48,7 @@ const Admin = () => {
 
   return (
     <div className="Admin">
-      <AdminHeader />
+      <AdminHeader adminNo={adminNo}/>
       <Navigation handle={setPos} />
       {getComponents()}
     </div>

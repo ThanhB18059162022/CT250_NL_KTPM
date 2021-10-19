@@ -4,17 +4,17 @@ import ModeratorInformation from "../../../../pages/Admin/ModeratorInformation"
 import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
 import Notifications from "../../../../common/Notifications"
-import { caller } from "../../../../api_services/servicesContainer"
+import ApiCaller from "../../../../api_services/ApiCaller"
 
 const MorderatorList = (props) => {
-    const { newMod, setNewModNo, setAddNew } = props
+    const { newMod, setAddNew, currentAdNo } = props
     const [editMod, setEditMod] = useState(0)
     const [modInfo, setModInfo] = useState()
    
     //hiển thị form sửa thông tin quản trị
     const displayEditMod = () => {
         switch (editMod) {
-            case 1: return <ModeratorInformation setDisplay={setEditMod} modInfo={modInfo} setModInfo={setModInfo} mods={mods} setMods={setMods} modsTmp={modsTmp} setModsTmp={setModsTmp} />
+            case 1: return <ModeratorInformation setDisplay={setEditMod} modInfo={modInfo} setModInfo={setModInfo} />
             default: return;
         }
     }
@@ -27,11 +27,13 @@ const MorderatorList = (props) => {
         content: "", // content of the notify
         infoType: ""
     })
-    //gọi api xóa quản trị
-    const callApiDelete = (id) => {
-        console.log("deleted " + id)
+    //gọi api xóa mod
+    const callApiDelete = async (id) => {
+        const caller = new ApiCaller()
+        await caller.delete("moderators/" + id)
+        setModInfo({...modInfo, mod_id: id})
     }
-    //thông báo xóa quản trị
+    //thông báo xóa mod
     const notifyDeleteAdmin = (id) => {
         setNotify({
             ...notify,
@@ -41,23 +43,20 @@ const MorderatorList = (props) => {
         })
         setShow(true)
     }
-    //danh sách quản trị
+    //danh sách mod
     const [mods, setMods] = useState([])
-    //danh sách mod tạm
-    const [modsTmp, setModsTmp] = useState([])
-    //danh sách quản trị đã lọc
+    //danh sách mod đã lọc
     const [filter, setFilter] = useState([])
-    //lấy danh sách quản trị từ server
+
+    //lấy danh sách mod từ server
     useEffect(() => {
         (async () => {
+            const caller = new ApiCaller();
             let data = await caller.get('moderators')
             setMods(data.items)
         })(); // IIFE // Note setProduct([...products, item])
-    }, [])
-    //gán id cho mod thêm mới
-    useEffect(() => {
-        setNewModNo(mods.length + 1)
-    }, [mods, setNewModNo])
+    }, [modInfo])
+
     //thêm mod mới vào mảng
     useEffect(() => {
         setMods(pre=>([...pre, newMod]))
@@ -67,7 +66,6 @@ const MorderatorList = (props) => {
         const newArray = mods.filter(item => item.mod_name.includes(message))
         setFilter(newArray)
     }
-
     return (
         <div className="ListLayout">
             <div className="ProductToolHeader">
@@ -81,13 +79,14 @@ const MorderatorList = (props) => {
                 <p>SĐT</p>
                 <p>Giới tính</p>
                 <p>Địa chỉ</p>
+                <p>Trạng thái</p>
                 <p>Hành động</p>
             </li>
             <div className="AdminListClass">
                 {filter.length === 0 ? (
-                    mods.map((item, index) => <Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />)
+                    mods.map((item, index) => item.mod_no!==currentAdNo ? (<Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />):(<></>))
                 ) : (
-                    filter.map((item, index) => <Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />)
+                    filter.map((item, index) => item.mod_no!==currentAdNo ? (<Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />):(<></>))
                 )}
             </div>
             {displayEditMod()}
@@ -107,9 +106,9 @@ const Moderator = (props) => {
                 <p>{info.mod_phoneNumber}</p>
                 <p>{info.mod_sex===1?'Nam':'Nữ'}</p>
                 <p>{info.mod_address}</p>
+                <p>{(info.mod_password)?("Kích hoạt"):("Vô hiệu")}</p>
                 <p><AdminButton IconName={faEdit} ClickEvent={() => { setEditMod(1); setModInfo(info) }} /> <AdminButton IconName={faTrashAlt} ClickEvent={() => notifyDeleteAdmin(info.mod_no)} /></p>
             </li>
-          
         </>
     )
 }

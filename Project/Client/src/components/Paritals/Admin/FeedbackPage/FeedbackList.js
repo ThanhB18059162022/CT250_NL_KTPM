@@ -4,7 +4,7 @@ import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
 import FeedbackInformation from "./FeedbackInformation"
 import Notifications from "../../../../common/Notifications"
-import { caller } from "../../../../api_services/servicesContainer"
+import ApiCaller from "../../../../api_services/ApiCaller"
 
 const FeedbackList = () => {
     const cusStyle = {
@@ -65,12 +65,13 @@ const FeedbackList = () => {
     const [feedbacks, setFeedbacks] = useState([])
     useEffect(() => {
         (async () => {
+            const caller = new ApiCaller();
             let data = await caller.get('moderators')
-            setFeedbacks(data.items.prod_feedbacks)
+            console.log(data)
+            // setFeedbacks(data.items.prod_feedbacks)
         })(); // IIFE // Note setProduct([...products, item])
     }, [])
 
-    console.log(feedbacks)
 
     return (
         <>
