@@ -22,12 +22,6 @@ class FeedBackValidatorMock {
       hasAnyError: isNaN(no),
     };
   });
-
-  validateProductNo = jest.fn((no) => {
-    return {
-      hasAnyError: isNaN(no),
-    };
-  });
 }
 
 const FEEDBACK = [
@@ -97,25 +91,6 @@ describe("Proc Lấy danh sách phản hồi của sản phẩm", () => {
     daoMock = new FeedbackDAOMock();
   });
 
-  test("Mã không hợp lệ - EX", async () => {
-    //Arrange
-    const prod_no = undefined;
-    const query = {};
-    const processor = getProcessor();
-
-    //Act
-    const expRs = NotValidError;
-    let actRs;
-    try {
-      await processor.getFeedbackByProductNo(prod_no, query);
-    } catch (error) {
-      actRs = error;
-    }
-    //Expect
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(validatorMock.validateProductNo).toBeCalledTimes(1);
-  });
-
   test("Sản phẩm không tồn tại - EX", async () => {
     //Arrange
     const prod_no = "3";
@@ -132,7 +107,6 @@ describe("Proc Lấy danh sách phản hồi của sản phẩm", () => {
     }
     //Expect
     expect(actRs instanceof expRs).toBeTruthy();
-    expect(validatorMock.validateProductNo).toBeCalledTimes(1);
   });
 
   test("Lấy ra phản hồi của 1 sản phẩm", async () => {
@@ -147,7 +121,6 @@ describe("Proc Lấy danh sách phản hồi của sản phẩm", () => {
 
     //Expect
     expect(actRs).toEqual(expRs);
-    expect(validatorMock.validateProductNo).toBeCalledTimes(1);
   });
 });
 

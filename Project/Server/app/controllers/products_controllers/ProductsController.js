@@ -83,9 +83,51 @@ module.exports = class ProductsController extends Controller {
         params: { prod_no },
       } = req;
 
-      const product = await this.processor.addProductDetails(prod_no, details);
+      await this.processor.addProductDetails(prod_no, details);
 
-      return this.created(res, product);
+      return this.noContent(res);
+    } catch (error) {
+      return this.checkError(res, error);
+    }
+  };
+
+  // Thêm ảnh sản phẩm
+  addProductImages = async (req, res) => {
+    const {
+      body: images,
+      params: { prod_no },
+    } = req;
+
+    await this.processor.addProductImages(prod_no, images);
+
+    return this.noContent(res);
+  };
+
+  addFeedback = async (req, res) => {
+    try {
+      const {
+        body: newFeedback,
+        params: { prod_no },
+      } = req;
+
+      const feedback = await this.processor.addFeedback(prod_no, newFeedback);
+
+      return this.created(res, feedback);
+    } catch (error) {
+      return this.checkError(res, error);
+    }
+  };
+
+  addReply = async (req, res) => {
+    try {
+      const {
+        body: newReply,
+        params: { fb_no },
+      } = req;
+
+      const reply = await this.processor.addReply(fb_no, newReply);
+
+      return this.created(res, reply);
     } catch (error) {
       return this.checkError(res, error);
     }

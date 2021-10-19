@@ -76,6 +76,15 @@ router
     errorCatch(controller.addProductDetails)
   );
 
+// products/1/images/
+router
+  .route("/:prod_no/images")
+  .post(
+    authController.authenticate,
+    authController.authorize(["admin"]),
+    errorCatch(controller.addProductImages)
+  );
+
 // products/1/feedbacks/
 router
   .route("/:prod_no/feedbacks")

@@ -192,11 +192,23 @@ module.exports = class ProductsProcessor extends Processor {
     await this.dao.addProductDetails(product.prod_no, details);
   };
 
+  // Chi tiết sản phẩm
+  addProductImages = async (prod_no, images) => {
+    const product = await this.getProductByNo(prod_no);
+
+    await this.imageService.saveProductImages(product.prod_no, images);
+  };
+
   // Đánh giá
   addFeedback = async (prod_no, feedback) => {
     const product = await this.getProductByNo(prod_no);
 
     return this.feedbackProcessor.addFeedback(product.prod_no, feedback);
+  };
+
+  // Phản hồi
+  addReply = async (fb_no, reply) => {
+    return this.feedbackProcessor.addReply(fb_no, reply);
   };
 
   //#endregion

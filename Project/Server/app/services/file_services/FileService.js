@@ -1,6 +1,20 @@
 const fs = require("fs");
 
 module.exports = class FileService {
+  // Kiểm tra thưc mục hoặc file tồn tại
+  exist = (path) => fs.existsSync(path);
+
+  createDirAsync = (path) =>
+    new Promise((resolve, reject) => {
+      fs.mkdir(path, (error, files) => {
+        if (error) {
+          return reject(error);
+        } else {
+          return resolve(files);
+        }
+      });
+    });
+
   readDirAsync = (path) =>
     new Promise((resolve, reject) => {
       fs.readdir(path, (error, files) => {

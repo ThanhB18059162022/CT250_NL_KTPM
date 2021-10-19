@@ -14,7 +14,7 @@ app.use(express.static("public"));
 
 //Thêm middleware cho Post với Put cái này dùng xử lý body(JSON) của request
 // Request Object as a JSON Object
-app.use(express.json());
+app.use(express.json({ limit: "5mb" })); // Kích thước tối đa 5mb
 // Request Object as strings or arrays
 app.use(express.urlencoded({ extended: true }));
 

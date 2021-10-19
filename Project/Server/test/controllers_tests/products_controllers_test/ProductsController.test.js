@@ -540,7 +540,7 @@ describe("Ctrlr Thêm chi tiết sản phẩm", () => {
     expect(resMock.json).toBeCalledTimes(1);
   });
 
-  test("Thành công - 201", async () => {
+  test("Thành công - 204", async () => {
     //Arrange
     const details = {};
 
@@ -549,7 +549,7 @@ describe("Ctrlr Thêm chi tiết sản phẩm", () => {
       body: details,
     };
 
-    const response = { statusCode: 201, body: details };
+    const response = { statusCode: 204, body: details };
     const resMock = new ResponseMock();
 
     const controller = getController();
