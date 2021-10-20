@@ -26,6 +26,11 @@ const ProductServices = (() => {
         return data;
     };
 
+    const searchProduct = async (flug) => {
+        let data = await caller.get(`products/search/${flug}`);
+        return data;
+    };
+
     const getSuggests = async (id, ...column) => {
         id = Number(id);
         let price = (await getProduct(id, "prod_details")).prod_details[0].pd_price;
@@ -40,6 +45,7 @@ const ProductServices = (() => {
         getProduct,
         getProducts,
         getSuggests,
+        searchProduct,
     };
 })();
 

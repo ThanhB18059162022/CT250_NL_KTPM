@@ -132,6 +132,19 @@
             max-height: 400px;
         }
     }
+
+    @media screen and (max-width:500px) {
+        div.DetailInfo{
+            padding: 5px;
+            ul.some_info {
+                li{
+                    span{
+                        width: 100px;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .customerFeedbackInfo{

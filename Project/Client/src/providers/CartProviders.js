@@ -63,10 +63,6 @@ export default function CartProvider(props){
         _updateListItem([])
     }
 
-    // useEffect(()=>{
-    //     _updateListItem(_getListItem())
-    // },[])
-
     return(
         <CartContext.Provider value = {{upItem, downItem, removeItem,clearItem, getItemList, forceItem,change, amount}}>
             {props.children}

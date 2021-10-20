@@ -88,10 +88,15 @@ export const SearchHeaderInput = ({ searchHandle }) => {
 
   const searchEvent = () => searchHandle(text)
 
+  const changerRoute = e =>{
+    if(e.key==='Enter')
+      searchHandle(text)
+  }
+
   return (
     <div className="HeaderSearch">
       <div className="header-search">
-        <input value={text} onChange={e => setText(e.target.value)} type="text" placeholder="Nhập sản phẩm bạn cần tìm..." />
+        <input onKeyPress={changerRoute} value={text} onChange={e => setText(e.target.value)} type="text" placeholder="Nhập sản phẩm bạn cần tìm..." />
         <button onClick={searchEvent} aria-label="Search your product">
           <SearchIcon />
         </button>
