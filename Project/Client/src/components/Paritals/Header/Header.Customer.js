@@ -78,8 +78,11 @@ export const AdminHeader = ({ adminNo, ...rest }) => {
   useEffect(()=>{
     (async()=>{
       const caller = new ApiCaller();
-      let tmp = await caller.get("moderators/" + adminNo)
-      setAdminInfo(tmp)
+      try{
+        let tmp = await caller.get("moderators/" + adminNo)
+        setAdminInfo(tmp)
+      }catch(err)
+      {}
       if(adminInfoChanged===1) setAdminInfoChanged(0)
     })();
   },[adminNo, adminInfoChanged])
