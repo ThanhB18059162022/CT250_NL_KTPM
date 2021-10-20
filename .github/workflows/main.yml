@@ -36,7 +36,10 @@ jobs:
 
       # Cài môi trường cho server
       - name: Cài đặt các npm package chạy unit test
+        timeout-minutes: 2 
         run: |
           npm ci
-          npm run test-ci 
+          npm run test-ci
+          (node app/server.js; sleep 30; echo "Kill node"; killall -q node; echo "kill done") & echo "Wait to kill"
+          echo "done"
         working-directory: ./Project/Server
