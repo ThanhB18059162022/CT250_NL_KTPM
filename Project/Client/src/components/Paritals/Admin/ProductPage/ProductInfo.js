@@ -136,9 +136,19 @@ const ProductInfo = (props) => {
                                 <input name="txtChargeType" type="text" value={productFullInfo.prod_batteryAndCharger.chargeType} onChange={e => setProductFullInfo({ ...productFullInfo, prod_batteryAndCharger: { ...productFullInfo.prod_batteryAndCharger, chargeType: e.target.value } })} /> <br />
                             </li>
                             <li>
-                                <p>Tiện ích:</p>
+                                <p>
+                                    Tiện ích:
+                                    <input type="button" onClick={
+                                                                    ()=>{
+                                                                        let name=window.prompt("Tên tiện ích")
+                                                                        let value=window.prompt("Mô tả tiện ích")
+                                                                        if(name && value) setProductFullInfo({...productFullInfo, prod_utilities: [...productFullInfo.prod_utilities, {[name]:value} ]})
+                                                                    }
+                                                                } value="+" style={{padding: 0, width: 20+'px'}}/>
+                                    <input type="button" onClick={()=>setProductFullInfo({...productFullInfo, prod_utilities: [productFullInfo.prod_utilities.pop()]})} value="-" style={{padding: 0, width: 20+'px'}}/>
+                                </p>
                                 <div>
-                                    {productFullInfo.prod_utilities.map((item, index)=> <div><p>{Object.keys(item)[0]}:</p> <input type="text" value={Object.values(item)[0]}/></div>)}
+                                    {productFullInfo.prod_utilities.map((item, index)=> <div key={index}><p>{Object.keys(item)[0]}:</p> <input type="text" value={Object.values(item)[0]} readOnly/></div>)}
                                 </div>
                             </li>
                             <li>
@@ -274,8 +284,20 @@ const ProductInfo = (props) => {
                                 <input name="txtChargeType" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_batteryAndCharger: { ...newProductFullInfo.prod_batteryAndCharger, chargeType: e.target.value } })} /> <br />
                             </li>
                             <li>
-                                <p>Tiện ích:</p>
-                                <input name="txtUtilities" type="text" defaultValue={"đang cập nhật"} readOnly/> <br />
+                                <p>
+                                    Tiện ích:
+                                    <input type="button" onClick={
+                                                                    ()=>{
+                                                                        let name=window.prompt("Tên tiện ích")
+                                                                        let value=window.prompt("Mô tả tiện ích")
+                                                                        if(name && value) setNewProductFullInfo({...newProductFullInfo, prod_utilities: [...newProductFullInfo.prod_utilities, {[name]: value} ]})
+                                                                    }
+                                                                } value="+" style={{padding: 0, width: 20+'px'}}/>
+                                    <input type="button" onClick={()=>setNewProductFullInfo({...newProductFullInfo, prod_utilities: [newProductFullInfo.prod_utilities.pop()]})} value="-" style={{padding: 0, width: 20+'px'}}/>
+                                </p>
+                                <div>
+                                    {newProductFullInfo.prod_utilities ? ( newProductFullInfo.prod_utilities.map((item, index)=> <div key={index}><p>{Object.keys(item)[0]}:</p> <input type="text" value={Object.values(item)[0]} readOnly/></div>) ):(<></>) }
+                                </div>
                             </li>
                             <li>
                                 <p>Thiết kế:</p>
@@ -313,9 +335,9 @@ const showProductImage = (props) => {
     return (
         <>
             {props.prod_imgs ? (
-                props.prod_imgs.map((item, index) => <><img key={index} alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></>)
+                props.prod_imgs.map((item, index) => <div key={index}><img alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></div>)
             ) : (
-                props.map((item, index) => <><img key={index} alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></>) 
+                props.map((item, index) => <div key={index}><img alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></div>) 
             )}
         </>
     )

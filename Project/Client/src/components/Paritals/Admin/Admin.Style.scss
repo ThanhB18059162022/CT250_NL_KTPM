@@ -542,8 +542,9 @@
                         margin: 10px 0;
                         width: 100%;
                         p{
-                            margin-left: 13px;
+                            margin: auto;
                             width: 30%;
+                            padding-left: 10px;
                         }
                         input{
                             width: 76%;
@@ -552,7 +553,7 @@
                 }
             }
         }
-        .ImageContainer {
+        .ImageContainer div {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -562,7 +563,8 @@
             .ProductImg {
                 border: 1px solid black;
                 margin: 5px;
-                width: 10%;
+                width: 100%;
+                min-width: 50%;
             }
         }
     }
