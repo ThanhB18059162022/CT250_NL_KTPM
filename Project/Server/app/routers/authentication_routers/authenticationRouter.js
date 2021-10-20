@@ -12,7 +12,10 @@ const {
   AuthenticationValidator,
 } = require("../../validators/validatorsContainer");
 const { DAO, ModeratorsDAO } = require("../../daos/daosContainer");
-const { JwtService } = require("../../services/servicesContainer");
+const {
+  JwtService,
+  PasswordService,
+} = require("../../services/servicesContainer");
 const {
   AuthenticationProcessor,
 } = require("../../processors/processorsContainer");
@@ -24,7 +27,8 @@ const validator = new AuthenticationValidator();
 const jwt = new JwtService(config.jwt.secretKey);
 const sqldao = new DAO(config.dbConnection.mysql);
 const dao = new ModeratorsDAO(sqldao);
-const processor = new AuthenticationProcessor(validator, jwt, dao);
+const pwd = new PasswordService();
+const processor = new AuthenticationProcessor(validator, jwt, dao, pwd);
 const controller = new AuthenticationController(processor, config);
 
 // Bắc buộc đăng nhập

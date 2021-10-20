@@ -7,6 +7,8 @@ const ApiCaller = require("./ApiCaller");
 
 const JwtService = require("./jwt_services/JwtService");
 
+const PasswordService = require("./jwt_services/PasswordService");
+
 const StorageService = require("./storage_services/StorageService");
 const StorageServiceRedis = require("./storage_services/StorageServiceRedis");
 
@@ -21,6 +23,8 @@ module.exports = {
   ApiCaller,
 
   JwtService,
+
+  PasswordService,
 
   StorageService,
 
