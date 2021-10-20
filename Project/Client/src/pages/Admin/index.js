@@ -13,46 +13,42 @@ import ApiCaller from "../../api_services/ApiCaller";
 import { useHistory } from "react-router-dom";
 
 const Admin = () => {
-  const [pos, setPos] = useState(0);
-  const [adminNo, setAdminNo] = useState(0);
-  // Thanh viết
-  const history = useHistory();
-  (async () => {
-    const auth = new AuthenticationService(new ApiCaller());
+    const [pos, setPos] = useState(0);
+    const [adminNo, setAdminNo] = useState(0);
+    // Thanh viết
+    const history = useHistory();
 
-    try {
-      const user = await auth.getUser();
-      if(!adminNo)
-        setAdminNo(user.user.id)
-    } catch (error) {
-      history.push("/login");
-    }
-  })();
-  
-  const getComponents = () => {
-    switch (pos) {
-      case 0:
-        return <OverView />;
-      case 1:
-        return <ProductManagement />;
-      case 2:
-        return <FeedbackManagement />;
-      case 3:
-        return <ModeratorManagement currentAdNo={adminNo}/>;
-      case 4:
-        return <Statistic />;
-      default:
-        return;
-    }
-  };
+        const auth = new AuthenticationService(new ApiCaller());
+        auth.getUser()
+            .then((user) => {
+                !adminNo && setAdminNo(user.user.id);
+            })
+            .catch((err) => history.push("/login"));
 
-  return (
-    <div className="Admin">
-      <AdminHeader adminNo={adminNo}/>
-      <Navigation handle={setPos} />
-      {getComponents()}
-    </div>
-  );
+    const getComponents = () => {
+        switch (pos) {
+            case 0:
+                return <OverView />;
+            case 1:
+                return <ProductManagement />;
+            case 2:
+                return <FeedbackManagement />;
+            case 3:
+                return <ModeratorManagement currentAdNo={adminNo} />;
+            case 4:
+                return <Statistic />;
+            default:
+                return;
+        }
+    };
+
+    return (
+        <div className='Admin'>
+            <AdminHeader adminNo={adminNo} />
+            <Navigation handle={setPos} />
+            {getComponents()}
+        </div>
+    );
 };
 
 export default Admin;

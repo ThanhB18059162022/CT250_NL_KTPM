@@ -22,7 +22,7 @@ export default class AuthenticationService {
     }
   };
 
-  getUser = async () => await this.apiCaller.get("authentication/getuser");
+  getUser = async () => await this.apiCaller.get("authentication/getuser")
 
   logout = () => this.removeTokenInStorage();
 

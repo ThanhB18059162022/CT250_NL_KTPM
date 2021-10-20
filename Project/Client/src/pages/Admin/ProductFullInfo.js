@@ -36,7 +36,7 @@ const ProductFullInfo = (props) => {
         setShow(true)
     }
     //mảng chi tiết sản phẩm
-    const [productDetails, setProductDetails] = useState()
+    const [productDetails, setProductDetails] = useState([])
     //biến hiển thị thêm chi tiết sản phẩm
     const [display, setDisplay] = useState(0)
     //biến lưu thông tin sản phẩm
@@ -121,21 +121,25 @@ const ProductFullInfo = (props) => {
         const caller = new ApiCaller()
         //lưu sản phẩm mới
         if ( newProductFullInfo && newProductFullInfo.prod_name ) {
-            console.log("Thêm sản phẩm mới")
-            console.log(newProductFullInfo)
-            console.log(prod_imgs)
-            await caller.post("products", newProductFullInfo)
+            const newProdInfo = await caller.post("products", newProductFullInfo)
+            try{
+                await caller.post("products/"+ newProdInfo.prod_no +"/images", prod_imgs)
+            }catch(err)
+            {}
+            try{
+                await caller.post("products/" + newProdInfo.prod_no + "/details", productDetails)
+            }catch(err)
+            {}
             setModifyList(1)
             notifySaveProduct()
-            // setTimeout(() => {
-            //     setDisplayEditProduct(0)
-            // }, 3000);
+            setTimeout(() => {
+                setDisplayEditProduct(0)
+            }, 2000);
             
         }
         //cập nhật thông tin sản phẩm
         else if (productFullInfo){
-            console.log("Cập nhật thông tin sản phẩm")
-            let prodTmp =   {   
+            let prodInfoTmp =   {   
                                 prod_name: productFullInfo.prod_name,
                                 prod_manufacturer: productFullInfo.prod_manufacturer,
                                 prod_screen: productFullInfo.prod_screen,
@@ -145,20 +149,24 @@ const ProductFullInfo = (props) => {
                                 prod_batteryAndCharger: productFullInfo.prod_batteryAndCharger,
                                 prod_utilities: productFullInfo.prod_utilities,
                                 prod_design: productFullInfo.prod_design,
-                                prod_status: productFullInfo.prod_status,
-                                brand_no: productFullInfo.brand_no
+                                prod_status: productFullInfo.prod_status
                             }
-            console.log(productFullInfo)
-            console.log(productDetails)
-            console.log(prod_imgs)
-            if(prod_imgs.length > 0) await caller.post("products/"+ productNo +"/images", prod_imgs)
-            // await caller.put("products/" + productNo, ProductFullInfo)
-            if(productDetails.length > 0) await caller.post("products/" + productNo + "/details", productDetails)
+            let newProdDetails = [];
+            productDetails.map((item, index)=>!item.pd_no ? ( newProdDetails.push(item) ):( <></> ) )
+            await caller.put("products/" + productNo, prodInfoTmp)
+            try{
+                await caller.post("products/"+ productNo +"/images", prod_imgs)
+            }catch(err)
+            {}
+            try{
+                await caller.post("products/" + productNo + "/details", newProdDetails)
+            }catch(err)
+            {}
             setModifyList(1)
             notifySaveProduct()
-            // setTimeout(() => {
-            //     setDisplayEditProduct(0)
-            // }, 3000);
+            setTimeout(() => {
+                setDisplayEditProduct(0)
+            }, 2000);
         }
         else notifySaveProductFailed()
     }
@@ -179,11 +187,8 @@ const ProductFullInfo = (props) => {
                             <p className="Title Line"><span>Chi tiết sản phẩm</span></p>
                             <AdminButton IconName={faPlus} ClickEvent={() => setDisplay(1)} />
                         </div>
-                        {productDetails ? (
-                            productDetails.map((detail, index) => <ProductDetail key={index} index={index} productDetail={detail} setProductDetails={setProductDetails}  productDetails={productDetails}/>)
-                        ) : (
-                            <></>
-                        )}
+                        {productDetails &&
+                            productDetails.map((detail, index) => <ProductDetail key={index} index={index} productDetail={detail} setProductDetails={setProductDetails}  productDetails={productDetails}/>)}
                         {displayAddDetail()}
                     </div>
                 </div>

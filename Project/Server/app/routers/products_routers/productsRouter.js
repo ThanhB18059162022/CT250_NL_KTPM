@@ -54,6 +54,10 @@ router
   // /products/price?min=0&max=100&page=1&limit=24
   .get(errorCatch(controller.getProductsByPrice));
 
+  router.route('/search/:flug')
+  .get(errorCatch(controller.searchProduct))
+
+
 // products/1
 router
   .route("/:prod_no")
@@ -84,6 +88,7 @@ router
     authController.authorize(["admin"]),
     errorCatch(controller.addProductImages)
   );
+
 
 // products/1/feedbacks/
 router

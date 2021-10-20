@@ -54,8 +54,8 @@ GET http://localhost:8000/api/products/9007199254740992
 ### Không tồn tại 404
 GET http://localhost:8000/api/products/9999
 
-
-
+###Tìm kiếm sản phẩm
+GET http://localhost:8000/api/products/search/Galaxy
 # ---------------------------------------------------------------------
 
 

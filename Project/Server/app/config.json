@@ -1,0 +1,49 @@
+{
+  "baseImgUri": "http://localhost:8000",
+  "port": 8000,
+  "dbConnection": {
+    "mysql": {
+      "host": "localhost",
+      "user": "root",
+      "password": "",
+      "database": "Phone_E_Commerce_DB"
+    }
+  },
+  "jwt": {
+    "secretKey": "a8fad5592ed3d048090aa7d80fc2a4c4207fe936aeda98af429395637546529cbc5c9160c57be308015649a34231353e00f996f1742929e4efd0edb66f24d4fa"
+  },
+  "corsDomains": [
+    "http://localhost:3000",
+    "http://localhost:4200",
+    "chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop"
+  ],
+  "payment": {
+    "currency": {
+      "baseCurrencyCode": "VND",
+      "exchangeRate": {
+        "USD": {
+          "VND": 23000
+        },
+        "VND": {
+          "USD": 0.000045
+        }
+      }
+    },
+    "paypal": {
+      "clientId": "AZTscyRZHEQU1qdTUQKxi0n_pkI9brHMMLGHmdv_mVHBR4fma58ehRH07_gSVNhjN3at-CA3xABSylmj",
+      "secretId": "EKoWtDeFYbsa-aTbi2rgyAHCE9p1ns2szwV-XmysOAU-BTcfX7rOj8xNru4Otl2oS9c7qXhlPeanU-ev",
+      "env": "sandbox",
+      "currency_code": "USD"
+    },
+    "stripe": {
+      "secretKey": "sk_test_51JYWeHLRjuSYud69ij5K4tGQygTZCyaJcLmIWzkqto23BUXsoIFGzNkHuskG8JccfSWWMWonfUKpOOIwyYB4grDc00khgELFQF",
+      "currency": "USD"
+    },
+    "zalo": {
+      "app_id": "2553",
+      "key1": "PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL",
+      "key2": "kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz",
+      "endpoint": "https://sb-openapi.zalopay.vn/v2/create"
+    }
+  }
+}

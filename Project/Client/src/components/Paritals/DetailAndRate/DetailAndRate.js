@@ -38,18 +38,15 @@ const DetailAndRate = ({ id, showDetail }) => {
     }, [id]);
 
     useEffect(()=>{
-        console.log(page);
         (async () => {
             let data = await FeedbackServices.getFeedback(id, 1, 6*page);
             setFeedback(data);
         })();
-    },[page])
+    },[page, id])
 
     const onShowMoreHandle = ()=>{
-        console.log(feedback.length)
-        if(page*6 === feedback.length){
+        if(page*6 === feedback.length)
             setPage(pre=>pre+1)
-        }
         else setMore(false)
     }
 

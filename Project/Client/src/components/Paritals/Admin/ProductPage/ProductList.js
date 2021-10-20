@@ -6,7 +6,7 @@ import ProductFullInfo from "../../../../pages/Admin/ProductFullInfo"
 import Notifications from "../../../../common/Notifications"
 
 const ProductList = (props) => {
-    const { productsList, setDisplayAddForm } = props
+    const { productsList, setDisplayAddForm, setModifyList } = props
     
     const cusStyle = {
         fontSize: "15px",
@@ -41,7 +41,7 @@ const ProductList = (props) => {
     const [displayEditProduct, setDisplayEditProduct] = useState(0)
     const showEditProduct = () => {
         switch (displayEditProduct) {
-            case 1: return <ProductFullInfo productNo={productNo} setDisplayEditProduct={setDisplayEditProduct} />
+            case 1: return <ProductFullInfo productNo={productNo} setDisplayEditProduct={setDisplayEditProduct} setModifyList={setModifyList}/>
             default: return;
         }
     }

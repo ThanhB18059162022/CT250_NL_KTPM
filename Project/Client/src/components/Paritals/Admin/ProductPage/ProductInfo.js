@@ -17,7 +17,7 @@ const ProductInfo = (props) => {
             // else setProductFullInfo({ ...productFullInfo, prod_imgs: [...productFullInfo.prod_imgs, ...imgs] })
     }
         
-    const getBase64 = (file) => {
+    const getBase64 = async(file) => {
         return new Promise(resolve => {
             let reader = new FileReader()
             reader.readAsDataURL(file)
@@ -65,15 +65,15 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Mặt kính cảm ứng:</p>
-                                <input name="txtScreen" type="text" value={productFullInfo.prod_screen.type} onChange={e => setProductFullInfo({ ...productFullInfo, prod_screen: { ...productFullInfo.prod_screen, glass: e.target.value } })} /> <br />
+                                <input name="txtScreen" type="text" value={productFullInfo.prod_screen.glass} onChange={e => setProductFullInfo({ ...productFullInfo, prod_screen: { ...productFullInfo.prod_screen, glass: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Camera sau:</p>
-                                <input name="txtCameraRear" type="text" value={productFullInfo.prod_camera.rear.spec} onChange={e => setProductFullInfo({ ...productFullInfo, prod_camera: { ...productFullInfo.prod_camera.rear, spec: e.target.value } })} /> <br />
+                                <input name="txtCameraRear" type="text" value={productFullInfo.prod_camera.rear.spec} onChange={e => setProductFullInfo({ ...productFullInfo, prod_camera: { ...productFullInfo.prod_camera,rear:{...productFullInfo.rear,spec: e.target.value } }})} /> <br />
                             </li>
                             <li>
                                 <p>Quay phim:</p>
-                                <input name="txtCameraVideoQuality" type="text" value={productFullInfo.prod_camera.rear.videoQuality} onChange={e => setProductFullInfo({ ...productFullInfo, prod_camera: { ...productFullInfo.prod_camera.rear, videoQuality: e.target.value } })} /> <br />
+                                <input name="txtCameraVideoQuality" type="text" value={productFullInfo.prod_camera.rear.videoQuality} onChange={e => setProductFullInfo({ ...productFullInfo, prod_camera: { ...productFullInfo.prod_camera,rear:{...productFullInfo.rear,videoQuality: e.target.value } }})} /> <br />
                             </li>
                             <li>
                                 <p>Camera trước:</p>
@@ -136,9 +136,19 @@ const ProductInfo = (props) => {
                                 <input name="txtChargeType" type="text" value={productFullInfo.prod_batteryAndCharger.chargeType} onChange={e => setProductFullInfo({ ...productFullInfo, prod_batteryAndCharger: { ...productFullInfo.prod_batteryAndCharger, chargeType: e.target.value } })} /> <br />
                             </li>
                             <li>
-                                <p>Tiện ích:</p>
+                                <p>
+                                    Tiện ích:
+                                    <input type="button" onClick={
+                                                                    ()=>{
+                                                                        let name=window.prompt("Tên tiện ích")
+                                                                        let value=window.prompt("Mô tả tiện ích")
+                                                                        if(name && value) setProductFullInfo({...productFullInfo, prod_utilities: [...productFullInfo.prod_utilities, {[name]:value} ]})
+                                                                    }
+                                                                } value="+" style={{padding: 0, width: 20+'px'}}/>
+                                    <input type="button" onClick={()=>setProductFullInfo({...productFullInfo, prod_utilities: productFullInfo.prod_utilities.slice(0, -1)})} value="-" style={{padding: 0, width: 20+'px'}}/>
+                                </p>
                                 <div>
-                                    {productFullInfo.prod_utilities.map((item, index)=> <div><p>{Object.keys(item)[0]}:</p> <input type="text" value={Object.values(item)[0]}/></div>)}
+                                    {productFullInfo.prod_utilities.map((item, index)=> <div key={index}><p>{Object.keys(item)[0]}:</p> <input type="text" value={Object.values(item)[0]} readOnly/></div>)}
                                 </div>
                             </li>
                             <li>
@@ -163,135 +173,147 @@ const ProductInfo = (props) => {
                             </li>
                             <li className="ImageContainer">
                                 {showProductImage(productFullInfo)}
-                                {prod_imgs?(showProductImage(prod_imgs)):(<></>)}
+                                {prod_imgs && showProductImage(prod_imgs)}
                             </li>
                         </form>
                     </div>
                 </>
             ) : (
                 <>
-                    {/* tạo mới thông tin sản phẩm */}
-                    <div className="ProductInfo">
+                   {/* tạo mới thông tin sản phẩm */}
+                {newProductFullInfo && <div className="ProductInfo">
                         <form className="AddProductForm">
                             <li>
                                 <p>Tên sản phẩm:</p>
-                                <input name="txtPropName" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_name: e.target.value })} /> <br />
+                                <input name="txtPropName" type="text" value={newProductFullInfo.prod_name} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_name: e.target.value })} /> <br />
                             </li>
                             <li>
                                 <p>Nhãn hiệu:</p>
-                                <input name="txtMFBrandName" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, brand_name: e.target.value } })} /> <br />
+                                <input name="txtMFBrandName" type="text" value={newProductFullInfo.prod_manufacturer.brand_name} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, brand_name: e.target.value } })} /> <br />
                             </li>
-                            <li>
+                             <li>
                                 <p>Ngày ra mắt:</p>
-                                <input name="txtMFReleaseDate" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, releaseDate: e.target.value } })} /> <br />
+                                <input name="txtMFReleaseDate" type="text" value={newProductFullInfo.prod_manufacturer.releaseDate} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, releaseDate: e.target.value } })} /> <br />
                             </li>
-                            <li>
+                             <li>
                                 <p>Xuất xứ:</p>
-                                <input name="txtPropMadeIn" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, madeIn: e.target.value } })} /> <br />
+                                <input name="txtPropMadeIn" type="text" value={newProductFullInfo.prod_manufacturer.madeIn} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, madeIn: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Công nghệ màn hình:</p>
-                                <input name="txtScreenType" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_screen: { ...newProductFullInfo.prod_screen, type: e.target.value } })} /> <br />
+                                <input name="txtScreenType" type="text" value={newProductFullInfo.prod_screen.type} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_screen: { ...newProductFullInfo.prod_screen, type: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Độ phân giải:</p>
-                                <input name="txtScreenResolution" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_screen: { ...newProductFullInfo.prod_screen, resolution: e.target.value } })} /> <br />
+                                <input name="txtScreenResolution" type="text" value={newProductFullInfo.prod_screen.resolution} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_screen: { ...newProductFullInfo.prod_screen, resolution: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Màn hình rộng:</p>
-                                <input name="txtScreenSize" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_screen: { ...newProductFullInfo.prod_screen, size: e.target.value } })} /> <br />
+                                <input name="txtScreenSize" type="text" value={newProductFullInfo.prod_screen.size} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_screen: { ...newProductFullInfo.prod_screen, size: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Mặt kính cảm ứng:</p>
-                                <input name="txtScreenGlass" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_screen: { ...newProductFullInfo.prod_screen, glass: e.target.value } })} /> <br />
+                                <input name="txtScreen" type="text" value={newProductFullInfo.prod_screen.glass} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_screen: { ...newProductFullInfo.prod_screen, glass: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Camera sau:</p>
-                                <input name="txtCameraRearSpec" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera, rear: {...newProductFullInfo.prod_camera.rear, spec: e.target.value} } })} /> <br />
+                                <input name="txtCameraRear" type="text" value={newProductFullInfo.prod_camera.rear.spec} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera,rear:{...newProductFullInfo.rear,spec: e.target.value } }})} /> <br />
                             </li>
                             <li>
                                 <p>Quay phim:</p>
-                                <input name="txtCameraRearVideoQuality" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera, rear: {...newProductFullInfo.prod_camera.rear, videoQuality: e.target.value} } })} /> <br />
+                                <input name="txtCameraRearVideoQuality" type="text" value={newProductFullInfo.prod_camera.rear.videoQuality}  onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera, rear: {...newProductFullInfo.prod_camera.rear, videoQuality: e.target.value} } })} /> <br />
                             </li>
                             <li>
                                 <p>Camera trước:</p>
-                                <input name="txtCameraFont" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera, font: e.target.value } })} /> <br />
+                                <input name="txtCameraFont" type="text" value={newProductFullInfo.prod_camera.font} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera, font: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Hệ điều hành:</p>
-                                <input name="txtOS" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_hardwareAndOS: { ...newProductFullInfo.prod_hardwareAndOS, os: e.target.value } })} /> <br />
+                                <input name="txtOS" type="text" value={newProductFullInfo.prod_hardwareAndOS.os} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_hardwareAndOS: { ...newProductFullInfo.prod_hardwareAndOS, os: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Chip xử lý (CPU):</p>
-                                <input name="txtCPU" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_hardwareAndOS: { ...newProductFullInfo.prod_hardwareAndOS, cpu: e.target.value } })} /> <br />
+                                <input name="txtCPU" type="text" value={newProductFullInfo.prod_hardwareAndOS.cpu} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_hardwareAndOS: { ...newProductFullInfo.prod_hardwareAndOS, cpu: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Tốc độ CPU:</p>
-                                <input name="txtCPUSpec" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_hardwareAndOS: { ...newProductFullInfo.prod_hardwareAndOS, cpuSpec: e.target.value } })} /> <br />
+                                <input name="txtCPUSpec" type="text" value={newProductFullInfo.prod_hardwareAndOS.cpuSpec} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_hardwareAndOS: { ...newProductFullInfo.prod_hardwareAndOS, cpuSpec: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Chip đồ họa (GPU):</p>
-                                <input name="txtGPU" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_hardwareAndOS: { ...newProductFullInfo.prod_hardwareAndOS, gpu: e.target.value } })} /> <br />
+                                <input name="txtGPU" type="text" value={newProductFullInfo.prod_hardwareAndOS.gpu} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_hardwareAndOS: { ...newProductFullInfo.prod_hardwareAndOS, gpu: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Mạng di động:</p>
-                                <input name="txtTelecom" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, telecom: e.target.value } })} /> <br />
+                                <input name="txtTelecom" type="text" value={newProductFullInfo.prod_network.telecom} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, telecom: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Sim:</p>
-                                <input name="txtSim" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, SIM: e.target.value } })} /> <br />
+                                <input name="txtSim" type="text" value={newProductFullInfo.prod_network.SIM} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, SIM: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Wifi:</p>
-                                <input name="txtWifi" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, Wifi: e.target.value } })} /> <br />
+                                <input name="txtWifi" type="text" value={newProductFullInfo.prod_network.Wifi} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, Wifi: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>GPS:</p>
-                                <input name="txtGPS" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, GPS: e.target.value } })} /> <br />
+                                <input name="txtGPS" type="text" value={newProductFullInfo.prod_network.GPS} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, GPS: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Bluetooth:</p>
-                                <input name="txtBluetooth" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, Bluetooth: e.target.value } })} /> <br />
+                                <input name="txtBluetooth" type="text" value={newProductFullInfo.prod_network.Bluetooth} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, Bluetooth: e.target.value } })} /> <br />
                             </li>
-                            <li>
+                           <li>
                                 <p>Cổng kết nối/sạc:</p>
-                                <input name="txtConnector" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, connector: e.target.value } })} /> <br />
+                                <input name="txtConnector" type="text" value={newProductFullInfo.prod_network.connector} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, connector: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Kết nối khác:</p>
-                                <input name="txtOthers" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, others: e.target.value } })} /> <br />
+                                <input name="txtOthers" type="text" value={newProductFullInfo.prod_network.others} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_network: { ...newProductFullInfo.prod_network, others: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Dung lượng pin:</p>
-                                <input name="txtBattery" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_batteryAndCharger: { ...newProductFullInfo.prod_batteryAndCharger, battery: e.target.value } })} /> <br />
+                                <input name="txtBattery" type="text" value={newProductFullInfo.prod_batteryAndCharger.battery} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_batteryAndCharger: { ...newProductFullInfo.prod_batteryAndCharger, battery: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Loại pin:</p>
-                                <input name="txtBatteryType" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_batteryAndCharger: { ...newProductFullInfo.prod_batteryAndCharger, batteryType: e.target.value } })} /> <br />
+                                <input name="txtBatteryType" type="text" value={newProductFullInfo.prod_batteryAndCharger.batteryType} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_batteryAndCharger: { ...newProductFullInfo.prod_batteryAndCharger, batteryType: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Công suất sạc tối đa:</p>
-                                <input name="txtChargeType" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_batteryAndCharger: { ...newProductFullInfo.prod_batteryAndCharger, chargeType: e.target.value } })} /> <br />
+                                <input name="txtChargeType" type="text" value={newProductFullInfo.prod_batteryAndCharger.chargeType} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_batteryAndCharger: { ...newProductFullInfo.prod_batteryAndCharger, chargeType: e.target.value } })} /> <br />
                             </li>
                             <li>
-                                <p>Tiện ích:</p>
-                                <input name="txtUtilities" type="text" defaultValue={"đang cập nhật"} readOnly/> <br />
+                                <p>
+                                    Tiện ích:
+                                    <input type="button" onClick={
+                                                                    ()=>{
+                                                                        let name=window.prompt("Tên tiện ích")
+                                                                        let value=window.prompt("Mô tả tiện ích")
+                                                                        if(name && value) setNewProductFullInfo({...newProductFullInfo, prod_utilities: [...newProductFullInfo.prod_utilities, {[name]: value} ]})
+                                                                    }
+                                                                } value="+" style={{padding: 0, width: 20+'px'}}/>
+                                    <input type="button" onClick={()=>setNewProductFullInfo({...newProductFullInfo, prod_utilities: newProductFullInfo.prod_utilities.slice(0, -1)})} value="-" style={{padding: 0, width: 20+'px'}}/>
+                                </p>
+                                <div>
+                                    {newProductFullInfo.prod_utilities ? ( newProductFullInfo.prod_utilities.map((item, index)=> <div key={index}><p>{Object.keys(item)[0]}:</p> <input type="text" value={Object.values(item)[0]} readOnly/></div>) ):(<></>) }
+                                </div>
                             </li>
                             <li>
                                 <p>Thiết kế:</p>
-                                <input name="txtStructural" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_design: { ...newProductFullInfo.prod_design, structural: e.target.value } })} /> <br />
+                                <input name="txtStructural" type="text" value={newProductFullInfo.prod_design.structural} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_design: { ...newProductFullInfo.prod_design, structural: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Chất liệu:</p>
-                                <input name="txtMaterial" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_design: { ...newProductFullInfo.prod_design, material: e.target.value } })} /> <br />
+                                <input name="txtMaterial" type="text" value={newProductFullInfo.prod_design.material} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_design: { ...newProductFullInfo.prod_design, material: e.target.value } })} /> <br />
                             </li>
                             <li>
-                                <p>Kích thước</p>
-                                <input name="txtSizeAndWeight" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_design: { ...newProductFullInfo.prod_design, size: e.target.value } })} /> <br />
+                                <p>Kích thước:</p>
+                                <input name="txtSizeAndWeight" type="text" value={newProductFullInfo.prod_design.size} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_design: { ...newProductFullInfo.prod_design, size: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Khối lượng:</p>
-                                <input name="txtSizeAndWeight" type="text" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_design: { ...newProductFullInfo.prod_design, weight: e.target.value } })} /> <br />
+                                <input name="txtSizeAndWeight" type="text" value={newProductFullInfo.prod_design.weight} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_design: { ...newProductFullInfo.prod_design, weight: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Hình ảnh:</p>
@@ -301,7 +323,7 @@ const ProductInfo = (props) => {
                                 {prod_imgs?(showProductImage(prod_imgs)):(<></>)}
                             </li>
                         </form>
-                    </div>
+                    </div>}
                 </>
             )}
         </>
@@ -313,9 +335,9 @@ const showProductImage = (props) => {
     return (
         <>
             {props.prod_imgs ? (
-                props.prod_imgs.map((item, index) => <><img key={index} alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></>)
+                props.prod_imgs.map((item, index) => <div key={index}><img alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></div>)
             ) : (
-                props.map((item, index) => <><img key={index} alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></>) 
+                props.map((item, index) => <div key={index}><img alt="test" src={item} className="ProductImg" onClick={() => alert("xoa anh " + index)}></img></div>) 
             )}
         </>
     )

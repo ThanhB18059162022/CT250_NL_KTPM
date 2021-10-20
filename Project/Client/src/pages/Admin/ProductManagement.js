@@ -32,7 +32,7 @@ const ProductManagement = () => {
 
     return (
         <div>
-            <ProductList productsList={productsList} setDisplayAddForm={setDisplayAddForm} />
+            <ProductList productsList={productsList} setDisplayAddForm={setDisplayAddForm} setModifyList={setModifyList}/>
             {displayAddNewForm()}
         </div>
     )

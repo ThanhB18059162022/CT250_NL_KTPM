@@ -84,9 +84,9 @@ const MorderatorList = (props) => {
             </li>
             <div className="AdminListClass">
                 {filter.length === 0 ? (
-                    mods.map((item, index) => item.mod_no!==currentAdNo ? (<Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />):(<></>))
+                    mods.map((item, index) => item.mod_no!==currentAdNo && (<Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />))
                 ) : (
-                    filter.map((item, index) => item.mod_no!==currentAdNo ? (<Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />):(<></>))
+                    filter.map((item, index) => item.mod_no!==currentAdNo && (<Moderator key={index} info={item} setEditMod={setEditMod} setModInfo={setModInfo} notify={notify} show={show} setShow={setShow} notifyDeleteAdmin={notifyDeleteAdmin} />))
                 )}
             </div>
             {displayEditMod()}
