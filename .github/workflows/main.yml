@@ -40,6 +40,6 @@ jobs:
         run: |
           npm ci
           npm run test-ci 
-          npm start
+          node server.js
           echo "done"
         working-directory: ./Project/Server
