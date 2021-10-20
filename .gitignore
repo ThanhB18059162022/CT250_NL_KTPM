@@ -102,12 +102,8 @@ dist
 
 # TernJS port file
 .tern-port
-Project/Server/app/config.json
-Project/Server/app/config.js
+
 
 # package-clock.json
 # Project/Server/package-lock.json theo đề xuất nên thêm file này
 Project/Client/package-lock.json
-Project/Server/app/serversettings.dev.json
-Project/Server/app/serversettings.json
-
