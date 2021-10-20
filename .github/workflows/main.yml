@@ -41,4 +41,5 @@ jobs:
           npm ci
           npm run test-ci 
           npm start
+          echo "done"
         working-directory: ./Project/Server
