@@ -131,7 +131,7 @@ GET http://localhost:8000/api/payments/zalo/checkoutorder/7210a5e54e1b47c33073e7
 
 ### Lấy ra order lưu tạm
 GET http://localhost:8000/api/payments/storeorders
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0Mjc5NTkyLCJleHAiOjE2MzQyODMxOTJ9.D9easpUN-YPslrMaBH96jNCAsY4b03uo64Gs1XmFOPQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0NzEzNTg0LCJleHAiOjE2MzQ3MTcxODR9.RjUHo_BlyRUrA3WElzKdXU8Fti4bqbDeMO86Vf2vSLU
 
 
 ### Lấy xóa order lưu tạm

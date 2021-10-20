@@ -22,7 +22,7 @@ class AuthenticationProcessor extends Processor {
     const moderator = await this.dao.getModeratorByUsername(
       loginModel.username
     );
-    const hashPwd = this.pwd.getHasPassword(loginModel);
+    const hashPwd = this.pwd.getHashPassword(loginModel);
 
     if (moderator.mod_password !== hashPwd) {
       throw new LoginNotSuccessError();

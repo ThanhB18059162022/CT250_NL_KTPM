@@ -133,21 +133,6 @@ module.exports = class ProductsController extends Controller {
     }
   };
 
-  addFeedback = async (req, res) => {
-    try {
-      const {
-        body: newFeedback,
-        params: { prod_no },
-      } = req;
-
-      const feedback = await this.processor.addFeedback(prod_no, newFeedback);
-
-      return this.created(res, feedback);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
-  };
-
   //#endregion
 
   // Cập nhật sản phẩm
