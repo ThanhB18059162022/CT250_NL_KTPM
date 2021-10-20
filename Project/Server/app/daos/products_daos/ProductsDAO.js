@@ -73,6 +73,12 @@ module.exports = class ProductsDAO extends ModelDAO {
     return product;
   };
 
+  searchProduct = async (flug) =>{
+    return (await this.sqldao.query("SELECT prod_no FROM Products WHERE prod_name LIKE CONCAT('%',?,'%');", [
+      flug
+    ])).map(item=>item.prod_no)
+  }
+
   //#endregion
 
   //#region  ADD

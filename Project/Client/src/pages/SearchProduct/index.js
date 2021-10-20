@@ -1,6 +1,6 @@
 import Footer from "../../components/Paritals/Footer/Footer";
 import { SearchHeader } from "../../components/Paritals/Header";
-import ProductShower from "../../components/Paritals/ProductShower";
+import ProductList from '../../components/Paritals/ProductShower/ProductList'
 const SearchProduct = ({ match }) => {
     console.log(match.params.flug)
     return (
@@ -8,7 +8,7 @@ const SearchProduct = ({ match }) => {
             <SearchHeader />
             <div className="home-body-content">
                 <br />
-                <ProductShower />
+                <ProductList/>
             </div>
             <Footer/>
         </div>

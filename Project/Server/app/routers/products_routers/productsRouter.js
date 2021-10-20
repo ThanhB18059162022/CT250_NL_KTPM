@@ -85,6 +85,9 @@ router
     errorCatch(controller.addProductImages)
   );
 
+router.route('/search/:flug')
+  .get(errorCatch(controller.searchProduct))
+
 // products/1/feedbacks/
 router
   .route("/:prod_no/feedbacks")

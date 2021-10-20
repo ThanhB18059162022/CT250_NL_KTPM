@@ -124,6 +124,8 @@ module.exports = class ProductsProcessor extends Processor {
     return size?.[0] ?? "not found";
   };
 
+  searchProduct = async(flug) =>await this.dao.searchProduct(flug);
+
   //#endregion
 
   //#region  Chi tiết

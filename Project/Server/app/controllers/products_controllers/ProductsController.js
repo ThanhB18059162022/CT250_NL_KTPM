@@ -58,6 +58,12 @@ module.exports = class ProductsController extends Controller {
     return this.ok(res, product);
   };
 
+  searchProduct = async(req, res)=>{
+    const {flug} = req.params;
+    const products = await this.processor.searchProduct(flug);
+    return this.ok(res,products)
+  }
+
   //#endregion
 
   //#region  ADD
