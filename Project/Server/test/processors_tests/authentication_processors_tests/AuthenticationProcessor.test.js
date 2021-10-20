@@ -53,14 +53,24 @@ class JwtMock {
     return { user: "Data đây " + token };
   });
 }
+
+class PwdMock {
+  getHashPassword = jest.fn((p) => p.password);
+}
 //#endregion
 
 let daoMock;
 let validatorMock;
 let jwtMock;
+let pwdMock;
 
 function getProcessor() {
-  return new AuthenticationProcessorFake(validatorMock, jwtMock, daoMock);
+  return new AuthenticationProcessorFake(
+    validatorMock,
+    jwtMock,
+    daoMock,
+    pwdMock
+  );
 }
 
 function getProcessorNoParam() {
@@ -72,6 +82,7 @@ describe("Proc Kiểm tra đăng nhập bằng jwt", () => {
     daoMock = new ModDaoMock();
     validatorMock = new AuthenticationValidatorMock();
     jwtMock = new JwtMock();
+    pwdMock = new PwdMock();
   });
 
   test("Không hợp lệ - EX", async () => {
@@ -227,19 +238,6 @@ describe("Proc Kiểm tra bearer jwt có hợp lệ", () => {
 });
 
 describe("Proc Các hàm bổ sung", () => {
-  test("Mã hóa mật khẩu SHA256", () => {
-    //Arrange
-    const processor = getProcessorNoParam();
-
-    //Act
-    const expRs =
-      "465039ec2625fb7eace80f9a3e9bd63dd04b0c55d971f6af1894f4b8c1b3c0ad";
-    const actRs = processor.getHasPassword("");
-
-    //Expect
-    expect(actRs).toEqual(expRs);
-  });
-
   test("Lấy ra role - emp", () => {
     //Arrange
     const roleIndex = 0;

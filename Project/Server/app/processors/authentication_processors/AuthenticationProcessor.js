@@ -3,15 +3,15 @@ const {
   LoginNotSuccessError,
   JwtTokenError,
 } = require("../../errors/errorsContainer");
-const crypto = require("crypto");
 
 // Xử lý xác thực người dùng
 class AuthenticationProcessor extends Processor {
-  constructor(validator, jwt, dao) {
+  constructor(validator, jwt, dao, pwd) {
     super();
     this.validator = validator;
     this.jwt = jwt;
     this.dao = dao;
+    this.pwd = pwd;
   }
 
   // Đăng nhập
@@ -22,7 +22,7 @@ class AuthenticationProcessor extends Processor {
     const moderator = await this.dao.getModeratorByUsername(
       loginModel.username
     );
-    const hashPwd = this.getHasPassword(loginModel);
+    const hashPwd = this.pwd.getHashPassword(loginModel);
 
     if (moderator.mod_password !== hashPwd) {
       throw new LoginNotSuccessError();
@@ -36,12 +36,6 @@ class AuthenticationProcessor extends Processor {
 
     return token;
   };
-
-  getHasPassword = (loginModel) =>
-    crypto
-      .createHash("sha256")
-      .update(`${loginModel.username}-${loginModel.password}`)
-      .digest("hex");
 
   getRole = (roleIndex) => (roleIndex === 0 ? "emp" : "admin");
 
