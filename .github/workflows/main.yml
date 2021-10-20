@@ -39,4 +39,6 @@ jobs:
         run: |
           npm ci
           npm run test-ci 
+          npm start
+          ps aux
         working-directory: ./Project/Server
