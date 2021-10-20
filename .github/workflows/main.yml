@@ -36,9 +36,5 @@ jobs:
 
       # Cài môi trường cho server
       - name: Cài đặt các npm package chạy unit test
-        run: |
-          npm ci
-          npm run test-ci 
-          top
-          npm start
+        run: top
         working-directory: ./Project/Server
