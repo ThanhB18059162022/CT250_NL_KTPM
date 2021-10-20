@@ -55,12 +55,16 @@ const ChangePwd = (props) => {
             sha256(adminInfo.mod_username + "-" + pwd.old_pwd) === adminInfo.mod_password &&
             pwd.new_pwd === pwd.cfm_pwd
         ) {
-            setAdminInfoTmp({
-                ...adminInfoTmp,
-                mod_password: sha256(adminInfo.mod_username + "-" + pwd.new_pwd),
-            });
+            // setAdminInfoTmp({
+            //     ...adminInfoTmp,
+            //     mod_password: sha256(adminInfo.mod_username + "-" + pwd.new_pwd),
+            // });
+            // setAdminInfoTmp(pre=>({...pre, mod_password: sha256(adminInfo.mod_username + "-" + pwd.new_pwd)}));
+            // console.log( sha256(adminInfo.mod_username + "-" + pwd.new_pwd))
+            // console.log(adminInfoTmp)
+            // console.log(adminInfoTmp.mod_password)
             const caller = new ApiCaller();
-            await caller.put("moderators/" + adminInfo.mod_no, adminInfoTmp);
+            await caller.put("moderators/" + adminInfo.mod_no, {...adminInfoTmp,mod_password: sha256(adminInfo.mod_username + "-" + pwd.new_pwd) } );
             setAdminInfoChanged(1);
             notifySavePassword();
             setTimeout(() => {

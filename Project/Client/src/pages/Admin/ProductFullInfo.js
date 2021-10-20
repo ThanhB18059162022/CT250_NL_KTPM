@@ -121,10 +121,6 @@ const ProductFullInfo = (props) => {
         const caller = new ApiCaller()
         //lưu sản phẩm mới
         if ( newProductFullInfo && newProductFullInfo.prod_name ) {
-            console.log("Thêm sản phẩm mới")
-            console.log(newProductFullInfo)
-            console.log(prod_imgs)
-            console.log(productDetails)
             const newProdInfo = await caller.post("products", newProductFullInfo)
             try{
                 await caller.post("products/"+ newProdInfo.prod_no +"/images", prod_imgs)
