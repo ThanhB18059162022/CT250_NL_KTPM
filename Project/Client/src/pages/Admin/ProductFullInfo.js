@@ -36,7 +36,7 @@ const ProductFullInfo = (props) => {
         setShow(true)
     }
     //mảng chi tiết sản phẩm
-    const [productDetails, setProductDetails] = useState()
+    const [productDetails, setProductDetails] = useState([])
     //biến hiển thị thêm chi tiết sản phẩm
     const [display, setDisplay] = useState(0)
     //biến lưu thông tin sản phẩm
@@ -187,11 +187,8 @@ const ProductFullInfo = (props) => {
                             <p className="Title Line"><span>Chi tiết sản phẩm</span></p>
                             <AdminButton IconName={faPlus} ClickEvent={() => setDisplay(1)} />
                         </div>
-                        {productDetails ? (
-                            productDetails.map((detail, index) => <ProductDetail key={index} index={index} productDetail={detail} setProductDetails={setProductDetails}  productDetails={productDetails}/>)
-                        ) : (
-                            <></>
-                        )}
+                        {productDetails &&
+                            productDetails.map((detail, index) => <ProductDetail key={index} index={index} productDetail={detail} setProductDetails={setProductDetails}  productDetails={productDetails}/>)}
                         {displayAddDetail()}
                     </div>
                 </div>

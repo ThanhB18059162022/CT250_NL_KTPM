@@ -24,7 +24,6 @@ export default class ApiCaller {
   get = async (uri) => {
     try {
       const res = await this.axiosApi.get(uri);
-
       return res.data;
     } catch (error) {
       throw error.response;

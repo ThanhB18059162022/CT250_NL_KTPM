@@ -52,58 +52,111 @@
     }
 }
 
-.OverViewContainer{
+.OverViewContainer {
     padding: 0 5%;
-    .OverViewToolHeader{
+
+    .OverViewToolHeader {
         justify-content: flex-end;
     }
-    .OverView_Header{
-        display: flex;
-        background-color: var(--backgroundColor);
-        color: white;
-        padding: 10px 5px;
-        margin-bottom: 2px;
-        align-items: center;
-        user-select: none;
-        p {
-            text-align: center;
-            padding: 2px 0;
-            &:nth-child(1) {
-                max-width: 150px;
-                min-width: 150px;
-                margin-right: 10px;
-            }
-            &:nth-child(2) {
-                width: 180px;
-                text-align: left;
-            }
-            &:nth-child(3) {
-                width: 20%;
-                min-width: 150px;
-            }
-            &:nth-child(4) {
-                width: 10%;
-                min-width: 150px;
-            }
-            &:nth-child(5) {
-                width: 15%;
-                min-width: 100px;
-            }
-            &:nth-child(6) {
-                width: 200px;
-                min-width: 120px;
-            }
-            &:nth-child(7) {
-                width: 250px;
-                min-width: 150px;
-            }
-            &:nth-child(8) {
-                width: 150px;
-                min-width: 100px;
+    .OverViewList {
+        &_Header, li {
+            display: flex;
+            background-color: var(--backgroundColor);
+            color: white;
+            padding: 10px 5px;
+            margin-bottom: 2px;
+            align-items: center;
+            user-select: none;
+            p{
+                flex-grow: 1;
+                padding: 5px 0;
+                text-align: center;
+                &.ordername{
+                    text-align: left;
+                }
+                &:first-child{
+                    max-width: 60px;
+                    width: 60px;
+                    margin-right: 20px;
+                }
+                &.orderemail{
+                    max-width: 200px;
+                    width: 200px;
+                    overflow-x: hidden;
+                }
+                &:last-child{
+                    max-width: 100px;
+                    width: 100px;
+                    display: flex;
+                    justify-content: space-evenly;
+                    button{
+                        font-size: 20px;
+                        background: transparent;
+                        outline: none;
+                        border: none;
+                        
+                        &:last-child{
+                            color: red;
+                        }
+                        &:first-child{
+                            color: green;
+                        }
+                    }
+                    padding:  0 10px;
+                }
+                &.timecreated{
+                    max-width: 200px;
+                    width: 200px;
+                }
+                &.totalorder{
+                    max-width: 150px;
+                    width: 150px;
+                }
+                &.orderphone{
+                    max-width: 120px;
+                    width: 120px;
+                }
             }
         }
+        li{
+
+            color:black;
+            background: white;
+            &:nth-child(even){
+                background: rgba(0, 0, 0, 0.068);
+            }
+        }
+        @media screen and (max-width:1300px) {
+            &_Header, li{
+                p{
+                    &.orderemail{
+                        display: none;
+                    }
+                }
+            }   
+        }
+        @media screen and (max-width:1100px) {
+            &_Header, li{
+                p{
+                    &.orderphone{
+                        display: none;
+                    }
+                }
+            }       
+        }
+        @media screen and (max-width:950px) {
+            &_Header, li{
+                p{
+                    &.timecreated{
+                        display: none;
+                    }
+                }
+            }
+            
+        }
     }
-    .OverView_Body{
+   
+    .OverView_Body {
         height: calc(100vh - 240px);
         border: 1px solid black;
         overflow-y: auto;
@@ -534,19 +587,19 @@
                 padding: 10px;
                 font-size: 16px;
             }
-            &:nth-child(26){
-                div{
+            &:nth-child(26) {
+                div {
                     width: 80%;
-                    div{
+                    div {
                         display: flex;
                         margin: 10px 0;
                         width: 100%;
-                        p{
+                        p {
                             margin: auto;
                             width: 30%;
                             padding-left: 10px;
                         }
-                        input{
+                        input {
                             width: 76%;
                         }
                     }
@@ -614,7 +667,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.349);
     overflow-y: auto;
-    .ProductDetail{
+    .ProductDetail {
         background-color: #fff;
         margin: 10px auto;
     }

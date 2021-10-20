@@ -18,15 +18,12 @@ const Admin = () => {
     // Thanh viết
     const history = useHistory();
 
-    if (!window.localStorage.getItem("jwtToken")) history.push("/login");
-    else {
         const auth = new AuthenticationService(new ApiCaller());
         auth.getUser()
             .then((user) => {
-                if (!adminNo) setAdminNo(user.user.id);
+                !adminNo && setAdminNo(user.user.id);
             })
             .catch((err) => history.push("/login"));
-    }
 
     const getComponents = () => {
         switch (pos) {
