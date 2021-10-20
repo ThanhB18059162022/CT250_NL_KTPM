@@ -40,7 +40,7 @@ const ChangePwd = (props) => {
         setShow(true);
     };
     //biến thông tin admin tmp
-    const [adminInfoTmp, setAdminInfoTmp] = useState({
+    const adminInfoTmp = {
         mod_name: adminInfo.mod_name,
         mod_id: adminInfo.mod_id,
         mod_phoneNumber: adminInfo.mod_phoneNumber,
@@ -48,21 +48,13 @@ const ChangePwd = (props) => {
         mod_address: adminInfo.mod_address,
         mod_role: adminInfo.mod_role,
         mod_password: adminInfo.mod_password,
-    });
+    };
     //gọi api lưu pwd
     const SavePassword = async (pwd) => {
         if (
             sha256(adminInfo.mod_username + "-" + pwd.old_pwd) === adminInfo.mod_password &&
             pwd.new_pwd === pwd.cfm_pwd
         ) {
-            // setAdminInfoTmp({
-            //     ...adminInfoTmp,
-            //     mod_password: sha256(adminInfo.mod_username + "-" + pwd.new_pwd),
-            // });
-            // setAdminInfoTmp(pre=>({...pre, mod_password: sha256(adminInfo.mod_username + "-" + pwd.new_pwd)}));
-            // console.log( sha256(adminInfo.mod_username + "-" + pwd.new_pwd))
-            // console.log(adminInfoTmp)
-            // console.log(adminInfoTmp.mod_password)
             const caller = new ApiCaller();
             await caller.put("moderators/" + adminInfo.mod_no, {...adminInfoTmp,mod_password: sha256(adminInfo.mod_username + "-" + pwd.new_pwd) } );
             setAdminInfoChanged(1);

@@ -145,7 +145,7 @@ const ProductInfo = (props) => {
                                                                         if(name && value) setProductFullInfo({...productFullInfo, prod_utilities: [...productFullInfo.prod_utilities, {[name]:value} ]})
                                                                     }
                                                                 } value="+" style={{padding: 0, width: 20+'px'}}/>
-                                    <input type="button" onClick={()=>setProductFullInfo({...productFullInfo, prod_utilities: [productFullInfo.prod_utilities.pop()]})} value="-" style={{padding: 0, width: 20+'px'}}/>
+                                    <input type="button" onClick={()=>setProductFullInfo({...productFullInfo, prod_utilities: productFullInfo.prod_utilities.slice(0, -1)})} value="-" style={{padding: 0, width: 20+'px'}}/>
                                 </p>
                                 <div>
                                     {productFullInfo.prod_utilities.map((item, index)=> <div key={index}><p>{Object.keys(item)[0]}:</p> <input type="text" value={Object.values(item)[0]} readOnly/></div>)}
@@ -293,7 +293,7 @@ const ProductInfo = (props) => {
                                                                         if(name && value) setNewProductFullInfo({...newProductFullInfo, prod_utilities: [...newProductFullInfo.prod_utilities, {[name]: value} ]})
                                                                     }
                                                                 } value="+" style={{padding: 0, width: 20+'px'}}/>
-                                    <input type="button" onClick={()=>setNewProductFullInfo({...newProductFullInfo, prod_utilities: [newProductFullInfo.prod_utilities.pop()]})} value="-" style={{padding: 0, width: 20+'px'}}/>
+                                    <input type="button" onClick={()=>setNewProductFullInfo({...newProductFullInfo, prod_utilities: newProductFullInfo.prod_utilities.slice(0, -1)})} value="-" style={{padding: 0, width: 20+'px'}}/>
                                 </p>
                                 <div>
                                     {newProductFullInfo.prod_utilities ? ( newProductFullInfo.prod_utilities.map((item, index)=> <div key={index}><p>{Object.keys(item)[0]}:</p> <input type="text" value={Object.values(item)[0]} readOnly/></div>) ):(<></>) }
