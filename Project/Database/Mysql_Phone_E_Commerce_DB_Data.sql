@@ -827,3 +827,10 @@ INSERT INTO Images(prod_no) VALUES(4);
 INSERT INTO Images(prod_no) VALUES(5);
 INSERT INTO Images(prod_no) VALUES(6);
 INSERT INTO Images(prod_no) VALUES(7);
+
+
+INSERT INTO Replies (rep_content, mod_no, fb_no) VALUES('Cảm ơn anh đã ủng hộ', 1, 1);
+INSERT INTO Replies (rep_content, mod_no, fb_no) VALUES('Cảm ơn anh đã ủng hộ', 1, 2);
+INSERT INTO Replies (rep_content, mod_no, fb_no) VALUES('Cảm ơn anh đã ủng hộ', 1, 3);
+INSERT INTO Replies (rep_content, mod_no, fb_no) VALUES('Cảm ơn anh đã ủng hộ', 1, 4);
+INSERT INTO Replies (rep_content, mod_no, fb_no) VALUES('Cảm ơn anh đã ủng hộ', 1, 19);

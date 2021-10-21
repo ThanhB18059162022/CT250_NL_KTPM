@@ -1,3 +1,11 @@
 
-GET http://localhost:8000/api/products/1/feedbacks
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0ODA0MTUzLCJleHAiOjE2MzQ4MDc3NTN9.i7qinbGnA_BeUiFQUif5rBI3exP57YZCFOWapGPx26E
+GET http://localhost:8000/api/feedback?page=1&limit=10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0ODE1MTI0LCJleHAiOjE2MzQ4MTg3MjR9.m-n-UdoAJIFTO9CzFk18GrXkrjcJJaAZb8HaCyRG3Uk
+
+### Xóa phản hồi
+DELETE  http://localhost:8000/api/feedback/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0ODE1MTI0LCJleHAiOjE2MzQ4MTg3MjR9.m-n-UdoAJIFTO9CzFk18GrXkrjcJJaAZb8HaCyRG3Uk
+
+### Xóa trả lời
+DELETE  http://localhost:8000/api/feedback/2/replies/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0ODE1MTI0LCJleHAiOjE2MzQ4MTg3MjR9.m-n-UdoAJIFTO9CzFk18GrXkrjcJJaAZb8HaCyRG3Uk

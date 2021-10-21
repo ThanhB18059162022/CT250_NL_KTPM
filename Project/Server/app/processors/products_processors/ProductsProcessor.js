@@ -214,9 +214,7 @@ module.exports = class ProductsProcessor extends Processor {
   };
 
   // Phản hồi
-  addReply = async (fb_no, reply) => {
-    return this.feedbackProcessor.addReply(fb_no, reply);
-  };
+  addReply = (fb_no, reply) => this.feedbackProcessor.addReply(fb_no, reply);
 
   //#endregion
 

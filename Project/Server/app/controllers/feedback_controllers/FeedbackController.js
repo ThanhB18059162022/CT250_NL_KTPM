@@ -23,4 +23,10 @@ module.exports = class FeedbackController extends Controller {
       return this.checkError(res, error);
     }
   };
+
+  deleteReply = async (req, res) => {
+    await this.processor.deleteReply(req.params.rep_no);
+
+    return this.noContent(res);
+  };
 };

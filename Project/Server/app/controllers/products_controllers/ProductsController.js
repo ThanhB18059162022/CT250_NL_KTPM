@@ -162,6 +162,7 @@ module.exports = class ProductsController extends Controller {
     }
   };
 
+  // Cập nhật chi tiết
   updateProductDetail = async (req, res) => {
     try {
       const {
