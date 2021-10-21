@@ -213,10 +213,6 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_status,
     } = product;
 
-    if (isNaN(prod_status)) {
-      prod_status = 0;
-    }
-
     const dbProduct = {
       prod_name,
       prod_manufacturer: JSON.stringify(prod_manufacturer),
@@ -227,7 +223,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger: JSON.stringify(prod_batteryAndCharger),
       prod_utilities: JSON.stringify(prod_utilities),
       prod_design: JSON.stringify(prod_design),
-      prod_status,
+      prod_status: isNaN(prod_status) ? 0 : prod_status,
     };
 
     return dbProduct;
