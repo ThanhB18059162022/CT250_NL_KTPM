@@ -152,6 +152,12 @@ module.exports = class PaymentsProcessor extends Processor {
     return saveOrder;
   };
 
+  // Lấy tất cả đơn hàng đã lưu trong CSDL
+  getAllSaveOrder = async() =>{
+    const saveOrders =  await  this.dao.getAllSaveOrder()
+    return saveOrders;
+  }
+
   //#endregion
 
   //#region Ex
