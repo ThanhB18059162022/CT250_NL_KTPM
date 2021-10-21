@@ -144,13 +144,13 @@ module.exports = class PaymentsDAO extends ModelDAO {
   };
 
   getAllSaveOrder = async() =>{
-    const sql = `SELECT * FROM Orders`
+    const sql = `SELECT * FROM Orders ORDER BY order_no DESC`
     const orders = await this.sqldao.query(sql,[])
     const orders_info = await Promise.all(orders.map(async(order)=>{
       const products = await this.getSaveOrderProducts(order.order_no);
       order.orderProducts = products;
   
-      const customer = await this.getSaveOrderCustomer(order.order_no);
+      const customer = await this.getSaveOrderCustomer(order.cus_no);
       order.customer = customer;
       return order
     }))

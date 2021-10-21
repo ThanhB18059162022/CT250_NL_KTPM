@@ -104,9 +104,13 @@ const OverView = () => {
     return (
         <>
             <div className='OverViewContainer'>
-                <div className='ProductToolHeader OverViewToolHeader'>
-                    <AdminSearchInput filterBill={filterBill} />
-                </div>
+                {/* <div className='ProductToolHeader OverViewToolHeader'>
+                    // <AdminSearchInput filterBill={filterBill} />
+                </div> */}
+                <h3 style={{
+                    color:'var(--backgroundColor)',
+                    margin:'20px 0 10px 5px'
+                }}>Đơn hàng thanh toán tại nhà</h3>
                 <div className='OverViewList'>
                     <div className='OverViewList_Header'>
                         <p>STT</p>
@@ -119,6 +123,7 @@ const OverView = () => {
                         <p>Hành động</p>
                     </div>
                     <ul className='OverView_Body'>
+                        {orders.length>0?<>
                         {orders.map((order, index) => (
                             <li key={index}>
                                 <p>{index + 1}</p>
@@ -145,6 +150,7 @@ const OverView = () => {
                                 </p>
                             </li>
                         ))}
+                        </>:<p style={{textAlign:'center',padding:'10px 0'}}>Đơn hàng đặt tại nhà trống</p>}
                     </ul>
                 </div>
                 <div className='OverViewList' style={{marginTop:'20px'}}>
