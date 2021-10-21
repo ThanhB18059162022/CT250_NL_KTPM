@@ -28,6 +28,8 @@ module.exports = class ImageService extends FileService {
 
     if (!this.exist(path)) {
       await this.createDirAsync(path);
+    } else {
+      // clear folder
     }
 
     await this.writeToDisk(path, imgs[0], "");
