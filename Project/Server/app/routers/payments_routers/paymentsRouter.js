@@ -129,10 +129,16 @@ router
 
 //#endregion
 
+router
+  .route("/getAllSaveOrder")
+  .get(errorCatch(payPalcontroller.getAllSaveOrder));
+
+
 // Lấy ra order đã thanh toán
 router
   .route("/getSaveOrder/:id")
   .get(errorCatch(payPalcontroller.getSaveOrder));
+
 
 module.exports = router;
 

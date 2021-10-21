@@ -55,4 +55,15 @@ module.exports = class PaymentsController extends Controller {
       return this.checkError(res, error);
     }
   };
+
+  //lấy tất cả đơn hàng đã thanh toán
+  getAllSaveOrder = async (req, res) => {
+    try {
+      const saveOrder = await this.processor.getAllSaveOrder();
+
+      return this.ok(res, saveOrder);
+    } catch (error) {
+      return this.checkError(res, error);
+    }
+  };
 };

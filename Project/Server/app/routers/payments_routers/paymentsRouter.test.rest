@@ -31,8 +31,8 @@ Content-Type: application/json
 
 
 ### Thanh toán
-GET http://localhost:8000/api/payments/default/checkoutorder/3a45964e0335174eb34b61525cda52f731d0761275467cf57d7e8b871d8f30cf
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0Mjc5NTkyLCJleHAiOjE2MzQyODMxOTJ9.D9easpUN-YPslrMaBH96jNCAsY4b03uo64Gs1XmFOPQ
+GET http://localhost:8000/api/payments/default/checkoutorder/5d8e8403c4fbe51f04a30abbc68b3d79413b41a54a8d20c24b8f26952ec9ad1b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0NDY5OTc3LCJleHAiOjE2MzQ0NzM1Nzd9.d1TDuqDvKFLzx6kEOFfaNPew_GzywMPaJGW4UOsLC2k
 
 
 
