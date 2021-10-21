@@ -1,3 +1,4 @@
+const { NotValidError } = require("../../errors/errorsContainer");
 const Processor = require("../Processor");
 
 module.exports = class ProductsProcessor extends Processor {
@@ -124,7 +125,7 @@ module.exports = class ProductsProcessor extends Processor {
     return size?.[0] ?? "not found";
   };
 
-  searchProduct = async(flug) =>await this.dao.searchProduct(flug);
+  searchProduct = async (flug) => await this.dao.searchProduct(flug);
 
   //#endregion
 
@@ -196,9 +197,13 @@ module.exports = class ProductsProcessor extends Processor {
 
   // Chi tiết sản phẩm
   addProductImages = async (prod_no, images) => {
-    const product = await this.getProductByNo(prod_no);
+    try {
+      const product = await this.getProductByNo(prod_no);
 
-    await this.imageService.saveProductImages(product.prod_no, images);
+      await this.imageService.saveProductImages(product.prod_no, images);
+    } catch (error) {
+      throw new NotValidError();
+    }
   };
 
   // Đánh giá
