@@ -4,6 +4,7 @@
     .ProductNavigation {
         background: var(--backgroundColor);
         padding: 10px;
+        user-select: none;
         display: flex;
         justify-content: space-between;
         z-index: 11;
@@ -18,30 +19,36 @@
                         display: none;
                         z-index: -111;
                         &:checked ~ .trademade-list{
-                            padding-top: 10px;
+                            padding-top: 20px;
                             padding-bottom: 10px;
-                            height: fit-content;
+                            height: auto;
+                            display: block;
                         }
                     }
                     .trademade-list {
                         position: absolute;
                         top: 100%;
-                        left: 0;
-                        background: var(--backgroundBlur);
+                        background: var(--backgroundColor);
+                        left: -10%;
                         padding: 0 10px;
-                        height: 0;
-                        width: 100%;
+                        display: none;
+                        width: 120%;
+                        z-index: 111;
                         overflow: hidden;
-                        p {
-                            padding: 5px;
-                            border-radius: 100px;
+                        button {
+                            padding: 10px;
+                            border-radius: 10px;
                             text-align: center;
-                            background: var(--backgroundColor);
+                            background: white;
+                            text-transform:capitalize;
+                            display: block;
+                            width: 100%;
+                            border: none;
+                            cursor: pointer;
+                            & + button{
+                                margin-top: 10px;
+                            }
                         }
-                        p+p{
-                            margin-top: 10px;
-                        }
-                        
                     }
                 }
             }
@@ -173,7 +180,7 @@
                     }
                 }
                 #check_shortlist:checked ~ div {
-                    height: 145px;
+                    height: 160px;
                     width: 140px;
                     animation: noneOverflow 0.3s 1s 1 forwards;
                 }
