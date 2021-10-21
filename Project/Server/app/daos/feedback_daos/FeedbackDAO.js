@@ -5,20 +5,25 @@ module.exports = class FeedbackDAO extends ModelDAO {
     super(sqldao);
   }
 
-  getFeedbacks = async () => {
-    const feedbacks = await this.sqldao.query(
-      `SELECT a.fb_no, a.fb_content, a.fb_time, b.rep_content, d.mod_name, c.prod_name, e.cus_name
-            FROM feedbacks as a, replies as b, products as c, moderators as d, customers as e
-            WHERE a.fb_no = b.fb_no 
-                AND b.mod_no = d.mod_no
-                AND a.prod_no = c.prod_no
-                AND e.cus_no = a.cus_no;`
-    );
+  getFeedback = async (startIndex, endIndex, order = "DESC") => {
+    if (order != "DESC") {
+      order = "";
+    }
 
-    return feedbacks;
+    const sql = `SELECT * FROM Feedbacks 
+                ORDER BY fb_time ${order}
+                LIMIT ${startIndex}, ${endIndex - startIndex};`;
+
+    const feedback = await this.sqldao.query(sql);
+
+    for (let i = 0; i < feedback.length; i++) {
+      const fb = feedback[i];
+
+      fb.replies = await this.getReplies(fb.fb_no);
+    }
+
+    return feedback;
   };
-
-  //#region GET
 
   getFeedbackByProductNo = async (prod_no, startIndex, endIndex, order) => {
     let sql = `SELECT * FROM Feedbacks AS fb, Customers AS c 
@@ -36,60 +41,22 @@ module.exports = class FeedbackDAO extends ModelDAO {
 
     const feedback = await this.sqldao.query(sql, [prod_no]);
 
-    return feedback;
-  };
+    for (let i = 0; i < feedback.length; i++) {
+      const fb = feedback[i];
 
-  //#endregion
-
-  getFeedbacksByProdName = async (prod_name) => {
-    const feedbacks = (
-      await this.sqldao.query(
-        `SELECT a.fb_no, a.fb_content, a.fb_time, b.rep_content, d.mod_name, c.prod_name, e.cus_name
-                FROM feedbacks as a, replies as b, products as c, moderators as d, customers as e
-                WHERE a.fb_no = b.fb_no 
-                    AND b.mod_no = d.mod_no
-                    AND a.prod_no = c.prod_no
-                    AND e.cus_no = a.cus_no
-                    AND c.prod_name = ?;`,
-        [prod_name]
-      )
-    )[0];
-
-    return feedbacks;
-  };
-
-  getFeedbackByCusName = async (cus_name) => {
-    const feedbacks = (
-      await this.sqldao.query(
-        `SELECT a.fb_no, a.fb_content, a.fb_time, b.rep_content, d.mod_name, c.prod_name, e.cus_name
-                FROM feedbacks as a, replies as b, products as c, moderators as d, customers as e
-                WHERE a.fb_no = b.fb_no 
-                    AND b.mod_no = d.mod_no
-                    AND a.prod_no = c.prod_no
-                    AND e.cus_no = a.cus_no
-                    AND e.cus_name = ?;`,
-        [cus_name]
-      )
-    )[0];
-
-    return feedbacks;
-  };
-
-  getFeedbacksByNo = async (fb_no) => {
-    const feedback = (
-      await this.sqldao.query(
-        `SELECT a.fb_no, a.fb_content, a.fb_time, b.rep_content, d.mod_name, c.prod_name, e.cus_name
-                FROM feedbacks as a, replies as b, products as c, moderators as d, customers as e
-                WHERE a.fb_no = b.fb_no 
-                    AND b.mod_no = d.mod_no
-                    AND a.prod_no = c.prod_no
-                    AND e.cus_no = a.cus_no
-                    AND a.fb_no = ?;`,
-        [fb_no]
-      )
-    )[0];
+      fb.replies = await this.getReplies(fb.fb_no);
+    }
 
     return feedback;
+  };
+
+  // Lấy trả lời của 1 đánh giá
+  getReplies = async (fb_no) => {
+    const sql = `SELECT r.rep_no, r.rep_content, m.mod_name 
+                FROM Replies AS r, Moderators AS m 
+                WHERE r.mod_no = m.mod_no AND r.fb_no = ?;`;
+
+    return await this.sqldao.query(sql, [fb_no]);
   };
 
   //#region  ADD
@@ -149,11 +116,23 @@ module.exports = class FeedbackDAO extends ModelDAO {
 
   //#endregion
 
-  replyFeedback = async (fb_no, rep_content, mod_no) => {
+  addReply = async (fb_no, rep_content, mod_no) => {
     const sql = `INSERT INTO replies(rep_content, mod_no, fb_no) VALUES(?, ?, ?);`;
 
     await this.handleExeError(
       async () => await this.sqldao.execute(sql, [rep_content, mod_no, fb_no])
     );
+  };
+
+  deleteFeedback = async (fb_no) => {
+    const sql = `DELETE FROM Feedbacks  WHERE fb_no = ?`;
+
+    await this.sqldao.execute(sql, [fb_no]);
+  };
+
+  deleteReply = async (rep_no) => {
+    const sql = `DELETE FROM Replies  WHERE rep_no = ?`;
+
+    await this.sqldao.execute(sql, [rep_no]);
   };
 };

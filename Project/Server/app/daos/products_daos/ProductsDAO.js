@@ -169,12 +169,31 @@ module.exports = class ProductsDAO extends ModelDAO {
         prod_network = ?, 
         prod_batteryAndCharger = ?, 
         prod_utilities = ?, 
-        prod_design = ?
+        prod_design = ?,
+        prod_status = ?
         WHERE prod_no = ?`;
 
     await this.handleExeError(
       async () => await this.sqldao.execute(sql, dbParams)
     );
+  };
+
+  updateProductDetail = async (pd_no, detail) => {
+    const dbDetail = this.toDbDetail(detail);
+
+    const dbParams = this.extractParams(dbDetail);
+    dbParams.push(pd_no);
+
+    const sql = `UPDATE products_details
+                    SET pd_ram = ?, 
+                      pd_storage = ?, 
+                      pd_storageAvailable = ?, 
+                      pd_price = ?, 
+                      pd_amount = ?, 
+                      pd_sold = ?
+                    WHERE pd_no = ?`;
+
+    await this.sqldao.execute(sql, dbParams);
   };
 
   //#endregion
@@ -191,6 +210,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger,
       prod_utilities,
       prod_design,
+      prod_status,
     } = product;
 
     const dbProduct = {
@@ -203,6 +223,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger: JSON.stringify(prod_batteryAndCharger),
       prod_utilities: JSON.stringify(prod_utilities),
       prod_design: JSON.stringify(prod_design),
+      prod_status: isNaN(prod_status) ? 0 : prod_status,
     };
 
     return dbProduct;
@@ -221,10 +242,10 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger,
       prod_utilities,
       prod_design,
+      prod_status,
     } = dbProduct;
 
     return {
-      ...dbProduct,
       prod_no,
       prod_name,
       prod_manufacturer: JSON.parse(prod_manufacturer ?? '""'),
@@ -235,6 +256,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger: JSON.parse(prod_batteryAndCharger ?? '""'),
       prod_utilities: JSON.parse(prod_utilities ?? '""'),
       prod_design: JSON.parse(prod_design ?? '""'),
+      prod_status,
     };
   };
 

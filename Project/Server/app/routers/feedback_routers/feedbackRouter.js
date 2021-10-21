@@ -8,22 +8,52 @@ const config = require("../../config");
 const { errorCatch } = require("../routerErrorHandler");
 
 // Controller và lớp xác thực - truy cập dữ liệu
-const { FeedbackValidator } = require("../../validators/validatorsContainer");
-const { FeedbackDAO } = require("../../daos/daosContainer");
-const { FeedbackProcessor } = require("../../processors/processorsContainer");
+const {
+  FeedbackValidator,
+  AuthenticationValidator,
+} = require("../../validators/validatorsContainer");
+const { DAO, FeedbackDAO } = require("../../daos/daosContainer");
+const {
+  FeedbackProcessor,
+  AuthenticationProcessor,
+} = require("../../processors/processorsContainer");
+const { JwtService } = require("../../services/servicesContainer");
 const {
   FeedbackController,
+  AuthenticationController,
 } = require("../../controllers/controllersContainer");
 
-const validator = new FeedbackValidator();
-const dao = new FeedbackDAO();
-const processor = new FeedbackProcessor(validator, dao);
-const controller = new FeedbackController(processor, config);
+const authController = new AuthenticationController(getAuthProc(), config);
+const controller = new FeedbackController(getProc(), config);
 
 router
   .route("/")
   // /moderators?page=1&limit=10
-  .get(errorCatch(controller.getFeedback))
-  .post(errorCatch(controller.addFeedback));
+  .get(authController.authenticate, errorCatch(controller.getFeedback));
+
+router
+  .route("/:fb_no")
+  .delete(authController.authenticate, errorCatch(controller.deleteFeedback));
+
+router
+  .route("/:fb_no/replies/:rep_no")
+  .delete(authController.authenticate, errorCatch(controller.deleteReply));
 
 module.exports = router;
+
+//#region  EX
+
+function getAuthProc() {
+  const validator = new AuthenticationValidator();
+  const jwt = new JwtService(config.jwt.secretKey);
+  return new AuthenticationProcessor(validator, jwt);
+}
+
+function getProc() {
+  const validator = new FeedbackValidator();
+  const sqldao = new DAO(config.dbConnection.mysql);
+  const dao = new FeedbackDAO(sqldao);
+  return new FeedbackProcessor(validator, dao);
+}
+
+//#endregion
