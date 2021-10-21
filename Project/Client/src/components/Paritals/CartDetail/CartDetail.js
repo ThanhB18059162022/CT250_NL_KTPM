@@ -147,12 +147,12 @@ const CartDetail = () => {
                             {getItemList().reduce((pre, item) => pre + item.amount, 0)} chi tiết
                         </p>
 
-                        <button
+                        {list.length>0 && <button
                             title='Thanh toán đơn hàng của bạn'
                             onClick={() => setDisplay(true)}
                         >
                             Thanh toán
-                        </button>
+                        </button> }
                     </div>
                 </div>
             </div>

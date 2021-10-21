@@ -13,7 +13,7 @@ const Cart = () =>{
             <div className="home-body-content">
                 <CartDetail/>
                 <br/>
-               <ProductSuggestion id={10}/>
+               <ProductSuggestion id={Math.floor(Math.random()*26)}/>
             </div>
             <Footer/>
         </div>

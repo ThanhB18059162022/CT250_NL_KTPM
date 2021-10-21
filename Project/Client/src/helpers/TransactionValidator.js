@@ -56,10 +56,10 @@ const TransactionValidator = (()=>{
     }
 
     const checkingPhone = (phone) =>{
-        if(isEmpty(phone) || isNaN(Number(phone)) || phone.trim().length>12 || phone.trim().length<=9){
+        if(isEmpty(phone) || isNaN(Number(phone)) || phone.trim().length!==10){
             return{
                 result:false,
-                resson:'Số điện thoại không hợp lệ!'
+                resson:'Số điện thoại không hợp lệ! Là số và có 10 chữ số'
             }
         }
         return {result:true}
