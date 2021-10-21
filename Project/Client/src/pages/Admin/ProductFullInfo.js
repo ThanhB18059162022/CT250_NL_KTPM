@@ -30,7 +30,7 @@ const ProductFullInfo = (props) => {
         setNotify({
             type: "INFORMATION", //CONFIRMATION, INFORMATION
             title: "Thông báo",
-            content: "Lỗi lưu sản phẩm",
+            content: "Vui lòng điền đủ thông tin bắt buộc!",
             infoType: "ERROR",
         });
         setShow(true);
@@ -61,7 +61,6 @@ const ProductFullInfo = (props) => {
     //lấy thông tin sản phẩm từ server
     useEffect(() => {
         (async () => {
-            console.log("Render");
             if (productNo) {
                 const caller = new ApiCaller();
                 let data = await caller.get("products/" + String(productNo));
@@ -127,14 +126,10 @@ const ProductFullInfo = (props) => {
     const callSaveProductAPI = async () => {
         const caller = new ApiCaller();
         //lưu sản phẩm mới
-        if (newProductFullInfo && newProductFullInfo.prod_name) {
+        if (newProductFullInfo && productChecking(newProductFullInfo) && prod_imgs.length>0 && productDetails.length>0) {
             const newProdInfo = await caller.post("products", newProductFullInfo);
-            try {
-                await caller.post("products/" + newProdInfo.prod_no + "/images", prod_imgs);
-            } catch (err) {}
-            try {
-                await caller.post("products/" + newProdInfo.prod_no + "/details", productDetails);
-            } catch (err) {}
+            await caller.post("products/" + newProdInfo.prod_no + "/images", prod_imgs);
+            await caller.post("products/" + newProdInfo.prod_no + "/details", productDetails);
             setModifyList(1);
             notifySaveProduct();
             setTimeout(() => {
@@ -142,7 +137,7 @@ const ProductFullInfo = (props) => {
             }, 2000);
         }
         //cập nhật thông tin sản phẩm
-        else if (productFullInfo) {
+        else if (productFullInfo && productChecking(productFullInfo)) {
             let prodInfoTmp = {
                 prod_name: productFullInfo.prod_name,
                 prod_manufacturer: productFullInfo.prod_manufacturer,
@@ -175,6 +170,42 @@ const ProductFullInfo = (props) => {
         } else notifySaveProductFailed();
     };
 
+    // kiểm tra thông tin sản phẩm mới hợp lệ
+    const productChecking = (newProductFullInfo) => {
+        if( 
+            newProductFullInfo.prod_name.length>0 && 
+            newProductFullInfo.prod_manufacturer.brand_name.length>0 &&
+            newProductFullInfo.prod_manufacturer.madeIn.length>0 &&
+            newProductFullInfo.prod_manufacturer.releaseDate.length>0 &&
+            newProductFullInfo.prod_screen.glass.length>0 &&
+            newProductFullInfo.prod_screen.resolution.length>0 &&
+            newProductFullInfo.prod_screen.size.length>0 &&
+            newProductFullInfo.prod_screen.type.length>0 &&
+            newProductFullInfo.prod_camera.font.length>0 &&
+            newProductFullInfo.prod_camera.rear.spec.length>0 &&
+            newProductFullInfo.prod_camera.rear.videoQuality.length>0 &&
+            newProductFullInfo.prod_hardwareAndOS.cpu.length>0 &&
+            newProductFullInfo.prod_hardwareAndOS.cpuSpec.length>0 &&
+            newProductFullInfo.prod_hardwareAndOS.gpu.length>0 &&
+            newProductFullInfo.prod_hardwareAndOS.os.length>0 &&
+            newProductFullInfo.prod_network.Bluetooth.length>0 &&
+            newProductFullInfo.prod_network.GPS.length>0 &&
+            newProductFullInfo.prod_network.SIM.length>0 &&
+            newProductFullInfo.prod_network.Wifi.length>0 &&
+            newProductFullInfo.prod_network.connector.length>0 &&
+            newProductFullInfo.prod_network.others.length>0 &&
+            newProductFullInfo.prod_network.telecom.length>0 &&
+            newProductFullInfo.prod_batteryAndCharger.battery.length>0 &&
+            newProductFullInfo.prod_batteryAndCharger.batteryType.length>0 &&
+            newProductFullInfo.prod_batteryAndCharger.chargeType.length>0 &&
+            newProductFullInfo.prod_design.material.length>0 &&
+            newProductFullInfo.prod_design.size.length>0 &&
+            newProductFullInfo.prod_design.structural.length>0 &&
+            newProductFullInfo.prod_design.weight.length>0 
+        )
+        return true
+    }
+
     return (
         <>
             <div className='ProductFullInfo'>
@@ -203,6 +234,7 @@ const ProductFullInfo = (props) => {
                         <div className='ProductFullInfoSplit'>
                             <p className='Title Line'>
                                 <span>Chi tiết sản phẩm</span>
+                                <p>(*)</p>
                             </p>
                             <AdminButton IconName={faPlus} ClickEvent={() => setDisplay(1)} />
                         </div>

@@ -1,9 +1,10 @@
 import './Admin.Style.scss'
+import Charts from "../../../api_services/statistic/Charts"
 
 const Sales = () => {
     return(
-        <div className="OverView Sales Responsive BorderFormat">
-            <p>Doanh thu</p>
+        <div className="Sales Responsive BorderFormat">
+            <Charts />
         </div>
     )
 }

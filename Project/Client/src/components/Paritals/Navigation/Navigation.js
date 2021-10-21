@@ -9,7 +9,7 @@ const Navigation = (props)=>{
         {name: "Quản lý sản phẩm"},
         {name: "Quản lý đánh giá"},
         {name: "Quản lý quản trị viên"},
-        {name: "Thống kê"}
+        {name: "Doanh thu"}
     ]
     return(
         <div className="AdminMenu">
