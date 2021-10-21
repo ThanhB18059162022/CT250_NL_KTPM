@@ -9,8 +9,11 @@ module.exports = class FeedbackDAO extends ModelDAO {
     if (order != "DESC") {
       order = "";
     }
-
-    const sql = `SELECT * FROM Feedbacks 
+    //Cường đã chỉnh sửa lệnh select
+    const sql = `SELECT fb_no, fb_content, fb_time, Feedbacks.cus_no, Feedbacks.prod_no, cus_name, prod_name
+                FROM Feedbacks, Customers, Products
+                WHERE Feedbacks.cus_no = Customers.cus_no
+                  AND Products.prod_no = Feedbacks.prod_no
                 ORDER BY fb_time ${order}
                 LIMIT ${startIndex}, ${endIndex - startIndex};`;
 
