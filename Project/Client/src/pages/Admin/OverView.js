@@ -175,7 +175,7 @@ const OverView = () => {
                                     {Helper.Exchange.toLocalDate(order.order_pay)}
                                 </p>
                                 <p>
-                                    <button onClick={() => setDetail(order)}>
+                                    <button onClick={() => setDetail({...order,paid:true})}>
                                         <FontAwesomeIcon icon={faEye} />
                                     </button>
                                 </p>
