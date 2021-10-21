@@ -69,7 +69,7 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Camera sau:</p>
-                                <input name="txtCameraRear" type="text" value={productFullInfo.prod_camera.rear.spec} onChange={e => setProductFullInfo({ ...productFullInfo, prod_camera: { ...productFullInfo.prod_camera,rear:{...productFullInfo.rear,spec: e.target.value } }})} /> <br />
+                                <input name="txtCameraRear" type="text" value={productFullInfo.prod_camera.rear.spec} onChange={e => setProductFullInfo({ ...productFullInfo, prod_camera: { ...productFullInfo.prod_camera,rear:{...productFullInfo.prod_camera.rear,spec: e.target.value } }})} /> <br />
                             </li>
                             <li>
                                 <p>Quay phim:</p>
@@ -217,7 +217,7 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Camera sau:</p>
-                                <input name="txtCameraRear" type="text" value={newProductFullInfo.prod_camera.rear.spec} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera,rear:{...newProductFullInfo.rear,spec: e.target.value } }})} /> <br />
+                                <input name="txtCameraRear" type="text" value={newProductFullInfo.prod_camera.rear.spec} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_camera: { ...newProductFullInfo.prod_camera,rear:{...newProductFullInfo.prod_camera.rear,spec: e.target.value } }})} /> <br />
                             </li>
                             <li>
                                 <p>Quay phim:</p>
