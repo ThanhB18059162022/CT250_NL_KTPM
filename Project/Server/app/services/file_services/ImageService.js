@@ -11,6 +11,10 @@ module.exports = class ImageService extends FileService {
     try {
       const files = await this.readDirAsync(`${this.path}/product${prod_no}`);
 
+      if (files.length == 0) {
+        return [`${this.baseImgUri}/images/default/phone.png`];
+      }
+
       const filesPath = files.map(
         (f) => `${this.baseImgUri}/images/product${prod_no}/${f}`
       );

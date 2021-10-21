@@ -78,6 +78,14 @@ router
     errorCatch(controller.addProductDetails)
   );
 
+router
+  .route("/:prod_no/details/:pd_no")
+  .put(
+    authController.authenticate,
+    authController.authorize(["admin"]),
+    errorCatch(controller.updateProductDetail)
+  );
+
 // products/1/images/
 router
   .route("/:prod_no/images")

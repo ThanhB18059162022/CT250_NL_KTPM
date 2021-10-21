@@ -70,7 +70,7 @@ CREATE TABLE Products(
 -- Bảng hình ảnh
 CREATE TABLE Images(
   img_no INT AUTO_INCREMENT, -- Mã hình ảnh tự tăng
-  img_src VARCHAR(128) NOT NULL, -- Đường dẫn đến resource trên server
+  img_src VARCHAR(128) NOT NULL DEFAULT "./images/products/prod_img.jpg", -- Đường dẫn đến resource trên server
   prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
 
  -- Khóa chính
@@ -979,3 +979,11 @@ INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Xài được", 1, 1)
 INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Máy hơi nóng", 2, 2);
 INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Điện thoại chạy chia màng hình hơi giật", 1, 2);
 INSERT INTO Feedbacks(fb_content, prod_no, cus_no) VALUES("Fan táo", 2, 1);
+
+INSERT INTO Images(prod_no) VALUES(1);
+INSERT INTO Images(prod_no) VALUES(2);
+INSERT INTO Images(prod_no) VALUES(3);
+INSERT INTO Images(prod_no) VALUES(4);
+INSERT INTO Images(prod_no) VALUES(5);
+INSERT INTO Images(prod_no) VALUES(6);
+INSERT INTO Images(prod_no) VALUES(7);

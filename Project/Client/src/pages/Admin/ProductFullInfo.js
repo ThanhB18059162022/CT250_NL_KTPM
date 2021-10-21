@@ -158,12 +158,15 @@ const ProductFullInfo = (props) => {
             let newProdDetails = [];
             productDetails.map((item, index) => (!item.pd_no ? newProdDetails.push(item) : <></>));
             await caller.put("products/" + productNo, prodInfoTmp);
-            try {
+
+            // Nếu có hình
+            if (prod_imgs.length > 0)
                 await caller.post("products/" + productNo + "/images", prod_imgs);
-            } catch (err) {}
-            try {
+
+            // Nếu có chi tiết
+            if (newProdDetails.length > 0)
                 await caller.post("products/" + productNo + "/details", newProdDetails);
-            } catch (err) {}
+
             setModifyList(1);
             notifySaveProduct();
             setTimeout(() => {

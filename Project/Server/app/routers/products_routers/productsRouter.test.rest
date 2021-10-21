@@ -1977,6 +1977,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
   }
 ]
 
+### Sửa chi tiết
+PUT http://localhost:8000/api/products/26/details/25
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0ODEzMTY0LCJleHAiOjE2MzQ4MTY3NjR9.lc7rMEC70qcCilnfKD71AcX2JlMXaY1Qd4TnFWoGuVE
+
+
+{
+  "pd_storage": "125G", 
+  "pd_ram": "8G", 
+  "pd_storageAvailable": "...", 
+  "pd_price": 125000, 
+  "pd_amount" : 1,
+  "pd_sold": 0
+}
+
+
 ### Thêm ảnh
 POST http://localhost:8000/api/products/26/images
 Content-Type: application/json

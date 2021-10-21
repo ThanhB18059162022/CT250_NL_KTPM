@@ -202,7 +202,7 @@ module.exports = class ProductsProcessor extends Processor {
 
       await this.imageService.saveProductImages(product.prod_no, images);
     } catch (error) {
-      throw new NotValidError();
+      throw new NotValidError(error);
     }
   };
 
@@ -228,5 +228,13 @@ module.exports = class ProductsProcessor extends Processor {
 
     // Cập nhật thông tin
     await this.dao.updateProduct(oldInfo.prod_no, newInfo);
+  };
+
+  // Cập nhật chi tiết sản phẩm
+  updateProductDetail = async (pd_no, detail) => {
+    //Kiểm tra model hợp lệ
+    this.checkValidate(() => this.validator.validateProductDetails([detail]));
+
+    await this.dao.updateProductDetail(pd_no, detail);
   };
 };

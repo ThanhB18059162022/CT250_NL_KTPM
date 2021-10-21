@@ -58,11 +58,11 @@ module.exports = class ProductsController extends Controller {
     return this.ok(res, product);
   };
 
-  searchProduct = async(req, res)=>{
-    const {flug} = req.params;
+  searchProduct = async (req, res) => {
+    const { flug } = req.params;
     const products = await this.processor.searchProduct(flug);
-    return this.ok(res,products)
-  }
+    return this.ok(res, products);
+  };
 
   //#endregion
 
@@ -99,14 +99,18 @@ module.exports = class ProductsController extends Controller {
 
   // Thêm ảnh sản phẩm
   addProductImages = async (req, res) => {
-    const {
-      body: images,
-      params: { prod_no },
-    } = req;
+    try {
+      const {
+        body: images,
+        params: { prod_no },
+      } = req;
 
-    await this.processor.addProductImages(prod_no, images);
+      await this.processor.addProductImages(prod_no, images);
 
-    return this.noContent(res);
+      return this.noContent(res);
+    } catch (error) {
+      return this.checkError(error);
+    }
   };
 
   addFeedback = async (req, res) => {
@@ -151,6 +155,22 @@ module.exports = class ProductsController extends Controller {
 
       // Cập nhật thông tin
       await this.processor.updateProduct(prod_no, newProduct);
+
+      return this.noContent(res);
+    } catch (error) {
+      return this.checkError(res, error);
+    }
+  };
+
+  updateProductDetail = async (req, res) => {
+    try {
+      const {
+        params: { pd_no },
+        body: detail,
+      } = req;
+
+      // Cập nhật thông tin
+      await this.processor.updateProductDetail(pd_no, detail);
 
       return this.noContent(res);
     } catch (error) {
