@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react/cjs/react.development";
+import { caller } from "../../../../api_services/servicesContainer"
 import "../Admin.Style.scss"
 
 const ProductInfo = (props) => {
@@ -26,6 +28,28 @@ const ProductInfo = (props) => {
             })
     }
 
+    const [brands, setBrands] = useState([])
+    useEffect(()=>{
+        (async()=>{
+            const data = await caller.get("products/brands")
+            setBrands(data)
+        })();
+    },[])
+
+    const formatDate = (date) => {
+        let dateTmp = date.split('-')
+        if(dateTmp.length === 3)
+        {
+            if(dateTmp[1].length<2) dateTmp[1] = "0" + dateTmp[1]
+            if(dateTmp[2].length<2) dateTmp[2] = "0" + dateTmp[2]
+            return dateTmp[0] + "-" + dateTmp[1] + "-" + dateTmp[2]
+        }else if(dateTmp.length === 2)
+        {
+            if(dateTmp[1].length<2) dateTmp[1] = "0" + dateTmp[1]
+            return dateTmp[0] + "-" + dateTmp[1] + "-01"
+        }else return dateTmp[0] + "-01-01"
+    }
+
     return (
         <>
             {productFullInfo ? (
@@ -39,11 +63,14 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Nhãn hiệu:<p>(*)</p></p>
-                                <input name="txtMFBrandName" type="text" value={productFullInfo.prod_manufacturer.brand_name} onChange={e => setProductFullInfo({ ...productFullInfo, prod_manufacturer: { ...productFullInfo.prod_manufacturer, brand_name: e.target.value } })} /> <br />
+                                <select name="selectMFBrandName" onChange={e => setProductFullInfo({ ...productFullInfo, prod_manufacturer: { ...productFullInfo.prod_manufacturer, brand_name: e.target.value } })}>
+                                    {brands.map((item, index)=> item.brand_name.toLowerCase()===productFullInfo.prod_manufacturer.brand_name.toLowerCase() ? ( <option key={index} selected>{item.brand_name}</option> ):(<option key={index}>{item.brand_name}</option>) )}
+                                </select>
                             </li>
                             <li>
                                 <p>Ngày ra mắt:<p>(*)</p></p>
-                                <input name="txtMFReleaseDate" type="text" value={productFullInfo.prod_manufacturer.releaseDate} onChange={e => setProductFullInfo({ ...productFullInfo, prod_manufacturer: { ...productFullInfo.prod_manufacturer, releaseDate: e.target.value } })} /> <br />
+                                {/* <input name="txtMFReleaseDate" type="text" value={productFullInfo.prod_manufacturer.releaseDate} onChange={e => setProductFullInfo({ ...productFullInfo, prod_manufacturer: { ...productFullInfo.prod_manufacturer, releaseDate: e.target.value } })} /> <br /> */}
+                                <input name="txtMFReleaseDate" type="date" value={formatDate(productFullInfo.prod_manufacturer.releaseDate)} onChange={e => setProductFullInfo({ ...productFullInfo, prod_manufacturer: { ...productFullInfo.prod_manufacturer, releaseDate: e.target.value } })} /> <br />
                             </li>
                             <li>
                                 <p>Xuất xứ:<p>(*)</p></p>
@@ -187,11 +214,14 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Nhãn hiệu:<p>(*)</p></p>
-                                <input name="txtMFBrandName" type="text" value={newProductFullInfo.prod_manufacturer.brand_name} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, brand_name: e.target.value } })} /> <br />
+                                <select name="selectMFBrandName" onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, brand_name: e.target.value } })}>
+                                    <option defaultValue="" selected disabled hidden>Nhãn hiệu</option>
+                                    {brands.map((item, index)=><option key={index}>{item.brand_name}</option>)}
+                                </select>
                             </li>
                              <li>
                                 <p>Ngày ra mắt:<p>(*)</p></p>
-                                <input name="txtMFReleaseDate" type="text" value={newProductFullInfo.prod_manufacturer.releaseDate} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, releaseDate: e.target.value } })} /> <br />
+                                <input name="txtMFReleaseDate" type="date" value={newProductFullInfo.prod_manufacturer.releaseDate} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_manufacturer: { ...newProductFullInfo.prod_manufacturer, releaseDate: e.target.value } })} /> <br />
                             </li>
                              <li>
                                 <p>Xuất xứ:<p>(*)</p></p>
