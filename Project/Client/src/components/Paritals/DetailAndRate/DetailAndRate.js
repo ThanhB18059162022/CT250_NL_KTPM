@@ -52,11 +52,11 @@ const DetailAndRate = ({ id, showDetail }) => {
 
     const onShowInfoHandle = () => {
         let data = commnent.trim();
-        if (data.length === 0) {
+        if (data.length <6) {
             setNotify({
                 ...notify,
-                title: "Nội dung trống",
-                content: "Bạn phải nhập nội dung trước khi gửi phản nồi",
+                title: "Nội dung không hợp lệ",
+                content: "Nội dung phản hồi của bạn quá ngắn!",
             });
             setShow(true);
             return;
@@ -84,6 +84,7 @@ const DetailAndRate = ({ id, showDetail }) => {
                 ...customer,
                 fb_time: new Date(),
                 fb_content: commnent,
+                replies:[]
             },
             ...feedback,
         ]);
