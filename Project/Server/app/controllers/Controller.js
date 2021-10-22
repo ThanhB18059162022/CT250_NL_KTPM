@@ -57,6 +57,11 @@ module.exports = class Controller {
     return res.status(404).json(result);
   };
 
+  // 500
+  serverErr = (res) => {
+    return res.status(500).end();
+  };
+
   getResult = (error) => {
     const { name, message } = error;
 
