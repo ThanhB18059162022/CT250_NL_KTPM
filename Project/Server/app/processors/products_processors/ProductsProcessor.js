@@ -13,6 +13,8 @@ module.exports = class ProductsProcessor extends Processor {
 
   //#region GET
 
+  getBrands = async () => await this.dao.getBrands();
+
   //#region  Danh sách
 
   // Lấy danh sách

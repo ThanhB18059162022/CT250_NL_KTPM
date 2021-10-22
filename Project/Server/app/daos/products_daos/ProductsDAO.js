@@ -9,6 +9,12 @@ module.exports = class ProductsDAO extends ModelDAO {
 
   //#region  GET
 
+  getBrands = () => {
+    const sql = "SELECT * FROM Brands";
+
+    return this.sqldao.query(sql);
+  };
+
   getProducts = async (startIndex, endIndex) => {
     const dbProducts = await this.sqldao.query(
       `SELECT * FROM Products LIMIT ${startIndex}, ${endIndex - startIndex}`

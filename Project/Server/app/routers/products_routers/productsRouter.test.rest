@@ -31,6 +31,9 @@ GET http://localhost:8000/api/products/price/?min=41990000&max=wtf&page=1&limit=
 
 
 
+### Lấy danh sách nhãn hiệu
+GET http://localhost:8000/api/products/brands
+
 
 
 # ---------------------------------------------------------------------

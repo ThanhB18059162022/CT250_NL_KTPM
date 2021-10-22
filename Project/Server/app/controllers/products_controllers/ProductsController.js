@@ -8,6 +8,12 @@ module.exports = class ProductsController extends Controller {
 
   //#region GET
 
+  getBrands = async (_, res) => {
+    const brands = await this.processor.getBrands();
+
+    return this.ok(res, brands);
+  };
+
   // Lấy danh sách
   // Số trang và số lượng
   getProducts = async (req, res) => {
