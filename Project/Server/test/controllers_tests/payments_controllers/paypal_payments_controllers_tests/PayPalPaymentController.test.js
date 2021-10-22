@@ -70,26 +70,6 @@ describe("Ctrlr Tạo đơn hàng", () => {
     processorMock = new PayPalPaymentProcessorMock();
   });
 
-  test("Thiếu thông tin giỏ hàng - 400", async () => {
-    //Arrange
-    const cart = undefined;
-    const controller = getController();
-
-    const reqMock = {
-      body: cart,
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400 };
-    const actRes = await controller.createOrder(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.createOrder).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("Tạo thành công - 201", async () => {
     //Arrange
     const cart = {};
@@ -116,47 +96,6 @@ describe("Ctrlr Tạo đơn hàng", () => {
 describe("Ctrlr Lưu đơn hàng đã thanh toán", () => {
   beforeEach(() => {
     processorMock = new PayPalPaymentProcessorMock();
-  });
-
-  test("Id đơn hàng không hợp lệ - 400", async () => {
-    //Arrange
-    const id = undefined;
-    const controller = getController();
-
-    const reqMock = {
-      params: { id },
-      query: {},
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400 };
-    const actRes = await controller.captureOrder(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.captureOrder).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Order không tồn tại - 404", async () => {
-    //Arrange
-    const id = 404;
-    const controller = getController();
-
-    const reqMock = {
-      params: { id },
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404 };
-    const actRes = await controller.captureOrder(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.captureOrder).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
   });
 
   test("Thành công về trang client  - 301", async () => {

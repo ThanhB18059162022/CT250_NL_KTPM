@@ -201,58 +201,6 @@ describe("Ctrlr Lấy sản phẩm theo mã", () => {
     processorMock = new ProductsProcessorMock();
   });
 
-  test("Không hợp lệ - 400", async () => {
-    //Arrange
-    const prod_no = undefined;
-
-    const requestMock = {
-      params: {
-        prod_no,
-      },
-    };
-
-    const response = { statusCode: 400 };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.getProductByNo(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getProductByNo).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Không tồn tại - 404", async () => {
-    //Arrange
-    const prod_no = 2;
-
-    const requestMock = {
-      params: {
-        prod_no,
-      },
-    };
-
-    const response = { statusCode: 404 };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.getProductByNo(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getProductByNo).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("Thành công - 200", async () => {
     //Arrange
     const prod = products[0];
@@ -285,58 +233,6 @@ describe("Ctrlr Lấy sản phẩm theo mã", () => {
 describe("Ctrlr Lấy sản phẩm theo tên", () => {
   beforeEach(() => {
     processorMock = new ProductsProcessorMock();
-  });
-
-  test("Không hợp lệ - 400", async () => {
-    //Arrange
-    const prod_name = undefined;
-
-    const requestMock = {
-      params: {
-        prod_name,
-      },
-    };
-
-    const response = { statusCode: 400 };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.getProductByName(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getProductByNo).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Không tồn tại - 404", async () => {
-    //Arrange
-    const prod_name = 2;
-
-    const requestMock = {
-      params: {
-        prod_name,
-      },
-    };
-
-    const response = { statusCode: 404 };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.getProductByName(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getProductByName).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
   });
 
   test("Thành công - 200", async () => {
@@ -406,56 +302,6 @@ describe("Ctrlr Thêm sản phẩm", () => {
     processorMock = new ProductsProcessorMock();
   });
 
-  test("Không hợp lệ - 400", async () => {
-    //Arrange
-    let product = undefined;
-
-    const requestMock = {
-      body: product,
-    };
-
-    const response = { statusCode: 400, body: product };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.addProduct(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.addProduct).toBeCalledTimes(1);
-    expect(resMock.status).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Trùng tên - 400", async () => {
-    //Arrange
-    let product = products[0];
-
-    const requestMock = {
-      body: product,
-    };
-
-    const response = { statusCode: 400, body: product };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.addProduct(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.addProduct).toBeCalledTimes(1);
-    expect(resMock.status).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("Thành công - 201", async () => {
     //Arrange
     let product = { ...products[0], prod_name: "Táo" };
@@ -486,58 +332,6 @@ describe("Ctrlr Thêm sản phẩm", () => {
 describe("Ctrlr Thêm chi tiết sản phẩm", () => {
   beforeEach(() => {
     processorMock = new ProductsProcessorMock();
-  });
-
-  test("Không hợp lệ - 400", async () => {
-    //Arrange
-    const details = undefined;
-
-    const requestMock = {
-      params: {},
-      body: details,
-    };
-
-    const response = { statusCode: 400, body: details };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.addProductDetails(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.addProductDetails).toBeCalledTimes(1);
-    expect(resMock.status).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Không tồn tại - 404", async () => {
-    //Arrange
-    const details = {};
-
-    const requestMock = {
-      params: {},
-      body: details,
-    };
-
-    const response = { statusCode: 404, body: details };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.addProductDetails(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.addProductDetails).toBeCalledTimes(1);
-    expect(resMock.status).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
   });
 
   test("Thành công - 204", async () => {
@@ -573,58 +367,6 @@ describe("Ctrlr Thêm đánh giá", () => {
     processorMock = new ProductsProcessorMock();
   });
 
-  test("Không hợp lệ - 400", async () => {
-    //Arrange
-    const details = undefined;
-
-    const requestMock = {
-      params: {},
-      body: details,
-    };
-
-    const response = { statusCode: 400, body: details };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.addFeedback(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.addFeedback).toBeCalledTimes(1);
-    expect(resMock.status).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Không tồn tại - 404", async () => {
-    //Arrange
-    const details = {};
-
-    const requestMock = {
-      params: {},
-      body: details,
-    };
-
-    const response = { statusCode: 404, body: details };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.addFeedback(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.addFeedback).toBeCalledTimes(1);
-    expect(resMock.status).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("Thành công - 201", async () => {
     //Arrange
     const details = {};
@@ -656,84 +398,6 @@ describe("Ctrlr Thêm đánh giá", () => {
 describe("Ctrlr Sửa sản phẩm", () => {
   beforeEach(() => {
     processorMock = new ProductsProcessorMock();
-  });
-
-  test("Model không hợp lệ - 400", async () => {
-    //Arrange
-    const product = undefined;
-    const prod_no = 1;
-
-    const requestMock = {
-      params: { prod_no },
-      body: product,
-    };
-
-    const response = { statusCode: 400, body: product };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.updateProduct(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.updateProduct).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Mã không hợp lệ - 400", async () => {
-    //Arrange
-    const product = {};
-    const prod_no = undefined;
-
-    const requestMock = {
-      params: { prod_no },
-      body: product,
-    };
-
-    const response = { statusCode: 400, body: product };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.updateProduct(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.updateProduct).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Mã không tồn tại - 404", async () => {
-    //Arrange
-    const product = {};
-    const prod_no = 404;
-
-    const requestMock = {
-      params: { prod_no },
-      body: product,
-    };
-
-    const response = { statusCode: 404, body: product };
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.updateProduct(requestMock, resMock);
-
-    //Expect
-    expect(actRes).toBeDefined();
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.updateProduct).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
   });
 
   test("Thành công - 204", async () => {

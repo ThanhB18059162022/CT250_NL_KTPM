@@ -57,52 +57,6 @@ describe("Ctrlr Kiểm tra đăng nhập bằng jwt", () => {
     processorMock = new AuthenticationProcessorMock();
   });
 
-  test("Không hợp lệ - 400", async () => {
-    //Arrange
-    const loginModel = undefined;
-
-    const response = { statusCode: 400 };
-
-    const controller = getController();
-
-    const reqMock = {
-      body: loginModel,
-    };
-
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.login(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.login).toBeCalledTimes(1);
-  });
-
-  test("Sai tài khoản hay mật khẩu - 401", async () => {
-    //Arrange
-    const loginModel = {};
-
-    const response = { statusCode: 401 };
-
-    const controller = getController();
-
-    const reqMock = {
-      body: loginModel,
-    };
-
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = response;
-    const actRes = await controller.login(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.login).toBeCalledTimes(1);
-  });
-
   test("Trả về token - 201", async () => {
     //Arrange
     const loginModel = { username: "ad", password: "ad" };
@@ -157,23 +111,6 @@ describe("Ctrlr Kiểm tra bearer jwt có trong req", () => {
     processorMock = new AuthenticationProcessorMock();
   });
 
-  test("Không có token - 400", async () => {
-    //Arrange
-    const reqMock = {};
-    const resMock = new ResponseMock();
-
-    const controller = getController();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.authenticate(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.authenticate).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("Token hết hạn - 401", async () => {
     //Arrange
     const token = "Hết-hạn";
@@ -210,30 +147,6 @@ describe("Ctrlr Kiểm tra bearer jwt có trong req", () => {
 
     //Expect
     expect(nextMock).toBeCalledTimes(1);
-    expect(processorMock.authenticate).toBeCalledTimes(1);
-  });
-
-  test("Lỗi server", async () => {
-    //Arrange
-    const token = "wtf";
-
-    const controller = getController();
-
-    const reqMock = { headers: { authorization: token } };
-    const resMock = new ResponseMock();
-    const nextMock = jest.fn();
-
-    //Act
-    const expRs = UnKnownError;
-    let actRs;
-    try {
-      await controller.authenticate(reqMock, resMock, nextMock);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Expect
-    expect(actRs instanceof expRs).toBeTruthy();
     expect(processorMock.authenticate).toBeCalledTimes(1);
   });
 });

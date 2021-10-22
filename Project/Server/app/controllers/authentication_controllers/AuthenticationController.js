@@ -1,6 +1,7 @@
 const {
-  LoginNotSuccessError,
   JwtTokenError,
+  NotValidError,
+  LoginNotSuccessError,
 } = require("../../errors/errorsContainer");
 const Controller = require("../Controller");
 
@@ -19,14 +20,6 @@ class AuthenticationController extends Controller {
       const token = await this.processor.login(loginModel);
 
       return this.created(res, { token });
-    } catch (error) {
-      return this.checkLoginFailedError(res, error);
-    }
-  };
-
-  checkLoginFailedError = (res, error) => {
-    try {
-      return this.checkError(res, error);
     } catch (error) {
       if (error instanceof LoginNotSuccessError) {
         return this.unauthorized(res, error);
@@ -55,15 +48,15 @@ class AuthenticationController extends Controller {
   };
 
   checkExpiredToken = (res, error) => {
-    try {
-      return this.checkError(res, error);
-    } catch (error) {
-      if (error instanceof JwtTokenError) {
-        return this.unauthorized(res, error);
-      }
-
-      throw error;
+    if (error instanceof NotValidError) {
+      return this.badRequest(res, error);
     }
+
+    if (error instanceof JwtTokenError) {
+      return this.unauthorized(res, error);
+    }
+
+    return this.serverErr(res, error);
   };
 
   // Authorize phải đăng nhập trước mới xài cái này
@@ -76,7 +69,7 @@ class AuthenticationController extends Controller {
       return next();
     }
 
-    return res.status(403).json();
+    return this.forbidden(res);
   };
 
   roleInRoles = (role, roles) => {

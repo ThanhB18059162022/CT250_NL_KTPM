@@ -7,29 +7,21 @@ module.exports = class DefaultPaymentController extends PaymentsController {
 
   // Tạo đơn hàng
   createOrder = async (req, res) => {
-    try {
-      const { body: cart } = req;
-      const id = await this.processor.createOrder(cart);
+    const { body: cart } = req;
+    const id = await this.processor.createOrder(cart);
 
-      return this.created(res, { id });
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.created(res, { id });
   };
 
   // Lưu đơn hàng đã thanh toán
   checkoutOrder = async (req, res) => {
-    try {
-      const {
-        params: { id },
-      } = req;
+    const {
+      params: { id },
+    } = req;
 
-      const saveOrderId = await this.processor.checkoutOrder(id);
+    const saveOrderId = await this.processor.checkoutOrder(id);
 
-      // Về trang khi thanh toán
-      return this.ok(res, { saveOrderId });
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    // Về trang khi thanh toán
+    return this.ok(res, { saveOrderId });
   };
 };

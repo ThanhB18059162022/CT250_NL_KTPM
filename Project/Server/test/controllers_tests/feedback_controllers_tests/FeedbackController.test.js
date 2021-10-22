@@ -84,48 +84,6 @@ describe("Ctrlr Xóa phản hồi", () => {
     processorMock = new FeedBackProcessorMock();
   });
 
-  test("Mã phản hồi không hợp lệ - 400", async () => {
-    //Arrange
-    const fb_no = undefined;
-    const controller = getController();
-
-    const reqMock = {
-      params: { fb_no },
-    };
-
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400 };
-    const actRes = await controller.deleteFeedback(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.deleteFeedback).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Không tồn tại - 404", async () => {
-    //Arrange
-    const fb_no = "2";
-    const controller = getController();
-
-    const reqMock = {
-      params: { fb_no },
-    };
-
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404 };
-    const actRes = await controller.deleteFeedback(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.deleteFeedback).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("Xóa thành công - 204", async () => {
     //Arrange
     const fb_no = "1";
