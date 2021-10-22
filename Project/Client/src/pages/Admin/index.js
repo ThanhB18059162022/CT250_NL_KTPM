@@ -32,7 +32,7 @@ const Admin = () => {
             case 1:
                 return <ProductManagement />;
             case 2:
-                return <FeedbackManagement />;
+                return <FeedbackManagement currentAdNo={adminNo}/>;
             case 3:
                 return <ModeratorManagement currentAdNo={adminNo} />;
             case 4:
