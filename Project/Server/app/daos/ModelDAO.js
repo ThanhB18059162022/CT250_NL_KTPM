@@ -25,10 +25,6 @@ module.exports = class ModelDAO {
         throw new ExistError(error.sqlMessage);
       }
 
-      if (error.code.includes("ER_NO_REFERENCED")) {
-        throw new NotExistError(error.sqlMessage);
-      }
-
       throw error;
     }
   };
