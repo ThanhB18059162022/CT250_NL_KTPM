@@ -17,101 +17,71 @@ module.exports = class ModeratorsController extends Controller {
 
   // Lấy ra quản trị viên theo mã
   getModeratorByNo = async (req, res) => {
-    try {
-      const { mod_no } = req.params;
+    const { mod_no } = req.params;
 
-      const moderator = await this.processor.getModeratorByNo(mod_no);
+    const moderator = await this.processor.getModeratorByNo(mod_no);
 
-      return this.ok(res, moderator);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.ok(res, moderator);
   };
 
   // Lấy quản trị viên theo số điện thoại
   getModeratorByPhoneNumber = async (req, res) => {
-    try {
-      const { mod_phoneNumber } = req.params;
+    const { mod_phoneNumber } = req.params;
 
-      const moderator = await this.processor.getModeratorByPhoneNumber(
-        mod_phoneNumber
-      );
+    const moderator = await this.processor.getModeratorByPhoneNumber(
+      mod_phoneNumber
+    );
 
-      return this.ok(res, moderator);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.ok(res, moderator);
   };
 
   // Lấy quản trị viên theo CMND
   getModeratorByMod_Id = async (req, res) => {
-    try {
-      const { mod_id } = req.params;
+    const { mod_id } = req.params;
 
-      const moderator = await this.processor.getModeratorByMod_Id(mod_id);
+    const moderator = await this.processor.getModeratorByMod_Id(mod_id);
 
-      return this.ok(res, moderator);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.ok(res, moderator);
   };
 
   // Lấy quản trị viên theo tài khoản
   getModeratorByUsername = async (req, res) => {
-    try {
-      const { mod_username } = req.params;
+    const { mod_username } = req.params;
 
-      const moderator = await this.processor.getModeratorByUsername(
-        mod_username
-      );
+    const moderator = await this.processor.getModeratorByUsername(mod_username);
 
-      return this.ok(res, moderator);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.ok(res, moderator);
   };
 
   //#endregion
 
   // Thêm quản trị viên
   addModerator = async (req, res) => {
-    try {
-      const { body: newModerator } = req;
+    const { body: newModerator } = req;
 
-      const moderator = await this.processor.addModerator(newModerator);
+    const moderator = await this.processor.addModerator(newModerator);
 
-      return this.created(res, moderator);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.created(res, moderator);
   };
 
   // Cập nhật thông tin quản trị viên
   updateModerator = async (req, res) => {
-    try {
-      const {
-        params: { mod_no },
-        body: newModerator,
-      } = req;
+    const {
+      params: { mod_no },
+      body: newModerator,
+    } = req;
 
-      await this.processor.updateModerator(mod_no, newModerator);
+    await this.processor.updateModerator(mod_no, newModerator);
 
-      return this.noContent(res);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.noContent(res);
   };
 
   // Khóa tài khoản quản trị viên
   lockModerator = async (req, res) => {
-    try {
-      const { mod_no } = req.params;
+    const { mod_no } = req.params;
 
-      await this.processor.lockModerator(mod_no);
+    await this.processor.lockModerator(mod_no);
 
-      return this.noContent(res);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.noContent(res);
   };
 };

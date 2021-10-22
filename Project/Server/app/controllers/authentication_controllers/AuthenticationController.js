@@ -1,7 +1,4 @@
-const {
-  LoginNotSuccessError,
-  JwtTokenError,
-} = require("../../errors/errorsContainer");
+const { JwtTokenError } = require("../../errors/errorsContainer");
 const Controller = require("../Controller");
 
 // Xử lý xác thực người dùng
@@ -13,27 +10,11 @@ class AuthenticationController extends Controller {
 
   // Đăng nhập
   login = async (req, res) => {
-    try {
-      const { body: loginModel } = req;
+    const { body: loginModel } = req;
 
-      const token = await this.processor.login(loginModel);
+    const token = await this.processor.login(loginModel);
 
-      return this.created(res, { token });
-    } catch (error) {
-      return this.checkLoginFailedError(res, error);
-    }
-  };
-
-  checkLoginFailedError = (res, error) => {
-    try {
-      return this.checkError(res, error);
-    } catch (error) {
-      if (error instanceof LoginNotSuccessError) {
-        return this.unauthorized(res, error);
-      }
-
-      throw error;
-    }
+    return this.created(res, { token });
   };
 
   // Authenticate
@@ -76,7 +57,7 @@ class AuthenticationController extends Controller {
       return next();
     }
 
-    return res.status(403).json();
+    return this.forbidden(res);
   };
 
   roleInRoles = (role, roles) => {

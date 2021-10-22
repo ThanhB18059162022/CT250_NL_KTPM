@@ -1,9 +1,4 @@
-const {
-  InstantiateAbstractClassError,
-  NotValidError,
-  NotExistError,
-  ExistError,
-} = require("../errors/errorsContainer");
+const { InstantiateAbstractClassError } = require("../errors/errorsContainer");
 
 // Lưu các hàm xài chung của các controller
 //Abstract class
@@ -15,24 +10,6 @@ module.exports = class Controller {
 
     this.isProduction = config?.isProduction ?? false;
   }
-
-  //#region Error
-
-  checkError = (res, error) => {
-    if (error instanceof NotValidError || error instanceof ExistError) {
-      return this.badRequest(res, error);
-    }
-
-    if (error instanceof NotExistError) {
-      return this.notFound(res, error);
-    }
-
-    throw error;
-  };
-
-  //#endregion
-
-  //#region Res
 
   // 200
   ok = (res, data) => {
@@ -68,6 +45,11 @@ module.exports = class Controller {
     return res.status(401).json(result);
   };
 
+  // 403
+  forbidden = (res) => {
+    return res.status(403).json();
+  };
+
   // 404
   notFound = (res, error) => {
     const result = this.getResult(error);
@@ -86,6 +68,4 @@ module.exports = class Controller {
 
     return result;
   };
-
-  //#endregion
 };

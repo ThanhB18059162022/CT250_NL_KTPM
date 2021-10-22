@@ -14,14 +14,10 @@ module.exports = class FeedbackController extends Controller {
   };
 
   deleteFeedback = async (req, res) => {
-    try {
-      // Xóa feedback trong CSDL
-      await this.processor.deleteFeedback(req.params.fb_no);
+    // Xóa feedback trong CSDL
+    await this.processor.deleteFeedback(req.params.fb_no);
 
-      return this.noContent(res);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.noContent(res);
   };
 
   deleteReply = async (req, res) => {

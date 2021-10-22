@@ -14,28 +14,20 @@ module.exports = class PayPalPaymentController extends PaymentsController {
 
   // Tạo order theo danh sách sản phẩm
   createOrder = async (req, res) => {
-    try {
-      const { body: cart } = req;
+    const { body: cart } = req;
 
-      const orderID = await this.processor.createOrder(cart);
+    const orderID = await this.processor.createOrder(cart);
 
-      return this.created(res, { orderID });
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.created(res, { orderID });
   };
 
   // Thanh toán order
   captureOrder = async (req, res) => {
-    try {
-      const { id } = req.params;
+    const { id } = req.params;
 
-      const saveOrderId = await this.processor.captureOrder(id);
+    const saveOrderId = await this.processor.captureOrder(id);
 
-      // Trả về id trong CSDL
-      return this.ok(res, { saveOrderId });
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    // Trả về id trong CSDL
+    return this.ok(res, { saveOrderId });
   };
 };

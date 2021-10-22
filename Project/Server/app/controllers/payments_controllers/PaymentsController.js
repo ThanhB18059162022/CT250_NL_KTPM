@@ -28,42 +28,30 @@ module.exports = class PaymentsController extends Controller {
 
   // Lưu đơn hàng đã thanh toán
   checkoutOrder = async (req, res) => {
-    try {
-      const {
-        params: { id },
-        query,
-      } = req;
+    const {
+      params: { id },
+      query,
+    } = req;
 
-      const redirectUrl = await this.processor.checkoutOrder(id, query);
+    const redirectUrl = await this.processor.checkoutOrder(id, query);
 
-      // Về trang khi thanh toán
-      return this.redirect(res, redirectUrl);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    // Về trang khi thanh toán
+    return this.redirect(res, redirectUrl);
   };
 
   // Lấy đơn hàng đã thanh toán
   getSaveOrder = async (req, res) => {
-    try {
-      const { id } = req.params;
+    const { id } = req.params;
 
-      const saveOrder = await this.processor.getSaveOrder(id);
+    const saveOrder = await this.processor.getSaveOrder(id);
 
-      return this.ok(res, saveOrder);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.ok(res, saveOrder);
   };
 
   //lấy tất cả đơn hàng đã thanh toán
-  getAllSaveOrder = async (req, res) => {
-    try {
-      const saveOrder = await this.processor.getAllSaveOrder();
+  getAllSaveOrder = async (_, res) => {
+    const saveOrder = await this.processor.getAllSaveOrder();
 
-      return this.ok(res, saveOrder);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.ok(res, saveOrder);
   };
 };

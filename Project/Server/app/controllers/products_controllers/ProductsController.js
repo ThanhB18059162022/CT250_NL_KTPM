@@ -25,26 +25,18 @@ module.exports = class ProductsController extends Controller {
 
   // Lấy theo mã sản phẩm
   getProductByNo = async (req, res) => {
-    try {
-      const { prod_no } = req.params;
-      const product = await this.processor.getProductByNo(prod_no);
+    const { prod_no } = req.params;
+    const product = await this.processor.getProductByNo(prod_no);
 
-      return this.ok(res, product);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.ok(res, product);
   };
 
   // Lấy theo tên
   getProductByName = async (req, res) => {
-    try {
-      const { prod_name } = req.params;
-      const product = await this.processor.getProductByName(prod_name);
+    const { prod_name } = req.params;
+    const product = await this.processor.getProductByName(prod_name);
 
-      return this.ok(res, product);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.ok(res, product);
   };
 
   //Lấy đánh giá
@@ -61,6 +53,7 @@ module.exports = class ProductsController extends Controller {
   searchProduct = async (req, res) => {
     const { flug } = req.params;
     const products = await this.processor.searchProduct(flug);
+
     return this.ok(res, products);
   };
 
@@ -70,112 +63,84 @@ module.exports = class ProductsController extends Controller {
 
   // Thêm sản phẩm
   addProduct = async (req, res) => {
-    try {
-      const { body: newProduct } = req;
+    const { body: newProduct } = req;
 
-      const product = await this.processor.addProduct(newProduct);
+    const product = await this.processor.addProduct(newProduct);
 
-      return this.created(res, product);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.created(res, product);
   };
 
   // Thêm chi tiết sản phẩm
   addProductDetails = async (req, res) => {
-    try {
-      const {
-        body: details,
-        params: { prod_no },
-      } = req;
+    const {
+      body: details,
+      params: { prod_no },
+    } = req;
 
-      await this.processor.addProductDetails(prod_no, details);
+    await this.processor.addProductDetails(prod_no, details);
 
-      return this.noContent(res);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.noContent(res);
   };
 
   // Thêm ảnh sản phẩm
   addProductImages = async (req, res) => {
-    try {
-      const {
-        body: images,
-        params: { prod_no },
-      } = req;
+    const {
+      body: images,
+      params: { prod_no },
+    } = req;
 
-      await this.processor.addProductImages(prod_no, images);
+    await this.processor.addProductImages(prod_no, images);
 
-      return this.noContent(res);
-    } catch (error) {
-      return this.checkError(error);
-    }
+    return this.noContent(res);
   };
 
   addFeedback = async (req, res) => {
-    try {
-      const {
-        body: newFeedback,
-        params: { prod_no },
-      } = req;
+    const {
+      body: newFeedback,
+      params: { prod_no },
+    } = req;
 
-      const feedback = await this.processor.addFeedback(prod_no, newFeedback);
+    const feedback = await this.processor.addFeedback(prod_no, newFeedback);
 
-      return this.created(res, feedback);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.created(res, feedback);
   };
 
   addReply = async (req, res) => {
-    try {
-      const {
-        body: newReply,
-        params: { fb_no },
-      } = req;
+    const {
+      body: newReply,
+      params: { fb_no },
+    } = req;
 
-      const reply = await this.processor.addReply(fb_no, newReply);
+    const reply = await this.processor.addReply(fb_no, newReply);
 
-      return this.created(res, reply);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.created(res, reply);
   };
 
   //#endregion
 
   // Cập nhật sản phẩm
   updateProduct = async (req, res) => {
-    try {
-      const {
-        params: { prod_no },
-        body: newProduct,
-      } = req;
+    const {
+      params: { prod_no },
+      body: newProduct,
+    } = req;
 
-      // Cập nhật thông tin
-      await this.processor.updateProduct(prod_no, newProduct);
+    // Cập nhật thông tin
+    await this.processor.updateProduct(prod_no, newProduct);
 
-      return this.noContent(res);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.noContent(res);
   };
 
   // Cập nhật chi tiết
   updateProductDetail = async (req, res) => {
-    try {
-      const {
-        params: { pd_no },
-        body: detail,
-      } = req;
+    const {
+      params: { pd_no },
+      body: detail,
+    } = req;
 
-      // Cập nhật thông tin
-      await this.processor.updateProductDetail(pd_no, detail);
+    // Cập nhật thông tin
+    await this.processor.updateProductDetail(pd_no, detail);
 
-      return this.noContent(res);
-    } catch (error) {
-      return this.checkError(res, error);
-    }
+    return this.noContent(res);
   };
 };
