@@ -1,3 +1,4 @@
+const { NotExistError } = require("../../errors/errorsContainer");
 const Processor = require("../Processor");
 
 module.exports = class FeedbackProcessor extends Processor {
@@ -64,11 +65,19 @@ module.exports = class FeedbackProcessor extends Processor {
   };
 
   addReply = async (fb_no, newReply) => {
-    const feedback = await this.getFeedbackByNo(fb_no);
+    try {
+      const { rep_content, mod_no } = newReply;
 
-    const reply = await this.dao.addReply(feedback.fb_no, newReply);
+      const reply = await this.dao.addReply(fb_no, rep_content, mod_no);
 
-    return reply;
+      return reply;
+    } catch (error) {
+      if (error.code.includes("ER_NO_REFERENCED")) {
+        throw new NotExistError(error.sqlMessage);
+      }
+
+      throw error;
+    }
   };
 
   deleteFeedback = (fb_no) => this.dao.deleteFeedback(fb_no);

@@ -120,11 +120,21 @@ module.exports = class FeedbackDAO extends ModelDAO {
   //#endregion
 
   addReply = async (fb_no, rep_content, mod_no) => {
-    const sql = `INSERT INTO replies(rep_content, mod_no, fb_no) VALUES(?, ?, ?);`;
+    const sqlIn = `INSERT INTO replies(rep_content, mod_no, fb_no) 
+                  VALUES(?, ?, ?);`;
 
     await this.handleExeError(
-      async () => await this.sqldao.execute(sql, [rep_content, mod_no, fb_no])
+      async () => await this.sqldao.execute(sqlIn, [rep_content, mod_no, fb_no])
     );
+
+    const sqlOut = `SELECT * FROM Replies 
+                    WHERE rep_content = ? 
+                    AND mod_no = ? 
+                    AND  fb_no = ?
+                    Order By rep_time DESC
+                    LIMIT 1; `;
+
+    return (await this.sqldao.query(sqlOut, [rep_content, mod_no, fb_no]))[0];
   };
 
   deleteFeedback = async (fb_no) => {

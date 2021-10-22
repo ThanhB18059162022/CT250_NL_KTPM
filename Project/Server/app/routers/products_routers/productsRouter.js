@@ -49,6 +49,8 @@ router
     errorCatch(controller.addProduct)
   );
 
+router.route("/brands").get(errorCatch(controller.getBrands));
+
 router
   .route("/price")
   // /products/price?min=0&max=100&page=1&limit=24

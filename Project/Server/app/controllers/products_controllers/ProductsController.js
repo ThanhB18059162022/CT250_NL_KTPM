@@ -8,6 +8,12 @@ module.exports = class ProductsController extends Controller {
 
   //#region GET
 
+  getBrands = async (_, res) => {
+    const brands = await this.processor.getBrands();
+
+    return this.ok(res, brands);
+  };
+
   // Lấy danh sách
   // Số trang và số lượng
   getProducts = async (req, res) => {
@@ -103,17 +109,6 @@ module.exports = class ProductsController extends Controller {
     const feedback = await this.processor.addFeedback(prod_no, newFeedback);
 
     return this.created(res, feedback);
-  };
-
-  addReply = async (req, res) => {
-    const {
-      body: newReply,
-      params: { fb_no },
-    } = req;
-
-    const reply = await this.processor.addReply(fb_no, newReply);
-
-    return this.created(res, reply);
   };
 
   //#endregion

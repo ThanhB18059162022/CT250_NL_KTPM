@@ -1,6 +1,7 @@
 const {
   InstantiateAbstractClassError,
   ExistError,
+  NotExistError,
 } = require("../errors/errorsContainer");
 
 module.exports = class ModelDAO {
