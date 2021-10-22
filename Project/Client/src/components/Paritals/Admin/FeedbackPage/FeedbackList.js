@@ -60,11 +60,19 @@ const FeedbackList = (props) => {
         })();
     }, [modifyFbList, setModifyFbList])
 
+    //danh sách đánh giá đã lọc
+    const [filter, setFilter] = useState([])
+    //lọc danh sách đánh giá
+    const filterFeedback = (message) => {
+        const newArray = feedbacks.filter(item => item.cus_name.toLowerCase().includes(message.toLowerCase()) || item.prod_name.toLowerCase().includes(message.toLowerCase()))
+        setFilter(newArray)
+    }
+
     return (
         <>
             <div className="ListLayout">
                 <div className="ProductToolHeader FeedbackTool">
-                    <AdminSearchInput />
+                    <AdminSearchInput filterFeedback={filterFeedback}/>
                 </div>
                 <li className="FeedbackListHeader">
                     <p>Mã ĐG</p>
@@ -76,7 +84,11 @@ const FeedbackList = (props) => {
                     <p>Hành động</p>
                 </li>
                 <div className="AdminListClass">
-                    {feedbacks.map((item, index) => <Feedback key={index} info={item} cusStyle={cusStyle} setFeedbackInfo={setFeedbackInfo} setShowFb={setShowFb} show={show} setShow={setShow} notify={notify} notifyDeleteFeedback={notifyDeleteFeedback} />)}
+                    {filter.length === 0 ? (
+                        feedbacks.map((item, index) => <Feedback key={index} info={item} cusStyle={cusStyle} setFeedbackInfo={setFeedbackInfo} setShowFb={setShowFb} show={show} setShow={setShow} notify={notify} notifyDeleteFeedback={notifyDeleteFeedback} />)
+                    ):(
+                        filter.map((item, index) => <Feedback key={index} info={item} cusStyle={cusStyle} setFeedbackInfo={setFeedbackInfo} setShowFb={setShowFb} show={show} setShow={setShow} notify={notify} notifyDeleteFeedback={notifyDeleteFeedback} />)
+                    )}
                 </div>
                 {displayFbInfoForm()}
                 <Notifications {...notify} isShow={show} onHideRequest={setShow} />

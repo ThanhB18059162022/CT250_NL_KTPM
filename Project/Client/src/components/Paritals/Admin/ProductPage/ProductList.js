@@ -49,7 +49,7 @@ const ProductList = (props) => {
     const [productFilter, setProductFilter] = useState([])
     //lọc sản phẩm
     const filterProduct = (message) => {
-        const newArr = productsList.filter(item => item.prod_name.includes(message))
+        const newArr = productsList.filter(item => item.prod_name.toLowerCase().includes(message.toLowerCase()) || item.prod_hardwareAndOS.os.toLowerCase().includes(message.toLowerCase()) || item.prod_manufacturer.madeIn.toLowerCase().includes(message.toLowerCase()))
         setProductFilter(newArr)
     }
 
