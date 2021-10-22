@@ -85,46 +85,6 @@ describe("Ctrlr Lấy ra đơn hàng đã thanh toán", () => {
     processorMock = new ProcessorMock();
   });
 
-  test("Id đơn hàng không hợp lệ - 400", async () => {
-    //Arrange
-    const id = undefined;
-    const controller = getController();
-
-    const reqMock = {
-      params: { id },
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400 };
-    const actRes = await controller.getSaveOrder(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getSaveOrder).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Id đơn hàng không tồn tại - 404", async () => {
-    //Arrange
-    const id = 2;
-    const controller = getController();
-
-    const reqMock = {
-      params: { id },
-    };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404 };
-    const actRes = await controller.getSaveOrder(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getSaveOrder).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("Lấy ra thành công", async () => {
     //Arrange
     const id = 1;

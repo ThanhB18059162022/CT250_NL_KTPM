@@ -36,15 +36,11 @@ class AuthenticationController extends Controller {
   };
 
   checkExpiredToken = (res, error) => {
-    try {
-      return this.checkError(res, error);
-    } catch (error) {
-      if (error instanceof JwtTokenError) {
-        return this.unauthorized(res, error);
-      }
-
-      throw error;
+    if (error instanceof JwtTokenError) {
+      return this.unauthorized(res, error);
     }
+
+    throw error;
   };
 
   // Authorize phải đăng nhập trước mới xài cái này

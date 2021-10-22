@@ -151,40 +151,6 @@ describe("Ctrlr Lấy ra quản trị viên theo mã", () => {
     processorMock = new ModeratorsProcessorMock();
   });
 
-  test("Không hợp lệ - 400", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_no = undefined;
-    const reqMock = { params: { mod_no } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400 };
-    const actRes = await controller.getModeratorByNo(reqMock, resMock);
-
-    //Assert
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getModeratorByNo).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Không tồn tại - 404", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_no = 2;
-    const reqMock = { params: { mod_no } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404 };
-    const actRes = await controller.getModeratorByNo(reqMock, resMock);
-
-    //Assert
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getModeratorByNo).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("Lấy ra quản trị viên theo mã - 200", async () => {
     //Arrange
     const controller = getController();
@@ -208,39 +174,6 @@ describe("Ctrlr Lấy ra quản trị viên theo mã", () => {
 describe("Ctrlr Lấy ra quản trị viên theo số điện thoại", () => {
   beforeEach(() => {
     processorMock = new ModeratorsProcessorMock();
-  });
-
-  test("Không hợp lệ - 400", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_phoneNumber = undefined;
-    const reqMock = { params: { mod_phoneNumber } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.getModeratorByPhoneNumber(reqMock, resMock);
-
-    //Assert
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Không tồn tại - 404", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_phoneNumber = "0000000002";
-    const reqMock = { params: { mod_phoneNumber } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404, body: {} };
-    const actRes = await controller.getModeratorByPhoneNumber(reqMock, resMock);
-
-    //Assert
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getModeratorByPhoneNumber).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
   });
 
   test("Lấy ra theo số điện thoại - 200", async () => {
@@ -268,40 +201,6 @@ describe("Ctrlr Lấy ra quản trị viên theo CMND", () => {
     processorMock = new ModeratorsProcessorMock();
   });
 
-  test("CMND không hợp lệ - 400", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_id = undefined;
-    const reqMock = { params: { mod_id } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.getModeratorByMod_Id(reqMock, resMock);
-
-    //Assert
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getModeratorByMod_Id).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("CMND không tồn tại - 404", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_id = "";
-    const reqMock = { params: { mod_id } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404, body: undefined };
-    const actRes = await controller.getModeratorByMod_Id(reqMock, resMock);
-
-    //Assert
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getModeratorByMod_Id).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("CMND hợp lệ - 200", async () => {
     //Arrange
     const controller = getController();
@@ -325,40 +224,6 @@ describe("Ctrlr Lấy ra quản trị viên theo CMND", () => {
 describe("Ctrlr Lấy ra quản trị viên theo tài khoản", () => {
   beforeEach(() => {
     processorMock = new ModeratorsProcessorMock();
-  });
-
-  test("Tài khoản không hợp lệ - 400", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_username = undefined;
-    const reqMock = { params: { mod_username } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.getModeratorByUsername(reqMock, resMock);
-
-    //Assert
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getModeratorByUsername).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Tài khoản không tồn tại - 404", async () => {
-    //Arrange
-    const controller = getController();
-    const mod_username = "";
-    const reqMock = { params: { mod_username } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404, body: undefined };
-    const actRes = await controller.getModeratorByUsername(reqMock, resMock);
-
-    //Assert
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.getModeratorByUsername).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
   });
 
   test("Tài khoản hợp lệ - 200", async () => {
@@ -386,86 +251,6 @@ describe("Ctrlr Lấy ra quản trị viên theo tài khoản", () => {
 describe("Ctrlr Thêm quản trị viên", () => {
   beforeEach(() => {
     processorMock = new ModeratorsProcessorMock();
-  });
-
-  test("Không hợp lệ - 400", async () => {
-    //Arrange
-    const moderator = undefined;
-
-    const controller = getController();
-
-    const reqMock = { body: moderator };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: moderator };
-    const actRes = await controller.addModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(resMock.json).toBeCalledTimes(1);
-    expect(processorMock.addModerator).toBeCalledTimes(1);
-  });
-
-  test("Trùng số điện thoại - 400", async () => {
-    //Arrange
-    const moderator = { mod_phoneNumber: "0000000000" };
-
-    const controller = getController();
-
-    const reqMock = { body: moderator };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.addModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.addModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Trùng số CMND - 400", async () => {
-    //Arrange
-    const moderator = { mod_id: "111111111", mod_phoneNumber: "5555555555" };
-
-    const controller = getController();
-
-    const reqMock = { body: moderator };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.addModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.addModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Trùng tài khoản - 400", async () => {
-    //Arrange
-    const moderator = {
-      mod_id: "111111112",
-      mod_phoneNumber: "5555555555",
-      mod_username: moderators[0].mod_username,
-    };
-
-    const controller = getController();
-
-    const reqMock = { body: moderator };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.addModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.addModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
   });
 
   test("Thêm thành công - 201", async () => {
@@ -500,101 +285,6 @@ describe("Ctrlr Sửa thông tin quản trị viên", () => {
     processorMock = new ModeratorsProcessorMock();
   });
 
-  test("Mã quản trị không hợp lệ - 400", async () => {
-    //Arrange
-    const mod_no = -1;
-    const moderator = {};
-    const controller = getController();
-
-    const reqMock = { params: { mod_no }, body: moderator };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.updateModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.updateModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Thông tin không hợp lệ các trường undefined - 400", async () => {
-    //Arrange
-    const mod_no = 1;
-    const moderator = undefined;
-    const controller = getController();
-
-    const reqMock = { params: { mod_no }, body: moderator };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.updateModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.updateModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Mã quản trị không tồn tại - 404", async () => {
-    //Arrange
-    const mod_no = 404;
-    const moderator = {};
-    const controller = getController();
-
-    const reqMock = { params: { mod_no }, body: moderator };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404, body: undefined };
-    const actRes = await controller.updateModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.updateModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Số điện thoại đã tồn tại - 400", async () => {
-    //Arrange
-    const moderator = moderators[0];
-    const { mod_no } = moderators[1];
-    const controller = getController();
-
-    const reqMock = { params: { mod_no }, body: moderator };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.updateModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.updateModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Số CMND đã tồn tại - 400", async () => {
-    //Arrange
-    const moderator = { ...moderators[0], mod_phoneNumber: "0" };
-    const { mod_no } = moderators[1];
-    const controller = getController();
-
-    const reqMock = { params: { mod_no }, body: moderator };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.updateModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.updateModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
   test("Cập nhật thành công - 204", async () => {
     //Arrange
     const moderator = moderators[0];
@@ -618,42 +308,6 @@ describe("Ctrlr Sửa thông tin quản trị viên", () => {
 describe("Ctrlr Khóa tài khoản quản trị viên", () => {
   beforeEach(() => {
     processorMock = new ModeratorsProcessorMock();
-  });
-
-  test("Mã quản trị không hợp lệ - 400", async () => {
-    //Arrange
-    const mod_no = undefined;
-    const controller = getController();
-
-    const reqMock = { params: { mod_no } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 400, body: undefined };
-    const actRes = await controller.lockModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.lockModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
-  });
-
-  test("Mã quản trị không tồn tại - 404", async () => {
-    //Arrange
-    const mod_no = 404;
-    const controller = getController();
-
-    const reqMock = { params: { mod_no } };
-    const resMock = new ResponseMock();
-
-    //Act
-    const expRes = { statusCode: 404, body: undefined };
-    const actRes = await controller.lockModerator(reqMock, resMock);
-
-    //Expect
-    expect(actRes.statusCode).toEqual(expRes.statusCode);
-    expect(processorMock.lockModerator).toBeCalledTimes(1);
-    expect(resMock.json).toBeCalledTimes(1);
   });
 
   test("Khóa thành công - 204", async () => {
