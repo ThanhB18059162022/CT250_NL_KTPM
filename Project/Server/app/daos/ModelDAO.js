@@ -1,6 +1,7 @@
 const {
   InstantiateAbstractClassError,
   ExistError,
+  NotExistError,
 } = require("../errors/errorsContainer");
 
 module.exports = class ModelDAO {
@@ -22,6 +23,10 @@ module.exports = class ModelDAO {
     } catch (error) {
       if (error.code === "ER_DUP_ENTRY") {
         throw new ExistError(error.sqlMessage);
+      }
+
+      if (error.code.includes("ER_NO_REFERENCED")) {
+        throw new NotExistError(error.sqlMessage);
       }
 
       throw error;

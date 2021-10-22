@@ -213,9 +213,6 @@ module.exports = class ProductsProcessor extends Processor {
     return this.feedbackProcessor.addFeedback(product.prod_no, feedback);
   };
 
-  // Phản hồi
-  addReply = (fb_no, reply) => this.feedbackProcessor.addReply(fb_no, reply);
-
   //#endregion
 
   // Cập nhật sản phẩm

@@ -36,6 +36,10 @@ router
   .delete(authController.authenticate, errorCatch(controller.deleteFeedback));
 
 router
+  .route("/:fb_no/replies/")
+  .post(authController.authenticate, errorCatch(controller.addReply));
+
+router
   .route("/:fb_no/replies/:rep_no")
   .delete(authController.authenticate, errorCatch(controller.deleteReply));
 

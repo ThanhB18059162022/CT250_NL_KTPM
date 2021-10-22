@@ -105,17 +105,6 @@ module.exports = class ProductsController extends Controller {
     return this.created(res, feedback);
   };
 
-  addReply = async (req, res) => {
-    const {
-      body: newReply,
-      params: { fb_no },
-    } = req;
-
-    const reply = await this.processor.addReply(fb_no, newReply);
-
-    return this.created(res, reply);
-  };
-
   //#endregion
 
   // Cập nhật sản phẩm

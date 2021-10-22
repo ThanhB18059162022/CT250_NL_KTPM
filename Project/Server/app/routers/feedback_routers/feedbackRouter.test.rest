@@ -1,6 +1,17 @@
 
-GET http://localhost:8000/api/feedback?page=1&limit=10
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0ODE1MTI0LCJleHAiOjE2MzQ4MTg3MjR9.m-n-UdoAJIFTO9CzFk18GrXkrjcJJaAZb8HaCyRG3Uk
+GET http://localhost:8000/api/feedback?page=1&limit=10&order=""
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJyb2xlIjoiZW1wIn0sImlhdCI6MTYzNDg5OTc0OCwiZXhwIjoxNjM0OTAzMzQ4fQ.5Lt7yWhgrfercK9y6M6ploMrI3xkBcHhtR2DXdpO32I
+
+### Thêm trả lời phản hồi
+POST  http://localhost:8000/api/feedback/6/replies
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJyb2xlIjoiZW1wIn0sImlhdCI6MTYzNDg5OTc0OCwiZXhwIjoxNjM0OTAzMzQ4fQ.5Lt7yWhgrfercK9y6M6ploMrI3xkBcHhtR2DXdpO32I
+Content-Type: application/json
+
+{
+    "rep_content": "Cảm ơn anh đã góp ý",
+    "mod_no": 2
+}
+
 
 ### Xóa phản hồi
 DELETE  http://localhost:8000/api/feedback/2

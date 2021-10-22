@@ -64,9 +64,9 @@ module.exports = class FeedbackProcessor extends Processor {
   };
 
   addReply = async (fb_no, newReply) => {
-    const feedback = await this.getFeedbackByNo(fb_no);
+    const { rep_content, mod_no } = newReply;
 
-    const reply = await this.dao.addReply(feedback.fb_no, newReply);
+    const reply = await this.dao.addReply(fb_no, rep_content, mod_no);
 
     return reply;
   };
