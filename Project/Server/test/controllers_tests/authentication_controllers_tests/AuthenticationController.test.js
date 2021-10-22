@@ -149,30 +149,6 @@ describe("Ctrlr Kiểm tra bearer jwt có trong req", () => {
     expect(nextMock).toBeCalledTimes(1);
     expect(processorMock.authenticate).toBeCalledTimes(1);
   });
-
-  test("Lỗi server", async () => {
-    //Arrange
-    const token = "wtf";
-
-    const controller = getController();
-
-    const reqMock = { headers: { authorization: token } };
-    const resMock = new ResponseMock();
-    const nextMock = jest.fn();
-
-    //Act
-    const expRs = UnKnownError;
-    let actRs;
-    try {
-      await controller.authenticate(reqMock, resMock, nextMock);
-    } catch (error) {
-      actRs = error;
-    }
-
-    //Expect
-    expect(actRs instanceof expRs).toBeTruthy();
-    expect(processorMock.authenticate).toBeCalledTimes(1);
-  });
 });
 
 // 200 - Phải có jwt
