@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import Notifications from "../../../common/Notifications";
 import "./Admin.Style.scss";
 import ApiCaller from "../../../api_services/ApiCaller";
+import { useHistory } from "react-router";
+import { AuthenticationService } from "../../../api_services/servicesContainer";
 // import { sha256 } from "js-sha256"
 // Khỏi xài thư viện ngoài
 const crypto = require("crypto");
 const sha256 = (pwd) => crypto.createHash("sha256").update(pwd).digest("hex");
 
 const ChangePwd = (props) => {
-    const { adminInfo, setAdminInfoChanged, setState } = props;
+    const { adminInfo, setAdminInfoChanged } = props;
     const [show, setShow] = useState(false);
 
     const [notify, setNotify] = useState({
@@ -49,6 +51,7 @@ const ChangePwd = (props) => {
         mod_role: adminInfo.mod_role,
         mod_password: adminInfo.mod_password,
     };
+    const history = useHistory()
     //gọi api lưu pwd
     const SavePassword = async (pwd) => {
         if (
@@ -63,7 +66,9 @@ const ChangePwd = (props) => {
             setAdminInfoChanged(1);
             notifySavePassword();
             setTimeout(() => {
-                setState(0);
+                const auth = new AuthenticationService(new ApiCaller());
+                auth.logout();
+                history.push("/login");
             }, 2000);
         } else notifyWrongPassword();
     };

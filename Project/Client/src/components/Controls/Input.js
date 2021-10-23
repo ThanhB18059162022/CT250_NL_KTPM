@@ -106,19 +106,20 @@ export const SearchHeaderInput = ({ searchHandle }) => {
 }
 
 export const AdminSearchInput = (props) => {
-  const { filterModerator, filterProduct, filterBill } = props
+  const { filterModerator, filterProduct, filterBill, filterFeedback } = props
   const [search, setSearch] = useState('')
   const SetSearchValue = (text) => {
     setSearch(text.target.value)
-    filterModerator ? (
+    if(filterModerator)
+    {
       filterModerator(text.target.value)
-    ) : (
-      filterProduct ? (
-        filterProduct(text.target.value)
-      ) : (
-        filterBill(text.target.value)
-      )
-    )
+    }else if(filterProduct)
+    {
+      filterProduct(text.target.value)
+    }else if(filterBill)
+    {
+      filterBill(text.target.value)
+    }else filterFeedback(text.target.value)
   }
   return (
     <div className="AdminSearchInput">

@@ -5,8 +5,10 @@ import "../Admin.Style.scss"
 import FeedbackInformation from "./FeedbackInformation"
 import Notifications from "../../../../common/Notifications"
 import ApiCaller from "../../../../api_services/ApiCaller"
+import Helper from "../../../../helpers"
 
-const FeedbackList = () => {
+const FeedbackList = (props) => {
+    const { currentAdNo, modifyFbList, setModifyFbList } = props
     const cusStyle = {
         fontSize: "15px",
         width: "45px"
@@ -20,64 +22,57 @@ const FeedbackList = () => {
         content: "", // content of the notify
         infoType: ""
     })
-
-    const notifyDeleteProduct = () => {
+    //xác nhận xoá đánh giá
+    const notifyDeleteFeedback = (fbNo) => {
         setNotify({
             ...notify,
             title: "Xác nhận",
-            content: "Xóa sản phẩm?",
+            content: "Xóa đánh giá " + fbNo + "?",
+            handle: ()=>deleteFeedback(fbNo)
         })
         setShow(true)
     }
-    const [fbInfo, setFbInfo] = useState(0)
-    const [fbNo, setFbNo] = useState()
+    //hiển thị thông tin đánh giá
+    const [showFb, setShowFb] = useState(0)
     const displayFbInfoForm = () => {
-        switch (fbInfo) {
-            case 1: return <FeedbackInformation setFbInfo={setFbInfo} fbNo={fbNo} />
+        switch (showFb) {
+            case 1: return <FeedbackInformation setShowFb={setShowFb} feedbackInfo={feedbackInfo} currentAdNo={currentAdNo} setModifyFbList={setModifyFbList} modifyFbList={modifyFbList}/>
             default: return;
         }
     }
-    //test data
-    const obj2 = [
-        {
-            fb_no: "001",
-            cus_name: "Ban đêm có nắng",
-            fb_content: "Sản phẩm rất tốt",
-            prod_name: "IPhone X",
-            fb_time: "04/09/2021",
-            reply: [
-                { mod: "Admin01", content: "Cảm ơn bạn!" },
-                { mod: "Admin01", content: "Cảm ơn bạn!" }
-            ]
-        },
-        {
-            fb_no: "002",
-            cus_name: "Ban ngày có trăng",
-            fb_content: "Dịch vụ rất hài lòng",
-            prod_name: "IPhone X",
-            fb_time: "04/09/2021",
-            reply: [
-                { mod: "Admin01", content: "Cảm ơn bạn!" }
-            ]
-        }
-    ]
-
+    //thông tin đánh giá
+    const [feedbackInfo, setFeedbackInfo] = useState()
+    //gọi api xoá đánh giá
+    const deleteFeedback = async (fbNo) =>{
+        const caller = new ApiCaller()
+        await caller.delete("feedback/" + fbNo)
+        setModifyFbList(1)
+    }
+    //danh sách đánh giá
     const [feedbacks, setFeedbacks] = useState([])
+    //lấy danh sách đánh giá từ server
     useEffect(() => {
         (async () => {
             const caller = new ApiCaller();
-            let data = await caller.get('moderators')
-            console.log(data)
-            // setFeedbacks(data.items.prod_feedbacks)
-        })(); // IIFE // Note setProduct([...products, item])
-    }, [])
+            let data = await caller.get('feedback?page=1&limit=200&order="DESC"')
+            setFeedbacks(data.items)
+            if(modifyFbList === 1) setModifyFbList(0)
+        })();
+    }, [modifyFbList, setModifyFbList])
 
+    //danh sách đánh giá đã lọc
+    const [filter, setFilter] = useState([])
+    //lọc danh sách đánh giá
+    const filterFeedback = (message) => {
+        const newArray = feedbacks.filter(item => item.cus_name.toLowerCase().includes(message.toLowerCase()) || item.prod_name.toLowerCase().includes(message.toLowerCase()))
+        setFilter(newArray)
+    }
 
     return (
         <>
             <div className="ListLayout">
                 <div className="ProductToolHeader FeedbackTool">
-                    <AdminSearchInput />
+                    <AdminSearchInput filterFeedback={filterFeedback}/>
                 </div>
                 <li className="FeedbackListHeader">
                     <p>Mã ĐG</p>
@@ -85,11 +80,15 @@ const FeedbackList = () => {
                     <p>Nội dung</p>
                     <p>Sản phẩm</p>
                     <p>Thời gian</p>
-                    <p>Số phản hồi</p>
+                    <p>Phản hồi</p>
                     <p>Hành động</p>
                 </li>
                 <div className="AdminListClass">
-                    {obj2.map((item, index) => <Feedback key={index} info={item} cusStyle={cusStyle} setFbNo={setFbNo} setFbInfo={setFbInfo} show={show} setShow={setShow} notify={notify} notifyDeleteProduct={notifyDeleteProduct} />)}
+                    {filter.length === 0 ? (
+                        feedbacks.map((item, index) => <Feedback key={index} info={item} cusStyle={cusStyle} setFeedbackInfo={setFeedbackInfo} setShowFb={setShowFb} show={show} setShow={setShow} notify={notify} notifyDeleteFeedback={notifyDeleteFeedback} />)
+                    ):(
+                        filter.map((item, index) => <Feedback key={index} info={item} cusStyle={cusStyle} setFeedbackInfo={setFeedbackInfo} setShowFb={setShowFb} show={show} setShow={setShow} notify={notify} notifyDeleteFeedback={notifyDeleteFeedback} />)
+                    )}
                 </div>
                 {displayFbInfoForm()}
                 <Notifications {...notify} isShow={show} onHideRequest={setShow} />
@@ -100,7 +99,7 @@ const FeedbackList = () => {
 }
 
 const Feedback = (props) => {
-    const { info, setFbNo, setFbInfo, notifyDeleteProduct } = props
+    const { info, setFeedbackInfo, setShowFb, notifyDeleteFeedback } = props
     return (
         <>
             <li className="FeedbackList">
@@ -108,9 +107,9 @@ const Feedback = (props) => {
                 <p>{info.cus_name}</p>
                 <p>{info.fb_content}</p>
                 <p>{info.prod_name}</p>
-                <p>{info.fb_time}</p>
-                <p>...</p>
-                <p><AdminButton IconName={faEye} ClickEvent={() => { setFbInfo(1); setFbNo(info.fb_no) }} /> <AdminButton IconName={faTrashAlt} ClickEvent={notifyDeleteProduct} /></p>
+                <p>{Helper.Exchange.toLocalDate(info.fb_time)}</p>
+                <p>{info.replies.length}</p>
+                <p><AdminButton IconName={faEye} ClickEvent={() => { setShowFb(1); setFeedbackInfo(info) }} /> <AdminButton IconName={faTrashAlt} ClickEvent={()=>notifyDeleteFeedback(info.fb_no)} /></p>
             </li>
 
         </>

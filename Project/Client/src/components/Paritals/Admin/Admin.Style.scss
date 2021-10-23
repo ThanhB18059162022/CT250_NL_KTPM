@@ -450,7 +450,7 @@
                 margin-right: 10px;
             }
             &:nth-child(2) {
-                width: 30%;
+                width: 20%;
                 text-align: left;
             }
             &:nth-child(3) {
@@ -458,11 +458,11 @@
                 text-align: left;
             }
             &:nth-child(4) {
-                width: 30%;
+                width: 20%;
                 text-align: left;
             }
             &:nth-child(5) {
-                min-width: 100px;
+                min-width: 190px;
                 max-width: 100px;
             }
             &:nth-child(6) {
@@ -553,7 +553,7 @@
                     max-width: 80px;
                 }
                 &:nth-child(2) {
-                    width: 30%;
+                    width: 20%;
                     text-align: left;
                 }
                 &:nth-child(3) {
@@ -561,11 +561,11 @@
                     text-align: left;
                 }
                 &:nth-child(4) {
-                    width: 30%;
+                    width: 20%;
                     text-align: left;
                 }
                 &:nth-child(5) {
-                    min-width: 100px;
+                    min-width: 190px;
                     max-width: 100px;
                 }
                 &:nth-child(6) {
@@ -689,6 +689,12 @@
                 margin-left: 2%;
                 padding: 10px;
                 font-size: 16px;
+            }
+            &:nth-child(2) select{
+                font-size: 16px;
+                width: 80%;
+                padding: 10px;
+                margin-left: 2%;
             }
             &:nth-child(26) {
                 div {
@@ -1073,6 +1079,9 @@
                     outline: none;
                     cursor: context-menu;
                 }
+                textarea{
+                    padding: 10px;
+                }
             }
         }
         .FbInfoPart2 {
@@ -1112,6 +1121,12 @@
         margin: 5px 0;
         p {
             font-size: 14px;
+        }
+        button{
+            position: relative;
+            color: red;
+            left: 2%;
+            font-size: 16px;
         }
     }
     textarea {

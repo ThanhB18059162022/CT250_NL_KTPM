@@ -63,7 +63,7 @@ const MorderatorList = (props) => {
     }, [newMod])
     //lọc danh sách quản trị
     const filterModerator = (message) => {
-        const newArray = mods.filter(item => item.mod_name.includes(message))
+        const newArray = mods.filter(item => item.mod_name.toLowerCase().includes(message.toLowerCase()))
         setFilter(newArray)
     }
     return (
