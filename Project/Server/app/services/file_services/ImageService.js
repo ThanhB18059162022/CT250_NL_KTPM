@@ -30,11 +30,12 @@ module.exports = class ImageService extends FileService {
   saveProductImages = async (prod_no, imgs = []) => {
     const path = `${this.path}/product${prod_no}`;
 
-    if (!this.exist(path)) {
-      await this.createDirAsync(path);
-    } else {
-      // clear folder
+    if (this.exist(path)) {
+      // Xóa thư mục
+      this.removeDir(path);
     }
+
+    await this.createDirAsync(path);
 
     await this.writeToDisk(path, imgs[0], "");
 
