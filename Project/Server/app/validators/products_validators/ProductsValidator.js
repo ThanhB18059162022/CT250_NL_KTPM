@@ -36,9 +36,9 @@ module.exports = class ProductsValidator extends Validator {
           pd_ram: this.joi.string().required(),
           pd_storage: this.joi.string().required(),
           pd_storageAvailable: this.joi.string().required(),
-          pd_amount: this.joi.number().integer().min(0).required(),
+          pd_amount: this.joi.number().integer().min(1).required(),
           pd_sold: this.joi.number().integer().min(0).required(),
-          pd_price: this.joi.number().integer().min(0).required(),
+          pd_price: this.joi.number().integer().min(100000).required(),
         })
         .required()
     );
