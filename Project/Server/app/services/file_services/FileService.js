@@ -26,16 +26,8 @@ module.exports = class FileService {
       });
     });
 
-  removeDirAsync = (path) =>
-    new Promise((resolve, reject) => {
-      fs.rmdir(path, (error, files) => {
-        if (error) {
-          return reject(error);
-        } else {
-          return resolve(files);
-        }
-      });
-    });
+  // Xóa thư mục rỗng lẫn không rỗng
+  removeDir = (path) => fs.rmdirSync(path, { recursive: true, force: true });
 
   readFileAsync = (path, encoded) =>
     new Promise((resolve, reject) => {
