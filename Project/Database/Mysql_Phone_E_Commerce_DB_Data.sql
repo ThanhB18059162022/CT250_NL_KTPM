@@ -1,7 +1,7 @@
 USE Phone_E_Commerce_DB;
 
 INSERT INTO Brands(brand_name) VALUES(N'SAMSUNG');
-INSERT INTO Brands(brand_name) VALUES(N'iPhone');
+INSERT INTO Brands(brand_name) VALUES(N'Apple');
 INSERT INTO Brands(brand_name) VALUES(N'Oppo');
 INSERT INTO Brands(brand_name) VALUES(N'Xiaomi');
 INSERT INTO Brands(brand_name) VALUES(N'NOKIA');
