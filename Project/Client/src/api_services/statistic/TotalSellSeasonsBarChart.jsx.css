@@ -1,34 +1,45 @@
 .chart-panel > label {
-  font-weight: bold;
-  font-size: 1.5em;
+    font-weight: bold;
+    font-size: 1.5em;
 }
 
 .chart-panel > .content {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
 }
 .chart-panel > .content > select {
-  border-radius: 0.5em;
-  padding: 0 0.5em 0 0.5em;
-  font-weight: 700;
-  font-size: inherit;
+    border-radius: 0.5em;
+    padding: 0 0.5em 0 0.5em;
+    font-weight: 700;
+    font-size: inherit;
 }
 
 .chart-panel > .content > .item {
-  margin: 0.5em 0 0.5em 1em;
-  border-radius: 0.5em;
-  background-color: hsl(0, 0%, 80%);
-  padding-bottom: 0.2em;
+    margin: 0.5em 0 0.5em 1em;
+    border-radius: 0.5em;
+    background-color: hsl(0, 0%, 80%);
+    padding-bottom: 0.2em;
 }
 .chart-panel > .content > .item > span {
-  margin-left: 0.5em;
+    margin-left: 0.5em;
 }
 .chart-panel > .content > .item > .btn-del {
-  margin-left: 0.2em;
-  padding: 0 0.3em 0.2em 0.3em;
-  border-radius: 0.5em;
+    margin-left: 0.2em;
+    padding: 0 0.3em 0.2em 0.3em;
+    border-radius: 0.5em;
 }
 .chart-panel > .content > .item > .btn-del:hover {
-  background-color: hsl(0, 0%, 50%);
-  cursor: pointer;
+    background-color: hsl(0, 0%, 50%);
+    cursor: pointer;
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.chart-item {
+    width: 80%;
+    padding-bottom: 50px;
 }
