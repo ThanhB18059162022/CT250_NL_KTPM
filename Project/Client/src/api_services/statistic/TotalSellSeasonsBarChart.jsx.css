@@ -43,3 +43,18 @@
     width: 80%;
     padding-bottom: 50px;
 }
+
+.exp-ico {
+    display: flex;
+    padding: 1em;
+    font-size: 1.5em;
+}
+
+.exp-ico:hover {
+    cursor: pointer;
+}
+
+.exp-ico > img {
+    margin-left: 5px;
+    width: 1.1em;
+}

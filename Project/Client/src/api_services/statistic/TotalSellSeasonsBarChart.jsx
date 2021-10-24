@@ -5,6 +5,8 @@ import React, { useState, useEffect } from "react";
 import { Bar, defaults } from "react-chartjs-2";
 import "./TotalSellSeasonsBarChart.jsx.css";
 import StatisticService from "./StatisticService";
+import expSer from "./exportExcelService";
+import exp_ico from "./exp-ico.png";
 
 const service = new StatisticService();
 
@@ -67,6 +69,29 @@ function TotalSellSeasonBarChart() {
         return ndyrs;
     }
 
+    function exportReport() {
+        let rp = [];
+
+        for (let i = 0; i < dataSets.length; i++) {
+            const { label, data } = dataSets[i];
+            var r = getRp(label, data);
+            rp = rp.concat(r);
+        }
+
+        expSer(rp, "report.xlsx");
+    }
+
+    function getRp(year, data) {
+        return [
+            [`Năm ${year}`, "Quý", "Tổng Tiền"],
+            ["", "I", data[0]],
+            ["", "II", data[1]],
+            ["", "III", data[2]],
+            ["", "IV", data[3]],
+            [],
+        ];
+    }
+
     //#endregion
 
     function showYearsSelect() {
@@ -99,6 +124,10 @@ function TotalSellSeasonBarChart() {
 
     return (
         <>
+            <div className='exp-ico' onClick={exportReport}>
+                <h4> Xuất báo ra file excel</h4>
+                <img src={exp_ico} alt='No Img' />
+            </div>
             <Bar data={data} options={options} />
             <div className='chart-panel'>
                 <div className='content'>

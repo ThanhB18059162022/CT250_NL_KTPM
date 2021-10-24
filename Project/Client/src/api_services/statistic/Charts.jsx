@@ -1,7 +1,7 @@
 import React from "react";
-
 import TotalSellSeasonBarChart from "./TotalSellSeasonsBarChart";
 import TotalSellYearsBarChart from "./TotalSellYearsBarChart";
+
 function Charts() {
     return (
         <div className='chart-container'>

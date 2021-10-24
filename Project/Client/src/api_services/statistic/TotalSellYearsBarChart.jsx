@@ -4,6 +4,8 @@
 import React, { useState, useEffect } from "react";
 import { Line, defaults } from "react-chartjs-2";
 import StatisticService from "./StatisticService";
+import expSer from "./exportExcelService";
+import exp_ico from "./exp-ico.png";
 
 const service = new StatisticService();
 
@@ -40,7 +42,23 @@ function TotalSellYearsBarChart() {
 
     //#endregion
 
-    return <Line data={data} options={options} />;
+    function exportReport() {
+        let rp = total.map((t) => [t.year, t.totalSell, t.totalPay]);
+
+        rp = [["Năm", "Tổng thu", "Tổng chi"]].concat(rp);
+
+        expSer(rp, "report.xlsx");
+    }
+
+    return (
+        <>
+            <div className='exp-ico' onClick={exportReport}>
+                <h4> Xuất báo ra file excel</h4>
+                <img src={exp_ico} alt='No Img' />
+            </div>
+            <Line data={data} options={options} />
+        </>
+    );
 }
 
 // 2 data set
