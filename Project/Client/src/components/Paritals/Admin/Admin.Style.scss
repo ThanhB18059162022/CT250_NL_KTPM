@@ -754,6 +754,10 @@
 
             p {
                 flex-basis: 20%;
+                display: flex;
+                p{
+                    color: red;
+                }
             }
             input {
                 width: 80%;

@@ -154,11 +154,11 @@ const ProductFullInfo = (props) => {
             productDetails.map((item, index) => (!item.pd_no ? newProdDetails.push(item) : <></>));
             await caller.put("products/" + productNo, prodInfoTmp);
 
-            // Nếu có hình
+            // Nếu có hình ảnh mới
             if (prod_imgs.length > 0)
                 await caller.post("products/" + productNo + "/images", prod_imgs);
 
-            // Nếu có chi tiết
+            // Nếu có chi tiết mới
             if (newProdDetails.length > 0)
                 await caller.post("products/" + productNo + "/details", newProdDetails);
 
@@ -242,7 +242,6 @@ const ProductFullInfo = (props) => {
                             productDetails.map((detail, index) => (
                                 <ProductDetail
                                     key={index}
-                                    index={index}
                                     productDetail={detail}
                                     setProductDetails={setProductDetails}
                                     productDetails={productDetails}

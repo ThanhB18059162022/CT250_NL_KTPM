@@ -1,11 +1,12 @@
-import { faSave, faTrashAlt, faWindowClose } from "@fortawesome/free-solid-svg-icons";
+import { faSave, faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { AdminButton } from "../../../Controls"
 import { useState } from "react";
 import Notifications from "../../../../common/Notifications";
 import "../Admin.Style.scss"
+import ApiCaller from "../../../../api_services/ApiCaller";
 
 const ProductDetail = (props) => {
-    const { setDisplay, productDetails, setProductDetails, productDetail, index} = props
+    const { setDisplay, productDetails, setProductDetails, productDetail } = props
     const [show, setShow] = useState(false)
 
     const [notify, setNotify] = useState({
@@ -14,17 +15,7 @@ const ProductDetail = (props) => {
         content: "", // content of the notify
         infoType: ""
     })
-    //thông báo xoá chi tiết sản phẩm
-    const notifyDeleteProdDetail = (index) => {
-        setNotify({
-            type: "CONFIRMATION",
-            title: "Xác nhận",
-            content: "Xóa chi tiết sản phẩm?",
-            handle: () => deleteProdDetail(index)
-        })
-        setShow(true)
-    }
-    //thông báo lưu chi tiết sản phẩm
+    //thông báo lưu chi tiết sản phẩm thành công
     const notifySaveProdDetail = () => {
         setNotify({
             type: "INFORMATION",
@@ -34,16 +25,30 @@ const ProductDetail = (props) => {
         })
         setShow(true)
     }
+    //thông báo lưu chi tiết sản phẩm thất bại
+    const notifySaveProdDetailFailed = () => {
+        setNotify({
+            type: "INFORMATION",
+            title: "Thông báo",
+            content: "Vui lòng điền đủ các trường thông tin!",
+            infoType: "ERROR"
+        })
+        setShow(true)
+    }
+    //thông báo cập nhật chi tiết sản phẩm thành công
+    const notifyUpdatedProdDetail = () => {
+        setNotify({
+            type: "INFORMATION",
+            title: "Thông báo",
+            content: "Đã cập nhật chi tiết",
+            infoType: "SUCCESS"
+        })
+        setShow(true)
+    }
+
     //chi tiết sản phẩm tạm
     const [detail, setDetail] = useState({ pd_ram: "", pd_storage: "", pd_storageAvailable: "", pd_price: 0, pd_amount: 0, pd_sold: 0 })
-    //xoá chi tiết sản phẩm
-    const deleteProdDetail = (pd_no) => {
-        let arrTmp = []
-        productDetails.map((item, index) => index!==pd_no ? ( arrTmp.push(item) ) : (<></>))
-        setProductDetails(arrTmp)
-    }
-    
-    if( productDetail && detail.pd_ram.length === 0 )
+    if( productDetail && detail.pd_ram.length === 0 && detail.pd_storage.length === 0 && detail.pd_storageAvailable.length === 0 )
     {
         setDetail({ pd_ram: productDetail.pd_ram, 
                     pd_storage: productDetail.pd_storage, 
@@ -51,16 +56,35 @@ const ProductDetail = (props) => {
                     pd_price: productDetail.pd_price, 
                     pd_amount: productDetail.pd_amount,
                     pd_sold: productDetail.pd_sold})
+        
     }
-    //lưu chi tiết sản phẩm
-    const saveDetail = () => {
-        if(productDetails)
-            setProductDetails([...productDetails, detail])
-        else setProductDetails([detail])
-        notifySaveProdDetail()
-        setTimeout(() => {
-            setDisplay(0)
-        }, 2000);
+    //lưu chi tiết sản phẩm mới
+    const saveNewDetail = (detail) => {
+        if( detail.pd_ram.length>0 && detail.pd_storage.length>0 && detail.pd_storageAvailable.length>0 )
+        {
+            if(productDetails)
+                setProductDetails([...productDetails, detail])
+            else setProductDetails([detail])
+            notifySaveProdDetail()
+            setTimeout(() => {
+                setDisplay(0)
+            }, 1000);
+        }else notifySaveProdDetailFailed()
+    }
+
+    //cập nhật chi tiết sản phẩm
+    const updateDetail = async(detail) => {
+        if(detail.pd_ram.length>0 && detail.pd_storage.length>0 && detail.pd_storageAvailable.length>0)
+        {
+            console.log("cap nhat chi tiet")
+            const caller = new ApiCaller()
+            await caller.put("products/" + productDetail.prod_no + "/details/" + productDetail.pd_no, detail)
+            notifyUpdatedProdDetail()
+            setTimeout(()=>{
+                setShow(false)
+            }, 1000)
+        }else notifySaveProdDetailFailed()
+        
     }
 
     return (
@@ -70,59 +94,59 @@ const ProductDetail = (props) => {
                     {/* tạo mới chi tiết */}
                     <div className="ProductDetail">
                         <div className="DetailButton">
-                            {!setDisplay ? (<AdminButton IconName={faTrashAlt} ClickEvent={()=>notifyDeleteProdDetail(index)} />) : (<><AdminButton IconName={faWindowClose} ClickEvent={() => setDisplay(0)} /> <AdminButton IconName={faSave} ClickEvent={() => saveDetail()} />  </>)}
+                            <AdminButton IconName={faWindowClose} ClickEvent={() => setDisplay(0)} /> <AdminButton IconName={faSave} ClickEvent={() => saveNewDetail(detail)} />
                         </div>
                         <form className="ProductDetailForm">
                             <li>
-                                <p>Ram:</p>
+                                <p>Ram:<p>(*)</p></p>
                                 <input name="txtPDRam" type="text" onChange={e => setDetail({ ...detail, pd_ram: e.target.value })} /> <br />
                             </li>
                             <li>
-                                <p>Bộ nhớ:</p>
+                                <p>Bộ nhớ:<p>(*)</p></p>
                                 <input name="txtPDStorage" type="text" onChange={e => setDetail({ ...detail, pd_storage: e.target.value })} /> <br />
                             </li>
                             <li>
-                                <p>Bộ nhớ khả dụng:</p>
+                                <p>Bộ nhớ khả dụng:<p>(*)</p></p>
                                 <input name="txtPDStorageAvailable" type="text" onChange={e => setDetail({ ...detail, pd_storageAvailable: e.target.value })} /> <br />
                             </li>
                             <li>
-                                <p>Giá:</p>
-                                <input name="txtPDPrice" type="text" onKeyPress={(event) => {if (!/[0-9]/.test(event.key)) {event.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_price: Number(e.target.value) })} /> <br />
+                                <p>Giá:<p>(*)</p></p>
+                                <input name="txtPDPrice" type="text" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_price: Number(e.target.value) })} /> <br />
                             </li>
                             <li>
-                                <p>Số lượng:</p>
-                                <input name="txtPDAmount" type="text" onKeyPress={(event) => {if (!/[0-9]/.test(event.key)) {event.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_amount: Number(e.target.value) })} /> <br />
+                                <p>Số lượng:<p>(*)</p></p>
+                                <input name="txtPDAmount" type="text" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_amount: Number(e.target.value) })} /> <br />
                             </li>
                         </form>
                     </div>
                 </>
             ) : (
                 <>
-                    {/* hiển thị chi tiết */}
+                    {/* hiển thị/chỉnh sửa chi tiết */}
                     <div className="ProductDetail">
                         <div className="DetailButton">
-                            {!setDisplay ? (<AdminButton IconName={faTrashAlt} ClickEvent={()=>notifyDeleteProdDetail(index)} />) : (<><AdminButton IconName={faSave} ClickEvent={() => saveDetail()} /> <AdminButton IconName={faWindowClose} ClickEvent={() => setDisplay(0)} /> </>)}
+                            <AdminButton IconName={faSave} ClickEvent={() => updateDetail(detail)} />
                         </div>
                         <form className="ProductDetailForm">
                             <li>
-                                <p>Ram:</p>
+                                <p>Ram:<p>(*)</p></p>
                                 <input name="txtPDRam" type="text" onChange={e => setDetail({ ...detail, pd_ram: e.target.value })} value={detail.pd_ram} /> <br />
                             </li>
                             <li>
-                                <p>Bộ nhớ:</p>
+                                <p>Bộ nhớ:<p>(*)</p></p>
                                 <input name="txtPDStorage" type="text" onChange={e => setDetail({ ...detail, pd_storage: e.target.value })} value={detail.pd_storage} /> <br />
                             </li>
                             <li>
-                                <p>Bộ nhớ khả dụng:</p>
+                                <p>Bộ nhớ khả dụng:<p>(*)</p></p>
                                 <input name="txtPDStorageAvailable" type="text" onChange={e => setDetail({ ...detail, pd_storageAvailable: e.target.value })} value={detail.pd_storageAvailable} /> <br />
                             </li>
                             <li>
-                                <p>Giá:</p>
-                                <input name="txtPDPrice" type="text" onKeyPress={(event) => {if (!/[0-9]/.test(event.key)) {event.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_price: Number(e.target.value) })} value={detail.pd_price} /> <br />
+                                <p>Giá:<p>(*)</p></p>
+                                <input name="txtPDPrice" type="text" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_price: Number(e.target.value) })} value={detail.pd_price} /> <br />
                             </li>
                             <li>
-                                <p>Số lượng:</p>
-                                <input name="txtPDAmount" type="text" onKeyPress={(event) => {if (!/[0-9]/.test(event.key)) {event.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_amount: Number(e.target.value) })} value={detail.pd_amount} /> <br />
+                                <p>Số lượng:<p>(*)</p></p>
+                                <input name="txtPDAmount" type="text" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_amount: Number(e.target.value) })} value={detail.pd_amount} /> <br />
                             </li>
                             <li>
                                 <p>Đã bán:</p>
