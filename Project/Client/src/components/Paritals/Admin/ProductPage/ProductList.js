@@ -4,6 +4,7 @@ import { useState } from "react"
 import { faEdit, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import ProductFullInfo from "../../../../pages/Admin/ProductFullInfo"
 import Notifications from "../../../../common/Notifications"
+import ApiCaller from "../../../../api_services/ApiCaller"
 
 const ProductList = (props) => {
     const { productsList, setDisplayAddForm, setModifyList } = props
@@ -21,9 +22,14 @@ const ProductList = (props) => {
         content: "", // content of the notify
         infoType: ""
     })
+    //thông tin sản phẩm tạm
+    const [prodData, setProdData] = useState()
     //gọi api xóa sản phẩm
-    const DeleteProduct = (id) => {
-        console.log(id)
+    const DeleteProduct = async(id) => {
+        const caller = new ApiCaller()
+        const data = await caller.get("products/" + String(id));
+        await caller.put("products/" + String(id), {...data, prod_status: 1})
+        setModifyList(1)
     }
     //thông báo xóa sản phẩm
     const notifyDeleteProduct = (id) => {
@@ -85,7 +91,8 @@ const ProductList = (props) => {
 const Item = (props) => {
     const { info, setProductNo, setDisplayEditProduct,notifyDeleteProduct } = props
     return (
-        <>
+        info.prod_status === 0 &&
+        (
             <li>
                 <p>{info.prod_no}</p>
                 <p>{info.prod_name}</p>
@@ -99,9 +106,10 @@ const Item = (props) => {
 
                     <AdminButton
                         IconName={faTrashAlt}
-                        ClickEvent={() => notifyDeleteProduct(info.prod_no)} /></p>
+                        ClickEvent={() => notifyDeleteProduct(info.prod_no)} />
+                    </p>
             </li>
-        </>
+        )
     )
 }
 
