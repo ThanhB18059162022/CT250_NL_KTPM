@@ -7,7 +7,9 @@ import "./TotalSellSeasonsBarChart.jsx.css";
 import StatisticService from "./StatisticService";
 import expSer from "./exportExcelService";
 import exp_ico from "./exp-ico.png";
-
+import FontAwesome from '@fortawesome/react-fontawesome'
+import {faTimes} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 const service = new StatisticService();
 
 function TotalSellSeasonBarChart() {
@@ -116,7 +118,7 @@ function TotalSellSeasonBarChart() {
             <div key={y} className='item'>
                 <span>{y}</span>
                 <span onClick={() => removeBar(y)} className='btn-del'>
-                    X
+                    <FontAwesomeIcon icon ={faTimes}/>
                 </span>
             </div>
         ));
