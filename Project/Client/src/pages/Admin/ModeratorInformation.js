@@ -57,7 +57,7 @@ const ModeratorInformation = (props) => {
         mod_name: "",
         mod_id: "",
         mod_phoneNumber: "",
-        mod_sex: "",
+        mod_sex: true,
         mod_address: "",
         mod_role: 0,
         mod_username: "",
@@ -65,7 +65,7 @@ const ModeratorInformation = (props) => {
     });
     //gọi api tạo quản trị mới
     const CreateMod = async (modTmp) => {
-        if( modTmp.mod_name.length>0 && modTmp.mod_id.length>0 && modTmp.mod_phoneNumber.length>0 && modTmp.mod_sex.length>0 && modTmp.mod_address.length>0 && modTmp.mod_role.length>0 && modTmp.mod_username.length>0 && modTmp.mod_password.length>0 )
+        if( modTmp.mod_name.length>0 && modTmp.mod_id.length>0 && modTmp.mod_phoneNumber.length>0 && modTmp.mod_address.length>0 && modTmp.mod_username.length>0 && modTmp.mod_password.length>0 )
         {
             const caller = new ApiCaller();
             await caller.post("moderators", modTmp);
