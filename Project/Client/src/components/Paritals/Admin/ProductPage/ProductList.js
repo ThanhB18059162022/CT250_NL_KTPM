@@ -22,8 +22,6 @@ const ProductList = (props) => {
         content: "", // content of the notify
         infoType: ""
     })
-    //thông tin sản phẩm tạm
-    const [prodData, setProdData] = useState()
     //gọi api xóa sản phẩm
     const DeleteProduct = async(id) => {
         const caller = new ApiCaller()
