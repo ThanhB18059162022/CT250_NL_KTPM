@@ -59,6 +59,7 @@ CREATE TABLE Products(
   prod_design VARCHAR(1000) NOT NULL, -- Thiết kế
   prod_status TINYINT(1) NOT NULL DEFAULT '0', -- Trạng thái sản phẩm
   brand_no INT NOT NULL DEFAULT '1', -- Thương hiệu khóa ngoại tham chiếu bảng thương hiệu
+  prod_color VARCHAR(10), -- Màu sắc NULL là ko có màu
 
  -- Khóa chính
   CONSTRAINT Products_PK PRIMARY KEY (prod_no),
@@ -139,6 +140,7 @@ CREATE TABLE Products_Details(
   pd_amount INT NOT NULL, -- Số lượng
   pd_sold INT NOT NULL, -- Số lượng đã bán
   prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
+  pd_discount VARCHAR(1000), -- Giảm giá
 
  -- Khóa chính
   CONSTRAINT Products_Details_PK PRIMARY KEY (pd_no),
