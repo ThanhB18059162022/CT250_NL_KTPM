@@ -4,6 +4,7 @@ import "./App.css";
 import route from "./pages/route";
 import CartProvider from "./providers/CartProviders";
 function App() {
+
   return (
     <CartProvider>
       <Router>
