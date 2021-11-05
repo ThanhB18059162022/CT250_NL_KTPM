@@ -31,7 +31,12 @@ module.exports = class ProductsDAO extends ModelDAO {
       [prod_no]
     );
 
-    return prod_details;
+    return prod_details.map((prod_detail) => ({
+      ...prod_detail,
+      pd_discount: prod_detail.pd_discount
+        ? JSON.parse(prod_detail.pd_discount)
+        : undefined,
+    }));
   };
 
   getProductsByPrice = async (min, max, startIndex, endIndex) => {
@@ -96,7 +101,7 @@ module.exports = class ProductsDAO extends ModelDAO {
     const dbNewProduct = this.toDbProduct(newProduct);
 
     const dbParams = this.extractParams(dbNewProduct);
-    console.log(dbParams);
+
     const sql = `INSERT INTO Products(
         prod_name,
         prod_manufacturer,
