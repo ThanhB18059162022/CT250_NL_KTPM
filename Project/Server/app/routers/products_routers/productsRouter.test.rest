@@ -2024,6 +2024,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
 ### Hợp lệ
 PUT http://localhost:8000/api/products/8
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM2MTE0NzIwLCJleHAiOjE2MzYxMTgzMjB9.yLSa2E3V3JPlUUbLqVpJeghh_o6AF_8UjWmT-IsNgIg
 
 {
   "prod_name": "Vsmart Aris",
@@ -2079,6 +2080,7 @@ Content-Type: application/json
     "size": "Dài 156.2 mm - Ngang 75.04 mm - Dày 8.55 mm ",
     "weight": "178 g"
   },
+  "prod_colors": ["Xanh Lá", "Bạc", "Đen"],
   "prod_status": "",
   "brand_no": 6
 }

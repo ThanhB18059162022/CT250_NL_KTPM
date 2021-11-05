@@ -179,6 +179,7 @@ module.exports = class ProductsDAO extends ModelDAO {
         prod_batteryAndCharger = ?, 
         prod_utilities = ?, 
         prod_design = ?,
+        prod_colors = ?,
         prod_status = ?
         WHERE prod_no = ?`;
 
