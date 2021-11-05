@@ -61,11 +61,12 @@ const CartDetail = () => {
                     if (somethinselse > item.amount) data.amount = Number(item.amount);
                     else {
                         data.amount = somethinselse;
-                        forceItem(item.id, item.type, somethinselse);
+                        forceItem(item.id, item.type, item.currentColor, somethinselse);
                     }
-                    if (somethinselse === 0) clearItem(item.id, item.type);
+                    if (somethinselse === 0) removeItem(item.id, item.type,item.currentColor);
 
                     data.choosedType = item.type;
+                    data.choosedColor = item.currentColor
                     return data;
                 })
             );
@@ -73,26 +74,26 @@ const CartDetail = () => {
         })();
     }, [change, clearItem, forceItem, getItemList]);
 
-    const onValueChange = (id, choosedType, type) => {
+    const onValueChange = (id, choosedType,currentColor, type) => {
         switch (type) {
             case "UP":
-                upItem(id, choosedType);
+                upItem(id, choosedType, currentColor);
                 break;
             case "DOWN":
-                downItem(id, choosedType);
+                downItem(id, choosedType, currentColor);
                 break;
             default:
                 return;
         }
     };
 
-    const onRemoveItem = (id, type) => {
+    const onRemoveItem = (id, type, currentColor) => {
         setNotify({
             ...notify,
             content: "Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng",
             title: "Xác nhận",
             type: "CONFIRMATION",
-            handle: () => removeItem(id, type),
+            handle: () => removeItem(id, type,currentColor),
         });
         setShow(true);
     };
@@ -650,21 +651,21 @@ const AddressInput = ({ onChange }) => {
 
 function CartItem(props) {
     const { info, changeValue, removeItem } = props;
-
+    
     const history = useHistory();
 
-    const onRemoveItem = (e) => removeItem(info.prod_no, info.choosedType);
+    const onRemoveItem = (e) => removeItem(info.prod_no, info.choosedType,info.choosedColor);
 
     const step = (type) => {
         switch (type) {
             case "DOWN":
-                info.amount !== 1 && changeValue(info.prod_no, info.choosedType, type);
+                info.amount !== 1 && changeValue(info.prod_no, info.choosedType, info.choosedColor, type);
                 return;
             case "UP":
                 info.amount <
                     info.prod_details[info.choosedType].pd_amount -
                         info.prod_details[info.choosedType].pd_sold &&
-                    changeValue(info.prod_no, info.choosedType, type);
+                    changeValue(info.prod_no, info.choosedType,info.choosedColor, type);
                 return;
             default:
                 return;
@@ -698,6 +699,7 @@ function CartItem(props) {
                         </p>
                     </div>
                     <div className='price'>
+                        <p>{info.choosedColor}</p>
                         <p>
                             {Helper.Exchange.toMoney(info.prod_details[info.choosedType].pd_price)}{" "}
                             VNĐ

@@ -78,3 +78,9 @@ code {
   opacity: 1;
   z-index: 1111;
 }
+
+
+
+#fb-customer-chat .fb_dialog_content iframe{
+  bottom: 100px;
+}

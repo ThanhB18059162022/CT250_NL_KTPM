@@ -1,7 +1,7 @@
 import "./DetailAndRate.Style.scss";
 import { Comment } from "../../Controls/";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCogs } from "@fortawesome/free-solid-svg-icons";
+import { faCogs, faStar } from "@fortawesome/free-solid-svg-icons";
 import Helper from "../../../helpers";
 import { useState, useEffect } from "react";
 import ProductServices from "../../../api_services/products_services/ProductsService";
@@ -13,8 +13,8 @@ const DetailAndRate = ({ id, showDetail }) => {
     const [commnent, setComment] = useState("");
     const [show, setShow] = useState(false);
     const [showInfo, setInfo] = useState(false);
-    const [page, setPage] = useState(1)
-    const [isMore, setMore] = useState(true)
+    const [page, setPage] = useState(1);
+    const [isMore, setMore] = useState(true);
     const [notify, setNotify] = useState({
         type: "INFOMATION", //CONFIRMARTION, INFORMATION
         title: "", // title of the notifications
@@ -22,6 +22,7 @@ const DetailAndRate = ({ id, showDetail }) => {
         infoType: "INFO",
         duration: 5000, // duration of info notify
     });
+    const [isReload, setIsReload] = useState(false)
     useEffect(() => {
         (async () => {
             let data = await ProductServices.getProduct(
@@ -37,22 +38,34 @@ const DetailAndRate = ({ id, showDetail }) => {
         })();
     }, [id]);
 
-    useEffect(()=>{
+    const [currentStar,setCurrentStar] = useState({
+        currentStar:0,
+        commnent:0,
+    })
+
+    useEffect(() => {
         (async () => {
-            let data = await FeedbackServices.getFeedback(id, 1, 6*page);
+            let data = await FeedbackServices.getFeedback(id, 1, 6 * page);
+            //----
+            let all = await FeedbackServices.getFeedback(id, 1, 1000000);
+            setCurrentStar({
+                currentStar:Math.floor(all.reduce((pre,item)=>pre + Number(item.fb_star)/all.length,0)),
+                commnent:all.length
+            })
+            //----
+
             setFeedback(data);
         })();
-    },[page, id])
+    }, [page, id, isReload]);
 
-    const onShowMoreHandle = ()=>{
-        if(page*6 === feedback.length)
-            setPage(pre=>pre+1)
-        else setMore(false)
-    }
+    const onShowMoreHandle = () => {
+        if (page * 6 === feedback.length) setPage((pre) => pre + 1);
+        else setMore(false);
+    };
 
     const onShowInfoHandle = () => {
         let data = commnent.trim();
-        if (data.length <6) {
+        if (data.length < 6) {
             setNotify({
                 ...notify,
                 title: "Nội dung không hợp lệ",
@@ -62,12 +75,14 @@ const DetailAndRate = ({ id, showDetail }) => {
             return;
         }
         setInfo(true);
+
     };
 
-    const onSendFeedback = async (customer) => {
+    const onSendFeedback = async (data) => {
         let fb = {
-            customer,
+            customer:data.info,
             fb_content: commnent,
+            fb_star:data.star
         };
         await FeedbackServices.sendFeedback(id, fb);
         setNotify({
@@ -79,22 +94,32 @@ const DetailAndRate = ({ id, showDetail }) => {
         setShow(true);
 
         setComment("");
-        setFeedback([
-            {
-                ...customer,
-                fb_time: new Date(),
-                fb_content: commnent,
-                replies:[]
-            },
-            ...feedback,
-        ]);
+        setIsReload(!isReload)
+        // setFeedback([
+        //     {
+        //         ...data.info,
+        //         fb_star:data.star,
+        //         fb_time: new Date(),
+        //         fb_content: commnent,
+        //         replies: [],
+        //     },
+        //     ...feedback,
+        // ]);
     };
+    const getCurrentStar = () =>{
+        const stars =[]
+        for(let i = 0; i< currentStar.currentStar; i++)
+            stars.push(i)
+        return <>
+            {stars.map((item,index)=><img key={index} width="30px" src="/icon/staricon.png"/>)}
+        </>
+    }
 
     return (
         <>
             <div className='DetailAndRate'>
                 <div className='Comments'>
-                    <h3>Nhận xét sản phẩm</h3>
+                    <h3>Nhận xét đánh giá: {getCurrentStar()} {currentStar.commnent>0?<span>(trên {currentStar.commnent} đánh giá)</span>:<span>Chưa có đánh  giá nào</span>}</h3>
                     <div className='comment-area'>
                         <input
                             placeholder='Nhận xét của bạn về sản phẩm'
@@ -114,6 +139,7 @@ const DetailAndRate = ({ id, showDetail }) => {
                                             title={item.cus_name}
                                             content={item.fb_content}
                                             options='left'
+                                            star={item.fb_star}
                                             time={Helper.Exchange.toLocalDate(item.fb_time)}
                                             children={item.replies.map((e, idx) => (
                                                 <Comment
@@ -122,15 +148,16 @@ const DetailAndRate = ({ id, showDetail }) => {
                                                     title={e.mod_name}
                                                     content={e.rep_content}
                                                     options='left'
-                                
                                                 />
                                             ))}
                                         />
                                     </li>
                                 ))}
-                                {isMore && <li className="showMoreFB">
-                                    <button onClick={onShowMoreHandle}>Xem thêm</button>
-                                </li>}
+                                {isMore && (
+                                    <li className='showMoreFB'>
+                                        <button onClick={onShowMoreHandle}>Xem thêm</button>
+                                    </li>
+                                )}
                             </>
                         ) : (
                             <p>Chưa có đánh giá nào</p>
@@ -200,6 +227,8 @@ const FeedbackCustomerInfo = ({ setNotify, onSendFeedback, setShow, onHide }) =>
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
 
+    const [star, setStar] = useState(1)
+
     const showNotify = (content) => {
         setNotify((pre) => ({
             type: "INFOMATION",
@@ -237,7 +266,7 @@ const FeedbackCustomerInfo = ({ setNotify, onSendFeedback, setShow, onHide }) =>
             cus_sex: gender,
             cus_phoneNumber: phone,
         };
-        onSendFeedback(info);
+        onSendFeedback({info, star});
         onHide(false);
     };
 
@@ -275,6 +304,16 @@ const FeedbackCustomerInfo = ({ setNotify, onSendFeedback, setShow, onHide }) =>
                 <p>
                     <span>Số điện thoại:</span>
                     <input type='tel' value={phone} onChange={(e) => setPhone(e.target.value)} />
+                </p>
+                <p className="stareddd">
+                    <span>Đánh giá sao:</span>
+                    <div>
+                        <span className={star>=1 ? "checkedcolor":""} onClick={()=>setStar(1)}>{star<1?<i>&#9734;</i>:<i>&#9733;</i>}</span>
+                        <span className={star>=2 ? "checkedcolor":""} onClick={()=>setStar(2)}>{star<2?<i>&#9734;</i>:<i>&#9733;</i>}</span>
+                        <span className={star>=3 ? "checkedcolor":""} onClick={()=>setStar(3)}>{star<3?<i>&#9734;</i>:<i>&#9733;</i>}</span>
+                        <span className={star>=4 ? "checkedcolor":""} onClick={()=>setStar(4)}>{star<4?<i>&#9734;</i>:<i>&#9733;</i>}</span>
+                        <span className={star>=5 ? "checkedcolor":""} onClick={()=>setStar(5)}>{star<5?<i>&#9734;</i>:<i>&#9733;</i>}</span>
+                    </div>
                 </p>
                 <div className='fbbehavior'>
                     <button onClick={() => onHide(false)}>Hủy</button>

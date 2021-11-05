@@ -4,7 +4,7 @@ import OverView from "./OverView";
 import FeedbackManagement from "./FeedbackManagement";
 import ModeratorManagement from "./ModeratorManagement";
 import Statistic from "./Statistic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductManagement from "./ProductManagement";
 // Thanh viết
 import { AuthenticationService } from "../../api_services/servicesContainer";
@@ -16,6 +16,13 @@ const Admin = () => {
     const [pos, setPos] = useState(0);
     const [adminNo, setAdminNo] = useState(0);
     // Thanh viết
+
+    useEffect(()=>{
+        const cus = document.querySelector('.fb_dialog_content')
+        if(!cus) return;
+        cus.style.display='none'
+        return ()=>cus.style.display ='inherit'
+    })
     const history = useHistory();
 
         const auth = new AuthenticationService(new ApiCaller());
