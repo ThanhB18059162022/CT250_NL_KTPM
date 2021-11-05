@@ -6,10 +6,11 @@
 .chart-panel > .content {
     display: flex;
     flex-wrap: wrap;
+    /* align-items: stretch; */
 }
 .chart-panel > .content > select {
     border-radius: 0.5em;
-    padding: 0 0.5em 0 0.5em;
+    /* padding: 0 0.5em 0 0.5em; */
     font-weight: 700;
     font-size: inherit;
 }
@@ -18,15 +19,15 @@
     margin: 0.5em 0 0.5em 1em;
     border-radius: 0.5em;
     background-color: hsl(0, 0%, 80%);
-    padding-bottom: 0.2em;
+    padding: 10px;
+    font-size: 18px;
 }
 .chart-panel > .content > .item > span {
-    margin-left: 0.5em;
+    margin-left: 20px;
 }
 .chart-panel > .content > .item > .btn-del {
-    margin-left: 0.2em;
-    padding: 0 0.3em 0.2em 0.3em;
-    border-radius: 0.5em;
+    padding: 5px;
+    border-radius: 500px;
 }
 .chart-panel > .content > .item > .btn-del:hover {
     background-color: hsl(0, 0%, 50%);

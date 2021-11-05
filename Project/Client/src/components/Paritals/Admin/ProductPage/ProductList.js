@@ -4,6 +4,7 @@ import { useState } from "react"
 import { faEdit, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import ProductFullInfo from "../../../../pages/Admin/ProductFullInfo"
 import Notifications from "../../../../common/Notifications"
+import ApiCaller from "../../../../api_services/ApiCaller"
 
 const ProductList = (props) => {
     const { productsList, setDisplayAddForm, setModifyList } = props
@@ -22,8 +23,11 @@ const ProductList = (props) => {
         infoType: ""
     })
     //gọi api xóa sản phẩm
-    const DeleteProduct = (id) => {
-        console.log(id)
+    const DeleteProduct = async(id) => {
+        const caller = new ApiCaller()
+        const data = await caller.get("products/" + String(id));
+        await caller.put("products/" + String(id), {...data, prod_status: 1})
+        setModifyList(1)
     }
     //thông báo xóa sản phẩm
     const notifyDeleteProduct = (id) => {
@@ -66,6 +70,7 @@ const ProductList = (props) => {
                 <p>Hệ điều hành</p>
                 <p>Xuất xứ</p>
                 <p>Số chi tiết</p>
+                <p>Trạng thái tồn kho</p>
                 <p>Hành động</p>
             </li>
             <div className="AdminListClass">
@@ -84,14 +89,33 @@ const ProductList = (props) => {
 
 const Item = (props) => {
     const { info, setProductNo, setDisplayEditProduct,notifyDeleteProduct } = props
+
+    //kiểm tra hàng tồn
+    const productCheck = (details) => {
+        let check = 0;
+        let notice = "| ";
+        console.log(details)
+        details.forEach(e => {
+            if (e.pd_amount-e.pd_sold <= 5) {
+                check = 1;
+                notice = notice + e.pd_storage + ": " + (e.pd_amount-e.pd_sold) + "SP | "
+            }
+        });
+        if (check === 0) {
+            return <p style={{color: "green"}}>Còn hàng</p>
+        }else return <p style={{color: "red"}}>{notice}</p>
+    }
+
     return (
-        <>
+        info.prod_status === 0 &&
+        (
             <li>
                 <p>{info.prod_no}</p>
                 <p>{info.prod_name}</p>
                 <p>{info.prod_hardwareAndOS.os}</p>
                 <p>{info.prod_manufacturer.madeIn}</p>
                 <p>{info.prod_details.length}</p>
+                {productCheck(info.prod_details)}
                 <p>
                     <AdminButton
                         ClickEvent={() => { setDisplayEditProduct(1); setProductNo(info.prod_no) }}
@@ -99,9 +123,10 @@ const Item = (props) => {
 
                     <AdminButton
                         IconName={faTrashAlt}
-                        ClickEvent={() => notifyDeleteProduct(info.prod_no)} /></p>
+                        ClickEvent={() => notifyDeleteProduct(info.prod_no)} />
+                    </p>
             </li>
-        </>
+        )
     )
 }
 

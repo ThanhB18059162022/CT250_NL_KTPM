@@ -22,13 +22,23 @@ const ModeratorInformation = (props) => {
         content: "", // content of the notify
         infoType: "",
     });
-    //thông báo tạo mod mới
+    //thông báo tạo mod mới thành công
     const notifyCreateMod = () => {
         setNotify({
             ...notify,
             title: "Thông báo",
             content: "Đã tạo quản trị viên",
             infoType: "SUCCESS",
+        });
+        setShow(true);
+    };
+    //thông báo tạo mod mới thất bại
+    const notifyCreateModFailed = () => {
+        setNotify({
+            ...notify,
+            title: "Thông báo",
+            content: "Vui lòng điền đầy đủ thông tin quản trị viên",
+            infoType: "ERROR",
         });
         setShow(true);
     };
@@ -47,7 +57,7 @@ const ModeratorInformation = (props) => {
         mod_name: "",
         mod_id: "",
         mod_phoneNumber: "",
-        mod_sex: "",
+        mod_sex: true,
         mod_address: "",
         mod_role: 0,
         mod_username: "",
@@ -55,13 +65,17 @@ const ModeratorInformation = (props) => {
     });
     //gọi api tạo quản trị mới
     const CreateMod = async (modTmp) => {
-        const caller = new ApiCaller();
-        await caller.post("moderators", modTmp);
-        setNewMod(modTmp);
-        notifyCreateMod();
-        setTimeout(() => {
-            setDisplay(0);
-        }, 2000);
+        if( modTmp.mod_name.length>0 && modTmp.mod_id.length>0 && modTmp.mod_phoneNumber.length>0 && modTmp.mod_address.length>0 && modTmp.mod_username.length>0 && modTmp.mod_password.length>0 )
+        {
+            const caller = new ApiCaller();
+            await caller.post("moderators", modTmp);
+            setNewMod(modTmp);
+            notifyCreateMod();
+            setTimeout(() => {
+                setDisplay(0);
+            }, 2000);
+        }
+        else notifyCreateModFailed()
     };
     //gán thông tin mod cần chỉnh thông tin cho modTmp
     if (modInfo && modTmp.mod_name.length === 0) {
