@@ -10,7 +10,7 @@ const ProductShower = () => {
 
     const [isNextPage, setIsNextPage] = useState(true);
 
-    const [trademadeList, setTrademadeList] = useState(["NOKIA", "SAMSUNG", "APPLE", "XIAOMI"]);
+    const [trademadeList, setTrademadeList] = useState([]);
 
     const [orderStyle, setOrderStyle] = useState("DEFAULT");
 
@@ -28,7 +28,7 @@ const ProductShower = () => {
                         data.sort((a, b) => a.prod_price - b.prod_price).map((item) => item.prod_no)
                     );
                     break;
-                case "UPPRICE":
+                case "DOWNPRICE":
                     setList(
                         data
                             .sort((a, b) => a.prod_price - b.prod_price)
@@ -78,9 +78,10 @@ const ProductShower = () => {
                 })
             );
             !data.next && setIsNextPage(false);
+            setTrademadeList(["NOKIA", "SAMSUNG", "APPLE", "XIAOMI"])
             trademadeItems(data.items);
         })();
-    }, [nextPage, orderStyle, trademadeStyle]);
+    }, [nextPage, orderStyle,trademadeItems, trademadeStyle]);
     return (
         <div className='ProductShower'>
             <ProductNavigation

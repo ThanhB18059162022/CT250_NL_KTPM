@@ -1,7 +1,7 @@
 import "./DetailAndRate.Style.scss";
 import { Comment } from "../../Controls/";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCogs, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faCogs} from "@fortawesome/free-solid-svg-icons";
 import Helper from "../../../helpers";
 import { useState, useEffect } from "react";
 import ProductServices from "../../../api_services/products_services/ProductsService";
@@ -111,7 +111,7 @@ const DetailAndRate = ({ id, showDetail }) => {
         for(let i = 0; i< currentStar.currentStar; i++)
             stars.push(i)
         return <>
-            {stars.map((item,index)=><img key={index} width="30px" src="/icon/staricon.png"/>)}
+            {stars.map((item,index)=><img alt="star" key={index} width="30px" src="/icon/staricon.png"/>)}
         </>
     }
 

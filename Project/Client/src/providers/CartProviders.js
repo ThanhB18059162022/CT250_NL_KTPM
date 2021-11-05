@@ -16,7 +16,6 @@ export default function CartProvider(props){
     }
 
     const getItemList = () =>{ 
-        console.log(_getListItem())
         return _getListItem()
     }
 

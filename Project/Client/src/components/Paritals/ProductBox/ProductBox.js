@@ -217,7 +217,7 @@ const ProductBox = ({ id }) => {
                 </div>
                 {product && product.prod_details[choose].pd_discount && (
                     <div className='discount_area'>
-                        <img src='/icon/discounticon.png' />
+                        <img src='/icon/discounticon.png' alt="discount_icon" />
                         <span>
                             {product.prod_details[choose].pd_discount.percent}
                             <i>%</i>

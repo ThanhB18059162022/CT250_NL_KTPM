@@ -5,7 +5,7 @@ const Comment = ({ style, title, content, time, options,star, children }) => {
     for(let i = 0; i<star; i++)
       arr.push(i)
     return <>
-      {arr.map((item,index)=><img key={index} width="20px" src="/icon/staricon.png"/>)}
+      {arr.map((item,index)=><img key={index} alt="star" width="20px" src="/icon/staricon.png"/>)}
     </>
   }
   return (

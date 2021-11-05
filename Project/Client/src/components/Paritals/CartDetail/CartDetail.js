@@ -33,7 +33,9 @@ const CartDetail = () => {
 
     const [total, setTotal] = useState(0);
 
-    const { clearItem, change, forceItem, getItemList, upItem, removeItem, downItem } =
+    const [down,setDown] = useState(0)
+
+    const { change, forceItem, getItemList, upItem, removeItem, downItem } =
         useContext(CartContext);
 
     const [display, setDisplay] = useState(false);
@@ -72,7 +74,7 @@ const CartDetail = () => {
             );
             setList(listItem);
         })();
-    }, [change, clearItem, forceItem, getItemList]);
+    }, [change, removeItem , forceItem, getItemList]);
 
     const onValueChange = (id, choosedType,currentColor, type) => {
         switch (type) {
@@ -100,11 +102,17 @@ const CartDetail = () => {
 
     useEffect(() => {
         let count = list.reduce(
-            (pre, item) => pre + item.prod_details[item.choosedType].pd_price * item.amount,
+            (pre, item) => pre + Helper.CalcularDiscount(item.prod_details[item.choosedType].pd_price,item.prod_details[item.choosedType].pd_discount?item.prod_details[item.choosedType].pd_discount.percent:0) * item.amount,
             0
         );
 
-        setTotal(count);
+
+        let isDown = list.reduce(
+            (pre, item) => pre + Helper.CalcularDiscount(item.prod_details[item.choosedType].pd_price,0) * item.amount,
+            0
+        );
+        setDown(count)
+        setTotal(isDown);
     }, [list]);
 
     const renderPaypalButtonFrame = (cart) => {
@@ -137,8 +145,14 @@ const CartDetail = () => {
                 <div className='cart-transaction'>
                     <div className='wrapper'>
                         <h3>Thông tin thanh toán</h3>
-                        <p className='total_title'>Tạm tính:</p>
+                        <p className='total_title'>Giá tiền:</p>
                         <p className='total_data'>{Helper.Exchange.toMoney(total)} VNĐ</p>
+                        
+                        <p className='total_title'>Được giảm:</p>
+                        <p className='total_data'>{Helper.Exchange.toMoney(total - down)} VNĐ</p>
+
+                        <p className='total_title'>Thành tiền:</p>
+                        <p className='total_data'>{Helper.Exchange.toMoney(down)} VNĐ</p>
 
                         <p className='total_title'>Số lượng sản phẩm:</p>
                         <p className='total_data'>{getItemList().length} sản phẩm</p>
@@ -162,7 +176,7 @@ const CartDetail = () => {
                 <DetailTransaction
                     customer={customer}
                     setCustomer={setCustomer}
-                    total={total}
+                    total={down}
                     list={list}
                     renderPaypalButtonFrame={renderPaypalButtonFrame}
                 />
@@ -287,6 +301,7 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
                     <p className='dh_name'>Tên sản phẩm</p>
                     <p className='dh_price'>Phiên bản</p>
                     <p className='dh_price'>Đơn giá</p>
+                    <p className='dh_amount'>Giảm giá</p>
                     <p className='dh_amount'>Số lượng</p>
                     <p className='dh_total'>Thành tiền</p>
                 </div>
@@ -302,10 +317,11 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
                                     item.prod_details[item.choosedType].pd_price
                                 )}
                             </p>
+                        
+                            <p className='dh_amount'>{item.prod_details[item.choosedType].pd_discount?item.prod_details[item.choosedType].pd_discount.percent:0}%</p>
                             <p className='dh_amount'>{item.amount}</p>
                             <p className='dh_total'>
-                                {Helper.Exchange.toMoney(
-                                    Number(item.prod_details[item.choosedType].pd_price) *
+                                {Helper.Exchange.toMoney(Helper.CalcularDiscount(item.prod_details[item.choosedType].pd_price,item.prod_details[item.choosedType].pd_discount?item.prod_details[item.choosedType].pd_discount.percent:0)*
                                         Number(item.amount)
                                 )}
                             </p>
@@ -394,6 +410,13 @@ function CartTransaction({ display, setDisplay, setCustomer }) {
         commune: "",
         detail: "",
     });
+
+    useEffect(()=>{
+        window.scrollTo({
+            top:0,
+            behavior:'smooth'
+        })
+    })
 
     useEffect(() => {
         document.querySelector("html").style.overflow = display ? "hidden" : "visible";
@@ -699,7 +722,7 @@ function CartItem(props) {
                         </p>
                     </div>
                     <div className='price'>
-                        <p>{info.choosedColor}</p>
+                        <p>{info.choosedColor || "Mặc định"}</p>
                         <p>
                             {Helper.Exchange.toMoney(info.prod_details[info.choosedType].pd_price)}{" "}
                             VNĐ

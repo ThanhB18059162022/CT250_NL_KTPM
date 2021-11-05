@@ -7,14 +7,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useContext, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import ProductServices from "../../api_services/products_services/ProductsService";
 import Helper from "../../helpers";
 import { CartContext } from "../../providers/CartProviders";
 import "./ProductItem.Style.scss";
 
 export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) => {
-    const history = useHistory();
 
     const { upItem } = useContext(CartContext);
 
@@ -25,8 +23,6 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
     const [images, setImages] = useState(null);
 
     const [idx, setIdx] = useState(0);
-
-    const addToLocalCart = () => upItem(id);
 
     useEffect(() => {
         let load = true;
@@ -52,6 +48,7 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
         };
     }, [isHover, idx, images]);
 
+    const addToLocalCart = () => upItem(id,0,item.prod_colors[0]);
     return (
         <li
             className='ProductItem'
@@ -98,7 +95,7 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
             </div>
             {item && (item.prod_details[0].pd_discount &&
             <div className="discount_area">
-                <img src="/icon/discounticon.png"/>
+                <img src="/icon/discounticon.png" alt="discount_icon"/>
                <span>{item.prod_details[0].pd_discount.percent}<i>%</i></span>
                <i>OFF</i>
             </div>
