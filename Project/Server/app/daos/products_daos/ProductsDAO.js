@@ -128,8 +128,8 @@ module.exports = class ProductsDAO extends ModelDAO {
       const dbParams = this.extractParams(dbDetail);
       dbParams.push(product.prod_no);
 
-      const sql = `INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
-                  VALUES(?, ?, ?, ?, ?, ?, ?);`;
+      const sql = `INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, pd_discount, prod_no)
+                  VALUES(?, ?, ?, ?, ?, ?, ?, ?);`;
 
       await this.sqldao.execute(sql, dbParams);
     }
@@ -143,6 +143,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       pd_price,
       pd_amount,
       pd_sold,
+      pd_discount,
     } = detail;
 
     return {
@@ -152,6 +153,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       pd_price,
       pd_amount,
       pd_sold,
+      pd_discount: JSON.stringify(pd_discount),
     };
   };
 

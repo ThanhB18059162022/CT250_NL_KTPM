@@ -200,8 +200,8 @@ VALUES
         1 -- Nhãn hiệu Samsung
     );
 
-INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
-VALUES("12 GB", "256 GB", "223 GB", 41990000, 20, 5, 1);
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no, pd_discount)
+VALUES("12 GB", "256 GB", "223 GB", 41990000, 20, 5, 1, '{"start":"2020-01-01","end":"2020-12-31","percent":10}');
 
 INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("12 GB", "512 GB", "480 GB", 44990000, 20, 5, 1);    

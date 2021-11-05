@@ -1965,9 +1965,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
 }
 
 ### Thêm chi tiết
-POST http://localhost:8000/api/products/26/details
+POST http://localhost:8000/api/products/25/details
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0OTU2MTY5LCJleHAiOjE2MzQ5NTk3Njl9.ipJ6PQ00C4VQs0doNvd1uvE_jA5f6iN2Rh_BIjo4Gqw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM2MTEyNjQ5LCJleHAiOjE2MzYxMTYyNDl9.lXG0HYtJJ7AKweUi6YZoV_-dqPPIAsGMM55zmYAyAIs
 
 [
   {
@@ -1976,7 +1976,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
     "pd_storageAvailable": "...", 
     "pd_price": 125000, 
     "pd_amount" : 1,
-    "pd_sold": 0
+    "pd_sold": 0,
+    "pd_discount":{
+      "start": "2020-01-01",
+      "end": "2020-12-31",
+      "percent": 10
+    }
   }
 ]
 
