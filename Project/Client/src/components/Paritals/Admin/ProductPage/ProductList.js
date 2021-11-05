@@ -70,6 +70,7 @@ const ProductList = (props) => {
                 <p>Hệ điều hành</p>
                 <p>Xuất xứ</p>
                 <p>Số chi tiết</p>
+                <p>Trạng thái tồn kho</p>
                 <p>Hành động</p>
             </li>
             <div className="AdminListClass">
@@ -88,6 +89,23 @@ const ProductList = (props) => {
 
 const Item = (props) => {
     const { info, setProductNo, setDisplayEditProduct,notifyDeleteProduct } = props
+
+    //kiểm tra hàng tồn
+    const productCheck = (details) => {
+        let check = 0;
+        let notice = "| ";
+        console.log(details)
+        details.forEach(e => {
+            if (e.pd_amount-e.pd_sold <= 5) {
+                check = 1;
+                notice = notice + e.pd_storage + ": " + (e.pd_amount-e.pd_sold) + "SP | "
+            }
+        });
+        if (check === 0) {
+            return <p style={{color: "green"}}>Còn hàng</p>
+        }else return <p style={{color: "red"}}>{notice}</p>
+    }
+
     return (
         info.prod_status === 0 &&
         (
@@ -97,6 +115,7 @@ const Item = (props) => {
                 <p>{info.prod_hardwareAndOS.os}</p>
                 <p>{info.prod_manufacturer.madeIn}</p>
                 <p>{info.prod_details.length}</p>
+                {productCheck(info.prod_details)}
                 <p>
                     <AdminButton
                         ClickEvent={() => { setDisplayEditProduct(1); setProductNo(info.prod_no) }}
