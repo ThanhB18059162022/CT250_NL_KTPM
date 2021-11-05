@@ -52,8 +52,8 @@ const ProductInfo = (props) => {
 
     return (
         <>
-            {productFullInfo ? (
-                <>
+            {productFullInfo ? ( 
+                <>  
                     {/* hiển thị/chỉnh sửa thông tin sản phẩm */}
                     <div className="ProductInfo">
                         <form className="AddProductForm">
@@ -69,7 +69,6 @@ const ProductInfo = (props) => {
                             </li>
                             <li>
                                 <p>Ngày ra mắt:<p>(*)</p></p>
-                                {/* <input name="txtMFReleaseDate" type="text" value={productFullInfo.prod_manufacturer.releaseDate} onChange={e => setProductFullInfo({ ...productFullInfo, prod_manufacturer: { ...productFullInfo.prod_manufacturer, releaseDate: e.target.value } })} /> <br /> */}
                                 <input name="txtMFReleaseDate" type="date" value={formatDate(productFullInfo.prod_manufacturer.releaseDate)} onChange={e => setProductFullInfo({ ...productFullInfo, prod_manufacturer: { ...productFullInfo.prod_manufacturer, releaseDate: e.target.value } })} /> <br />
                             </li>
                             <li>
@@ -191,6 +190,21 @@ const ProductInfo = (props) => {
                             <li>
                                 <p>Khối lượng:<p>(*)</p></p>
                                 <input name="txtSizeAndWeight" type="text" value={productFullInfo.prod_design.weight} onChange={e => setProductFullInfo({ ...productFullInfo, prod_design: { ...productFullInfo.prod_design, weight: e.target.value } })} /> <br />
+                            </li>
+                            <li>
+                                <p>
+                                    Màu sắc:
+                                    <input type="button" onClick={
+                                                                    ()=>{
+                                                                        let color=window.prompt("Thêm màu sản phẩm")
+                                                                        if( color ) setProductFullInfo({...productFullInfo, prod_colors: [...productFullInfo.prod_colors, color ]})
+                                                                    }
+                                                                } value="+" style={{padding: 0, width: 20+'px'}}/>
+                                    <input type="button" onClick={()=>setProductFullInfo({...productFullInfo, prod_colors: productFullInfo.prod_colors.slice(0, -1)})} value="-" style={{padding: 0, width: 20+'px'}}/>
+                                </p>
+                                <div>
+                                    {productFullInfo.prod_colors ? ( productFullInfo.prod_colors.map((item, index)=> <div key={index}><input type="text" value={item} readOnly/></div>) ):(<></>) }
+                                </div>
                             </li>
                             <li>
                                 <p>Hình ảnh:<p>(*)</p></p>
@@ -342,6 +356,21 @@ const ProductInfo = (props) => {
                             <li>
                                 <p>Khối lượng:<p>(*)</p></p>
                                 <input name="txtSizeAndWeight" type="text" value={newProductFullInfo.prod_design.weight} onChange={e => setNewProductFullInfo({ ...newProductFullInfo, prod_design: { ...newProductFullInfo.prod_design, weight: e.target.value } })} /> <br />
+                            </li>
+                            <li>
+                                <p>
+                                    Màu sắc:
+                                    <input type="button" onClick={
+                                                                    ()=>{
+                                                                        let color=window.prompt("Thêm màu sản phẩm")
+                                                                        if( color ) setNewProductFullInfo({...newProductFullInfo, prod_colors: [...newProductFullInfo.prod_colors, color ]})
+                                                                    }
+                                                                } value="+" style={{padding: 0, width: 20+'px'}}/>
+                                    <input type="button" onClick={()=>setNewProductFullInfo({...newProductFullInfo, prod_colors: newProductFullInfo.prod_colors.slice(0, -1)})} value="-" style={{padding: 0, width: 20+'px'}}/>
+                                </p>
+                                <div>
+                                    {newProductFullInfo.prod_colors ? ( newProductFullInfo.prod_colors.map((item, index)=> <div key={index}><input type="text" value={item} readOnly/></div>) ):(<></>) }
+                                </div>
                             </li>
                             <li>
                                 <p>Hình ảnh:<p>(*)</p></p>

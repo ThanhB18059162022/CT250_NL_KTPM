@@ -47,7 +47,7 @@ const ProductDetail = (props) => {
     }
 
     //chi tiết sản phẩm tạm
-    const [detail, setDetail] = useState({ pd_ram: "", pd_storage: "", pd_storageAvailable: "", pd_price: 0, pd_amount: 0, pd_sold: 0 })
+    const [detail, setDetail] = useState({ pd_ram: "", pd_storage: "", pd_storageAvailable: "", pd_price: 0, pd_amount: 0, pd_sold: 0, pd_discount: null })
     if( productDetail && detail.pd_ram.length === 0 && detail.pd_storage.length === 0 && detail.pd_storageAvailable.length === 0 )
     {
         setDetail({ pd_ram: productDetail.pd_ram, 
@@ -55,8 +55,8 @@ const ProductDetail = (props) => {
                     pd_storageAvailable: productDetail.pd_storageAvailable, 
                     pd_price: productDetail.pd_price, 
                     pd_amount: productDetail.pd_amount,
-                    pd_sold: productDetail.pd_sold})
-        
+                    pd_sold: productDetail.pd_sold,
+                    pd_discount: productDetail.pd_discount })
     }
     //lưu chi tiết sản phẩm mới
     const saveNewDetail = (detail) => {
@@ -85,6 +85,22 @@ const ProductDetail = (props) => {
             }, 1000)
         }else notifySaveProdDetailFailed()
         
+    }
+
+    const formatDate = (date) => {
+        if(date){
+            let dateTmp = date.split('-')
+            if(dateTmp.length === 3)
+            {
+                if(dateTmp[1].length<2) dateTmp[1] = "0" + dateTmp[1]
+                if(dateTmp[2].length<2) dateTmp[2] = "0" + dateTmp[2]
+                return dateTmp[0] + "-" + dateTmp[1] + "-" + dateTmp[2]
+            }else if(dateTmp.length === 2)
+            {
+                if(dateTmp[1].length<2) dateTmp[1] = "0" + dateTmp[1]
+                return dateTmp[0] + "-" + dateTmp[1] + "-01"
+            }else return dateTmp[0] + "-01-01"
+        }
     }
 
     return (
@@ -117,11 +133,23 @@ const ProductDetail = (props) => {
                                 <p>Số lượng:<p>(*)</p></p>
                                 <input name="txtPDAmount" type="text" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_amount: Number(e.target.value) })} /> <br />
                             </li>
+                            <li>
+                                <p>Ngày bắt đầu giảm giá:</p>
+                                <input name="txtPDDiscountStart" type="date" value={detail.pd_discount && detail.pd_discount.start!==null && formatDate(detail.pd_discount.start)} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, start: e.target.value } })} /> <br />
+                            </li>
+                            <li>
+                                <p>Ngày kết thúc giảm giá:</p>
+                                <input name="txtPDDiscountEnd" type="date" value={detail.pd_discount && detail.pd_discount.end!==null && formatDate(detail.pd_discount.end)} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, end: e.target.value } })} /> <br />
+                            </li>
+                            <li>
+                                <p>Giảm giá (%):</p>
+                                <input name="txtPDDiscountPercent" type="text" value={detail.pd_discount && detail.pd_discount.percent!==null && detail.pd_discount.percent} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, percent: e.target.value } })}/> <br />
+                            </li>
                         </form>
                     </div>
                 </>
             ) : (
-                <>
+                <>  
                     {/* hiển thị/chỉnh sửa chi tiết */}
                     <div className="ProductDetail">
                         <div className="DetailButton">
@@ -151,6 +179,18 @@ const ProductDetail = (props) => {
                             <li>
                                 <p>Đã bán:</p>
                                 <input name="txtPDAmount" type="text" value={detail.pd_sold} readOnly /> <br />
+                            </li>
+                            <li>
+                                <p>Ngày bắt đầu giảm giá:</p>
+                                <input name="txtPDDiscountStart" type="date" value={detail.pd_discount && detail.pd_discount.start!==null && formatDate(detail.pd_discount.start)} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, start: e.target.value } })} /> <br />
+                            </li>
+                            <li>
+                                <p>Ngày kết thúc giảm giá:</p>
+                                <input name="txtPDDiscountEnd" type="date" value={detail.pd_discount && detail.pd_discount.end!==null && formatDate(detail.pd_discount.end)} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, end: e.target.value } })} /> <br />
+                            </li>
+                            <li>
+                                <p>Giảm giá (%):</p>
+                                <input name="txtPDDiscountPercent" type="text" value={detail.pd_discount && detail.pd_discount.percent!==null && detail.pd_discount.percent} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, percent: e.target.value } })}/> <br />
                             </li>
                         </form>
                     </div>

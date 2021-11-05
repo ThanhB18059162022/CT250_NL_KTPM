@@ -118,6 +118,7 @@ const ProductFullInfo = (props) => {
             size: "",
             weight: "",
         },
+        prod_colors: [],
         prod_status: "",
     });
     //mảng hình ảnh sản phẩm
@@ -201,7 +202,7 @@ const ProductFullInfo = (props) => {
             newProductFullInfo.prod_design.material.length>0 &&
             newProductFullInfo.prod_design.size.length>0 &&
             newProductFullInfo.prod_design.structural.length>0 &&
-            newProductFullInfo.prod_design.weight.length>0 
+            newProductFullInfo.prod_design.weight.length>0
         )
         return true
     }

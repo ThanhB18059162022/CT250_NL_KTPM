@@ -244,7 +244,7 @@ INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, 
 VALUES("6 GB", "128 GB", "113 GB", 32990000, 30, 15, 2);
 
 INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
-VALUES("6 GB", "256 GB", "241 GB", 37490000, 10, 15, 2);
+VALUES("6 GB", "256 GB", "241 GB", 37490000, 20, 15, 2);
 
 INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "512 GB", "113 GB", 42490000, 10, 7, 2);
