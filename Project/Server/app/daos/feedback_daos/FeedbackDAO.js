@@ -10,7 +10,7 @@ module.exports = class FeedbackDAO extends ModelDAO {
       order = "";
     }
     //Cường đã chỉnh sửa lệnh select
-    const sql = `SELECT fb_no, fb_content, fb_time, Feedbacks.cus_no, Feedbacks.prod_no, cus_name, prod_name
+    const sql = `SELECT fb_no, fb_content, fb_star, fb_time, Feedbacks.cus_no, Feedbacks.prod_no, cus_name, prod_name
                 FROM Feedbacks, Customers, Products
                 WHERE Feedbacks.cus_no = Customers.cus_no
                   AND Products.prod_no = Feedbacks.prod_no
@@ -65,14 +65,14 @@ module.exports = class FeedbackDAO extends ModelDAO {
   //#region  ADD
 
   addFeedback = async (prod_no, newFeedback) => {
-    const { customer, fb_content } = newFeedback;
+    const { customer, fb_content, fb_star } = newFeedback;
 
     const cus_no = await this.saveCustomer(customer);
 
-    const sqlIn = `INSERT INTO Feedbacks(fb_content, prod_no, cus_no) 
-    VALUES(?, ?, ?);`;
+    const sqlIn = `INSERT INTO Feedbacks(fb_content, fb_star, prod_no, cus_no) 
+    VALUES(?, ?, ?, ?);`;
 
-    await this.sqldao.execute(sqlIn, [fb_content, prod_no, cus_no]);
+    await this.sqldao.execute(sqlIn, [fb_content, fb_star, prod_no, cus_no]);
 
     const sqlOut = `SELECT * FROM Feedbacks 
     WHERE fb_content = ? AND prod_no = ? AND cus_no = ?

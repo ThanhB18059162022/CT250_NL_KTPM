@@ -31,7 +31,12 @@ module.exports = class ProductsDAO extends ModelDAO {
       [prod_no]
     );
 
-    return prod_details;
+    return prod_details.map((prod_detail) => ({
+      ...prod_detail,
+      pd_discount: prod_detail.pd_discount
+        ? JSON.parse(prod_detail.pd_discount)
+        : undefined,
+    }));
   };
 
   getProductsByPrice = async (min, max, startIndex, endIndex) => {
@@ -106,9 +111,10 @@ module.exports = class ProductsDAO extends ModelDAO {
         prod_network,
         prod_batteryAndCharger,
         prod_utilities,
-        prod_design
+        prod_design,
+        prod_colors
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     await this.handleExeError(
       async () => await this.sqldao.execute(sql, dbParams)
@@ -128,8 +134,8 @@ module.exports = class ProductsDAO extends ModelDAO {
       const dbParams = this.extractParams(dbDetail);
       dbParams.push(product.prod_no);
 
-      const sql = `INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
-                  VALUES(?, ?, ?, ?, ?, ?, ?);`;
+      const sql = `INSERT INTO products_details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, pd_discount, prod_no)
+                  VALUES(?, ?, ?, ?, ?, ?, ?, ?);`;
 
       await this.sqldao.execute(sql, dbParams);
     }
@@ -143,6 +149,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       pd_price,
       pd_amount,
       pd_sold,
+      pd_discount,
     } = detail;
 
     return {
@@ -152,6 +159,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       pd_price,
       pd_amount,
       pd_sold,
+      pd_discount: JSON.stringify(pd_discount),
     };
   };
 
@@ -176,6 +184,7 @@ module.exports = class ProductsDAO extends ModelDAO {
         prod_batteryAndCharger = ?, 
         prod_utilities = ?, 
         prod_design = ?,
+        prod_colors = ?,
         prod_status = ?
         WHERE prod_no = ?`;
 
@@ -196,7 +205,8 @@ module.exports = class ProductsDAO extends ModelDAO {
                       pd_storageAvailable = ?, 
                       pd_price = ?, 
                       pd_amount = ?, 
-                      pd_sold = ?
+                      pd_sold = ?,
+                      pd_discount = ?
                     WHERE pd_no = ?`;
 
     await this.sqldao.execute(sql, dbParams);
@@ -217,6 +227,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_utilities,
       prod_design,
       prod_status,
+      prod_colors,
     } = product;
 
     const dbProduct = {
@@ -229,6 +240,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger: JSON.stringify(prod_batteryAndCharger),
       prod_utilities: JSON.stringify(prod_utilities),
       prod_design: JSON.stringify(prod_design),
+      prod_colors: JSON.stringify(prod_colors),
       prod_status: isNaN(prod_status) ? 0 : prod_status,
     };
 
@@ -248,6 +260,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger,
       prod_utilities,
       prod_design,
+      prod_colors,
       prod_status,
     } = dbProduct;
 
@@ -262,6 +275,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger: JSON.parse(prod_batteryAndCharger ?? '""'),
       prod_utilities: JSON.parse(prod_utilities ?? '""'),
       prod_design: JSON.parse(prod_design ?? '""'),
+      prod_colors: JSON.parse(prod_colors ?? '""'),
       prod_status,
     };
   };

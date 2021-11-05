@@ -1,6 +1,6 @@
 
 GET http://localhost:8000/api/feedback?page=1&limit=10&order=""
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJyb2xlIjoiZW1wIn0sImlhdCI6MTYzNDg5OTc0OCwiZXhwIjoxNjM0OTAzMzQ4fQ.5Lt7yWhgrfercK9y6M6ploMrI3xkBcHhtR2DXdpO32I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM2MTE0MjI4LCJleHAiOjE2MzYxMTc4Mjh9.C8ScmKj2GVOYM3hab59SXdcz0pKTCxU0tpKAgDiPNFA
 
 ### Thêm trả lời phản hồi
 POST  http://localhost:8000/api/feedback/1/replies

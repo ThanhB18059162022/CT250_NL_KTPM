@@ -59,8 +59,8 @@ CREATE TABLE Products(
   prod_design VARCHAR(1000) NOT NULL, -- Thiết kế
   prod_status TINYINT(1) NOT NULL DEFAULT '0', -- Trạng thái sản phẩm
   brand_no INT NOT NULL DEFAULT '1', -- Thương hiệu khóa ngoại tham chiếu bảng thương hiệu
-  prod_color VARCHAR(10), -- Màu sắc NULL là ko có màu
-
+  prod_colors VARCHAR(1000), -- Màu sắc NULL là ko có màu
+  
  -- Khóa chính
   CONSTRAINT Products_PK PRIMARY KEY (prod_no),
 
@@ -86,6 +86,7 @@ CREATE TABLE Feedbacks(
   fb_no INT AUTO_INCREMENT, -- Mã đánh giá tự tăng
   fb_content VARCHAR(500) NOT NULL, -- Nội dung đánh giá
   fb_time DATETIME NOT NULL DEFAULT NOW() , -- Thời gian đánh giá
+  fb_star INT NOT NULL DEFAULT 3, -- Số sao đánh giá
   prod_no INT NOT NULL, -- Mã sản phẩm khóa ngoại tham chiếu bảng sản phẩm
   cus_no INT NOT NULL, -- Mã khách hàng khóa ngoại tham chiếu bảng khách hàng
 
@@ -187,6 +188,7 @@ INSERT INTO Products(
     prod_batteryAndCharger,
     prod_utilities,
     prod_design,
+    prod_colors,
     brand_no) 
 VALUES    
     (
@@ -199,11 +201,12 @@ VALUES
         '{"battery":"4400 mAh","batteryType":"Li-ion","chargeType":"25W"}',
         '[{"Bảo mật":"Mở khoá vân tay cạnh viền"},{"Tính năng đặc biệt":"Samsung Pay Âm thanh AKG"},{"Kháng nước, bụi":"IPX8"}]',
         '{"structural":"Nguyên khối","material":"Khung nhôm & Mặt lưng kính cường lực","size":"Dài 158.2 mm - Ngang 128.1 mm - Dày 6.4 mm","weight":"271 g"}',
+        '["Xanh","Bạc","Đen"]',
         1 -- Nhãn hiệu Samsung
     );
 
-INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
-VALUES("12 GB", "256 GB", "223 GB", 41990000, 20, 5, 1);
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no, pd_discount)
+VALUES("12 GB", "256 GB", "223 GB", 41990000, 20, 5, 1, '{"start":"2020-01-01","end":"2020-12-31","percent":10}');
 
 INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("12 GB", "512 GB", "480 GB", 44990000, 20, 5, 1);    
@@ -220,6 +223,7 @@ INSERT INTO Products(
     prod_batteryAndCharger,
     prod_utilities,
     prod_design,
+    prod_colors,
     brand_no
 )
 VALUES
@@ -233,6 +237,7 @@ VALUES
     '{"battery":"3687 mAh","batteryType":"Li-ion","chargeType":"20W"}',
     '[{"Bảo mật":"Mở khoá khuôn mặt Face ID"},{"Kháng nước, bụi":"IP68"},{"Ghi âm":"Có (microphone chuyên dụng chống ồn)"},{"Xem phim":"H.264(MPEG4-AVC)"},{"Nghe nhạc":"Lossless, AAC, MP3, FLAC"}]',
     '{"structural":"Nguyên khối","material":"Khung thép không gỉ & Mặt lưng kính cường lực","size":"Dài 160.8 mm - Ngang 78.1 mm - Dày 7.4 mm","weight":"228 g"}',
+    '["Xanh Dương","Bạc","Vàng Đồng", "Xám"]',
     2 -- Nhãn hiệu Apple
 ); 
 INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
