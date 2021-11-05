@@ -3,6 +3,38 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.479);
     position: relative;
 
+    .discount_area {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        img {
+            width: 70px;
+        }
+
+        span {
+            position: absolute;
+            top: 10px;
+            display: inline-block;
+            width: 60px;
+            text-align: center;
+            right: 10px;
+            font-size: 28px;
+            color: white;
+            margin: 0;
+            i {
+                font-size: 12px;
+                position: static;
+            }
+        }
+        i {
+            font-style: normal;
+            position: absolute;
+            right: 20px;
+            top: 40px;
+            color: white;
+        }
+    }
+
     .product-box-silder {
         height: calc(100vh - 130px);
         max-height: 600px;
@@ -74,7 +106,7 @@
                 min-width: 100px;
                 border-radius: 10px;
                 font-size: 16px;
-                padding: 10px;
+                padding: 5px 10px;
                 cursor: pointer;
                 transition: all ease 0.5s;
                 color: rgb(85, 85, 85);
@@ -90,6 +122,36 @@
                 margin-left: 10px;
             }
         }
+        & > .someinfo {
+            p {
+                font-size: 16px;
+                margin: 10px 0;
+                span{
+                    display: inline-block;
+                    width: 120px;
+                }
+            }
+        }
+
+        & > .product_color {
+            display: flex;
+            padding: 3px 0;
+            p {
+                padding: 5px 10px;
+                border: 2px solid var(--backgroundColor);
+                color: var(--backgroundColor);
+                transition: all ease 0.3s;
+                cursor: pointer;
+                &.check {
+                    background: var(--backgroundColor);
+                    color: white;
+                }
+            }
+            p + p {
+                margin-left: 10px;
+            }
+        }
+
         & > p {
             margin: 5px;
             span {
@@ -102,23 +164,32 @@
             font-size: 36px;
             font-weight: 700;
             color: rgb(240, 48, 48);
-            margin: 5px 0;
+            margin: 0;
         }
         p.support-sell {
             font-weight: 600;
             margin-bottom: 5px;
         }
+
+        p.discount {
+            font-size: 18px;
+            span {
+                display: inline-block;
+                margin-left: 20px;
+                text-decoration: line-through;
+                width: auto;
+            }
+        }
         div.sell-ways {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
             padding: 0 20px;
             width: 100%;
             img {
-                padding: 5px 10px;
+                padding: 0px 10px;
                 border-radius: 10px;
                 width: auto;
-                height: 60px;
+                height: 50px;
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.473);
                 & + img {
                     margin-left: 5px;
@@ -143,7 +214,7 @@
     .product-box-notify {
         padding: 10px 5px;
         border-radius: 15px;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         p {
             margin: 5px;
         }

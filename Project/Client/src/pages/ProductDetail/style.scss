@@ -1,0 +1,11 @@
+.facebook_comment{
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.459);
+    margin-bottom: 20px;
+    h3{
+        color: var(--backgroundColor);
+    }
+    iframe{
+        width: 100% !important;
+    }
+}

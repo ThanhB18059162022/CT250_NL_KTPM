@@ -9,11 +9,43 @@
     transition: all ease .3s;
     user-select: none;
     min-width: 273px;
+    position: relative;
+    .discount_area{
+        position: absolute;
+        top:0;
+        right: 10px;
+        img{
+            width: 70px;
+        }
+
+        span{
+            position: absolute;
+            top:10px;
+            display: inline-block;
+            width: 60px;
+            text-align: center;
+            right: 10px;
+            font-size: 28px;
+            color: white;
+            margin: 0;
+            i{
+                font-size: 12px;
+                position: static;
+            }
+        }
+        i{
+         font-style: normal;
+         position: absolute;
+         right: 20px;
+         top:40px;
+         color: white;
+        }
+    }
     &:hover {
         transform: translateY(-5px);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
     }
-    img {
+    img.image_shower {
         height:250px;
         width: 100%;
         object-fit: cover;

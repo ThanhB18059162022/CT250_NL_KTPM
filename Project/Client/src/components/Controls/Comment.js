@@ -1,5 +1,13 @@
 
-const Comment = ({ style, title, content, time, options, children }) => {
+const Comment = ({ style, title, content, time, options,star, children }) => {
+  const getStar = star =>{
+    const arr = []
+    for(let i = 0; i<star; i++)
+      arr.push(i)
+    return <>
+      {arr.map((item,index)=><img key={index} alt="star" width="20px" src="/icon/staricon.png"/>)}
+    </>
+  }
   return (
     <div className="Comment">
       <div className={`comment-wrapper  ${options}`} style={style}>
@@ -7,6 +15,9 @@ const Comment = ({ style, title, content, time, options, children }) => {
           {title}
           {time !== null && <span className="comment-time">{time}</span>}
         </p>
+        {star && <div className="comment-star">
+          {getStar(star)}
+        </div>}
         <p className="comment-content" style={style && style.content}>
           {content}
         </p>

@@ -7,14 +7,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useContext, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import ProductServices from "../../api_services/products_services/ProductsService";
 import Helper from "../../helpers";
 import { CartContext } from "../../providers/CartProviders";
 import "./ProductItem.Style.scss";
 
 export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) => {
-    const history = useHistory();
 
     const { upItem } = useContext(CartContext);
 
@@ -25,8 +23,6 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
     const [images, setImages] = useState(null);
 
     const [idx, setIdx] = useState(0);
-
-    const addToLocalCart = () => upItem(id);
 
     useEffect(() => {
         let load = true;
@@ -52,6 +48,7 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
         };
     }, [isHover, idx, images]);
 
+    const addToLocalCart = () => upItem(id,0,item.prod_colors[0]);
     return (
         <li
             className='ProductItem'
@@ -59,12 +56,12 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
             onMouseLeave={() => setHover(false)}
             {...rest}
         >
-            <div onClick={() => history.push(`/product/${id}`)}>
-                <img src={images ? images[idx] : "/image/loading.gif"} alt='product_shower' />
+            <div onClick={() => window.location.href = `/product/${id}`}>
+                <img className="image_shower" src={images ? images[idx] : "/image/loading.gif"} alt='product_shower' />
                 <div className='product-info'>
                     <p className='name'>{item && item.prod_name}</p>
                     <p className='price'>
-                        {item && Helper.Exchange.toMoney(item.prod_details[0].pd_price)} VND
+                        {item && Helper.Exchange.toMoney(Helper.CalcularDiscount(item.prod_details[0].pd_price, item.prod_details[0].pd_discount?item.prod_details[0].pd_discount.percent:0))} VND
                     </p>
                     <div className='product-panel'>
                         <p className='chipset'>
@@ -96,6 +93,13 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
                     </div>
                 </div>
             </div>
+            {item && (item.prod_details[0].pd_discount &&
+            <div className="discount_area">
+                <img src="/icon/discounticon.png" alt="discount_icon"/>
+               <span>{item.prod_details[0].pd_discount.percent}<i>%</i></span>
+               <i>OFF</i>
+            </div>
+            )}
             <div className='product-behavior'>
                 <button
                     className='add-cart'

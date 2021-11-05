@@ -742,6 +742,24 @@
                     }
                 }
             }
+            &:nth-child(31) {
+                div {
+                    width: 80%;
+                    div {
+                        display: flex;
+                        margin: 10px 0;
+                        width: 100%;
+                        p {
+                            margin: auto;
+                            width: 30%;
+                            padding-left: 10px;
+                        }
+                        input {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
         }
         .ImageContainer div {
             display: flex;

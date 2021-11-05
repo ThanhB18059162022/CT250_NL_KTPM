@@ -15,35 +15,35 @@ export default function CartProvider(props){
         setAmount(list.length);
     }
 
-    const getItemList = () =>{
+    const getItemList = () =>{ 
         return _getListItem()
     }
 
-    const upItem = (id, type=0) =>{
+    const upItem = (id, type=0, currentColor) =>{
         let carts = _getListItem()
-        let index  = carts.findIndex(item=>Number(item.id) === Number(id) && Number(item.type)===Number(type))
+        let index  = carts.findIndex(item=>Number(item.id) === Number(id) && Number(item.type)===Number(type) && item.currentColor===currentColor)
         let isExist = index !== -1
         if(isExist){
             carts[index].amount++
         }
-        else carts.push({id:Number(id), amount:1, type})
+        else carts.push({id:Number(id), amount:1, type, currentColor})
         _updateListItem(carts)
         setChange(!change)
         return isExist
     }
 
-    const forceItem = (id, type, value) =>{
+    const forceItem = (id, type, currentColor, value) =>{
         let carts = _getListItem()
-        let index  = carts.findIndex(item=>item.id === id && item.type===type)
+        let index  = carts.findIndex(item=>item.id === id && item.type===type && item.currentColor===currentColor)
         let isExist = index !==-1
         if(isExist)
             carts[index].amount =  value
         _updateListItem(carts)
     }
 
-    const downItem = (id,type) =>{
+    const downItem = (id,type, currentColor) =>{
         let carts = _getListItem()
-        let index  = carts.findIndex(item=>Number(item.id) === Number(id) && Number(item.type)===Number(type))
+        let index  = carts.findIndex(item=>Number(item.id) === Number(id) && Number(item.type)===Number(type) && item.currentColor===currentColor)
         let isExist = index !==-1
         if(isExist){
             carts[index].amount--
@@ -53,8 +53,8 @@ export default function CartProvider(props){
         _updateListItem(carts)
     }
 
-    const removeItem = (id,type) =>{
-        let carts = _getListItem().filter(item=>!(item.id ===id && item.type===type))
+    const removeItem = (id,type, currentColor) =>{
+        let carts = _getListItem().filter(item=>!(item.id ===id && item.type===type && item.currentColor===currentColor))
         setChange(!change)
         _updateListItem(carts)
     }

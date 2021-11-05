@@ -7,7 +7,6 @@ import "./TotalSellSeasonsBarChart.jsx.css";
 import StatisticService from "./StatisticService";
 import expSer from "./exportExcelService";
 import exp_ico from "./exp-ico.png";
-import FontAwesome from '@fortawesome/react-fontawesome'
 import {faTimes} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 const service = new StatisticService();
@@ -66,7 +65,7 @@ function TotalSellSeasonBarChart() {
         // Lấy chưa display
         const dyrs = dataSets.map((m) => m.label);
 
-        const ndyrs = years.filter((y) => !dyrs.some((dy) => dy == y));
+        const ndyrs = years.filter((y) => !dyrs.some((dy) => dy === y));
 
         return ndyrs;
     }

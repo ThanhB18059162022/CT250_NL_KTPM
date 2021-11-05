@@ -94,7 +94,6 @@ const Item = (props) => {
     const productCheck = (details) => {
         let check = 0;
         let notice = "| ";
-        console.log(details)
         details.forEach(e => {
             if (e.pd_amount-e.pd_sold <= 5) {
                 check = 1;

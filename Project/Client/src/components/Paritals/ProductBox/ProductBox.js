@@ -31,8 +31,10 @@ const ProductBox = ({ id }) => {
         onHideRequest: setShow,
     });
 
+    const [currentColor, setCurrentColor] = useState(null);
+
     const addItemToCart = () => {
-        if (upItem(id, choose)) {
+        if (upItem(id, choose, currentColor)) {
             setNotify({
                 ...notify,
                 content: "Đã tăng số lượng sản phẩm này!",
@@ -48,6 +50,7 @@ const ProductBox = ({ id }) => {
     };
 
     useEffect(() => {
+        let load = true;
         (async () => {
             let data = await ProductServices.getProduct(
                 id,
@@ -56,12 +59,17 @@ const ProductBox = ({ id }) => {
                 "prod_imgs",
                 "prod_name",
                 "prod_details",
-                "prod_hardwareAndOS"
+                "prod_hardwareAndOS",
+                "prod_colors"
             );
+    
+            if (!load) return;
+            setCurrentColor(data.prod_colors[0]);
             setImages(data.prod_imgs);
             delete data.prod_imgs;
             setProduct(data);
         })();
+        return () => (load = false);
     }, [id]);
 
     return (
@@ -99,35 +107,69 @@ const ProductBox = ({ id }) => {
                                 </div>
                             ))}
                     </div>
-                    <p>
-                        <span>Hệ điều hành: </span>
-                        {product && product.prod_hardwareAndOS.os}
-                    </p>
-                    <p>
-                        <span>Vi xử lý: </span>
-                        {product && product.prod_hardwareAndOS.cpu}
-                    </p>
-                    <p>
-                        <span>Đồ họa: </span>
-                        {product && product.prod_hardwareAndOS.gpu}
-                    </p>
-                    <p>
-                        <span>RAM: </span>
-                        {product && product.prod_details[choose].pd_ram}
-                    </p>
-                    <p className='product-box-price'>
+                    <div className='product_color'>
                         {product &&
-                            (product.prod_status === 0 ? (
-                                `${Helper.Exchange.toMoney(
-                                    product && product.prod_details[choose].pd_price
+                            product.prod_colors.length>0 && product.prod_colors.map((item, index) => (
+                                <p 
+                                onClick={()=>setCurrentColor(item)}
+                                className={`${item === currentColor && "check"}`} key={index}>
+                                    {item}
+                                </p>
+                            ))}
+                    </div>
+                    <div className='someinfo'>
+                        <p>
+                            <span>Hệ điều hành: </span>
+                            {product && product.prod_hardwareAndOS.os}
+                        </p>
+                        <p>
+                            <span>Vi xử lý: </span>
+                            {product && product.prod_hardwareAndOS.cpu}
+                        </p>
+                        <p>
+                            <span>Đồ họa: </span>
+                            {product && product.prod_hardwareAndOS.gpu}
+                        </p>
+                        <p>
+                            <span>RAM: </span>
+                            {product && product.prod_details[choose].pd_ram}
+                        </p>
+                    </div>
+
+                    {product &&
+                        (product.prod_status === 0 ? (
+                            <>
+                                <p className='product-box-price'>
+                                    {Helper.Exchange.toMoney(
+                                        Helper.CalcularDiscount(
+                                            product.prod_details[choose].pd_price,
+                                            product.prod_details[choose].pd_discount
+                                                ? product.prod_details[choose].pd_discount.percent
+                                                : 0
+                                        )
+                                    )}{" "}
+                                    VNĐ
+                                </p>
+                                {product.prod_details[choose].pd_discount && (
+                                    <p className='discount'>
+                                        Giá cũ:{" "}
+                                        <span>
+                                            {Helper.Exchange.toMoney(
+                                                product && product.prod_details[choose].pd_price
+                                            )}{" "}
+                                            VNĐ
+                                        </span>
+                                    </p>
                                 )}
-                        VNĐ`
-                            ) : (
+                            </>
+                        ) : (
+                            <p>
                                 <span style={{ fontSize: "24px", width: "auto" }}>
                                     NGỪNG KINH DOANH
                                 </span>
-                            ))}
-                    </p>
+                            </p>
+                        ))}
+
                     <p className='support-sell'>Hỗ trợ thanh toán</p>
                     <div className='sell-ways'>
                         {sellway.map((item, index) => (
@@ -173,6 +215,16 @@ const ProductBox = ({ id }) => {
                             </button>
                         ))}
                 </div>
+                {product && product.prod_details[choose].pd_discount && (
+                    <div className='discount_area'>
+                        <img src='/icon/discounticon.png' alt="discount_icon" />
+                        <span>
+                            {product.prod_details[choose].pd_discount.percent}
+                            <i>%</i>
+                        </span>
+                        <i>OFF</i>
+                    </div>
+                )}
             </div>
             <Notifications {...notify} isShow={show} onHideRequest={setShow} />
         </>
