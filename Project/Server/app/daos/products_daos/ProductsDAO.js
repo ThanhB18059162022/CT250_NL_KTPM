@@ -96,7 +96,7 @@ module.exports = class ProductsDAO extends ModelDAO {
     const dbNewProduct = this.toDbProduct(newProduct);
 
     const dbParams = this.extractParams(dbNewProduct);
-
+    console.log(dbParams);
     const sql = `INSERT INTO Products(
         prod_name,
         prod_manufacturer,
@@ -106,9 +106,10 @@ module.exports = class ProductsDAO extends ModelDAO {
         prod_network,
         prod_batteryAndCharger,
         prod_utilities,
-        prod_design
+        prod_design,
+        prod_colors
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     await this.handleExeError(
       async () => await this.sqldao.execute(sql, dbParams)
@@ -198,7 +199,8 @@ module.exports = class ProductsDAO extends ModelDAO {
                       pd_storageAvailable = ?, 
                       pd_price = ?, 
                       pd_amount = ?, 
-                      pd_sold = ?
+                      pd_sold = ?,
+                      pd_discount = ?
                     WHERE pd_no = ?`;
 
     await this.sqldao.execute(sql, dbParams);
@@ -219,6 +221,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_utilities,
       prod_design,
       prod_status,
+      prod_colors,
     } = product;
 
     const dbProduct = {
@@ -231,6 +234,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger: JSON.stringify(prod_batteryAndCharger),
       prod_utilities: JSON.stringify(prod_utilities),
       prod_design: JSON.stringify(prod_design),
+      prod_colors: JSON.stringify(prod_colors),
       prod_status: isNaN(prod_status) ? 0 : prod_status,
     };
 
@@ -250,6 +254,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger,
       prod_utilities,
       prod_design,
+      prod_colors,
       prod_status,
     } = dbProduct;
 
@@ -264,6 +269,7 @@ module.exports = class ProductsDAO extends ModelDAO {
       prod_batteryAndCharger: JSON.parse(prod_batteryAndCharger ?? '""'),
       prod_utilities: JSON.parse(prod_utilities ?? '""'),
       prod_design: JSON.parse(prod_design ?? '""'),
+      prod_colors: JSON.parse(prod_colors ?? '""'),
       prod_status,
     };
   };

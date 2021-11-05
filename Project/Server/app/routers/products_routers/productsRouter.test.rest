@@ -1903,10 +1903,10 @@ Content-Type: application/json
 ### OPPO Find X3 Pro Fake
 POST http://localhost:8000/api/products/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0OTU2MTY5LCJleHAiOjE2MzQ5NTk3Njl9.ipJ6PQ00C4VQs0doNvd1uvE_jA5f6iN2Rh_BIjo4Gqw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM2MTEzMzEwLCJleHAiOjE2MzYxMTY5MTB9.W0BfC0spmA3FzDl-tsO4cjJ0JgMeVf3liNgobM0Pe6A
 
 {
-  "prod_name": "OPPO Find X3 Pro Fake",
+  "prod_name": "OPPO Find X3 Pro Fake1",
   "prod_manufacturer": {
     "brand_name": "Oppo",
     "releaseDate": "2021-7",
@@ -1960,6 +1960,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
     "size": "Dài 160.2 mm - Ngang 73.38 mm - Dày 7.97 mm",
     "weight": "Nặng 173 g"
   },
+  "prod_colors": ["Xanh", "Bạc", "Đen"],
   "prod_status": "",
   "brand_no": 3
 }
@@ -1988,7 +1989,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
 ### Sửa chi tiết
 PUT http://localhost:8000/api/products/26/details/25
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM0ODEzMTY0LCJleHAiOjE2MzQ4MTY3NjR9.lc7rMEC70qcCilnfKD71AcX2JlMXaY1Qd4TnFWoGuVE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM2MTE0NDk1LCJleHAiOjE2MzYxMTgwOTV9.5zJOvkUBTzaAm1mpvYkUYQZMDt_LwUlN-ZOC-OH9SvA
 
 
 {
@@ -1997,7 +1998,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
   "pd_storageAvailable": "...", 
   "pd_price": 125000, 
   "pd_amount" : 1,
-  "pd_sold": 0
+  "pd_sold": 0,
+  "pd_discount":{
+    "start": "2020-01-01",
+    "end": "2020-12-31",
+    "percent": 10
+  }
 }
 
 
@@ -2096,5 +2102,6 @@ Content-Type: application/json
       "cus_sex": true,
       "cus_phoneNumber": "0000000000"
   },
-  "fb_content": "Điện thoại chạy chia màng hình hơi giật"
+  "fb_content": "Điện thoại chạy chia màng hình hơi giật",
+  "fb_star": 5
 }
