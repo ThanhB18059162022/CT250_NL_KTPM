@@ -44,41 +44,12 @@ const FeedbackInformation = (props) => {
     }
 
     const ratingShow = (rating) => {
-        switch (rating){
-            case 1:{
-                return <img src="/icon/staricon.png" width="20px" alt=""></img>
-            }
-            case 2:{
-                return <>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                        </>
-            }
-            case 3:{
-                return <>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                        </>
-            }
-            case 4:{
-                return <>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                        </>
-            }
-            case 5:{
-                return <>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                            <img src="/icon/staricon.png" width="20px" alt=""></img>
-                        </>
-            }
-        }
+        let tempArr = []
+        for(let i =0; i<rating; i++)
+            tempArr.push(i)
+        return <>
+            {rating.map(item=><img key={item} src="/icon/staricon.png" width="20px" alt=""></img>)}
+        </>
     }
     return(
         <>
