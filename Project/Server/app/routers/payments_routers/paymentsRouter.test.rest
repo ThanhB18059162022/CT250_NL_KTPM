@@ -31,9 +31,8 @@ Content-Type: application/json
 
 
 ### Thanh toán
-GET http://localhost:8000/api/payments/default/checkoutorder/5c222da990bd059f889b73bb2682f4456e960b341c370d87945d45f118a7726a
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM2MTU5NDcyLCJleHAiOjE2MzYxNjMwNzJ9.60wzZrL7MPxzz3xO2lGp09D9MiI2ekCsffunoyP5_7U
-
+GET http://localhost:8000/api/payments/default/checkoutorder/6fe55f79907cb7ada551c391fe1ad0ee538d2d34f7c545129807753366fb77aa
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM2MTc4ODM0LCJleHAiOjE2MzYxODI0MzR9.1nYKd_3KAE91UAN9ubTD152D_vE01uHCxi_S1sxeE9w
 # -------------------------------- Paypal --------------------------------
 
 # Lấy ra paypay client id - 200
