@@ -8,7 +8,7 @@ module.exports = class PaymentsDAO extends ModelDAO {
 
   // Mã sản phẩm và mã chi tiết
   getOrderProduct = async ({ prod_no, pd_no, prod_quantity, prod_color }) => {
-    const sql = `SELECT p.prod_no, p.prod_name, pd.pd_price, pd.pd_no
+    const sql = `SELECT p.prod_no, p.prod_name, pd.pd_price, pd.pd_no, pd.pd_discount
                  FROM Products AS p, Products_Details AS pd 
                  WHERE p.prod_no = pd.prod_no AND p.prod_no = ? 
                  AND pd.pd_no = ?;`;
@@ -17,6 +17,24 @@ module.exports = class PaymentsDAO extends ModelDAO {
 
     if (this.emptyData(product)) {
       throw new NotExistError(`prod_no: ${prod_no}, pd_no: ${pd_no}`);
+    }
+
+    if (product.pd_discount != null) {
+      const discount = JSON.parse(product.pd_discount);
+
+      //Get current date
+      const today = new Date();
+
+      // Get discount date
+      const discountDate = new Date(discount.end);
+
+      // Check if discount is expired
+      if (today > discountDate) {
+        discount.percent = 0;
+      }
+
+      product.pd_price =
+        product.pd_price - (product.pd_price * discount.percent) / 100;
     }
 
     return {
