@@ -22,8 +22,9 @@ module.exports = class PaymentsDAO extends ModelDAO {
     if (product.pd_discount != null) {
       const discount = JSON.parse(product.pd_discount);
 
-      //Get current date
+      //Get current date without time
       const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
       // Get discount date
       const discountDate = new Date(discount.end);
