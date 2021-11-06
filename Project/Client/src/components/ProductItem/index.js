@@ -13,7 +13,6 @@ import { CartContext } from "../../providers/CartProviders";
 import "./ProductItem.Style.scss";
 
 export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) => {
-
     const { upItem } = useContext(CartContext);
 
     const [item, setItem] = useState(null);
@@ -48,7 +47,29 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
         };
     }, [isHover, idx, images]);
 
-    const addToLocalCart = () => upItem(id,0,item.prod_colors[0]);
+    const addToLocalCart = () => upItem(id, 0, item.prod_colors[0]);
+
+    const getIsDisCount = () => {
+        if (!item) return;
+        if (item.prod_details[0].pd_discount) {
+            if (
+                new Date().getTime() <= new Date(item.prod_details[0].pd_discount.end).getTime() &&
+                new Date().getTime() >= new Date(item.prod_details[0].pd_discount.start).getTime()
+            )
+                return (
+                    <div className='discount_area'>
+                        <img src='/icon/discounticon.png' alt='discount_icon' />
+                        <span>
+                            {item.prod_details[0].pd_discount.percent}
+                            <i>%</i>
+                        </span>
+                        <i>OFF</i>
+                    </div>
+                );
+        }
+        return <></>;
+    };
+
     return (
         <li
             className='ProductItem'
@@ -56,12 +77,25 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
             onMouseLeave={() => setHover(false)}
             {...rest}
         >
-            <div onClick={() => window.location.href = `/product/${id}`}>
-                <img className="image_shower" src={images ? images[idx] : "/image/loading.gif"} alt='product_shower' />
+            <div onClick={() => (window.location.href = `/product/${id}`)}>
+                <img
+                    className='image_shower'
+                    src={images ? images[idx] : "/image/loading.gif"}
+                    alt='product_shower'
+                />
                 <div className='product-info'>
                     <p className='name'>{item && item.prod_name}</p>
                     <p className='price'>
-                        {item && Helper.Exchange.toMoney(Helper.CalcularDiscount(item.prod_details[0].pd_price, item.prod_details[0].pd_discount?item.prod_details[0].pd_discount.percent:0))} VND
+                        {item &&
+                            Helper.Exchange.toMoney(
+                                Helper.CalcularDiscount(
+                                    item.prod_details[0].pd_price,
+                                    item.prod_details[0].pd_discount
+                                        ? item.prod_details[0].pd_discount.percent
+                                        : 0
+                                )
+                            )}{" "}
+                        VND
                     </p>
                     <div className='product-panel'>
                         <p className='chipset'>
@@ -93,13 +127,7 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
                     </div>
                 </div>
             </div>
-            {item && (item.prod_details[0].pd_discount &&
-            <div className="discount_area">
-                <img src="/icon/discounticon.png" alt="discount_icon"/>
-               <span>{item.prod_details[0].pd_discount.percent}<i>%</i></span>
-               <i>OFF</i>
-            </div>
-            )}
+            {getIsDisCount()}
             <div className='product-behavior'>
                 <button
                     className='add-cart'

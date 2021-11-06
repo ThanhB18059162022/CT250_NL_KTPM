@@ -102,8 +102,20 @@ const CartDetail = () => {
 
     useEffect(() => {
         let count = list.reduce(
-            (pre, item) => pre + Helper.CalcularDiscount(item.prod_details[item.choosedType].pd_price,item.prod_details[item.choosedType].pd_discount?item.prod_details[item.choosedType].pd_discount.percent:0) * item.amount,
-            0
+            (pre, item) =>{
+                let percent = 0
+
+                if (item.prod_details[item.choosedType].pd_discount)
+                if (
+                    new Date().getTime() <=
+                        new Date(item.prod_details[item.choosedType].pd_discount.end).getTime() &&
+                    new Date().getTime() >=
+                        new Date(item.prod_details[item.choosedType].pd_discount.start).getTime()
+                )
+                    percent = item.prod_details[item.choosedType].pd_discount.percent
+
+                return pre + Helper.CalcularDiscount(item.prod_details[item.choosedType].pd_price,percent) * item.amount
+            },0
         );
 
 
@@ -218,9 +230,9 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
             prod_no: item.prod_no,
             prod_quantity: item.amount,
             pd_no: item.prod_details[item.choosedType].pd_no,
+            prod_color: item.choosedColor
         }));
         const cart = { customer, products };
-
         switch (index) {
             case 0:
                 checkout(0, cart);
@@ -300,6 +312,7 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
                 <div className='detail_header'>
                     <p className='dh_name'>Tên sản phẩm</p>
                     <p className='dh_price'>Phiên bản</p>
+                    <p className='dh_amount'>Màu sắc</p>
                     <p className='dh_price'>Đơn giá</p>
                     <p className='dh_amount'>Giảm giá</p>
                     <p className='dh_amount'>Số lượng</p>
@@ -312,6 +325,7 @@ const DetailTransaction = ({ customer, setCustomer, total, list, renderPaypalBut
                             <p className='dh_price'>
                                 {item.prod_details[item.choosedType].pd_storage}
                             </p>
+                            <p className='dh_amount'>{item.choosedColor || "Mặc định"}</p>
                             <p className='dh_price'>
                                 {Helper.Exchange.toMoney(
                                     item.prod_details[item.choosedType].pd_price
@@ -695,6 +709,19 @@ function CartItem(props) {
         }
     };
 
+    const getRealPrice = () =>{
+        let percent = 0
+        if(info.prod_details[info.choosedType].pd_discount)
+        if (
+            new Date().getTime() <=
+                new Date(info.prod_details[info.choosedType].pd_discount.end).getTime() &&
+            new Date().getTime() >=
+                new Date(info.prod_details[info.choosedType].pd_discount.start).getTime()
+        )
+            percent = info.prod_details[info.choosedType].pd_discount.percent
+        return Helper.Exchange.toMoney(Helper.CalcularDiscount(info.prod_details[info.choosedType].pd_price, percent))
+    }
+
     return (
         <li>
             <div className='images'>
@@ -724,7 +751,7 @@ function CartItem(props) {
                     <div className='price'>
                         <p>{info.choosedColor || "Mặc định"}</p>
                         <p>
-                            {Helper.Exchange.toMoney(info.prod_details[info.choosedType].pd_price)}{" "}
+                            {getRealPrice()}{" "}
                             VNĐ
                         </p>
                     </div>

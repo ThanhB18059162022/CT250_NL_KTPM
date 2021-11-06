@@ -1,8 +1,17 @@
 .success_container {
-    height: calc(100vh - 65px);
+    min-height: calc(100vh - 65px);
     display: flex;
     justify-content: center;
     align-items: center;
+    button {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        padding: 10px;
+        border: none;
+        background: var(--backgroundColor);
+        color: var(--textColor);
+    }
     .success_wrapper {
         padding: 10px 20px;
         background: white;
@@ -36,15 +45,7 @@
             }
         }
 
-        button {
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-            padding: 10px;
-            border: none;
-            background: var(--backgroundColor);
-            color: var(--textColor);
-        }
+       
         .success_detail,ul li{
             display: flex;
             list-style: none;
@@ -63,6 +64,11 @@
                 flex-basis: 100px;
                 min-width: 100px;
                 text-align: center;
+            }
+            .detail_discount{
+                    flex-basis: 100px;
+                    min-width: 100px;
+                    text-align: center;
             }
         }
 

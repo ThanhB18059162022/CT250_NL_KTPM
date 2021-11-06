@@ -74,7 +74,7 @@ const PayPalPayment = (props) => {
 
 
     setPaidFor(true);
-    window.location.href = `http://localhost:3000/success/paypal/${order}`
+    window.location.href = `http://octopuszyuw.com:3000/success/paypal/${order}`
   }
 
   function renderProductInfo() {

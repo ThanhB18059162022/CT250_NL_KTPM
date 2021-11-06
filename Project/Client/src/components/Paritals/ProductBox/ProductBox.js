@@ -62,7 +62,7 @@ const ProductBox = ({ id }) => {
                 "prod_hardwareAndOS",
                 "prod_colors"
             );
-    
+
             if (!load) return;
             setCurrentColor(data.prod_colors[0]);
             setImages(data.prod_imgs);
@@ -71,6 +71,68 @@ const ProductBox = ({ id }) => {
         })();
         return () => (load = false);
     }, [id]);
+
+    const getIsDiscount = () => {
+        if (!product) return;
+        if (product.prod_details[choose].pd_discount) {
+            if (
+                new Date().getTime() <=
+                    new Date(product.prod_details[choose].pd_discount.end).getTime() &&
+                new Date().getTime() >=
+                    new Date(product.prod_details[choose].pd_discount.start).getTime()
+            )
+                return (
+                    <div className='discount_area'>
+                        <img src='/icon/discounticon.png' alt='discount_icon' />
+                        <span>
+                            {product.prod_details[choose].pd_discount.percent}
+                            <i>%</i>
+                        </span>
+                        <i>OFF</i>
+                    </div>
+                );
+        }
+        return <></>;
+    };
+
+    const getMoney = () => {
+        let percent =0
+        if (product.prod_details[choose].pd_discount)
+            if (
+                new Date().getTime() <=
+                    new Date(product.prod_details[choose].pd_discount.end).getTime() &&
+                new Date().getTime() >=
+                    new Date(product.prod_details[choose].pd_discount.start).getTime()
+            )
+                percent = product.prod_details[choose].pd_discount.percent
+        return <p className='product-box-price'>
+            {Helper.Exchange.toMoney(
+                Helper.CalcularDiscount(
+                    product.prod_details[choose].pd_price,
+                    percent
+                )
+            )}{" "} VNĐ
+        </p>;
+    };
+
+    const getOldPrice = () => {
+        let percent = 0
+        if (product.prod_details[choose].pd_discount)
+        if (
+            new Date().getTime() <=
+                new Date(product.prod_details[choose].pd_discount.end).getTime() &&
+            new Date().getTime() >=
+                new Date(product.prod_details[choose].pd_discount.start).getTime()
+        )
+            percent = product.prod_details[choose].pd_discount.percent
+        if(percent!==0)
+            return <p className='discount'>
+                Giá cũ:{" "}
+                <span>
+                    {Helper.Exchange.toMoney(product.prod_details[choose].pd_price)} VNĐ
+                </span>
+            </p>;
+    };
 
     return (
         <>
@@ -109,10 +171,13 @@ const ProductBox = ({ id }) => {
                     </div>
                     <div className='product_color'>
                         {product &&
-                            product.prod_colors.length>0 && product.prod_colors.map((item, index) => (
-                                <p 
-                                onClick={()=>setCurrentColor(item)}
-                                className={`${item === currentColor && "check"}`} key={index}>
+                            product.prod_colors.length > 0 &&
+                            product.prod_colors.map((item, index) => (
+                                <p
+                                    onClick={() => setCurrentColor(item)}
+                                    className={`${item === currentColor && "check"}`}
+                                    key={index}
+                                >
                                     {item}
                                 </p>
                             ))}
@@ -139,28 +204,8 @@ const ProductBox = ({ id }) => {
                     {product &&
                         (product.prod_status === 0 ? (
                             <>
-                                <p className='product-box-price'>
-                                    {Helper.Exchange.toMoney(
-                                        Helper.CalcularDiscount(
-                                            product.prod_details[choose].pd_price,
-                                            product.prod_details[choose].pd_discount
-                                                ? product.prod_details[choose].pd_discount.percent
-                                                : 0
-                                        )
-                                    )}{" "}
-                                    VNĐ
-                                </p>
-                                {product.prod_details[choose].pd_discount && (
-                                    <p className='discount'>
-                                        Giá cũ:{" "}
-                                        <span>
-                                            {Helper.Exchange.toMoney(
-                                                product && product.prod_details[choose].pd_price
-                                            )}{" "}
-                                            VNĐ
-                                        </span>
-                                    </p>
-                                )}
+                                {getMoney()}
+                                {getOldPrice()}
                             </>
                         ) : (
                             <p>
@@ -215,16 +260,7 @@ const ProductBox = ({ id }) => {
                             </button>
                         ))}
                 </div>
-                {product && product.prod_details[choose].pd_discount && (
-                    <div className='discount_area'>
-                        <img src='/icon/discounticon.png' alt="discount_icon" />
-                        <span>
-                            {product.prod_details[choose].pd_discount.percent}
-                            <i>%</i>
-                        </span>
-                        <i>OFF</i>
-                    </div>
-                )}
+                {getIsDiscount()}
             </div>
             <Notifications {...notify} isShow={show} onHideRequest={setShow} />
         </>
