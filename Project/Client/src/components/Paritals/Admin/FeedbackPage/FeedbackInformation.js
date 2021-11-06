@@ -42,6 +42,44 @@ const FeedbackInformation = (props) => {
             default: return;
         }
     }
+
+    const ratingShow = (rating) => {
+        switch (rating){
+            case 1:{
+                return <img src="/icon/staricon.png" width="20px" alt=""></img>
+            }
+            case 2:{
+                return <>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                        </>
+            }
+            case 3:{
+                return <>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                        </>
+            }
+            case 4:{
+                return <>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                        </>
+            }
+            case 5:{
+                return <>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                        </>
+            }
+        }
+    }
     return(
         <>
             <div className="FeedbackInformation">
@@ -59,6 +97,10 @@ const FeedbackInformation = (props) => {
                         <div>
                             <span className="col1">Sản phẩm:</span>
                             <p className="col2">{feedbackInfo.prod_name}</p>
+                        </div>
+                        <div>
+                            <span className="col1">Xếp hạng:</span>
+                            <p className="col2">{ratingShow(feedbackInfo.fb_star)}</p>
                         </div>
                         <div>
                             <span className="col1">Thời gian:</span>

@@ -142,5 +142,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyL
 
 
 ### Lấy ra order đã thanh toán trong CSDL
-GET http://localhost:8000/api/payments/getsaveorder/6
+GET http://localhost:8000/api/payments/getsaveorder/4
 

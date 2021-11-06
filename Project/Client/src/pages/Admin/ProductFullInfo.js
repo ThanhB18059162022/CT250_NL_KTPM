@@ -149,6 +149,7 @@ const ProductFullInfo = (props) => {
                 prod_batteryAndCharger: productFullInfo.prod_batteryAndCharger,
                 prod_utilities: productFullInfo.prod_utilities,
                 prod_design: productFullInfo.prod_design,
+                prod_colors: productFullInfo.prod_colors,
                 prod_status: productFullInfo.prod_status,
             };
             let newProdDetails = [];
