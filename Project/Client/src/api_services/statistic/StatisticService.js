@@ -1,4 +1,6 @@
 // Giả lập gọi api lấy dữ liệu
+import ApiCaller from "../ApiCaller";
+const caller = new ApiCaller();
 
 export default class StatisticService {
     getDataOfSeasons = async (year) => {
@@ -30,6 +32,42 @@ export default class StatisticService {
         });
 
         return total;
+    };
+
+    getInventory = async () => {
+        const inventory = [];
+        const products = await this.getProducts();
+
+        for (let i = 0; i < products.length; i++) {
+            const product = products[i];
+
+            const inventoryItem = await this.getInventoryOfProducts(product);
+
+            inventory.push(inventoryItem);
+        }
+
+        inventory.sort((a, b) => (a.value > b.value ? 1 : b.value > a.value ? -1 : 0));
+
+        return inventory.slice(0, 5);
+    };
+
+    getProducts = async () => {
+        const rs = await caller.get("products?page=1&limit=999999");
+
+        return rs.items.map((product) => product.prod_name);
+    };
+
+    getInventoryOfProducts = async (prodName) => {
+        try {
+            const rs = await caller.get(`products/name/${prodName}`);
+            const { pd_amount, pd_sold } = rs.prod_details[0];
+            return {
+                label: prodName,
+                value: pd_amount - pd_sold,
+            };
+        } catch (error) {
+            console.log(error);
+        }
     };
 }
 
