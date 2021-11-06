@@ -130,7 +130,15 @@ module.exports = class PaymentsDAO extends ModelDAO {
         prod_quantity,
         prod_color,
       ]);
+
+      await this.updateProductQuantity(pd_no, prod_quantity);
     }
+  };
+
+  updateProductQuantity = async (pd_no, prod_quantity) => {
+    const sql = `UPDATE Products_Details SET pd_sold = pd_sold + ? WHERE pd_no = ?;`;
+
+    await this.sqldao.execute(sql, [prod_quantity, pd_no]);
   };
 
   //#endregion
