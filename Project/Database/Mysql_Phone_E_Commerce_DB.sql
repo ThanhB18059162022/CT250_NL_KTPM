@@ -156,6 +156,7 @@ CREATE TABLE Orders_Details(
   order_no INT NOT NULL, -- Mã giỏ hàng khóa ngoại tham chiếu bảng đơn hàng
   pd_no INT NOT NULL, -- Mã chi tiết sản phẩm khóa ngoại tham chiếu bảng chi tiết sản phẩm
   od_quantity INT NOT NULL, -- Số lượng sản phẩm trong giỏ
+  prod_color NVARCHAR(30), -- Màu sắc sản phẩm
 
     -- Khóa ngoại
   CONSTRAINT Orders_Details_Carts_FK FOREIGN KEY(order_no) REFERENCES Orders(order_no) ON DELETE CASCADE,
@@ -243,8 +244,8 @@ VALUES
 INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "128 GB", "113 GB", 32990000, 30, 15, 2);
 
-INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
-VALUES("6 GB", "256 GB", "241 GB", 37490000, 20, 15, 2);
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no, pd_discount)
+VALUES("6 GB", "256 GB", "241 GB", 37490000, 20, 15, 2, '{"start":"2020-01-01","end":"2020-12-31","percent":15}');
 
 INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
 VALUES("6 GB", "512 GB", "113 GB", 42490000, 10, 7, 2);
@@ -276,8 +277,8 @@ VALUES
   3 -- Nhãn hiệu Oppo
 );
 
-INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no)
-VALUES("8 GB", "128 GB", "110 GB", 9490000, 20, 9, 3);
+INSERT INTO Products_Details(pd_ram, pd_storage, pd_storageAvailable, pd_price, pd_amount, pd_sold, prod_no, pd_discount)
+VALUES("8 GB", "128 GB", "110 GB", 9490000, 20, 9, 3, '{"start":"2020-01-01","end":"2020-12-31","percent":25}');
 
 
 -- Xiaomi POCO X3 Pro NFC 8GB-256GB

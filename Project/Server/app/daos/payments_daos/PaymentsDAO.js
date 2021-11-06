@@ -7,7 +7,7 @@ module.exports = class PaymentsDAO extends ModelDAO {
   }
 
   // Mã sản phẩm và mã chi tiết
-  getOrderProduct = async ({ prod_no, pd_no, prod_quantity }) => {
+  getOrderProduct = async ({ prod_no, pd_no, prod_quantity, prod_color }) => {
     const sql = `SELECT p.prod_no, p.prod_name, pd.pd_price, pd.pd_no
                  FROM Products AS p, Products_Details AS pd 
                  WHERE p.prod_no = pd.prod_no AND p.prod_no = ? 
@@ -19,7 +19,12 @@ module.exports = class PaymentsDAO extends ModelDAO {
       throw new NotExistError(`prod_no: ${prod_no}, pd_no: ${pd_no}`);
     }
 
-    return { ...product, prod_price: product.pd_price, prod_quantity };
+    return {
+      ...product,
+      prod_price: product.pd_price,
+      prod_quantity,
+      prod_color,
+    };
   };
 
   //#region INSERT
@@ -29,6 +34,7 @@ module.exports = class PaymentsDAO extends ModelDAO {
 
     try {
       const dbOrder = this.toDbOrder(order);
+
       const dbParams = this.extractParams(dbOrder);
       const cus_no = await this.saveCustomer(order.customer);
       dbParams.push(cus_no);
@@ -112,13 +118,19 @@ module.exports = class PaymentsDAO extends ModelDAO {
   };
 
   saveOrderDetails = async (order_no, details) => {
-    const sql = `INSERT INTO Orders_Details(order_no, pd_no, od_quantity) 
-    VALUES(?, ?, ?);`;
+    console.log(details);
+    const sql = `INSERT INTO Orders_Details(order_no, pd_no, od_quantity, prod_color) 
+    VALUES(?, ?, ?, ?);`;
 
     for (let i = 0; i < details.length; i++) {
-      const { pd_no, prod_quantity } = details[i];
+      const { pd_no, prod_quantity, prod_color } = details[i];
 
-      await this.sqldao.execute(sql, [order_no, pd_no, prod_quantity]);
+      await this.sqldao.execute(sql, [
+        order_no,
+        pd_no,
+        prod_quantity,
+        prod_color,
+      ]);
     }
   };
 
@@ -143,23 +155,24 @@ module.exports = class PaymentsDAO extends ModelDAO {
     return order;
   };
 
-  getAllSaveOrder = async() =>{
-    const sql = `SELECT * FROM Orders ORDER BY order_no DESC`
-    const orders = await this.sqldao.query(sql,[])
-    const orders_info = await Promise.all(orders.map(async(order)=>{
-      const products = await this.getSaveOrderProducts(order.order_no);
-      order.orderProducts = products;
-  
-      const customer = await this.getSaveOrderCustomer(order.cus_no);
-      order.customer = customer;
-      return order
-    }))
-    return orders_info
-  }
+  getAllSaveOrder = async () => {
+    const sql = `SELECT * FROM Orders ORDER BY order_no DESC`;
+    const orders = await this.sqldao.query(sql, []);
+    const orders_info = await Promise.all(
+      orders.map(async (order) => {
+        const products = await this.getSaveOrderProducts(order.order_no);
+        order.orderProducts = products;
 
+        const customer = await this.getSaveOrderCustomer(order.cus_no);
+        order.customer = customer;
+        return order;
+      })
+    );
+    return orders_info;
+  };
 
   getSaveOrderProducts = async (id) => {
-    const sql = `SELECT p.prod_name, pd.pd_price AS prod_price, od.od_quantity AS prod_quantity,od.pd_no as pd_no, pd.prod_no as prod_no
+    const sql = `SELECT p.prod_name, pd.pd_price AS prod_price, od.od_quantity AS prod_quantity, od.pd_no as pd_no, pd.prod_no as prod_no, od.prod_color as prod_color
     FROM Orders_Details AS od, Products_Details AS pd, Products AS p 
     WHERE od.pd_no = pd.pd_no AND p.prod_no = pd.prod_no 
     AND od.order_no = ?;`;

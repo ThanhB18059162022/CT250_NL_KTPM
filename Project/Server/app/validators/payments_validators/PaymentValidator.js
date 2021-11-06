@@ -9,6 +9,7 @@ module.exports = class PatmentValidator extends Validator {
           prod_no: this.joi.number().integer().min(0).required(),
           pd_no: this.joi.number().integer().min(1).required(),
           prod_quantity: this.joi.number().integer().min(1).required(),
+          prod_color: this.joi.string(),
         })
         .required()
     );
