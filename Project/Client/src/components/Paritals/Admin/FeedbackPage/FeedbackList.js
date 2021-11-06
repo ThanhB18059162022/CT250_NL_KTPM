@@ -79,6 +79,7 @@ const FeedbackList = (props) => {
                     <p>Người đánh giá</p>
                     <p>Nội dung</p>
                     <p>Sản phẩm</p>
+                    <p>Xếp hạng</p>
                     <p>Thời gian</p>
                     <p>Phản hồi</p>
                     <p>Hành động</p>
@@ -100,6 +101,45 @@ const FeedbackList = (props) => {
 
 const Feedback = (props) => {
     const { info, setFeedbackInfo, setShowFb, notifyDeleteFeedback } = props
+
+    const ratingShow = (rating) => {
+        switch (rating){
+            case 1:{
+                return <img src="/icon/staricon.png" width="20px" alt=""></img>
+            }
+            case 2:{
+                return <>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                        </>
+            }
+            case 3:{
+                return <>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                        </>
+            }
+            case 4:{
+                return <>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                        </>
+            }
+            case 5:{
+                return <>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                            <img src="/icon/staricon.png" width="20px" alt=""></img>
+                        </>
+            }
+        }
+    }
+
     return (
         <>
             <li className="FeedbackList">
@@ -107,6 +147,7 @@ const Feedback = (props) => {
                 <p>{info.cus_name}</p>
                 <p>{info.fb_content}</p>
                 <p>{info.prod_name}</p>
+                <p>{ratingShow(info.fb_star)}</p>
                 <p>{Helper.Exchange.toLocalDate(info.fb_time)}</p>
                 <p>{info.replies.length}</p>
                 <p><AdminButton IconName={faEye} ClickEvent={() => { setShowFb(1); setFeedbackInfo(info) }} /> <AdminButton IconName={faTrashAlt} ClickEvent={()=>notifyDeleteFeedback(info.fb_no)} /></p>
