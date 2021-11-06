@@ -1,34 +1,22 @@
 .Footer {
-    padding: 30px 10%;
+    padding: 30px 5%;
     display: flex;
     margin-top: 10px;
     background: var(--backgroundColor);
     color: var(--textColor);
-    & > div {
-        flex-grow: 1;
+    &_trademade {
         flex-basis: 33.33%;
-        padding-left: 10%;
+        padding-left: 7%;
         p {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
-        ul {
-            li {
-                list-style: none;
-                cursor: pointer;
-                &.storename {
-                    p {
-                        font-family: bladewords;
-                        font-weight: 600;
-                        letter-spacing: 2px;
-                        font-size: 20px;
-                    }
-                }
-            }
-        }
+        ul.trademade{
 
-        ul.trademade,
-        ul.policy {
+            list-style: none;
             li {
+                & + li {
+                    margin-top: 7px;
+                }
                 &:hover {
                     p::before {
                         width: 100%;
@@ -50,6 +38,29 @@
             }
         }
     }
+
+    &_container{
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        &_info{
+            display: flex;
+            &>div{
+                width: 50%;
+                padding-left: 10%;
+                p{
+                    margin-bottom: 10px;
+                }
+                ul{
+                    list-style: none;
+                    li + li{
+                        margin-top: 10px;
+                    }
+                }
+            }
+        }
+        
+    }
 }
 
 @media screen and (max-width: 766px) {
@@ -58,5 +69,28 @@
         & > div + &div {
             margin-top: 10px;
         }
+    }
+}
+#map{
+    flex-grow: 1;
+    border-radius: 20px;
+    height: 300px;
+}
+
+.checkingmap{
+    padding: 0 10%;
+    position: relative;
+    button{
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 10px;
+        font-size: 18px;
+        padding: 5px;
+        background: var(--backgroundColor);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
     }
 }

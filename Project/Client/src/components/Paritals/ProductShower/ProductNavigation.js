@@ -79,7 +79,7 @@ const Filter = ({ trademadeList, setTrademadeStyle, setOrderStyle }) => {
                         setCurrentIndex(2)
                     }}
                 >
-                    Mua nhiều
+                    Thịnh hành
                 </span>
             </div>
         </div>
