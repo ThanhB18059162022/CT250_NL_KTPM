@@ -118,7 +118,6 @@ module.exports = class PaymentsDAO extends ModelDAO {
   };
 
   saveOrderDetails = async (order_no, details) => {
-    console.log(details);
     const sql = `INSERT INTO Orders_Details(order_no, pd_no, od_quantity, prod_color) 
     VALUES(?, ?, ?, ?);`;
 
