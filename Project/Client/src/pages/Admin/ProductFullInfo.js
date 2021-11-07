@@ -20,7 +20,7 @@ const ProductFullInfo = (props) => {
         setNotify({
             type: "INFORMATION", //CONFIRMATION, INFORMATION
             title: "Thông báo",
-            content: "Đã lưu sản phẩm",
+            content: "Đã lưu thông tin sản phẩm",
             infoType: "SUCCESS",
         });
         setShow(true);
