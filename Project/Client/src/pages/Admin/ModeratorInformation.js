@@ -11,7 +11,7 @@ const crypto = require("crypto");
 const sha256 = (pwd) => crypto.createHash("sha256").update(pwd).digest("hex");
 
 const ModeratorInformation = (props) => {
-    const { setDisplay, modInfo, setNewMod, setModInfo } = props;
+    const { setDisplay, modInfo, setModifyList } = props;
 
     //biến hiển thị thông báo
     const [show, setShow] = useState(false);
@@ -69,7 +69,7 @@ const ModeratorInformation = (props) => {
         {
             const caller = new ApiCaller();
             await caller.post("moderators", modTmp);
-            setNewMod(modTmp);
+            setModifyList(1);
             notifyCreateMod();
             setTimeout(() => {
                 setDisplay(0);
@@ -94,7 +94,7 @@ const ModeratorInformation = (props) => {
     const callApiUpdateMod = async (modTmp) => {
         const caller = new ApiCaller();
         await caller.put("moderators/" + modInfo.mod_no, modTmp);
-        setModInfo(modTmp);
+        setModifyList(1)
         notifyEditMod();
         setTimeout(() => {
             setDisplay(0);

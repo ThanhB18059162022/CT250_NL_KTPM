@@ -28,6 +28,16 @@ const ReplyFeedback = (props) => {
         })
         setShow(true)
     }
+    //thông báo phản hồi không thành công
+    const notifyFeedbackReplyFailed = () => {
+        setNotify({
+            ...notify,
+            title: "Thông báo",
+            content: "Vui lòng nhập nội dung phản hồi",
+            infoType: 'ERROR'
+        })
+        setShow(true)
+    }
     //lấy thông tin admin phản hồi
     const [modName, setModName] = useState()
     useEffect(()=>{
@@ -39,15 +49,19 @@ const ReplyFeedback = (props) => {
     },[currentAdNo])
     //gọi api phản hồi
     const replyFeedback = async (repContent) =>{
-        const replyInfo = {rep_content: repContent, mod_no: currentAdNo, mod_name: modName}
-        setReplies(pre=>[...pre, replyInfo])
-        const caller = new ApiCaller()
-        await caller.post("feedback/" + feedbackInfo.fb_no + "/replies", replyInfo)
-        setModifyFbList(1)
-        notifyFeedbackReplied()
-        setTimeout(() => {
-            setRep(0)
-        }, 1000);
+        if(repContent.length > 0)
+        {
+            const replyInfo = {rep_content: repContent, mod_no: currentAdNo, mod_name: modName}
+            setReplies(pre=>[...pre, replyInfo])
+            const caller = new ApiCaller()
+            await caller.post("feedback/" + feedbackInfo.fb_no + "/replies", replyInfo)
+            setModifyFbList(1)
+            notifyFeedbackReplied()
+            setTimeout(() => {
+                setRep(0)
+            }, 1000);
+        }
+        else notifyFeedbackReplyFailed()
     }
 
     //nội dung phản hồi

@@ -5,17 +5,17 @@ import ModeratorInformation from "./ModeratorInformation"
 const ModeratorManagement = (props) => {
     const {currentAdNo} = props
     const [addNew, setAddNew] = useState(0)
-    const [newMod, setNewMod] = useState({})
+    const [modifyList, setModifyList] = useState(0)
     const displayAddModeratorForm = () => {        
         switch(addNew){
-            case 1: return <ModeratorInformation setDisplay={setAddNew} setNewMod={setNewMod}/>
+            case 1: return <ModeratorInformation setDisplay={setAddNew} setModifyList={setModifyList}/>
             default: return;
         }
     }
 
     return(
         <div>
-            <MorderatorList newMod={newMod} setAddNew={setAddNew} currentAdNo={currentAdNo}/>
+            <MorderatorList setAddNew={setAddNew} currentAdNo={currentAdNo} modifyList={modifyList} setModifyList={setModifyList}/>
             {displayAddModeratorForm()}
         </div>
     )

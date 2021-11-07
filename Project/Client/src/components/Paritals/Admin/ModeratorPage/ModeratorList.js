@@ -7,14 +7,14 @@ import Notifications from "../../../../common/Notifications"
 import ApiCaller from "../../../../api_services/ApiCaller"
 
 const MorderatorList = (props) => {
-    const { newMod, setAddNew, currentAdNo } = props
+    const { setAddNew, currentAdNo, modifyList, setModifyList } = props
     const [editMod, setEditMod] = useState(0)
     const [modInfo, setModInfo] = useState()
    
     //hiển thị form sửa thông tin quản trị
     const displayEditMod = () => {
         switch (editMod) {
-            case 1: return <ModeratorInformation setDisplay={setEditMod} modInfo={modInfo} setModInfo={setModInfo} />
+            case 1: return <ModeratorInformation setDisplay={setEditMod} modInfo={modInfo} setModifyList={setModifyList}/>
             default: return;
         }
     }
@@ -54,13 +54,10 @@ const MorderatorList = (props) => {
             const caller = new ApiCaller();
             let data = await caller.get('moderators')
             setMods(data.items)
+            if(modifyList === 1) setModifyList(0)
         })(); // IIFE // Note setProduct([...products, item])
-    }, [modInfo])
+    }, [modifyList, setModifyList])
 
-    //thêm mod mới vào mảng
-    useEffect(() => {
-        setMods(pre=>([...pre, newMod]))
-    }, [newMod])
     //lọc danh sách quản trị
     const filterModerator = (message) => {
         const newArray = mods.filter(item => item.mod_name.toLowerCase().includes(message.toLowerCase()))
