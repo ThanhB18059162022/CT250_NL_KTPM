@@ -49,10 +49,9 @@ const DetailAndRate = ({ id, showDetail }) => {
             //----
             let all = await FeedbackServices.getFeedback(id, 1, 1000000);
             setCurrentStar({
-                currentStar:Math.floor(all.reduce((pre,item)=>pre + Number(item.fb_star)/all.length,0)),
+                currentStar:Math.round(all.reduce((pre,item)=>pre + Number(item.fb_star)/all.length,0)),
                 commnent:all.length
             })
-            //----
 
             setFeedback(data);
         })();
@@ -95,16 +94,6 @@ const DetailAndRate = ({ id, showDetail }) => {
 
         setComment("");
         setIsReload(!isReload)
-        // setFeedback([
-        //     {
-        //         ...data.info,
-        //         fb_star:data.star,
-        //         fb_time: new Date(),
-        //         fb_content: commnent,
-        //         replies: [],
-        //     },
-        //     ...feedback,
-        // ]);
     };
     const getCurrentStar = () =>{
         const stars =[]
@@ -227,7 +216,7 @@ const FeedbackCustomerInfo = ({ setNotify, onSendFeedback, setShow, onHide }) =>
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
 
-    const [star, setStar] = useState(1)
+    const [star, setStar] = useState(5)
 
     const showNotify = (content) => {
         setNotify((pre) => ({
@@ -241,6 +230,7 @@ const FeedbackCustomerInfo = ({ setNotify, onSendFeedback, setShow, onHide }) =>
 
     const checkValidation = () => {
         let message = Helper.TransactionValidator.checkingName(name);
+
         if (!message.result) {
             showNotify(message.resson);
             return false;

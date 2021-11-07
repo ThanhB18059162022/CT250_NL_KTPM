@@ -3,6 +3,7 @@ import ProductList from "./ProductList";
 import "./ProductShower.Style.scss";
 import { useState, useEffect, useCallback } from "react";
 import ProductServices from "../../../api_services/products_services/ProductsService";
+import { caller } from "../../../api_services/servicesContainer";
 const ProductShower = () => {
     const [list, setList] = useState([]);
 
@@ -78,10 +79,19 @@ const ProductShower = () => {
                 })
             );
             !data.next && setIsNextPage(false);
-            setTrademadeList(["NOKIA", "SAMSUNG", "APPLE", "XIAOMI"])
             trademadeItems(data.items);
         })();
     }, [nextPage, orderStyle,trademadeItems, trademadeStyle]);
+
+    useEffect(()=>{
+        let load = true;
+        (async()=>{
+            let data = (await caller.get('products/brands')).map(item=>item.brand_name)
+            if(!load) return
+            setTrademadeList(data)
+        })()
+        return () => load = false
+    },[])
     return (
         <div className='ProductShower'>
             <ProductNavigation
