@@ -55,6 +55,7 @@ const FeedbackList = (props) => {
         (async () => {
             const caller = new ApiCaller();
             let data = await caller.get('feedback?page=1&limit=200&order="DESC"')
+            data.items.reverse()
             setFeedbacks(data.items)
             if(modifyFbList === 1) setModifyFbList(0)
         })();
