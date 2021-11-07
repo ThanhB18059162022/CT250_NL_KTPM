@@ -230,6 +230,7 @@ const FeedbackCustomerInfo = ({ setNotify, onSendFeedback, setShow, onHide }) =>
 
     const checkValidation = () => {
         let message = Helper.TransactionValidator.checkingName(name);
+
         if (!message.result) {
             showNotify(message.resson);
             return false;
