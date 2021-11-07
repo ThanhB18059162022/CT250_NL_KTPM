@@ -23,7 +23,7 @@ const ReplyFeedback = (props) => {
         setNotify({
             ...notify,
             title: "Thông báo",
-            content: "Đã phản hồi bình luận",
+            content: "Đã phản hồi đánh giá",
             infoType: 'SUCCESS'
         })
         setShow(true)
