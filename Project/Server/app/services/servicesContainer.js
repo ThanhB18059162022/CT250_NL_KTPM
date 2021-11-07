@@ -26,9 +26,9 @@ module.exports = {
 
   PasswordService,
 
-  StorageService,
+  //StorageService,
 
-  // StorageService: StorageServiceRedis,
+  StorageService: StorageServiceRedis,
 
   CurrencyExchangeService,
   PayPalService,

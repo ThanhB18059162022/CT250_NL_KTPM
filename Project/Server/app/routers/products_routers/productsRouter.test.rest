@@ -2052,7 +2052,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
 ### Sửa chi tiết
 PUT http://localhost:8000/api/products/26/details/25
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM2MTE0NDk1LCJleHAiOjE2MzYxMTgwOTV9.5zJOvkUBTzaAm1mpvYkUYQZMDt_LwUlN-ZOC-OH9SvA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM2MjUzNDc5LCJleHAiOjE2MzYyNTcwNzl9.7tVT6-cpnSvHwyaqeoR08ZBlWf92AqN0gQWXIsaQDnk
 
 
 {
@@ -2064,7 +2064,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
   "pd_sold": 0,
   "pd_discount":{
     "start": "2020-01-01",
-    "end": "2020-12-31",
+    "end": "2021-12-31",
     "percent": 10
   }
 }

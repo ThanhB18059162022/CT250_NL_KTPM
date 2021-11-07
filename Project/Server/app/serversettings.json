@@ -1,5 +1,5 @@
 {
-  "baseImgUri": "http://localhost:5000",
+  "baseImgUri": "http://localhost:8000",
   "port": 5000,
   "dbConnection": {
     "mysql": {
