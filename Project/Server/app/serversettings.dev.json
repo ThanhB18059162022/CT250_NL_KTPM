@@ -3,13 +3,13 @@
   "port": 8000,
   "dbConnection": {
     "mysql": {
-      "host": "mariadb",
+      "host": "localhost",
       "user": "root",
-      "password": "1234",
-      "database": "Phone_E_Commerce_DB"
+      "password": "",
+      "database": "phone_e_commerce_db"
     },
     "redis": {
-      "host": "redis"
+      "host": "localhost"
     }
   },
   "jwt": {

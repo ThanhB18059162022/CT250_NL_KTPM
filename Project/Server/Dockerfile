@@ -1,6 +1,6 @@
 FROM node:14.16.0
 
-WORKDIR /app
+WORKDIR /server
 
 COPY ["package.json", "package-lock.json*", "./"]
 
@@ -10,5 +10,5 @@ COPY . .
 
 ENV NODE_ENV=production
 
-CMD ["npm","start"]
+CMD ["node","app/server.js"]
 
