@@ -127,11 +127,11 @@ const ProductDetail = (props) => {
                             </li>
                             <li>
                                 <p>Giá:<p>(*)</p></p>
-                                <input name="txtPDPrice" type="text" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_price: Number(e.target.value) })} /> <br />
+                                <input name="txtPDPrice" type="number" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_price: Number(e.target.value) })} /> <br />
                             </li>
                             <li>
                                 <p>Số lượng:<p>(*)</p></p>
-                                <input name="txtPDAmount" type="text" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_amount: Number(e.target.value) })} /> <br />
+                                <input name="txtPDAmount" type="number" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_amount: Number(e.target.value) })} /> <br />
                             </li>
                             <li>
                                 <p>Ngày bắt đầu giảm giá:</p>
@@ -170,11 +170,11 @@ const ProductDetail = (props) => {
                             </li>
                             <li>
                                 <p>Giá:<p>(*)</p></p>
-                                <input name="txtPDPrice" type="text" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_price: Number(e.target.value) })} value={detail.pd_price} /> <br />
+                                <input name="txtPDPrice" type="number" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_price: Number(e.target.value) })} value={detail.pd_price} /> <br />
                             </li>
                             <li>
                                 <p>Số lượng:<p>(*)</p></p>
-                                <input name="txtPDAmount" type="text" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_amount: Number(e.target.value) })} value={detail.pd_amount} /> <br />
+                                <input name="txtPDAmount" type="number" onKeyPress={e => {if (!/[0-9]/.test(e.key)) {e.preventDefault();}}} onChange={e => setDetail({ ...detail, pd_amount: Number(e.target.value) })} value={detail.pd_amount} /> <br />
                             </li>
                             <li>
                                 <p>Đã bán:</p>
