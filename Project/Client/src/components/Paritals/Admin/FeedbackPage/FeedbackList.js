@@ -65,7 +65,7 @@ const FeedbackList = (props) => {
     const [filter, setFilter] = useState([])
     //lọc danh sách đánh giá
     const filterFeedback = (message) => {
-        const newArray = feedbacks.filter(item => item.cus_name.toLowerCase().includes(message.toLowerCase()) || item.prod_name.toLowerCase().includes(message.toLowerCase()))
+        const newArray = feedbacks.filter(item => item.cus_name.toLowerCase().includes(message.toLowerCase()) || item.prod_name.toLowerCase().includes(message.toLowerCase()) || item.fb_content.toLowerCase().includes(message.toLowerCase()) )
         setFilter(newArray)
     }
 
