@@ -70,6 +70,20 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
         return <></>;
     };
 
+    const getPrice = () => {
+        if (!item) return;
+        let percent = 0;
+        if (item.prod_details[0].pd_discount)
+            if (
+                new Date().getTime() <= new Date(item.prod_details[0].pd_discount.end).getTime() &&
+                new Date().getTime() >= new Date(item.prod_details[0].pd_discount.start).getTime()
+            )
+                percent = item.prod_details[0].pd_discount.percent;
+        return Helper.Exchange.toMoney(
+            Helper.CalcularDiscount(item.prod_details[0].pd_price, percent)
+        );
+    };
+
     return (
         <li
             className='ProductItem'
@@ -85,18 +99,7 @@ export const ProductItem = ({ id, compare = false, currentId = -1, ...rest }) =>
                 />
                 <div className='product-info'>
                     <p className='name'>{item && item.prod_name}</p>
-                    <p className='price'>
-                        {item &&
-                            Helper.Exchange.toMoney(
-                                Helper.CalcularDiscount(
-                                    item.prod_details[0].pd_price,
-                                    item.prod_details[0].pd_discount
-                                        ? item.prod_details[0].pd_discount.percent
-                                        : 0
-                                )
-                            )}{" "}
-                        VND
-                    </p>
+                    <p className='price'>{getPrice()} VND</p>
                     <div className='product-panel'>
                         <p className='chipset'>
                             <FontAwesomeIcon icon={faMicrochip} />{" "}

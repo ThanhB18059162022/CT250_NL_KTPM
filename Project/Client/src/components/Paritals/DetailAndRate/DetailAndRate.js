@@ -216,7 +216,7 @@ const FeedbackCustomerInfo = ({ setNotify, onSendFeedback, setShow, onHide }) =>
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
 
-    const [star, setStar] = useState(1)
+    const [star, setStar] = useState(5)
 
     const showNotify = (content) => {
         setNotify((pre) => ({
@@ -230,6 +230,7 @@ const FeedbackCustomerInfo = ({ setNotify, onSendFeedback, setShow, onHide }) =>
 
     const checkValidation = () => {
         let message = Helper.TransactionValidator.checkingName(name);
+
         if (!message.result) {
             showNotify(message.resson);
             return false;

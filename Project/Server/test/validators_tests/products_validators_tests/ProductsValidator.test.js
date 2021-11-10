@@ -169,7 +169,7 @@ const validDetail = {
   pd_amount: 12,
   pd_sold: 10,
   pd_price: 12000,
-  pd_discount: 10,
+  pd_discount: {},
 };
 
 // Mảng chứa các chi tiết

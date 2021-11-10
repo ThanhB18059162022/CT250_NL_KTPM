@@ -48,7 +48,7 @@ const FeedbackInformation = (props) => {
         for(let i =0; i<rating; i++)
             tempArr.push(i)
         return <>
-            {rating.map(item=><img key={item} src="/icon/staricon.png" width="20px" alt=""></img>)}
+            {tempArr.map(item=><img key={item} src="/icon/staricon.png" width="20px" alt=""></img>)}
         </>
     }
     return(
