@@ -143,7 +143,7 @@ const ProductDetail = (props) => {
                             </li>
                             <li>
                                 <p>Giảm giá (%):</p>
-                                <input name="txtPDDiscountPercent" type="text" value={detail.pd_discount && detail.pd_discount.percent!==null && detail.pd_discount.percent} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, percent: e.target.value } })}/> <br />
+                                <input name="txtPDDiscountPercent" type="number" value={detail.pd_discount && detail.pd_discount.percent!==null && detail.pd_discount.percent} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, percent: e.target.value } })}/> <br />
                             </li>
                         </form>
                     </div>
@@ -190,7 +190,7 @@ const ProductDetail = (props) => {
                             </li>
                             <li>
                                 <p>Giảm giá (%):</p>
-                                <input name="txtPDDiscountPercent" type="text" value={detail.pd_discount && detail.pd_discount.percent!==null && detail.pd_discount.percent} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, percent: e.target.value } })}/> <br />
+                                <input name="txtPDDiscountPercent" type="number" value={detail.pd_discount && detail.pd_discount.percent!==null && detail.pd_discount.percent} onChange={e => setDetail({ ...detail, pd_discount: { ...detail.pd_discount, percent: e.target.value } })}/> <br />
                             </li>
                         </form>
                     </div>
