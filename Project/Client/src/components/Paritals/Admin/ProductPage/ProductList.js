@@ -1,6 +1,6 @@
 import { AdminButton, AdminSearchInput } from "../../../Controls"
 import "../Admin.Style.scss"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { faEdit, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import ProductFullInfo from "../../../../pages/Admin/ProductFullInfo"
 import Notifications from "../../../../common/Notifications"
@@ -52,10 +52,16 @@ const ProductList = (props) => {
     //danh sách sản phẩm đã lọc
     const [productFilter, setProductFilter] = useState([])
     //lọc sản phẩm
-    const filterProduct = (message) => {
+
+    const [message, setMessgae] = useState("");
+    const filterProduct = (_message) => {
+        setMessgae(_message)
+    }
+
+    useEffect(()=>{
         const newArr = productsList.filter(item => item.prod_name.toLowerCase().includes(message.toLowerCase()) || item.prod_hardwareAndOS.os.toLowerCase().includes(message.toLowerCase()) || item.prod_manufacturer.madeIn.toLowerCase().includes(message.toLowerCase()))
         setProductFilter(newArr)
-    }
+    },[message,productsList ])
 
     return (
         <div className="ListLayout">

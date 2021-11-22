@@ -22,6 +22,7 @@ const ProductManagement = () => {
     const [productsList, setProductsList] = useState([])
     //lấy sản phẩm từ server
     useEffect(() => {
+        console.log("renderer");
         (async () => {
             let data = (await ProductServices.getProducts(1, 10000, 'prod_no'))
             let items = await Promise.all(data.items.map(item => ProductServices.getProduct(item.prod_no)))
