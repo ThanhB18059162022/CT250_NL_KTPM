@@ -29,7 +29,7 @@ services:
       - 3307:3306
 
   redis:
-    image: redis
+    image: redis:6.2.6-alpine3.14
     volumes:
       - redis:/data
 

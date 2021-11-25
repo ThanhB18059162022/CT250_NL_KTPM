@@ -1,4 +1,4 @@
-FROM node:14.16.0
+FROM node:17-alpine3.14
 
 WORKDIR /server
 
